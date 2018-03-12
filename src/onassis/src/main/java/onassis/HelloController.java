@@ -59,7 +59,7 @@ public class HelloController {
     
     @RequestMapping("/")
     String hello() {
-        return "Hello World, This is Onassis! Can ou here me?";
+        return "Hello World, This is Onassis! Can you here me?";
     }
     
     @RequestMapping("/ping")

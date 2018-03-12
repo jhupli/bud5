@@ -33,7 +33,7 @@ public class HelloControllerTest {
     @Test
     public void testHello() throws Exception {
         when().get("/").then()
-                .body(is("Hello World!"));
+                .body(is("Hello World, This is Onassis! Can you here me?"));
     }
 
     @Test

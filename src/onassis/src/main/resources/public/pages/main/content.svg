@@ -1,0 +1,16 @@
+      <svg xmlns="http://www.w3.org/2000/svg" width="840" height="80" id="pic">
+            <!--<rect id="foo1" x="0" width="60" height="80" onclick="console.log('rect clicked');" onmouseover="console.log('onmouseover');" onmouseout="console.log('onmouseout');"/>
+            <rect x="60" width="60" height="80" onclick="console.log('blue rect clicked');" onmouseover="console.log('blue onmouseover');" onmouseout="console.log('blue onmouseout');" fill="blue"/>
+
+            <rect id="foo2" x="120" width="60" height="80" onclick="console.log('rect clicked');" onmouseover="console.log('onmouseover');" onmouseout="console.log('onmouseout');"/>
+            <rect x="180" width="120" height="80" onclick="console.log('blue rect clicked');" onmouseover="console.log('blue onmouseover');" onmouseout="console.log('blue onmouseout');" fill="blue"/>
+            <ellipse cx="420" cy="40" rx="420" ry="40" fill="red" onclick="console.log('oval clicked');"/>-->
+
+            <rect id="foo1" x="0" width="60" height="80" />
+            <rect x="60" width="60" height="80" fill="blue" />
+
+            <rect id="foo2" x="120" width="60" height="80" />
+            <rect x="180" width="120" height="80" fill="blue"/>
+            
+            <ellipse cx="420" cy="40" rx="420" ry="40" fill="red"/>
+      </svg>

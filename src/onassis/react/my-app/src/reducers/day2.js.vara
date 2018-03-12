@@ -1,0 +1,19 @@
+const reducer = (state = [], action) => {
+  console.log("day reducer: "+action.type)
+  switch (action.type) {
+    case 'DAY_REQUEST':
+      console.log("handling DAY_REQUEST")
+      return Object.assign({}, state, {
+         day: action.payload.day
+       })
+    case 'DAY_RESPONSE':
+      console.log("handling DAY_RESPONSE")
+      return Object.assign({}, state, {
+         payments: action.payload.payments
+       })
+    default:
+      return state
+  }
+}
+
+export default reducer

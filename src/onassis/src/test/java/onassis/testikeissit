@@ -1,0 +1,116 @@
+
+Test plan:
+
+
+===========INSERT X = check 0 -account
+
+p_i_010: insert positive X
+
+p_i_020: insert positive X
+ 		 delete
+
+p_i_030: insert negative X
+
+p_i_040: insert negative X
+         delete
+
+p_i_050: insert positive  and negative (abs equal) X
+
+p_i_060: insert positive  and negative (abs equal) X
+ 		 delete positive
+
+p_i_070: insert positive  and negative (abs equal) X
+ 		 delete negative
+
+p_i_080: insert positive  and negative (abs equal) X
+ delete both
+
+p_i_090: insert 2 positive (same date)
+
+p_i_100: insert 2 negative  (same date)
+
+p_i_110: insert 2 d1 <> d2 (postive)
+
+p_i_120: insert 2 d1 <> d2 (negative)
+
+p_i_130: insert 2 d1 <> d2 (positive and negative) X
+
+p_i_140: insert 2 X
+ 		 insert 3. before
+
+p_i_150: insert 2 X
+ 		 insert 3. same date as 1.
+
+p_i_160: insert 2 X
+ 		 insert 3. same date as 2.
+ 
+p_i_170: insert 2 X
+ 		 insert 3. after
+ 		 
+===========DELETE
+
+p_d_010: insert 3 X
+    	 delete first
+
+p_d_020: insert 3 X
+ 		 delete second
+
+p_d_030: insert 3 X
+ 		 delete last
+ 		 		 
+===========UPDATE
+
+p_u_010: insert 3 X
+ 		 update 2. sum
+
+p_u_020: insert 3
+ 		 move 2. to same as first
+
+p_u_030: insert 3
+         move 2. first
+
+p_u_040: insert 3
+ 		 move 2. to same as last
+
+p_u_050: insert 3
+ 		 move 2. last
+
+p_u_060: insert 3
+ 		 move 2. to same as first + update sum
+
+p_u_070: insert 3
+ 		 move 2. first + update sum
+
+p_u_080: insert 3
+ 		 move 2. to same as last  + update sum
+
+p_u_090: insert 3
+ 		 move 2. last  + update sum
+
+---account changes:
+
+p_u_100: insert 3a + 3b (same dates) X
+ 		 update 2. sum + a -> b
+
+p_u_110: insert 3a + 3b (same dates) X
+ 		 move 2. to same as first + update sum + a -> b
+
+p_u_120: insert 3a + 3b (same dates) X
+ 		 move 2. first + update sum + a -> b
+
+p_u_130: insert 3a + 3b (same dates) X
+ 		 move 2. to same as last  + update sum + a -> b
+
+p_u_140: insert 3a + 3b (same dates) X
+ 		 move 2. last  + update sum + a -> b
+ 		 
+ ===========0 -account
+p_u_210: insert 1  (same dates)
+ 
+p_u_220: insert 2 
+
+p_u_220: insert 2 
+		 change a
+		
+ 
+ 

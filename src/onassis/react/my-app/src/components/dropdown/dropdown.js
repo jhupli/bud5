@@ -34,13 +34,7 @@ class Dropdown extends React.Component {
     componentWillReceiveProps(nextProps){
     	if( nextProps.constants && nextProps.constants[this.props.constants_id]) {
     		var constants = nextProps.constants[this.props.constants_id]
-    		var selectedItem = null
-    		if(constants.length === 1) {
-    			selectedItem = constants[0]
-    		} else {
-    			selectedItem = findInArray( constants,  c => { return c.value === nextProps.selectedValue} )
-    		}
-    		
+    		var selectedItem = findInArray( constants,  c => { return c.value === nextProps.selectedValue} )
 	    	/*var selectedItem = constants.find( c => { return c.value === nextProps.selectedValue })*/
 	    	var validConstants = constants.filter(  c => { return (c.valid || c === selectedItem) })
 	    	this.setState({

@@ -16,6 +16,11 @@ const reducer = (state = [], action) => {
         return Object.assign({}, state, {
             prevday: action.payload.prevday,
           })  
+    case 'CHART_TODAY':
+        console.log("handling CHART_TODAY")
+        return Object.assign({}, state, {
+            today: action.payload.today,
+          }) 
     default:
       return state
   }

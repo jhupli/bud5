@@ -1,6 +1,6 @@
 import React from 'react'
 import c3 from 'c3'
-import {addDays} from '../../util/addDays'
+import {addDays, daydiff} from '../../util/addDays'
 
 import { chart_load } from '../../actions/chart'
 import { day_load, account_load } from '../../actions/payments'
@@ -30,12 +30,14 @@ class Chart extends React.Component {
     		refreshTime: null,
     		queryType: '',
     		nextday: null,
-    		prevday: null
+    		prevday: null,
+    		today: null
         }
         this.draw = this.draw.bind(this)
         this.dateselect = this.dateselect.bind(this)
         this.nextday = this.nextday.bind(this)
         this.prevday = this.prevday.bind(this)
+        this.today = this.today.bind(this)
         this.onmouseover = this.onmouseover.bind(this)
         this.onmouseover_account = this.onmouseover_account.bind(this)
         this.onmouseout = this.onmouseout.bind(this)
@@ -183,6 +185,19 @@ class Chart extends React.Component {
     		)
     	}
     }
+    today() {
+    	if(this.selectedDate) {
+    		var now = new Date()
+    		var diff = daydiff(this.selectedDate.x, now)
+    		var ix = this.selectedDate.index - diff
+    		this.dateselect(
+    				{
+    					"x": now,
+    					"index": ix
+    				}
+    		)
+    	}
+    }
     onmouseover_account(a) {
     	if (a === "I" || a === "E") return;
         //magic copied from caller to do the default behaviour (i.e. dim other curves and focus the selected curve) :
@@ -208,6 +223,9 @@ class Chart extends React.Component {
     	}
     	if(nextProps.prevday !== this.props.prevday) {
     		this.prevday()
+    	}
+    	if(nextProps.today !== this.props.today) {
+    		this.today()
     	}
     	if(nextProps.queryType !== this.props.queryType) {
     		console.log('reset')
@@ -270,6 +288,7 @@ const mapStateToProps = (store) => {
         curves: store.chart.curves,
         nextday: store.chart.nextday,
         prevday: store.chart.prevday,
+        today: store.chart.today,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
         queryType: store.payments.queryType

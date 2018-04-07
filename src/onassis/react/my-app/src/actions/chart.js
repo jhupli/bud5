@@ -44,6 +44,16 @@ const chartPrevDayAction = () => (
   }
 )
 
+const CHART_TODAY = 'CHART_TODAY'
+const chartTodayAction = () => (
+  { 
+	type: CHART_TODAY,
+    payload: 
+    	{
+    		today : (new Date()).getTime() //only signal
+    	} 
+  }
+)
 var params = null
 
 function get(dispatch) {
@@ -92,9 +102,16 @@ const chart_prev_day = () => (
     }
 )
 
+const chart_today = () => (
+    (dispatch: Redux.Dispatch) => {
+    	dispatch(chartTodayAction())
+    }
+)
+
 export {
 	chart_load,
 	chart_refresh,
 	chart_next_day,
-	chart_prev_day
+	chart_prev_day,
+	chart_today
 }

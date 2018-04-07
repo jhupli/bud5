@@ -4,8 +4,6 @@ import { Panel } from 'react-bootstrap';
 import Chart from '../chart/chart'
 import Buttons from '../chart/buttons'
 
-import PaymentSelection from '../paymentSelection/paymentSelection'
-
 class DiagramA extends React.Component{
 	render(){
 		return(

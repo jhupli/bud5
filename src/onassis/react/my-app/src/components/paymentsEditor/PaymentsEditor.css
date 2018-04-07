@@ -29,11 +29,11 @@
  #payments_table td,  
  #payments_table th { 
  	border: none;
- /* CHG -1
- 	display: block; */
+
+ 	display: block; 
  }
 
-/* CHG-1
+
  #payments_table tr:after {
             content: ' ';
             display: block;
@@ -42,8 +42,8 @@
         }
 
  #payments_table tbody {
-            height: 375px;
-            overflow-y: auto;
+     /*  CHG-1     height: 375px;
+            overflow-y: auto;*/
         }
 
  #payments_table  thead {
@@ -55,7 +55,7 @@
             float: left;
         }
         
- END */        
+        
 
 input[type="text"]:disabled {
     background-color: transparent;

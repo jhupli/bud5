@@ -18,11 +18,9 @@
 #accounts_table td,  
 #accounts_table th {
 	border: none;
-/* CHG-1 
- 	display: block; */
+ 	display: block;
  }
 
-/* CHG-1
 #accounts_table tr:after {
             content: ' ';
             display: block;
@@ -31,8 +29,8 @@
         }
 
 #accounts_table tbody {
-            height: 375px;
-            overflow-y: auto;
+           /* CHG-1 height: 375px;
+            overflow-y: auto; */
         }
 
 #accounts_table  thead {
@@ -44,8 +42,6 @@
             float: left;
         }
         
- END */        
-
 input[type="text"]:disabled {
     background-color: transparent;
     border: none;

@@ -7,9 +7,6 @@
 	}
 
 
-
-
- /* START */
  #categories_table  table {
             width: 100%;
  }
@@ -20,11 +17,9 @@
  #categories_table td,  
  #categories_table th { 
   	border: none;
-/* CHG-1 
-	display: block; */
+	display: block; 
  }
 
-/* CHG-1
  #categories_table tr:after {
             content: ' ';
             display: block;
@@ -33,8 +28,8 @@
         }
 
  #categories_table tbody {
-            height: 375px;
-            overflow-y: auto;
+         /* CHG-1   height: 375px;
+            overflow-y: auto; */
         }
 
  #categories_table  thead {
@@ -45,8 +40,6 @@
  #categories_table thead th {
             float: left;
         }
-        
- END */        
 
 input[type="text"]:disabled {
     background-color: transparent;

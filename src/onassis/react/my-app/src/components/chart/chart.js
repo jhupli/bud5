@@ -28,9 +28,14 @@ class Chart extends React.Component {
     		curves: null, //Curves
     		constants: props.getConstants('acc'), // return null, but launches fetch
     		refreshTime: null,
-    		queryType: ''
+    		queryType: '',
+    		nextday: null,
+    		prevday: null
         }
         this.draw = this.draw.bind(this)
+        this.dateselect = this.dateselect.bind(this)
+        this.nextday = this.nextday.bind(this)
+        this.prevday = this.prevday.bind(this)
         this.onmouseover = this.onmouseover.bind(this)
         this.onmouseover_account = this.onmouseover_account.bind(this)
         this.onmouseout = this.onmouseout.bind(this)
@@ -119,7 +124,10 @@ class Chart extends React.Component {
         }
 
        // if (d.id === "I") { //this is because event will be trigger for all curves and we want to load day only once
-            var f = () => {
+    	var f = () => {
+    		this.dateselect(d)
+    	}
+          /*  var f = () => {
             	//vähän vois kyl kauniimmaks laittaa:
                 this.props.dayLoad(d)
                 var d1 = addDays(d.x, -1)
@@ -132,12 +140,49 @@ class Chart extends React.Component {
 	                 ]
 	                this.draw()
                 }
-            }
+            }*/
             console.log("FIRE")
             this.timer = setTimeout(f, 300)
       //  }
     }
 
+    dateselect(d) {
+    			this.selectedDate = d
+            	//vähän vois kyl kauniimmaks laittaa:
+                this.props.dayLoad(d)
+                var d1 = addDays(d.x, -1)
+                var d1_str = dateFormat(d1, "yyyymmdd") + "T12"
+                var d2_str = dateFormat(d.x, "yyyymmdd") + "T12"
+            //    debugger
+                if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
+	                this.chart_config.regions = [
+	                    {"start": d1_str, "end": d2_str}
+	                 ]
+	                this.draw()
+                }
+    }
+    
+    nextday() {
+    	if(this.selectedDate) {
+    		this.dateselect(
+    				{
+    					"x": addDays(this.selectedDate.x, 1),
+    					"index": (this.selectedDate.index + 1)
+    				}
+    		)
+    	}
+    }
+    
+    prevday() {
+    	if(this.selectedDate) {
+    		this.dateselect(
+    				{
+    					"x": addDays(this.selectedDate.x, -1),
+    					"index": (this.selectedDate.index - 1)
+    				}
+    		)
+    	}
+    }
     onmouseover_account(a) {
     	if (a === "I" || a === "E") return;
         //magic copied from caller to do the default behaviour (i.e. dim other curves and focus the selected curve) :
@@ -158,6 +203,12 @@ class Chart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+    	if(nextProps.nextday !== this.props.nextday) {
+    		this.nextday()
+    	}
+    	if(nextProps.prevday !== this.props.prevday) {
+    		this.prevday()
+    	}
     	if(nextProps.queryType !== this.props.queryType) {
     		console.log('reset')
     		console.log(nextProps)
@@ -217,6 +268,8 @@ const mapStateToProps = (store) => {
         start: store.dateRange.s,
         end: store.dateRange.e,
         curves: store.chart.curves,
+        nextday: store.chart.nextday,
+        prevday: store.chart.prevday,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
         queryType: store.payments.queryType

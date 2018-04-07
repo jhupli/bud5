@@ -1,5 +1,4 @@
 import axios from 'axios';
-import addDays from '../util/addDays'
 
 var dateFormat = require('dateformat');
 
@@ -12,7 +11,6 @@ const chartRequestAction = (s, e) => ({
     }
 })
 
-  
 const CHART_RESPONSE = 'CHART_RESPONSE'
 const chartResponseAction = (response) => (
   { 
@@ -20,6 +18,28 @@ const chartResponseAction = (response) => (
     payload: 
     	{
     		curves : response
+    	} 
+  }
+)
+
+const CHART_NEXTDAY = 'CHART_NEXTDAY'
+const chartNextDayAction = () => (
+  { 
+	type: CHART_NEXTDAY,
+    payload: 
+    	{
+    		nextday : (new Date()).getTime() //only signal
+    	} 
+  }
+)
+
+const CHART_PREVDAY = 'CHART_PREVDAY'
+const chartPrevDayAction = () => (
+  { 
+	type: CHART_PREVDAY,
+    payload: 
+    	{
+    		prevday : (new Date()).getTime() //only signal
     	} 
   }
 )
@@ -60,7 +80,21 @@ const chart_refresh = () => (
     }
 )
 
+const chart_next_day = () => (
+    (dispatch: Redux.Dispatch) => {
+    	dispatch(chartNextDayAction())
+    }
+)
+
+const chart_prev_day = () => (
+    (dispatch: Redux.Dispatch) => {
+    	dispatch(chartPrevDayAction())
+    }
+)
+
 export {
 	chart_load,
-	chart_refresh
+	chart_refresh,
+	chart_next_day,
+	chart_prev_day
 }

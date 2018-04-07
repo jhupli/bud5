@@ -38,6 +38,7 @@ class Chart extends React.Component {
         this.nextday = this.nextday.bind(this)
         this.prevday = this.prevday.bind(this)
         this.today = this.today.bind(this)
+        this.legendnames = this.legendnames.bind(this)
         this.onmouseover = this.onmouseover.bind(this)
         this.onmouseover_account = this.onmouseover_account.bind(this)
         this.onmouseout = this.onmouseout.bind(this)
@@ -147,9 +148,11 @@ class Chart extends React.Component {
             this.timer = setTimeout(f, 300)
       //  }
     }
-
+    
+    
     dateselect(d) {
     			this.selectedDate = d
+    			this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
                 this.props.dayLoad(d)
                 var d1 = addDays(d.x, -1)
@@ -189,7 +192,7 @@ class Chart extends React.Component {
     	if(this.selectedDate) {
     		var now = new Date()
     		var diff = daydiff(this.selectedDate.x, now)
-    		var ix = this.selectedDate.index - diff
+    		var ix = this.selectedDate.index + diff
     		this.dateselect(
     				{
     					"x": now,
@@ -251,10 +254,11 @@ class Chart extends React.Component {
         	this.chart_config.data.names = {}
         	this.chart_config.data.types = {}
         	this.chart_config.data.colors = {}
-
-        	this.chart_config.data.names['I'] ='Income'
+        	this.chart_config.data.columns = nextProps.curves //curves updated
+        	this.legendnames(nextProps.curves, nextProps.constants)
+        	//this.chart_config.data.names['I'] ='Income'
         	this.chart_config.data.colors['I'] ='green'
-        	this.chart_config.data.names['E'] ='Exp'
+        	//this.chart_config.data.names['E'] ='Exp'
         	this.chart_config.data.colors['E'] ='red'
         	if (nextProps.curves) {
 	        	for(var i=3; i<nextProps.curves.length; i++) {
@@ -263,17 +267,47 @@ class Chart extends React.Component {
 	        		/*var acc = nextProps.constants['acc'].find( 
 	        			n => { return key == n.value}
 	        		)*/
-	        		this.chart_config.data.names[key] = acc.label
+	        		//this.chart_config.data.names[key] = acc.label
 	        		this.chart_config.data.colors[key] = acc.color
 	        		this.chart_config.data.types[key] = 'line'
 	        	}
-	            this.chart_config.data.columns = nextProps.curves //curves updated
+	            
 	            this.draw()
         	}
            
         }
     }
+    
+    legendnames(curves, constants) {
+    	//heihei ihan karmeen näköstä koodia
+    	//jotain häikkää kun jos klikkaa ni saldot ei enää muutu ajan fktiona
+    	this.chart_config.data.names['I'] ='Income'
+    	this.chart_config.data.names['E'] ='Exp'
+        if (curves) {
+	        	for(var i=3; i<curves.length; i++) {
+	        		var key = curves[i][0]
+	        		var acc = findInArray(constants['acc'], n => { return key == n.value})
+	        		this.chart_config.data.names[key] = acc.label
+	        	}
+        }
+    	if( this.selectedDate && this.selectedDate.index>=0 && 
+    		this.selectedDate.index < this.chart_config.data.columns[0].length - 1) {
+    		//note: 0 column is the id
+    		this.chart_config.data.names['I'] += " ("+this.chart_config.data.columns[1][this.selectedDate.index + 1]+")"
+    		this.chart_config.data.names['E'] += " ("+this.chart_config.data.columns[2][this.selectedDate.index + 1]+")"
 
+    		if (curves) {
+	        	for(var i=3; i<curves.length; i++) {
+	        		var key = curves[i][0]
+	        		var acc = findInArray(constants['acc'], n => { return key == n.value})
+	        		this.chart_config.data.names[key] += " ("+this.chart_config.data.columns[i][this.selectedDate.index + 1]+")"
+	        	}
+    		}
+    		
+    		
+    	}
+    }
+    
     render() {
         return ( 
         	<div id = "chart" onMouseOut = {() => this.onmouseout()} />

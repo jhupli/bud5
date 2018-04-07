@@ -432,6 +432,17 @@ class PaymentsEditor extends React.Component {
      	case 'descr' :
 					return(
 				  	<div>
+				  		<TextField 
+					  		id = {'descr_'+index}
+					  		onValueChanged = {this.changePropertyF}
+					  		value = {value}
+					  		readOnly = {this.readOnlyR(index, 'descr')}
+				  			field = 'descr'
+				  			index = {index}
+				  			touched = {this.touchedF(index, 'descr')}
+				  			placeholder = 'description'
+					  	/>
+				  		{ /* CHG-
 				  		<TextareaField 
 					  		id = {'descr_'+index}
 					  		onValueChanged = {this.changePropertyF}
@@ -442,7 +453,7 @@ class PaymentsEditor extends React.Component {
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'description'
 				  			width = '180px'
-					  	/>
+					  	/>*/}
 				    </div>)					    
     	}
     }
@@ -741,7 +752,7 @@ class PaymentsEditor extends React.Component {
 	  			{this.th('g', 'Ref')}
 	  			{this.th('c', 'Issue')}
 	  			{this.th('a', 'Account')}
-	  			{this.th('descr')}		  			
+	  			{this.th('descr', 'Description')}		  			
 	  			<th className={this.thClassName('deleted')}>
 	  				<FontAwesome name='remove' style={{'color': 'red'}}/>
 	  			</th>

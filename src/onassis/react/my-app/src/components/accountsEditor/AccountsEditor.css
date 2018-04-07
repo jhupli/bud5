@@ -7,22 +7,22 @@
 	}
 
 
-
-
- /* START */
 #accounts_table  table {
             width: 100%;
  }
 
+ /* START */
 #accounts_table  thead,  
 #accounts_table tbody,  
 #accounts_table tr,  
 #accounts_table td,  
 #accounts_table th {
 	border: none;
- 	display: block; 
+/* CHG-1 
+ 	display: block; */
  }
 
+/* CHG-1
 #accounts_table tr:after {
             content: ' ';
             display: block;
@@ -36,7 +36,6 @@
         }
 
 #accounts_table  thead {
-            /* fallback */
         }
 
 
@@ -45,7 +44,7 @@
             float: left;
         }
         
-/* END */        
+ END */        
 
 input[type="text"]:disabled {
     background-color: transparent;

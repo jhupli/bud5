@@ -192,7 +192,9 @@ class Chart extends React.Component {
     	if(this.selectedDate) {
     		var now = new Date()
     		var diff = daydiff(this.selectedDate.x, now)
+    		//console.log("diff="+diff)
     		var ix = this.selectedDate.index + diff
+    		
     		this.dateselect(
     				{
     					"x": now,
@@ -293,10 +295,13 @@ class Chart extends React.Component {
     	if( this.selectedDate && this.selectedDate.index>=0 && 
     		this.selectedDate.index < this.chart_config.data.columns[0].length - 1) {
     		//note: 0 column is the id
-    		this.chart_config.data.names['I'] += " ("+this.chart_config.data.columns[1][this.selectedDate.index + 1]+")"
+    		//var s = dateFormat(this.selectedDate.x, "dd.mm.yyyy")
+    		//var i = this.selectedDate.index + 1
+    		this.chart_config.data.names['I'] += " ("+this.chart_config.data.columns[1][this.selectedDate.index + 1]+")" //+s+ " "+i
     		this.chart_config.data.names['E'] += " ("+this.chart_config.data.columns[2][this.selectedDate.index + 1]+")"
 
     		if (curves) {
+    			console.log(curves)
 	        	for(var i=3; i<curves.length; i++) {
 	        		var key = curves[i][0]
 	        		var acc = findInArray(constants['acc'], n => { return key == n.value})

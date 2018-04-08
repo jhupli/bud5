@@ -1,5 +1,5 @@
 const reducer = (state = [], action) => {
-  console.log("chart reducer: "+action.type)
+  //console.log("chart reducer: "+action.type)
   switch (action.type) {
     case 'CHART_RESPONSE':
         console.log("handling CHART_RESPONSE")

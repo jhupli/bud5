@@ -11,9 +11,8 @@ function addMonths(date, months) {
 }
 
 function daydiff(d1, d2) {
-        var t2 = d2.getTime();
-        var t1 = d1.getTime();
-
-        return parseInt((t2-t1)/(24*3600*1000));
+	var dt1 = new Date(d1);
+	var dt2 = new Date(d2);
+	return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
 }
 export {addDays, addMonths, daydiff}

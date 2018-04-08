@@ -11,6 +11,8 @@ import { get_constants } from '../../actions/constants'
 import '../../../node_modules/c3/c3.min.css'
 
 import findInArray from '../../util/findInArray'
+import currencyFormat from '../../util/currency'
+
 
 var dateFormat = require('dateformat');
 var _index_ = -1
@@ -297,15 +299,15 @@ class Chart extends React.Component {
     		//note: 0 column is the id
     		//var s = dateFormat(this.selectedDate.x, "dd.mm.yyyy")
     		//var i = this.selectedDate.index + 1
-    		this.chart_config.data.names['I'] += " ("+this.chart_config.data.columns[1][this.selectedDate.index + 1]+")" //+s+ " "+i
-    		this.chart_config.data.names['E'] += " ("+this.chart_config.data.columns[2][this.selectedDate.index + 1]+")"
+    		this.chart_config.data.names['I'] += " ["+currencyFormat(this.chart_config.data.columns[1][this.selectedDate.index + 1])+"]" //+s+ " "+i
+    		this.chart_config.data.names['E'] += " ["+currencyFormat(this.chart_config.data.columns[2][this.selectedDate.index + 1])+"]"
 
     		if (curves) {
     			console.log(curves)
 	        	for(var i=3; i<curves.length; i++) {
 	        		var key = curves[i][0]
 	        		var acc = findInArray(constants['acc'], n => { return key == n.value})
-	        		this.chart_config.data.names[key] += " ("+this.chart_config.data.columns[i][this.selectedDate.index + 1]+")"
+	        		this.chart_config.data.names[key] += " ["+currencyFormat(this.chart_config.data.columns[i][this.selectedDate.index + 1])+"]"
 	        	}
     		}
     		

@@ -3,6 +3,7 @@ import { Panel } from 'react-bootstrap';
 import { set_daterange } from '../../actions/daterange'
 
 import Minibars from '../minibars/minibars'
+import Buttons from '../minibars/buttons'
 
 import DatePicker from '../datepicker/datepicker'
 
@@ -24,10 +25,13 @@ class Range extends React.Component{
 					              pickerCallback=
 					              	{(start, end, name) => {this.props.setDateRange(new Date(start), new Date(end))}}
 				              /> 
-		              </div>
-				       <span className="pull-right">       
+		               </div>
+				       <span className="pull-right" style={{paddingLeft: "20px"}}>  
 				       		<ConstantFilter />
 				      </span>
+				      <span className="pull-right">
+				  			<Buttons />
+				  	  </span>
 			  	
 			  	</Panel.Heading>
 			  	<Panel.Body>

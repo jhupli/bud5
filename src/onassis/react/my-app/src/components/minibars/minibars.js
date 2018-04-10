@@ -9,6 +9,9 @@ import '../../../node_modules/c3/c3.min.css'
 
 import { connect } from 'react-redux'
 import { minibars } from './minibars_d3'
+
+import {addDays} from '../../util/addDays'
+
 //var minibars = require('./minibars_d3')
 /*var i=0;
 

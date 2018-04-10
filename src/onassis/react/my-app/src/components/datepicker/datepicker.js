@@ -143,8 +143,8 @@ class DatePicker extends React.Component {
 
 DatePicker.defaultProps = {
 		componentWillReceiveProps: false,
-	    start: initials.startDate,
-	    end: initials.endDate,
+	    start: null, //initials.startDate,
+	    end: null, //initials.endDate,
 	    disabled: false,
 	    touched: false
 }

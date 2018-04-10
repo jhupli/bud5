@@ -4,7 +4,7 @@ import {addDays, daydiff} from '../../util/addDays'
 
 import { chart_load } from '../../actions/chart'
 import { day_load, account_load } from '../../actions/payments'
-import initials from '../../util/initials'
+//import initials from '../../util/initials'
 import { connect } from 'react-redux'
 import { get_constants } from '../../actions/constants'
 
@@ -25,8 +25,10 @@ class Chart extends React.Component {
         
         var that = this;
         this.state = {
-    		start: initials.startDate,
-    		end: initials.endDate,
+    		//start: initials.startDate,
+        	start: null,
+    		//end: initials.endDate,
+        	end: null,
     		curves: null, //Curves
     		constants: props.getConstants('acc'), // return null, but launches fetch
     		refreshTime: null,
@@ -44,6 +46,7 @@ class Chart extends React.Component {
         this.onmouseover = this.onmouseover.bind(this)
         this.onmouseover_account = this.onmouseover_account.bind(this)
         this.onmouseout = this.onmouseout.bind(this)
+        this.find_ix = this.find_ix.bind(this)
         this.timer = null
         this.chart_config = {
             bindto: '#chart',
@@ -130,7 +133,7 @@ class Chart extends React.Component {
 
        // if (d.id === "I") { //this is because event will be trigger for all curves and we want to load day only once
     	var f = () => {
-    		this.dateselect(d)
+    		this.dateselect(d.x)
     	}
           /*  var f = () => {
             	//vähän vois kyl kauniimmaks laittaa:
@@ -151,15 +154,14 @@ class Chart extends React.Component {
       //  }
     }
     
-    
     dateselect(d) {
     			this.selectedDate = d
     			this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
                 this.props.dayLoad(d)
-                var d1 = addDays(d.x, -1)
+                var d1 = addDays(d, -1)
                 var d1_str = dateFormat(d1, "yyyymmdd") + "T12"
-                var d2_str = dateFormat(d.x, "yyyymmdd") + "T12"
+                var d2_str = dateFormat(d, "yyyymmdd") + "T12"
             //    debugger
                 if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
 	                this.chart_config.regions = [
@@ -171,39 +173,21 @@ class Chart extends React.Component {
     
     nextday() {
     	if(this.selectedDate) {
-    		this.dateselect(
-    				{
-    					"x": addDays(this.selectedDate.x, 1),
-    					"index": (this.selectedDate.index + 1)
-    				}
-    		)
+    		this.dateselect(addDays(this.selectedDate, 1))
     	}
     }
     
     prevday() {
     	if(this.selectedDate) {
-    		this.dateselect(
-    				{
-    					"x": addDays(this.selectedDate.x, -1),
-    					"index": (this.selectedDate.index - 1)
-    				}
-    		)
+    		this.dateselect(addDays(this.selectedDate, -1))
     	}
     }
+
     today() {
-    	if(this.selectedDate) {
     		var now = new Date()
-    		var diff = daydiff(this.selectedDate.x, now)
     		//console.log("diff="+diff)
-    		var ix = this.selectedDate.index + diff
     		
-    		this.dateselect(
-    				{
-    					"x": now,
-    					"index": ix
-    				}
-    		)
-    	}
+    		this.dateselect(now)
     }
     onmouseover_account(a) {
     	if (a === "I" || a === "E") return;
@@ -221,6 +205,7 @@ class Chart extends React.Component {
     }
     
     draw() {
+    	if(!this.chart_config.data.columns) return //data not yet there
         c3.generate(this.chart_config)
     }
 
@@ -250,7 +235,11 @@ class Chart extends React.Component {
 		    		'items' : validConstants		
 		    })
     	}
-        if (this.props.start !== nextProps.start || this.props.end !== nextProps.end) { //selected date span changed?
+        if (this.state.start !== nextProps.start || this.state.end !== nextProps.end) { //selected date span changed?
+        	this.setState({
+		    		start : nextProps.start,
+		    		end : nextProps.end		
+		    })
             this.props.chartLoad(nextProps.start, nextProps.end)
         } else if (nextProps.curves != this.props.curves || nextProps.refreshTime != this.props.refreshTime){
         	//TODO jäi tähän laita värit ja nimet tilit on jo account#ssa
@@ -259,6 +248,7 @@ class Chart extends React.Component {
         	this.chart_config.data.types = {}
         	this.chart_config.data.colors = {}
         	this.chart_config.data.columns = nextProps.curves //curves updated
+
         	this.legendnames(nextProps.curves, nextProps.constants)
         	//this.chart_config.data.names['I'] ='Income'
         	this.chart_config.data.colors['I'] ='green'
@@ -275,13 +265,19 @@ class Chart extends React.Component {
 	        		this.chart_config.data.colors[key] = acc.color
 	        		this.chart_config.data.types[key] = 'line'
 	        	}
-	            
 	            this.draw()
         	}
            
         }
     }
     
+    find_ix(d) {
+    	var d_str = dateFormat(d, "yyyymmdd") + "T00"
+    	for(var i=0; i<this.chart_config.data.columns[0].length; i++) {
+    		if(d_str == this.chart_config.data.columns[0][i]) return i
+    	}
+    	return null;
+    }
     legendnames(curves, constants) {
     	//heihei ihan karmeen näköstä koodia
     	//jotain häikkää kun jos klikkaa ni saldot ei enää muutu ajan fktiona
@@ -294,23 +290,27 @@ class Chart extends React.Component {
 	        		this.chart_config.data.names[key] = acc.label
 	        	}
         }
-    	if( this.selectedDate && this.selectedDate.index>=0 && 
-    		this.selectedDate.index < this.chart_config.data.columns[0].length - 1) {
-    		//note: 0 column is the id
-    		//var s = dateFormat(this.selectedDate.x, "dd.mm.yyyy")
-    		//var i = this.selectedDate.index + 1
-    		this.chart_config.data.names['I'] += " ["+currencyFormat(this.chart_config.data.columns[1][this.selectedDate.index + 1])+"]" //+s+ " "+i
-    		this.chart_config.data.names['E'] += " ["+currencyFormat(this.chart_config.data.columns[2][this.selectedDate.index + 1])+"]"
-
-    		if (curves) {
-    			console.log(curves)
-	        	for(var i=3; i<curves.length; i++) {
-	        		var key = curves[i][0]
-	        		var acc = findInArray(constants['acc'], n => { return key == n.value})
-	        		this.chart_config.data.names[key] += " ["+currencyFormat(this.chart_config.data.columns[i][this.selectedDate.index + 1])+"]"
-	        	}
+    	//debugger
+    	if( this.selectedDate && this.chart_config.data.columns) {
+    		//debugger
+    		var ix = this.find_ix(this.selectedDate)
+    		console.log(ix)
+    		if(ix) {
+	    		//note: 0 column is the id
+	    		//var s = dateFormat(this.selectedDate.x, "dd.mm.yyyy")
+	    		//var i = this.selectedDate.index + 1
+	    		this.chart_config.data.names['I'] += " ["+currencyFormat(this.chart_config.data.columns[1][ix])+"]" //+s+ " "+i
+	    		this.chart_config.data.names['E'] += " ["+currencyFormat(this.chart_config.data.columns[2][ix])+"]"
+	
+	    		if (curves) {
+	    			console.log(curves)
+		        	for(var i=3; i<curves.length; i++) {
+		        		var key = curves[i][0]
+		        		var acc = findInArray(constants['acc'], n => { return key == n.value})
+		        		this.chart_config.data.names[key] += " ["+currencyFormat(this.chart_config.data.columns[i][ix])+"]"
+		        	}
+	    		}
     		}
-    		
     		
     	}
     }
@@ -346,7 +346,7 @@ function mapDispatchToProps(dispatch) {
         dayLoad: (d) => {
         	if (d.index === _index_) return;
         	_index_ = d.index;
-            dispatch(day_load(d.x))
+            dispatch(day_load(d))
         },
         accountLoad: (a, d1, d2) => {
         	if (a === _index_) return;

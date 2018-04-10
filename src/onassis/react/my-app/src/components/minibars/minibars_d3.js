@@ -866,6 +866,7 @@ const nullData =
 
 
 function generate(provideddata) {
+	if (!provideddata || !provideddata.data) return
 	  if (!provideddata.data.length) {
 		  provideddata = nullData
 		 
@@ -884,9 +885,9 @@ function generate(provideddata) {
 	  } else {
 		  recreate()
 	  }
-	  if(start == null && end == null) {
+	  /*if(start == null && end == null) {
 		  select(initials.startDate, initials.endDate)
-	  }
+	  }*/
 }
 
 function update() {

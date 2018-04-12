@@ -47,6 +47,7 @@ class Chart extends React.Component {
         this.onmouseover_account = this.onmouseover_account.bind(this)
         this.onmouseout = this.onmouseout.bind(this)
         this.find_ix = this.find_ix.bind(this)
+        this.chartDatetoDate = this.chartDatetoDate.bind(this)
         this.timer = null
         this.chart_config = {
             bindto: '#chart',
@@ -123,7 +124,7 @@ class Chart extends React.Component {
             clearTimeout(this.timer)
         }
     }
-
+    
     onmouseover(d) {
     	console.log(d)
     	
@@ -158,7 +159,7 @@ class Chart extends React.Component {
     			this.selectedDate = d
     			this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
-                this.props.dayLoad(d)
+                this.props.dayLoad(d, this.find_ix(d))
                 var d1 = addDays(d, -1)
                 var d1_str = dateFormat(d1, "yyyymmdd") + "T12"
                 var d2_str = dateFormat(d, "yyyymmdd") + "T12"
@@ -170,6 +171,32 @@ class Chart extends React.Component {
 	                this.draw()
                 }
     }
+    
+    chartDatetoDate(d) {
+    	var year = d.substring(0,4)
+    	var month = d.substring(4,6) - 1
+    	var day = d.substring(6,8)
+    	return new Date(year, month, day)
+    	
+    }
+
+    find_ix(d) {
+    	if(!this.chart_config.data.columns) return null;
+    	var d_str = dateFormat(d, "yyyymmdd") + "T00"
+
+    	var ix = daydiff(this.chartDatetoDate(this.chart_config.data.columns[0][1]), d)
+    	console.log("*******" +ix)
+    	return ix
+    	/*
+    	for(var i=0; i<this.chart_config.data.columns[0].length; i++) {
+    		if(d_str == this.chart_config.data.columns[0][i]) {
+    			console.log("i:"+i+" d_str:" + d_str)
+    			return i
+    		}
+    	}
+    	return null;*/
+    }
+
     
     nextday() {
     	if(this.selectedDate) {
@@ -271,13 +298,7 @@ class Chart extends React.Component {
         }
     }
     
-    find_ix(d) {
-    	var d_str = dateFormat(d, "yyyymmdd") + "T00"
-    	for(var i=0; i<this.chart_config.data.columns[0].length; i++) {
-    		if(d_str == this.chart_config.data.columns[0][i]) return i
-    	}
-    	return null;
-    }
+    
     legendnames(curves, constants) {
     	//heihei ihan karmeen näköstä koodia
     	//jotain häikkää kun jos klikkaa ni saldot ei enää muutu ajan fktiona
@@ -343,9 +364,9 @@ function mapDispatchToProps(dispatch) {
         	_index_ = -1;
             dispatch(chart_load(s, e))
         },
-        dayLoad: (d) => {
-        	if (d.index === _index_) return;
-        	_index_ = d.index;
+        dayLoad: (d, index) => {
+        	if (index === _index_) return;
+        	_index_ = index;
             dispatch(day_load(d))
         },
         accountLoad: (a, d1, d2) => {

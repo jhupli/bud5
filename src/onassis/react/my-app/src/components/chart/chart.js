@@ -59,7 +59,7 @@ class Chart extends React.Component {
                 }
             },
             tooltip: {
-                grouped: false // Default true
+                grouped: true // Default true
             },
             /*regions: [
                 {start:"20180202T12", end: "20180203T12"},
@@ -157,7 +157,7 @@ class Chart extends React.Component {
     
     dateselect(d) {
     			this.selectedDate = d
-    			this.legendnames(this.props.curves, this.props.constants)
+    			//CHG-13this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
                 this.props.dayLoad(d, this.find_ix(d))
                 var d1 = addDays(d, -1)
@@ -311,6 +311,7 @@ class Chart extends React.Component {
 	        		this.chart_config.data.names[key] = acc.label
 	        	}
         }
+    	/*CHG-13
     	//debugger
     	if( this.selectedDate && this.chart_config.data.columns) {
     		//debugger
@@ -334,6 +335,7 @@ class Chart extends React.Component {
     		}
     		
     	}
+    	*/
     }
     
     render() {

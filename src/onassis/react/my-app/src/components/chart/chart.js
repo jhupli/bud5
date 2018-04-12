@@ -314,9 +314,9 @@ class Chart extends React.Component {
     	//debugger
     	if( this.selectedDate && this.chart_config.data.columns) {
     		//debugger
-    		var ix = this.find_ix(this.selectedDate)
-    		console.log(ix)
-    		if(ix) {
+    		var ix = this.find_ix(this.selectedDate) + 1 //first column is name
+    		console.log("xx"+ix)
+    		if(ix && ix>0 && ix<this.chart_config.data.columns[0].length) {
 	    		//note: 0 column is the id
 	    		//var s = dateFormat(this.selectedDate.x, "dd.mm.yyyy")
 	    		//var i = this.selectedDate.index + 1

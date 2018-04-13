@@ -7,6 +7,7 @@ import { day_load, account_load } from '../../actions/payments'
 //import initials from '../../util/initials'
 import { connect } from 'react-redux'
 import { get_constants } from '../../actions/constants'
+import { daterange_next_block, daterange_prev_block } from '../../actions/daterange'
 
 import '../../../node_modules/c3/c3.min.css'
 
@@ -159,7 +160,20 @@ class Chart extends React.Component {
     			this.selectedDate = d
     			//CHG-13this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
-                this.props.dayLoad(d, this.find_ix(d))
+    			var ix = this.find_ix(d)
+    			if(null != ix && ix == -1)  {
+    				console.log("vasemmalta yli "+ix)
+    				this.props.daterangePrevBlock()
+    				ix = this.chart_config.data.columns[0].length - 2
+    				console.log("vasemmalta yli "+ix)
+    			}
+    			if(null != ix && ix == this.chart_config.data.columns[0].length - 1)  {
+    				console.log("oikealta yli "+ix)
+    				this.props.daterangeNextBlock()
+    				ix = 0
+    			}
+
+                this.props.dayLoad(d, ix)
                 var d1 = addDays(d, -1)
                 var d1_str = dateFormat(d1, "yyyymmdd") + "T12"
                 var d2_str = dateFormat(d, "yyyymmdd") + "T12"
@@ -301,7 +315,6 @@ class Chart extends React.Component {
     
     legendnames(curves, constants) {
     	//heihei ihan karmeen näköstä koodia
-    	//jotain häikkää kun jos klikkaa ni saldot ei enää muutu ajan fktiona
     	this.chart_config.data.names['I'] ='Income'
     	this.chart_config.data.names['E'] ='Exp'
         if (curves) {
@@ -378,6 +391,12 @@ function mapDispatchToProps(dispatch) {
         },
         getConstants: (id) => {
         	get_constants(id, dispatch)
+        },
+        daterangeNextBlock: () => {
+            dispatch(daterange_next_block())
+        },
+        daterangePrevBlock: () => {
+            dispatch(daterange_prev_block())
         }
     })
 }

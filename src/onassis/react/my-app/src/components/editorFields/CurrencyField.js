@@ -32,9 +32,15 @@ class CurrencyField extends React.Component {
         	currencyValue : props.value
         }
 		this.onChange = this.onChange.bind(this)
-		this.moveCaretAtEnd = this.moveCaretAtEnd.bind(this)
+		this.handleFocus = this.handleFocus.bind(this)
+		
+		
     }
 	
+	handleFocus(event) {
+		  event.target.select();
+	}
+
 	onChange(e) {
 		
 		const {id, onValueChanged, field, index} = this.props
@@ -52,19 +58,13 @@ class CurrencyField extends React.Component {
 		})
 	}
 	
-	moveCaretAtEnd(e) {
-		  var temp_value = e.target.value
-		  e.target.value = '+'
-		  //e.target.value = temp_value
-	}
-	
 	render() {
 		const {id, readOnly, field, index, onValueChanged, placeholder, touched} = this.props
 
 		return (
 	    <div>
 			<input
-			  onFocus={this.moveCaretAtEnd}
+			  onFocus={this.handleFocus}
 
 			  id={id}
 			  disabled={readOnly}

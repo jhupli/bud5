@@ -63,7 +63,7 @@ function get(dispatch) {
 		  params: params
 	  })
 	  .then(function (response) {
-  		  console.log(response);
+  		  //console.log(response);
   		  dispatch(chartResponseAction(response.data))
 	  })
 	  .catch(function (error) {

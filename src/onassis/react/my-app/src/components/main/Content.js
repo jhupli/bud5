@@ -61,7 +61,7 @@ const Cat = () => (
 
 class Content extends React.Component {
 	render() {
-		console.log('render' + this.props.view);
+		//console.log('render' + this.props.view);
 		return(
 				<div> 
 					<div style={{display : (this.props.view === 'main') ? '' : 'none'}}>

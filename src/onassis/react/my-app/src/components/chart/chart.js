@@ -127,7 +127,7 @@ class Chart extends React.Component {
     }
     
     onmouseover(d) {
-    	console.log(d)
+    	//console.log(d)
     	
     	if (this.timer) {
             clearTimeout(this.timer)
@@ -151,7 +151,7 @@ class Chart extends React.Component {
 	                this.draw()
                 }
             }*/
-            console.log("FIRE")
+           // console.log("FIRE")
             this.timer = setTimeout(f, 300)
       //  }
     }
@@ -162,13 +162,13 @@ class Chart extends React.Component {
             	//vähän vois kyl kauniimmaks laittaa:
     			var ix = this.find_ix(d)
     			if(null != ix && ix == -1)  {
-    				console.log("vasemmalta yli "+ix)
+    				//console.log("vasemmalta yli "+ix)
     				this.props.daterangePrevBlock()
     				ix = this.chart_config.data.columns[0].length - 2
-    				console.log("vasemmalta yli "+ix)
+    				//console.log("vasemmalta yli "+ix)
     			}
     			if(null != ix && ix == this.chart_config.data.columns[0].length - 1)  {
-    				console.log("oikealta yli "+ix)
+    				//console.log("oikealta yli "+ix)
     				this.props.daterangeNextBlock()
     				ix = 0
     			}
@@ -199,7 +199,7 @@ class Chart extends React.Component {
     	var d_str = dateFormat(d, "yyyymmdd") + "T00"
 
     	var ix = daydiff(this.chartDatetoDate(this.chart_config.data.columns[0][1]), d)
-    	console.log("*******" +ix)
+    	//console.log("*******" +ix)
     	return ix
     	/*
     	for(var i=0; i<this.chart_config.data.columns[0].length; i++) {
@@ -261,8 +261,8 @@ class Chart extends React.Component {
     		this.today()
     	}
     	if(nextProps.queryType !== this.props.queryType) {
-    		console.log('reset')
-    		console.log(nextProps)
+    		//console.log('reset')
+    		//console.log(nextProps)
     		_index_ = -1
     	}
     	if( nextProps.constants && nextProps.constants[this.props.constants_id]) {

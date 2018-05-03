@@ -7,8 +7,8 @@ const reducer = (state = [], action) => {
          fetching: true
     })
     case "PAYMENTS_RESPONSE":
-      console.log("handling PAYMENTS_RESPONSE")
-      console.log(action)
+      //console.log("handling PAYMENTS_RESPONSE")
+      //console.log(action)
       return Object.assign({}, state, {
     	 fetching: false,
     	 queryType: action.payload.queryType, 

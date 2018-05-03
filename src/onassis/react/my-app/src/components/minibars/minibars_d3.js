@@ -18,6 +18,7 @@ var minibars = (function() {
 	//date:
   var FORMAT_DATE = "dd.mm.yyyy ddd"
   var FORMAT_MONTH = "mmm"
+  var FORMAT_MONTH_YEAR = "mmm yyyy"
   //colors:
   var COLOR_INCOME_NEGATIV = "red"
   var COLOR_INCOME_POSITIV = "green"
@@ -39,7 +40,7 @@ var minibars = (function() {
   //widths
   var div_border_width
   var column_width
-  var slot_width
+  var slot_width = 3
   var line_width
   var b_line_width
 
@@ -233,7 +234,11 @@ function click_month(s_date, e_date) {
 }
 
 function getmonthtext(date) {
-  return dateFormat(date, FORMAT_MONTH)
+  if(date.getMonth() === 0) {
+	  return dateFormat(date, FORMAT_MONTH_YEAR)
+  } else {
+	  return dateFormat(date, FORMAT_MONTH)
+  }
 }
 
 function monthMarkers() {
@@ -276,7 +281,7 @@ function show_tip(data) {
   var mid = monthId(data.d)
   var bg = document.getElementById(dateId(data.d) + _BG).getBoundingClientRect()
   var offsetRect = document.getElementsByClassName("col-md-12")[0].getBoundingClientRect()
-
+  //console.log("offsetRect:" + offsetRect.left)
   d3.select('#' + mid + _TIP_I_DIV).style("display", (data.i == 0 && data.e == 0) ? "none" : "table-row")
   d3.select('#' + mid + _TIP_DIV).
   style(
@@ -388,14 +393,14 @@ function create(month) {
   var mid = monthId(month.columns[0].d)
   var width = month.columns.length * slot_width + line_width
   var bindTo = d3.select('#' + bindto)
-  ////console.log("div_width:" + (width + (2 * line_width)) + "px");
+  //console.log("div_width:" + width );
   var clicks_month =
   {
         "click": function() {click_month(month.columns[0].d, month.columns[month.columns.length - 1].d)},
         "mouseover": function() {mouseover_month(month.columns[0].d)},
         "mouseout": function() {mouseout_month(month.columns[0].d)}
   }
-
+  
   var minibar_div =
     bindTo
     .append("div")
@@ -496,7 +501,7 @@ function create(month) {
           "font-size": "12px",
           "fill": "black"
         })
-
+  //console.log("minibar_div.width = " + width)
   var minibar_svg = minibar_div
     .append("svg")
     .style({
@@ -687,11 +692,12 @@ function leadin(month) {
   
   var width = month.columns.length * slot_width +  line_width
   if( !leadin_x ) { //init lead_in x
+	  //console.log("first!")  
     leadin_x = x
     first = true
   }
-  ////console.log("x:"+x+" leadin:"+leadin_x+" add:"+ (leadin_x === x ? leadin_width : 0))
-  d3.select('#' + mid +_DIV)
+  //console.log("x:"+x+" leadin:"+leadin_x+" add:"+ (leadin_x === x ? leadin_width : 0))
+  /*d3.select('#' + mid +_DIV)
   .style({
     "width": width + (leadin_x === x ? leadin_width : 0) + "px"
   })
@@ -699,7 +705,17 @@ function leadin(month) {
   d3.select('#' + mid + _LEADIN)
   .attr({
     "width": (leadin_x === x ? leadin_width : 0) + "px",
+  })*/
+  d3.select('#' + mid +_DIV)
+  .style({
+    "width": width + (x <= leadin_x ? leadin_width : 0) + "px"
   })
+
+  d3.select('#' + mid + _LEADIN)
+  .attr({
+    "width": (x <= leadin_x ? leadin_width : 0) + "px",
+  })
+  
   if (first) {
 	  d3.select('#' + mid + _MAX_TEXT)
 	  .text(roundNumberText(maxy))
@@ -798,37 +814,10 @@ function updateMonth(month) {
 } //updateMonth(month)
 
 
-function calculateSlotWidth() {
-	/*var w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName('body')[0],
-    x = w.innerWidth || e.clientWidth || g.clientWidth,
-    y = w.innerHeight|| e.clientHeight|| g.clientHeight;*/
-	
-	 var p = document.getElementsByClassName("panel-default")[0].getBoundingClientRect()
-//	 console.log("---PWIDTH:" + p.width);
-//  console.log("---WIDTH:" + x);
-//  console.log("---CALCULATED:" + d3.min([750, x]));
-//  var offsetRect = document.getElementsByClassName("col-md-12")[0].getBoundingClientRect() //NOT USED
-//  console.log("---OFFSET: "+offsetRect.width)
-//  console.log(offsetRect)
-  //var areawidth = offsetRect.width
-  //var areawidth = d3.min([750, x])
-	//var areawidth = x
-	 var  areawidth = p.width
-  //console.log("ow="+offsetRect.width) //tämä olisi hyvä saada jotenkin pois, kun ei toimi aina
-//eli jos yks kuukausi ni mitoitetaan yhdelle riville, jos enemmän on toive 2 riviä
-  var new_slot_width = Math.round(((months.length > 1 ? 2 : 1)*(areawidth - 118)) / (months.length*31))
-  //console.log("calculated slot_width:" + new_slot_width)
-  //new_slot_width = d3.max([new_slot_width, 1.3])
-  new_slot_width = d3.max([new_slot_width, 1])
-  //console.log("new_slot_width:" + new_slot_width)
-  return new_slot_width;
-}
+
 
 function resize() {
-	slot_width = calculateSlotWidth()
+	// slot_width = 3;
 	init_changeables()
 	//init_scales()
 	recreate()
@@ -877,7 +866,7 @@ function generate(provideddata) {
 	  months = chunk_rawdata(provideddata.data, provideddata.balance)
 	  var prev_month_markers = month_markers;
 	  //slot_width = calculateSlotWidth()
-	  slot_width = 10
+
 	  init_changeables()
 	  init_scales()
 	  if ( prev_month_markers === month_markers ) {

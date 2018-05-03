@@ -31,7 +31,7 @@ function get(dispatch) {
 		  params: params
 	  })
 	  .then(function (response) {
-  		  console.log(response);
+  		 // console.log(response);
   		  dispatch(pieResponseAction(response.data))
 	  })
 	  .catch(function (error) {

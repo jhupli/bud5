@@ -52,8 +52,19 @@ class Chart extends React.Component {
         this.timer = null
         this.chart_config = {
             bindto: '#chart',
-            grid: {
+            /*grid: {
                 y: {
+                    lines: [{
+                        value: 0
+                    }]
+                }
+            },*/
+            grid: {
+                x: {
+                    show: true
+                },
+                y: {
+                    show: true,
                     lines: [{
                         value: 0
                     }]

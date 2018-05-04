@@ -18,7 +18,7 @@ import currencyFormat from '../../util/currency'
 var dateFormat = require('dateformat');
 var _index_ = -1
 
-var SELECTONHOVER = false
+var SELECTONHOVER = true
 
 class Chart extends React.Component {
     constructor(props) {

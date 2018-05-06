@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,11 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.H;
 import onassis.dto.P;
+import onassis.dto.mappers.MapA;
 import onassis.dto.mappers.MapB;
 import onassis.dto.mappers.MapH;
 import onassis.dto.mappers.MapP;
@@ -72,6 +74,26 @@ public class DBTestUtils {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+    
+    public int getBalancesCount(Date d) {
+    	sql = "select count(*) from b where not a=0 and d=:d " ;
+    	MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("d", d);
+    	return jdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
+    }
+    
+    public List<A> getAccounts() {
+        sql = "select * from a" ;
+        MapA rm = new MapA();
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();  
+        return jdbcTemplate.query(sql, namedParameters, new RowMapperResultSetExtractor<A>(rm));
+    }
+    
+    public List<B> getBalances(long a) {
+        sql = "select * from b where a=:a" ;
+        MapB rm = new MapB();
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("a", a);  
+        return jdbcTemplate.query(sql, namedParameters, new RowMapperResultSetExtractor<B>(rm));
     }
     
     public List<H> select_h(int id) {
@@ -171,6 +193,10 @@ public class DBTestUtils {
         b1.getB().equals(b2.getB()) &&
         b1.getI().equals(b2.getI()) &&
         b1.getE().equals(b2.getE()) &&
-        b1.getA() == b2.getA();
+        b1.getA() == b2.getA() &&
+        (
+        	(null == b1.getSmallestb() && null == b2.getSmallestb()) ||
+        	(b1.getSmallestb().equals(b2.getSmallestb()))
+        );
     }
 }

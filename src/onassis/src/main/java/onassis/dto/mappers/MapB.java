@@ -11,12 +11,14 @@ public class MapB implements RowMapper<B> {
 
 	@Override
 	public B mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new B(
-				rs.getDate("d"),
+		B result =
+		new B(rs.getDate("d"),
 				rs.getBigDecimal("b"),
 				rs.getBigDecimal("i"),
 				rs.getBigDecimal("e"),
 				rs.getInt("a"));
+		result.setSmallestb(rs.getBigDecimal("smallestb"));
+		return result;
 	}
 
 }

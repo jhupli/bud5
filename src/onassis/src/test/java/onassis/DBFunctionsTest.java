@@ -14,6 +14,7 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.H;
 import onassis.dto.P;
@@ -47,8 +48,34 @@ public class DBFunctionsTest extends DBTestUtils{
 
     @After
     public void after() throws Exception {
-        System.out.println("emptied");
+    	xcheck_b0_b();
         empty_pbh();
+    }
+    
+    public void xcheck_b0_b() throws Exception {
+    	 //for every 0-account row in balances, there must be at least 1 non-0 account row
+    	 for(B b : getBalances(0)) {
+    		 assert(getBalancesCount(b.getD()) >=1);
+    	 }
+    	 //for every non 0-account row in balances, there must be exactly 1 0-account row
+    	 for(A a : getAccounts()) {
+    		 for(B b : getBalances(a.id)) {
+    			 assertTrue(null != select_b(b.getD(), 0));
+    		 }
+    	 }
+    }
+    
+    public void xcheck_b0_smallestb() throws Exception {
+    	 //for every 0-account row in balances, there must be at least 1 non-0 account row
+    	 for(B b : getBalances(0)) {
+    		 assert(getBalancesCount(b.getD()) >=1);
+    	 }
+    	 //for every non 0-account row in balances, there must be exactly 1 0-account row
+    	 for(A a : getAccounts()) {
+    		 for(B b : getBalances(a.id)) {
+    			 assertTrue(null != select_b(b.getD(), 0));
+    		 }
+    	 }
     }
     
     @Test
@@ -129,6 +156,7 @@ public class DBFunctionsTest extends DBTestUtils{
         {
             B b = select_b(d2, 0);
             B bExp = new B(d2, bd(-1.99), bd(0), bd(-1.99), 0);
+            bExp.setSmallestb(bd(-1.99));
             assertTrue(compareBs(b, bExp));
         }
     }
@@ -179,6 +207,7 @@ public class DBFunctionsTest extends DBTestUtils{
         {
             B b = select_b(d2, 0);
             B bExp = new B(d2, bd(-1.99), bd(0), bd(-1.99), 0);
+            bExp.setSmallestb(bd(-1.99));
             assertTrue(compareBs(b, bExp));
         }
     }
@@ -371,6 +400,7 @@ public class DBFunctionsTest extends DBTestUtils{
         {
             B b = select_b(d1, 0);
             B bExp = new B(d1, bd(-0.02), bd(0), bd(-0.02), 0);
+            bExp.setSmallestb(bd(-0.02)); //d1 is smallest
             assertTrue(compareBs(b, bExp));
         }
         {
@@ -1119,7 +1149,7 @@ public class DBFunctionsTest extends DBTestUtils{
         insert_p(d3, bd(1), c, a2);
         
         update_p(d4, bd(2), null, a2, id);
-        
+
         {
             B b = select_b(d1, a);
             B bExp = new B(d1, bd(1), bd(1), bd(0), a);

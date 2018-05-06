@@ -148,7 +148,7 @@ public class HelloController {
     	
         /*MapSqlParameterSource source = new MapSqlParameterSource();  
         return jdbcTemplate.queryForList("CALL random_data()", source);*/
-    	DataProvider.random_data();
+    	//otetaan pois ettei tu vahinko: DataProvider.random_data();
     }
     
  /*   private static Period getPeriod(LocalDateTime dob, LocalDateTime now) {

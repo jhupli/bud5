@@ -1,6 +1,7 @@
 package onassis.dto;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class B {
@@ -9,6 +10,7 @@ public class B {
 	BigDecimal i;
 	BigDecimal e;
 	Integer a;
+	BigDecimal smallestb = BigDecimal.valueOf(0).setScale(2, RoundingMode.UP);
 
 	public B(Date d, BigDecimal b, BigDecimal i, BigDecimal e, Integer a) {
 		super();
@@ -57,5 +59,13 @@ public class B {
 
 	public void setA(Integer a) {
 		this.a = a;
+	}
+
+	public BigDecimal getSmallestb() {
+		return smallestb;
+	}
+
+	public void setSmallestb(BigDecimal smallestb) {
+		this.smallestb = smallestb;
 	}
 }

@@ -49,6 +49,7 @@ public class DBTestUtils {
         
         jdbcTemplate.update("insert into a( descr, active, color, credit) values( 'acc 1', true, 'blue', false)", new MapSqlParameterSource());
         jdbcTemplate.update("insert into a( descr, active, color, credit) values( 'acc 2', true, 'yellow', false)", new MapSqlParameterSource());
+        jdbcTemplate.update("insert into a( descr, active, color, credit) values( 'acc 3', true, 'brown', false)", new MapSqlParameterSource());
 
     }
     

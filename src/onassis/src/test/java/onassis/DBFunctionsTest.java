@@ -35,6 +35,7 @@ public class DBFunctionsTest extends DBTestUtils{
     Date d1, d2, d3, d4 = null;
     int a = 1;
     int a2 = 2;
+    int a3 = 3;
     int c = 1;
     
     @Before
@@ -1204,5 +1205,128 @@ public class DBFunctionsTest extends DBTestUtils{
             B bExp = new B(d4, bd(7), bd(2), bd(0), 0);
             assertTrue(compareBs(b, bExp));
         }
+    }
+    
+    //smallest b tests
+    @Test    
+    public void  p_i_sb_10() throws Exception {
+    	insert_p(d1, bd(1), c, a);
+    	{
+    		B b = select_b(d1, 0);
+    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    }
+    
+    @Test    
+    public void  p_i_sb_20() throws Exception {
+    	insert_p(d1, bd(1), c, a);
+    	insert_p(d1, bd(-1), c, a2);
+    	{
+    		B b = select_b(d1, 0);
+    		B bExp = new B(d1, bd(0), bd(1), bd(-1), 0);
+    		bExp.setSmallestb(bd(-1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    }
+
+    @Test    
+    public void  p_i_sb_30() throws Exception {
+    	insert_p(d1, bd(-1), c, a);
+    	insert_p(d1, bd(1), c, a2);
+    	{
+    		B b = select_b(d1, 0);
+    		B bExp = new B(d1, bd(0), bd(1), bd(-1), 0);
+    		bExp.setSmallestb(bd(-1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    }
+    
+    @Test    
+    public void  p_i_sb_40() throws Exception {
+    	insert_p(d1, bd(1), c, a);
+    	insert_p(d2, bd(-1), c, a2);
+    	{
+    		B b = select_b(d1, 0);
+    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    	{
+    		B b = select_b(d2, 0);
+    		B bExp = new B(d2, bd(0), bd(0), bd(-1), 0);
+    		bExp.setSmallestb(bd(-1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    }
+    
+    @Test    
+    public void  p_i_sb_50() throws Exception {
+    	insert_p(d1, bd(-1), c, a);
+    	insert_p(d2, bd(1), c, a2);
+    	{
+    		B b = select_b(d1, 0);
+    		B bExp = new B(d1, bd(-1), bd(-1), bd(0), 0);
+    		bExp.setSmallestb(bd(-1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    	{
+    		B b = select_b(d2, 0);
+    		B bExp = new B(d2, bd(0), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(-1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    }
+    
+    @Test    
+    public void  p_i_sb_60() throws Exception {
+    	insert_p(d1, bd(1), c, a);
+    	insert_p(d2, bd(1), c, a2);
+    	insert_p(d3, bd(1), c, a3);
+    	{
+    		B b = select_b(d1, 0);
+    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    	{
+    		B b = select_b(d2, 0);
+    		B bExp = new B(d2, bd(2), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    	{
+    		B b = select_b(d3, 0);
+    		B bExp = new B(d3, bd(3), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    }
+    
+    @Test    
+    public void  p_i_sb_70() throws Exception {
+    	insert_p(d1, bd(1), c, a);
+    	insert_p(d2, bd(1), c, a2);
+    	insert_p(d3, bd(1), c, a3);
+    	insert_p(d2, bd(-1), c, a2);
+    	{
+    		B b = select_b(d1, 0);
+    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(1));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    	{
+    		B b = select_b(d2, 0);
+    		B bExp = new B(d2, bd(1), bd(1), bd(-1), 0);
+    		bExp.setSmallestb(bd(0));
+    		assertTrue(compareBs(b, bExp));
+    	}
+    	{
+    		B b = select_b(d3, 0);
+    		B bExp = new B(d3, bd(2), bd(1), bd(0), 0);
+    		bExp.setSmallestb(bd(0));
+    		assertTrue(compareBs(b, bExp));
+    	}
     }
 }

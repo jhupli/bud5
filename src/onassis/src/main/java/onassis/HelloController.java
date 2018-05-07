@@ -112,14 +112,14 @@ public class HelloController {
     	
     	String query = null;
     	if (cat > 0) {
-    		query = "SELECT d,0 as b,sum(positive(i)) as i, sum(negative(i)) as e, -1 as a FROM P WHERE C = :cat " // AND i<>0 "
+    		query = "SELECT d,0 as b,sum(positive(i)) as i, sum(negative(i)) as e, -1 as a, 0 as smallestb FROM P WHERE C = :cat " // AND i<>0 "
     			+ "GROUP BY D ORDER BY D ASC ";
     		/*query = "SELECT d,0 as b,i,e,a FROM B WHERE A=0 "
     			+  "AND D IN (SELECT D FROM P WHERE C = :cat) "
     			+ "ORDER BY D ASC ";*/
     	} else {
     	//query = "SELECT d,b,i,e,a FROM B WHERE A=0 "
-    		query = "SELECT d,0 as b,i,e,a FROM B WHERE A=0 "
+    		query = "SELECT d,0 as b,i,e,a,smallestb FROM B WHERE A=0 "
     			+ "ORDER BY D ASC ";
     	}
     	
@@ -148,7 +148,7 @@ public class HelloController {
     	
         /*MapSqlParameterSource source = new MapSqlParameterSource();  
         return jdbcTemplate.queryForList("CALL random_data()", source);*/
-    	//otetaan pois ettei tu vahinko: DataProvider.random_data();
+    	DataProvider.random_data();
     }
     
  /*   private static Period getPeriod(LocalDateTime dob, LocalDateTime now) {

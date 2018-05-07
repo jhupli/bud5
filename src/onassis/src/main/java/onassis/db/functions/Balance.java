@@ -21,7 +21,7 @@ public class Balance {
 	//@Value(value = "${buddb.jdbc.url}")
 	private static String jdbcUrl;
 	
-	public static BigDecimal smallestBalanceAt(Date d, int a, BigDecimal i) throws SQLException {
+	public static BigDecimal smallestBalanceAt(Date d) throws SQLException {
 		Connection conn = null;
 		if (null == ds) {
 		    if(null == jdbcUrl) {
@@ -32,7 +32,7 @@ public class Balance {
 			conn = ds.getConnection();
 		}
 		conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-		System.out.println("day "+d + " accoount "+a+ " i "+i);
+		//System.out.println("day "+d + " accoount "+a+ " i "+i);
 		String DML = "select id from a";
 		PreparedStatement pstmnt = conn.prepareStatement(DML);
 		if( !pstmnt.execute() ) {
@@ -53,9 +53,9 @@ public class Balance {
 			System.out.println("account "+id+" res "+res);
 			BigDecimal b = balanceAfter(d, id);
 			System.out.println("db "+b);
-			if(a == id) {
-				//b.add(i);
-			}
+			/*if(a == id) {
+				b.add(i);
+			}*/
 			System.out.println("-> "+b);
 			if(res == null || b.compareTo(res) < 0) {
 				System.out.println("smaller");
@@ -137,7 +137,7 @@ public class Balance {
 			}
 	    	//System.out.println("result");
 	    	BigDecimal bd = (BigDecimal) set.getBigDecimal(1);
-	    	//System.out.println("Balance before " + bd + "account: " + a + " ");
+	    	System.out.println("Balance before " + bd + "account: " + a + " ");
 	    	
 	    	
 	    	set.close();

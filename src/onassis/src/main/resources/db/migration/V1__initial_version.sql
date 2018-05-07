@@ -71,7 +71,7 @@ parameter style java
 language java
 external name 'onassis.db.functions.Balance.balanceBefore';
 
-create function smallestBalanceAt(d date, a integer, i decimal(10,2))
+create function smallestBalanceAt(d date)
 returns decimal(10,2)
 parameter style java
 language java
@@ -151,7 +151,7 @@ external name
 	);
 	
 	-- 0-account
-	create trigger p_b_insert_1_sum_account 
+	create trigger p_b_insert_2 
 	after insert on p
 	referencing new as new
 	for each row mode db2sql
@@ -164,7 +164,7 @@ external name
 	);
 
 	--update income and expence to inserted value
-	create trigger p_b_insert_2 
+	create trigger p_b_insert_3 
 	after insert on p
 	referencing new as new
 	for each row mode db2sql
@@ -172,7 +172,7 @@ external name
 	where d = new.d and (a = new.a or a=0);
 
 	--update balances to inserted value
-	create trigger p_b_insert_3 
+	create trigger p_b_insert_4 
 	after insert on p
 	referencing new as new
 	for each row mode db2sql
@@ -180,7 +180,7 @@ external name
 	where d >= new.d and (a = new.a or a=0);
 
 	--clean up if zero balance (i = 0 and e = 0)
-	create trigger p_b_insert_4 
+	create trigger p_b_insert_5 
 	after insert on p
 	referencing new as new
 	for each row mode db2sql
@@ -188,11 +188,11 @@ external name
 	where d = new.d and i = 0 and e = 0 and (a = new.a or a=0);
 	
 	--update smallest balance to 0-account
-	create trigger p_b_insert_5 
+	create trigger p_b_insert_6 
 	after insert on p
 	referencing new as new
 	for each row mode db2sql
-	update b set smallestb = smallestBalanceAt(d, new.a, new.i)
+	update b set smallestb = smallestBalanceAt(d)
 	where a = 0 and d >= new.d;
 	
 --payments: balances delete:
@@ -225,7 +225,7 @@ external name
 	after delete on p
 	referencing old as old
 	for each row mode db2sql
-	update b set smallestb = smallestBalanceAt(d, old.a, -old.i)
+	update b set smallestb = smallestBalanceAt(d)
 	where a = 0 and d >= old.d;
 
 --payments: balances update : this is delete part (delete old value) + insert part (insert as new)
@@ -273,12 +273,12 @@ external name
 	where d >= old.d and (a = old.a or a=0);
 
 	--update smallest balance to 0-account (delete part)
-	create trigger p_b_update_5 
+	/*create trigger p_b_update_5 
 	after update on p
 	referencing old as old
 	for each row mode db2sql
-	update b set smallestb = smallestBalanceAt(d, old.a, -old.i)
-	where a = 0 and d >= old.d;
+	update b set smallestb = smallestBalanceAt(d)
+	where a = 0 and d >= old.d;*/
 	
 	--update account's and 0-account's income and expence (insert part)
 	create trigger p_b_update_6
@@ -315,8 +315,8 @@ external name
 	--update smallest balance to 0-account
 	create trigger p_b_update_10
 	after update on p
-	referencing new as new
+	referencing new as new old as old
 	for each row mode db2sql
-	update b set smallestb = smallestBalanceAt(d, new.a, new.i)
-	where a = 0 and d >= new.d;
+	update b set smallestb = smallestBalanceAt(d)
+	where a = 0 and d >= earlier(new.d, old.d);
 

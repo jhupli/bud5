@@ -41,7 +41,7 @@ var minibars = (function() {
   //widths
   var div_border_width
   var column_width
-  var slot_width = 6
+  var slot_width = 3
   var line_width
   var b_line_width
 

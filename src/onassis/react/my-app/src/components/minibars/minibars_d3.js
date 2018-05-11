@@ -25,6 +25,7 @@ var minibars = (function() {
   var COLOR_BALANCE = "blue"
 
   var COLOR_DAY_BACKGROUND_NORMAL = "white"
+  var COLOR_DAY_BACKGROUND_UNDER_LIMITS = "pink"
   var COLOR_DAY_BACKGROUND_SELECTED = "gray"
   var COLOR_DAY_BACKGROUND_FOCUS = "cadetblue"
 
@@ -40,7 +41,7 @@ var minibars = (function() {
   //widths
   var div_border_width
   var column_width
-  var slot_width = 3
+  var slot_width = 6
   var line_width
   var b_line_width
 
@@ -201,7 +202,15 @@ function bgColor(data) {
   if (withinSelection(data)) {
     return COLOR_DAY_BACKGROUND_SELECTED
   }
-  return COLOR_DAY_BACKGROUND_NORMAL
+  return bgNormal(data)
+}
+
+function bgNormal(data) {
+	debugger
+	if( data.smallestb < 0 ) {
+		return COLOR_DAY_BACKGROUND_UNDER_LIMITS
+	}
+	return COLOR_DAY_BACKGROUND_NORMAL
 }
 
 function iColor(data) {
@@ -748,6 +757,7 @@ function updateMonth(month) {
         d.i =  month.columns[ix].i
         d.e =  month.columns[ix].e
         d.b =  month.columns[ix].b
+        d.smallestb =  month.columns[ix].smallestb
         d.prev_b =  month.columns[ix].prev_b
         d.next_b =  month.columns[ix].next_b
         return d
@@ -762,7 +772,14 @@ function updateMonth(month) {
         }
       }
     )
- 
+    
+    d3.select('#' + date_id + _BG)
+      .transition()
+      .attr({
+      "fill": function(d) {return bgColor(d)}
+    })
+    
+    
     d3.select('#' + date_id + _E)
       .transition()
       .attr({

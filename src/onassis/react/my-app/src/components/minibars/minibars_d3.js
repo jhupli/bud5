@@ -863,7 +863,8 @@ function generate(provideddata) {
 	  //console.log("generate")
 	  console.assert(bindto, "config must be called first!")
 	  //console.log(provideddata)
-	  months = chunk_rawdata(provideddata.data, provideddata.balance)
+	  //months = chunk_rawdata(provideddata.data, provideddata.balance)
+	  months = chunk_rawdata(provideddata.data)
 	  var prev_month_markers = month_markers;
 	  //slot_width = calculateSlotWidth()
 

@@ -3,13 +3,13 @@ import {dateDiffInDays} from './helpers'
 //produces array of objects containing
 //months in input and dates of each month and more...
 
-function chunk_rawdata(daydata, balance) {
+function chunk_rawdata(daydata) {
   // (I) loop daydata (must be ascending by date and date is unique) (var i)
   //  - (II) for each dates (var data_i) construct array of dates for that month - if needed. (var dayArray)
   //  - (III) update the corresponding array index data (var data_i) to data of that date (var dayArray)
   
   //trivial checks
-  console.assert(null != balance, "balance is mandatory")
+
   var r = []; //return value
   if (!daydata || !daydata.length) {
     return r
@@ -32,7 +32,7 @@ function chunk_rawdata(daydata, balance) {
   var m = daydata[0].d.getMonth() - 1
   var y = daydata[0].d.getFullYear()
   var d = daydata[0].d.getDate() - 1
-  var b = Math.round(balance * 100) / 100
+
   var dayArray = null
 
   //main loop (I)
@@ -52,7 +52,8 @@ function chunk_rawdata(daydata, balance) {
      "input array must be ascending")
     d = d_i
     while (m != m_i || y != y_i) {
-      //a new month encountered: construct empty array for that month and the months before (II)
+      //(II)
+      //a new month encountered: construct empty array for that month and the months before
       m++
       if (m == 12) {
         y++
@@ -66,7 +67,7 @@ function chunk_rawdata(daydata, balance) {
             "i": 0,
             "e": 0,
             "d": new Date(y, m, z),
-            "b": b
+            "b": 0
           }
         )
       }
@@ -84,16 +85,15 @@ function chunk_rawdata(daydata, balance) {
     console.assert(data_i.i >= 0, "i must be positive")
     console.assert(null != data_i.e, "e is mandatory")
     console.assert(data_i.e <= 0, "i must be negative")
-    b = Math.round((b + data_i.i + data_i.e) * 100) / 100
-
-    //update up balances of the rest of the month 
+    ////b = Math.round((b + data_i.i + data_i.e) * 100) / 100
+ 
       for(var z = data_i.d.getDate(), zlen = dayArray.length; z < zlen; z++) {
-        dayArray[z].b = b
+        dayArray[z].b = data_i.b
       }
     //update i, e and balance in array
     dayArray[data_i.d.getDate()-1].i = data_i.i
     dayArray[data_i.d.getDate()-1].e = data_i.e
-    dayArray[data_i.d.getDate()-1].b = b
+    dayArray[data_i.d.getDate()-1].b = data_i.b
   }
   //(IV) add to each day balances of previous and next days
   for(var ax = 0, axlen = r.length; ax < axlen; ax++) {

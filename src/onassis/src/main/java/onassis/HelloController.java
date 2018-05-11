@@ -119,7 +119,7 @@ public class HelloController {
     			+ "ORDER BY D ASC ";*/
     	} else {
     	//query = "SELECT d,b,i,e,a FROM B WHERE A=0 "
-    		query = "SELECT d,0 as b,i,e,a,smallestb FROM B WHERE A=0 "
+    		query = "SELECT d, b, i, e, a, smallestb FROM B WHERE A=0 "
     			+ "ORDER BY D ASC ";
     	}
     	

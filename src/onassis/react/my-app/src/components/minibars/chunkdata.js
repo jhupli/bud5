@@ -124,7 +124,6 @@ function chunk_rawdata(daydata) {
       }
     }
   }
-  console.log(r)
   return r;
 }
 /*

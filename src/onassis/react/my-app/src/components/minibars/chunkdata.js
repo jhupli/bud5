@@ -32,7 +32,8 @@ function chunk_rawdata(daydata) {
   var m = daydata[0].d.getMonth() - 1
   var y = daydata[0].d.getFullYear()
   var d = daydata[0].d.getDate() - 1
-
+  var b = 0
+  var smallestb = 0
   var dayArray = null
 
   //main loop (I)
@@ -67,7 +68,8 @@ function chunk_rawdata(daydata) {
             "i": 0,
             "e": 0,
             "d": new Date(y, m, z),
-            "b": 0
+            "b": b,
+            "smallestb": smallestb
           }
         )
       }
@@ -77,23 +79,29 @@ function chunk_rawdata(daydata) {
         "range_text": (m + 1) + "/" + y
       })
     }
-
     // (III)  
     //balances
     //balances prior to day are set in array constructor
+    
+    console.assert(null != data_i.b, "b is mandatory")
+    console.assert(null != data_i.smallestb, "smallestb is mandatory")
     console.assert(null != data_i.i, "i is mandatory")
     console.assert(data_i.i >= 0, "i must be positive")
     console.assert(null != data_i.e, "e is mandatory")
     console.assert(data_i.e <= 0, "i must be negative")
     ////b = Math.round((b + data_i.i + data_i.e) * 100) / 100
- 
-      for(var z = data_i.d.getDate(), zlen = dayArray.length; z < zlen; z++) {
-        dayArray[z].b = data_i.b
-      }
+    b =  data_i.b
+    smallestb = data_i.smallestb
+
+    for(var z = data_i.d.getDate(), zlen = dayArray.length; z < zlen; z++) {
+       dayArray[z].b = b
+       dayArray[z].smallestb = smallestb
+    }
     //update i, e and balance in array
     dayArray[data_i.d.getDate()-1].i = data_i.i
     dayArray[data_i.d.getDate()-1].e = data_i.e
     dayArray[data_i.d.getDate()-1].b = data_i.b
+    dayArray[data_i.d.getDate()-1].smallestb = smallestb
   }
   //(IV) add to each day balances of previous and next days
   for(var ax = 0, axlen = r.length; ax < axlen; ax++) {
@@ -116,11 +124,10 @@ function chunk_rawdata(daydata) {
       }
     }
   }
-
-
+  console.log(r)
   return r;
 }
-
+/*
 function chunk_balancedata(startday, endday, balances, fill) {
   //trivial checks
   console.assert(null != startday, "startday is mandatory")
@@ -156,6 +163,7 @@ function chunk_balancedata(startday, endday, balances, fill) {
         prev_d.setDate(prev_d.getDate() + 1);
   }
   return r;
-}
+}*/
+
 export {chunk_rawdata}
 //module.exports = chunk_rawdata;

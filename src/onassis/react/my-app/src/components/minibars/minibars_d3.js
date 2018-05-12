@@ -865,7 +865,8 @@ const nullData =
 			d:new Date(),
 			b:0, 
 			e:0, 
-			i:0
+			i:0,
+			smallestb: 0
 		}
 	]
 }

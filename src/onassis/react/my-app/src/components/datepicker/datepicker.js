@@ -68,8 +68,8 @@ class DatePicker extends React.Component {
    constructor(props) {
 	    super(props);
 	    this.state = {
-	    		start: props.value ? props.value : props.start,
-	    		end: props.end
+	    		start: props.value ? props.value : props.start ? props.start : new Date(),
+	    		end: props.value ? null : props.end ? props.end : new Date()
 	    }
   }
   

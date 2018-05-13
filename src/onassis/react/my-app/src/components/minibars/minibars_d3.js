@@ -202,11 +202,18 @@ function bgColor(data) {
   if (withinSelection(data)) {
     return COLOR_DAY_BACKGROUND_SELECTED
   }
+  //return COLOR_DAY_BACKGROUND_NORMAL
   return bgNormal(data)
 }
 
+function getNormalColorByDateOnly(day) {
+	var first_month = months[0].columns[0].d.getMonth()
+	var index_m = day.getMonth() - first_month
+	var index_d = day.getDate() - 1
+	return bgNormal(months[index_m].columns[index_d])
+}
+
 function bgNormal(data) {
-	debugger
 	if( data.smallestb < 0 ) {
 		return COLOR_DAY_BACKGROUND_UNDER_LIMITS
 	}
@@ -234,7 +241,7 @@ function mouseout_month(day) {
 function click_month(s_date, e_date) {
   if (start) {
     var point = d3.select('#'+dateId(start) + _BG)
-    point.attr("fill", COLOR_DAY_BACKGROUND_NORMAL)
+    point.attr("fill", getNormalColorByDateOnly(start))
   }
   start = s_date
   end = e_date
@@ -261,8 +268,6 @@ function monthMarkers() {
   return left_month+"-"+right_month
 }
 
-
-
 function roundNumber(number) {
 	  return Math.round(number).toPrecision(3)
 }
@@ -277,11 +282,14 @@ function withinSelection(d) {
   return (start && end && d.d && dates.inRange(d.d, start, end))
 }
 
-function colorRange(s_date, e_date, color) {
-  if (!s_date || !e_date || !color) return
+function colorRange(s_date, e_date, colorfunction) {
+  console.log("colorRange: months=");
+  console.log(months);
+  if (!s_date || !e_date || !colorfunction || !months) return
   var ixd = new Date(s_date)
   do {
-    d3.select('#'+dateId(ixd)+_BG).attr("fill", color)
+	
+    d3.select('#'+dateId(ixd)+_BG).attr("fill", colorfunction(ixd))
     ixd.setDate(ixd.getDate() + 1);
   } while(dates.compare(ixd, e_date) < 1)
 }
@@ -360,11 +368,11 @@ function normalize_selection() {
   var _e = d3.max([start, end])
   start = _s
   end = _e
-  colorRange(prev_start, prev_end, COLOR_DAY_BACKGROUND_NORMAL)
+  colorRange(prev_start, prev_end, getNormalColorByDateOnly)
   prev_start = start
   prev_end = end
 
-  colorRange(start, end, COLOR_DAY_BACKGROUND_SELECTED)
+  colorRange(start, end, () => {COLOR_DAY_BACKGROUND_SELECTED})
 }
 
 function cursor(cursor) {
@@ -376,7 +384,7 @@ function click(data) {
     start = data.d
     end = null
     cursor("col-resize")
-    colorRange(prev_start, prev_end, COLOR_DAY_BACKGROUND_NORMAL)
+    colorRange(prev_start, prev_end, getNormalColorByDateOnly)
   } else if (end  == null) {
     if (start && Math.abs(dateDiffInDays(start, data.d)) > max_selection_days) {
       return;

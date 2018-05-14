@@ -47,10 +47,11 @@ public class DBFunctionsTest extends DBTestUtils{
         insert_basedata();
     }
 
+    
     @After
     public void after() throws Exception {
     	xcheck_b0_b();
-        empty_pbh();
+        empty_db();
     }
     
     public void xcheck_b0_b() throws Exception {
@@ -67,16 +68,7 @@ public class DBFunctionsTest extends DBTestUtils{
     }
     
     public void xcheck_b0_smallestb() throws Exception {
-    	 //for every 0-account row in balances, there must be at least 1 non-0 account row
-    	 for(B b : getBalances(0)) {
-    		 assert(getBalancesCount(b.getD()) >=1);
-    	 }
-    	 //for every non 0-account row in balances, there must be exactly 1 0-account row
-    	 for(A a : getAccounts()) {
-    		 for(B b : getBalances(a.id)) {
-    			 assertTrue(null != select_b(b.getD(), 0));
-    		 }
-    	 }
+    	//TOBE DONE
     }
     
     @Test
@@ -1207,126 +1199,4 @@ public class DBFunctionsTest extends DBTestUtils{
         }
     }
     
-    //smallest b tests
-    @Test    
-    public void  p_i_sb_10() throws Exception {
-    	insert_p(d1, bd(1), c, a);
-    	{
-    		B b = select_b(d1, 0);
-    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    }
-    
-    @Test    
-    public void  p_i_sb_20() throws Exception {
-    	insert_p(d1, bd(1), c, a);
-    	insert_p(d1, bd(-1), c, a2);
-    	{
-    		B b = select_b(d1, 0);
-    		B bExp = new B(d1, bd(0), bd(1), bd(-1), 0);
-    		bExp.setSmallestb(bd(-1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    }
-
-    @Test    
-    public void  p_i_sb_30() throws Exception {
-    	insert_p(d1, bd(-1), c, a);
-    	insert_p(d1, bd(1), c, a2);
-    	{
-    		B b = select_b(d1, 0);
-    		B bExp = new B(d1, bd(0), bd(1), bd(-1), 0);
-    		bExp.setSmallestb(bd(-1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    }
-    
-    @Test    
-    public void  p_i_sb_40() throws Exception {
-    	insert_p(d1, bd(1), c, a);
-    	insert_p(d2, bd(-1), c, a2);
-    	{
-    		B b = select_b(d1, 0);
-    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    	{
-    		B b = select_b(d2, 0);
-    		B bExp = new B(d2, bd(0), bd(0), bd(-1), 0);
-    		bExp.setSmallestb(bd(-1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    }
-    
-    @Test    
-    public void  p_i_sb_50() throws Exception {
-    	insert_p(d1, bd(-1), c, a);
-    	insert_p(d2, bd(1), c, a2);
-    	{
-    		B b = select_b(d1, 0);
-    		B bExp = new B(d1, bd(-1), bd(-1), bd(0), 0);
-    		bExp.setSmallestb(bd(-1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    	{
-    		B b = select_b(d2, 0);
-    		B bExp = new B(d2, bd(0), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(-1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    }
-    
-    @Test    
-    public void  p_i_sb_60() throws Exception {
-    	insert_p(d1, bd(1), c, a);
-    	insert_p(d2, bd(1), c, a2);
-    	insert_p(d3, bd(1), c, a3);
-    	{
-    		B b = select_b(d1, 0);
-    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    	{
-    		B b = select_b(d2, 0);
-    		B bExp = new B(d2, bd(2), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    	{
-    		B b = select_b(d3, 0);
-    		B bExp = new B(d3, bd(3), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    }
-    
-    @Test    
-    public void  p_i_sb_70() throws Exception {
-    	insert_p(d1, bd(1), c, a);
-    	insert_p(d2, bd(1), c, a2);
-    	insert_p(d3, bd(1), c, a3);
-    	insert_p(d2, bd(-1), c, a2);
-    	{
-    		B b = select_b(d1, 0);
-    		B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(1));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    	{
-    		B b = select_b(d2, 0);
-    		B bExp = new B(d2, bd(1), bd(1), bd(-1), 0);
-    		bExp.setSmallestb(bd(0));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    	{
-    		B b = select_b(d3, 0);
-    		B bExp = new B(d3, bd(2), bd(1), bd(0), 0);
-    		bExp.setSmallestb(bd(0));
-    		assertTrue(compareBs(b, bExp));
-    	}
-    }
 }

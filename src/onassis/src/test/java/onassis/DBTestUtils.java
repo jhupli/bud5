@@ -43,14 +43,43 @@ public class DBTestUtils {
         return BigDecimal.valueOf(val).setScale(2, RoundingMode.UP);
     }
     
+    private void reset_sequencer(String tableName) throws Exception {
+        sql = "alter table "+tableName+" alter column id restart with 1";
+        jdbcTemplate.update( sql, new MapSqlParameterSource() );
+    }
+    
+    public void empty_db() throws Exception {
+        sql = "delete from p";
+        jdbcTemplate.update( sql, new MapSqlParameterSource() );
+        reset_sequencer("p");
+        
+        sql = "delete from b";
+        jdbcTemplate.update( sql, new MapSqlParameterSource() );
+        
+        sql = "delete from h";
+        jdbcTemplate.update( sql, new MapSqlParameterSource() );
+        
+        sql = "delete from c";
+        jdbcTemplate.update( sql, new MapSqlParameterSource() );
+        reset_sequencer("c");
+        
+        sql = "delete from a";
+        jdbcTemplate.update( sql, new MapSqlParameterSource() );
+        reset_sequencer("a");
+    }
+    
     public void insert_basedata() throws Exception {
-        jdbcTemplate.update("insert into c( descr, i, active, color) values( 'cat 1', 1.00, true, 'red')", new MapSqlParameterSource());
+    	insert_basedata(3);
+    }
+    
+    public void insert_basedata(int numberOfAccounts) throws Exception {
+
+    	jdbcTemplate.update("insert into c( descr, i, active, color) values( 'cat 1', 1.00, true, 'red')", new MapSqlParameterSource());
         jdbcTemplate.update("insert into c( descr, i, active, color) values( 'cat 2', 1.00, true, 'green')", new MapSqlParameterSource());
         
-        jdbcTemplate.update("insert into a( descr, active, color, credit) values( 'acc 1', true, 'blue', false)", new MapSqlParameterSource());
-        jdbcTemplate.update("insert into a( descr, active, color, credit) values( 'acc 2', true, 'yellow', false)", new MapSqlParameterSource());
-        jdbcTemplate.update("insert into a( descr, active, color, credit) values( 'acc 3', true, 'brown', false)", new MapSqlParameterSource());
-
+        for(int i=0; i<numberOfAccounts; i++) {
+        	jdbcTemplate.update("insert into a( descr, active, color, credit) values( 'acc "+i+"', true, 'blue', false)", new MapSqlParameterSource());
+        }
     }
     
     public P select_p(int id) {        
@@ -167,15 +196,6 @@ public class DBTestUtils {
         sql = "delete from p where id = :id";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
         jdbcTemplate.update( sql, namedParameters );
-    }
-    
-    public void empty_pbh() throws Exception {
-        sql = "delete from p";
-        jdbcTemplate.update( sql, new MapSqlParameterSource() );
-        sql = "delete from b";
-        jdbcTemplate.update( sql, new MapSqlParameterSource() );
-        sql = "delete from h";
-        jdbcTemplate.update( sql, new MapSqlParameterSource() );        
     }
  
     public boolean comparePtoH(H h, P p, int rownr, String op) {

@@ -206,12 +206,12 @@ function bgColor(data) {
   return bgNormal(data)
 }
 
-function getNormalColorByDateOnly(day) {
+/*function getNormalColorByDateOnly(day) {
 	var first_month = months[0].columns[0].d.getMonth()
 	var index_m = day.getMonth() - first_month
 	var index_d = day.getDate() - 1
 	return bgNormal(months[index_m].columns[index_d])
-}
+}*/
 
 function bgNormal(data) {
 	if( data.smallestb < 0 ) {
@@ -239,13 +239,14 @@ function mouseout_month(day) {
 }
 
 function click_month(s_date, e_date) {
-  if (start) {
+  /*if (start) {
     var point = d3.select('#'+dateId(start) + _BG)
     point.attr("fill", getNormalColorByDateOnly(start))
-  }
+  }*/
   start = s_date
   end = e_date
-  normalize_selection()
+  //normalize_selection()
+  update() //jh
   cb_select(start, end)
 }
 
@@ -282,7 +283,7 @@ function withinSelection(d) {
   return (start && end && d.d && dates.inRange(d.d, start, end))
 }
 
-function colorRange(s_date, e_date, colorfunction) {
+/*function colorRange(s_date, e_date, colorfunction) {
   console.log("colorRange: months=");
   console.log(months);
   if (!s_date || !e_date || !colorfunction || !months) return
@@ -292,7 +293,7 @@ function colorRange(s_date, e_date, colorfunction) {
     d3.select('#'+dateId(ixd)+_BG).attr("fill", colorfunction(ixd))
     ixd.setDate(ixd.getDate() + 1);
   } while(dates.compare(ixd, e_date) < 1)
-}
+}*/
 
 function show_tip(data) {
   var mid = monthId(data.d)
@@ -325,7 +326,14 @@ function select(start_, end_) {
   }
   start = start_
   end = end_
-  normalize_selection()
+  
+  //console.log("select")
+  //console.log("start:" + start)
+  //console.log("end:" + end)
+  
+	  update() //jh
+  
+  //normalize_selection()
 }
 
 function mouseover(data, i) {
@@ -361,7 +369,7 @@ function dateDiffInDays(a, b) {
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
-var prev_start = null
+/*var prev_start = null
 var prev_end = null
 function normalize_selection() {
   var _s = d3.min([start, end])
@@ -372,8 +380,8 @@ function normalize_selection() {
   prev_start = start
   prev_end = end
 
-  colorRange(start, end, () => {COLOR_DAY_BACKGROUND_SELECTED})
-}
+  colorRange(start, end, () => {return COLOR_DAY_BACKGROUND_SELECTED})
+}*/
 
 function cursor(cursor) {
   document.body.style.cursor = cursor
@@ -384,14 +392,17 @@ function click(data) {
     start = data.d
     end = null
     cursor("col-resize")
-    colorRange(prev_start, prev_end, getNormalColorByDateOnly)
+    update() //jh
+    
+    //colorRange(prev_start, prev_end, getNormalColorByDateOnly)
   } else if (end  == null) {
     if (start && Math.abs(dateDiffInDays(start, data.d)) > max_selection_days) {
       return;
     }
     end = data.d
     cursor("pointer")
-    normalize_selection()
+    update() //jh
+    //normalize_selection()
     cb_select(start, end)
   }
   ////console.log("s:" + start + " e:" + end)
@@ -781,6 +792,9 @@ function updateMonth(month) {
       }
     )
     
+    console.log("transition")
+    console.log("start:" + start)
+    console.log("end:" + end)
     d3.select('#' + date_id + _BG)
       .transition()
       .attr({
@@ -907,6 +921,7 @@ function generate(provideddata) {
 }
 
 function update() {
+  if(!months) return
   for (var ix = 0, len = months.length; ix < len; ix++) {
 	    updateMonth(months[ix])
 	    leadin(months[ix])

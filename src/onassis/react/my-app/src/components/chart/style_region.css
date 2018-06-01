@@ -1,11 +1,8 @@
-.c3-region-0 {
+.c3-region.gray {
+  fill: black;
+}
+
+.c3-region.red {
   fill: red;
 }
 
-.c3-region-1 {
-  fill: gray;
-}
-
-.c3-region.foo {
-  fill: green;
-}

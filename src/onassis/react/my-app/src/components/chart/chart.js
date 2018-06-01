@@ -10,7 +10,7 @@ import { get_constants } from '../../actions/constants'
 import { set_daterange, daterange_next_block, daterange_prev_block } from '../../actions/daterange'
 
 import '../../../node_modules/c3/c3.min.css'
-
+import './style_region.css'
 import findInArray from '../../util/findInArray'
 import currencyFormat from '../../util/currency'
 
@@ -191,7 +191,7 @@ class Chart extends React.Component {
             //    debugger
                 if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
 	                this.chart_config.regions = [
-	                    {"start": d1_str, "end": d2_str}
+	                    {"start": d1_str, "end": d2_str, class:'gray'}
 	                 ]
 	                this.draw()
                 }
@@ -258,6 +258,29 @@ class Chart extends React.Component {
     
     draw() {
     	if(!this.chart_config.data.columns) return //data not yet there
+    	/* red backgrounds here*/
+    	debugger;
+    	
+    	
+        /*
+        this.chart_config.regions = [
+         ];	 
+    	for(var x=1; x<(this.chart_config.data.columns[0].length - 1); x++) { 
+    		for(var y=3; y<this.chart_config.data.columns.length; y++) {
+    			if(this.chart_config.data.columns[y][x] < 0) {
+    				this.chart_config.regions.push( 
+	                    {"start": this.chart_config.data.columns[0][x], "end": this.chart_config.data.columns[0][x + 1]  , class:'red'}
+	                 )		
+    			}
+    		}
+    	}*/
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         c3.generate(this.chart_config)
     }
 

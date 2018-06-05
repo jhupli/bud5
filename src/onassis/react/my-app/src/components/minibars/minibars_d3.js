@@ -792,9 +792,6 @@ function updateMonth(month) {
       }
     )
     
-    console.log("transition")
-    console.log("start:" + start)
-    console.log("end:" + end)
     d3.select('#' + date_id + _BG)
       .transition()
       .attr({

@@ -248,6 +248,7 @@ function click_month(s_date, e_date) {
   //normalize_selection()
   update() //jh
   cb_select(start, end)
+  
 }
 
 function getmonthtext(date) {
@@ -324,14 +325,17 @@ function select(start_, end_) {
 	  //console.assert(null != start_ && null != end_) 
 	  return
   }
-  start = start_
-  end = end_
+  debugger
+  var _s = d3.min([start_, end_])
+  var _e = d3.max([start_, end_])
+  start = _s
+  end = _e
   
   //console.log("select")
   //console.log("start:" + start)
   //console.log("end:" + end)
   
-	  update() //jh
+  update() //jh
   
   //normalize_selection()
 }

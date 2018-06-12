@@ -319,17 +319,15 @@ function hide_tip(data) {
   d3.select('#'+monthId(data.d) +_TIP_DIV).style("display", "none")
 }
 
+
 function select(start_, end_) {
-  //console.log("select!")
+  console.log("select!")
   if (!start_ || !end_ ) {
-	  //console.assert(null != start_ && null != end_) 
+	  console.assert(null != start_ && null != end_) 
 	  return
   }
   debugger
-  var _s = d3.min([start_, end_])
-  var _e = d3.max([start_, end_])
-  start = _s
-  end = _e
+  normalize(start_,end_) 
   
   //console.log("select")
   //console.log("start:" + start)
@@ -340,6 +338,12 @@ function select(start_, end_) {
   //normalize_selection()
 }
 
+function normalize(s,e) {
+	  var _s = d3.min([s, e])
+	  var _e = d3.max([s, e])
+	  start = _s
+	  end = _e
+}
 function mouseover(data, i) {
   ////console.log("mouseover")
   show_tip(data, i)
@@ -405,6 +409,7 @@ function click(data) {
     }
     end = data.d
     cursor("pointer")
+    normalize(start,end) 
     update() //jh
     //normalize_selection()
     cb_select(start, end)

@@ -38,11 +38,13 @@ import onassis.db.functions.DataProvider;
 import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.C;
+import onassis.dto.H;
 import onassis.dto.P;
 import onassis.dto.Slice;
 import onassis.dto.mappers.MapA;
 import onassis.dto.mappers.MapB;
 import onassis.dto.mappers.MapC;
+import onassis.dto.mappers.MapH;
 import onassis.dto.mappers.MapP;
 import onassis.dto.mappers.MapSlice;
 
@@ -101,6 +103,7 @@ public class HelloController {
     MapP rmP = new MapP();
     MapC rmC = new MapC();
     MapA rmA = new MapA();
+    MapH rmH = new MapH();
     MapSlice rmSlice = new MapSlice();
 
     
@@ -260,6 +263,31 @@ public class HelloController {
 
     	return accounts;
     } 
+    
+    @RequestMapping("history") 
+    List<H> history() throws SQLException, ParseException {
+    	String hidQuery = "SELECT hd, op, rownr, id, d, i, a, c, s, g, descr FROM h ORDER BY hd DESC";
+    	List<H> allhistory = new ArrayList<H>();
+        try (
+                Connection conn = this.ds.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(hidQuery);
+        ) {
+            try (ResultSet result = pstmt.executeQuery()) {
+            	while (result.next()) {
+            		String paymetsQuery = "SELECT hd, op, rownr, id, d, i, a, c, s, g, descr FROM h where id=:id ORDER BY rownr ASC";
+            		MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", result.getInt("id"));
+            		List<H> history= jdbcTemplate.query(paymetsQuery, 
+                        namedParameters,
+                        new RowMapperResultSetExtractor<H>(rmH));
+            		for(H h : history) {
+            			h.setCurrentRow(result.getInt("rownr"));
+            		}
+            		allhistory.addAll(history);
+            	}
+            }
+        }
+    	return allhistory;
+    }
     
     @RequestMapping(value = "pie")
     List<Slice> pie(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {

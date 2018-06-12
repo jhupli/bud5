@@ -16,6 +16,7 @@ public class H {
     Boolean s;
 	String g;
 	String descr;
+	Integer currentRow;
        
     public H(Timestamp hd, String op, Integer rownr, Integer id, Date d, BigDecimal i, Integer c, Integer a, Boolean s,
 			String g, String descr) {
@@ -119,5 +120,13 @@ public class H {
 
 	public void setDescr(String descr) {
 		this.descr = descr;
+	}
+
+	public Integer getCurrentRow() {
+		return currentRow;
+	}
+
+	public void setCurrentRow(Integer currentRow) {
+		this.currentRow = currentRow;
 	}
 }

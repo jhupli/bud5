@@ -39,6 +39,7 @@ import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.C;
 import onassis.dto.H;
+import onassis.dto.LogEntry;
 import onassis.dto.P;
 import onassis.dto.Slice;
 import onassis.dto.mappers.MapA;
@@ -265,9 +266,9 @@ public class HelloController {
     } 
     
     @RequestMapping("history") 
-    List<H> history() throws SQLException, ParseException {
+    List<LogEntry> history() throws SQLException, ParseException {
     	String hidQuery = "SELECT hd, op, rownr, id, d, i, a, c, s, g, descr FROM h ORDER BY hd DESC";
-    	List<H> allhistory = new ArrayList<H>();
+    	List<LogEntry> allhistory = new ArrayList<LogEntry>();
         try (
                 Connection conn = this.ds.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(hidQuery);
@@ -279,10 +280,7 @@ public class HelloController {
             		List<H> history= jdbcTemplate.query(paymetsQuery, 
                         namedParameters,
                         new RowMapperResultSetExtractor<H>(rmH));
-            		for(H h : history) {
-            			h.setCurrentRow(result.getInt("rownr"));
-            		}
-            		allhistory.addAll(history);
+            		allhistory.add(new LogEntry(history, result.getInt("rownr")));
             	}
             }
         }

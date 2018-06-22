@@ -10,7 +10,7 @@ import { get_constants } from '../../actions/constants'
 import { set_daterange, daterange_next_block, daterange_prev_block } from '../../actions/daterange'
 
 import '../../../node_modules/c3/c3.min.css'
-
+import './style_region.css'
 import findInArray from '../../util/findInArray'
 import currencyFormat from '../../util/currency'
 
@@ -38,6 +38,8 @@ class Chart extends React.Component {
     		prevday: null,
     		today: null
         }
+        
+        this.hahlo = null
         this.draw = this.draw.bind(this)
         this.dateselect = this.dateselect.bind(this)
         this.nextday = this.nextday.bind(this)
@@ -190,9 +192,11 @@ class Chart extends React.Component {
                 var d2_str = dateFormat(d, "yyyymmdd") + "T12"
             //    debugger
                 if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
-	                this.chart_config.regions = [
-	                    {"start": d1_str, "end": d2_str}
-	                 ]
+                	console.log("****");
+                	this.hahlo = {"start": d1_str, "end": d2_str, class:'gray'}
+	                /*this.chart_config.regions = [
+	                    {"start": d1_str, "end": d2_str, class:'gray'}
+	                 ]*/
 	                this.draw()
                 }
     }
@@ -202,7 +206,6 @@ class Chart extends React.Component {
     	var month = d.substring(4,6) - 1
     	var day = d.substring(6,8)
     	return new Date(year, month, day)
-    	
     }
 
     find_ix(d) {
@@ -258,6 +261,37 @@ class Chart extends React.Component {
     
     draw() {
     	if(!this.chart_config.data.columns) return //data not yet there
+    	/* red backgrounds here*/
+    	//debugger;
+    	console.log("draw()***********")
+    	
+        
+       this.chart_config.regions = [
+         ];
+    	
+       
+    	
+    	for(var x=1; x<(this.chart_config.data.columns[0].length - 1); x++) { //x date 
+    		
+    		for(var y=3; y<this.chart_config.data.columns.length; y++) { //y accounts start with 3 
+    			if(this.chart_config.data.columns[y][x] < 0) {
+    				debugger
+    				var alku = dateFormat(addDays(this.chartDatetoDate(this.chart_config.data.columns[0][x]),-1), "yyyymmdd") + "T12"
+    				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
+    	
+    				this.chart_config.regions.push( 
+	                    {"start": alku, "end": loppu, class:'red'}
+	                 )		
+    			}
+    		}
+    	}
+    	
+    	this.chart_config.regions.push(this.hahlo)
+    	
+    	
+    	
+    	
+    	
         c3.generate(this.chart_config)
     }
 

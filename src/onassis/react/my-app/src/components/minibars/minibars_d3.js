@@ -206,12 +206,12 @@ function bgColor(data) {
   return bgNormal(data)
 }
 
-function getNormalColorByDateOnly(day) {
+/*function getNormalColorByDateOnly(day) {
 	var first_month = months[0].columns[0].d.getMonth()
 	var index_m = day.getMonth() - first_month
 	var index_d = day.getDate() - 1
 	return bgNormal(months[index_m].columns[index_d])
-}
+}*/
 
 function bgNormal(data) {
 	if( data.smallestb < 0 ) {
@@ -239,14 +239,16 @@ function mouseout_month(day) {
 }
 
 function click_month(s_date, e_date) {
-  if (start) {
+  /*if (start) {
     var point = d3.select('#'+dateId(start) + _BG)
     point.attr("fill", getNormalColorByDateOnly(start))
-  }
+  }*/
   start = s_date
   end = e_date
-  normalize_selection()
+  //normalize_selection()
+  update() //jh
   cb_select(start, end)
+  
 }
 
 function getmonthtext(date) {
@@ -282,9 +284,9 @@ function withinSelection(d) {
   return (start && end && d.d && dates.inRange(d.d, start, end))
 }
 
-function colorRange(s_date, e_date, colorfunction) {
-  console.log("s_date: " + s_date);
-  console.log("e_date: " + e_date);
+/*function colorRange(s_date, e_date, colorfunction) {
+  console.log("colorRange: months=");
+>>>>>>> branch 'master' of https://github.com/jhupli/bud5.git
   console.log(months);
   if (!s_date || !e_date || !colorfunction || !months) return
   var ixd = new Date(s_date)
@@ -294,7 +296,7 @@ function colorRange(s_date, e_date, colorfunction) {
     d3.select('#'+dateId(ixd)+_BG).attr("fill", colorfunction(ixd))
     ixd.setDate(ixd.getDate() + 1);
   } while(dates.compare(ixd, e_date) < 1)
-}
+}*/
 
 function show_tip(data) {
   var mid = monthId(data.d)
@@ -319,17 +321,31 @@ function hide_tip(data) {
   d3.select('#'+monthId(data.d) +_TIP_DIV).style("display", "none")
 }
 
+
 function select(start_, end_) {
-  //console.log("select!")
+  console.log("select!")
   if (!start_ || !end_ ) {
-	  //console.assert(null != start_ && null != end_) 
+	  console.assert(null != start_ && null != end_) 
 	  return
   }
-  start = start_
-  end = end_
-  normalize_selection()
+  debugger
+  normalize(start_,end_) 
+  
+  //console.log("select")
+  //console.log("start:" + start)
+  //console.log("end:" + end)
+  
+  update() //jh
+  
+  //normalize_selection()
 }
 
+function normalize(s,e) {
+	  var _s = d3.min([s, e])
+	  var _e = d3.max([s, e])
+	  start = _s
+	  end = _e
+}
 function mouseover(data, i) {
   ////console.log("mouseover")
   show_tip(data, i)
@@ -363,7 +379,7 @@ function dateDiffInDays(a, b) {
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
-var prev_start = null
+/*var prev_start = null
 var prev_end = null
 function normalize_selection() {
   var _s = d3.min([start, end])
@@ -375,7 +391,11 @@ function normalize_selection() {
   prev_end = end
 
   colorRange(start, end, () => {return COLOR_DAY_BACKGROUND_SELECTED})
+<<<<<<< HEAD
 }
+=======
+}*/
+>>>>>>> branch 'master' of https://github.com/jhupli/bud5.git
 
 function cursor(cursor) {
   document.body.style.cursor = cursor
@@ -386,14 +406,18 @@ function click(data) {
     start = data.d
     end = null
     cursor("col-resize")
-    colorRange(prev_start, prev_end, getNormalColorByDateOnly)
+    update() //jh
+    
+    //colorRange(prev_start, prev_end, getNormalColorByDateOnly)
   } else if (end  == null) {
     if (start && Math.abs(dateDiffInDays(start, data.d)) > max_selection_days) {
       return;
     }
     end = data.d
     cursor("pointer")
-    normalize_selection()
+    normalize(start,end) 
+    update() //jh
+    //normalize_selection()
     cb_select(start, end)
   }
   ////console.log("s:" + start + " e:" + end)
@@ -909,6 +933,7 @@ function generate(provideddata) {
 }
 
 function update() {
+  if(!months) return
   for (var ix = 0, len = months.length; ix < len; ix++) {
 	    updateMonth(months[ix])
 	    leadin(months[ix])

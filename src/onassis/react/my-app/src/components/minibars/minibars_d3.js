@@ -286,11 +286,13 @@ function withinSelection(d) {
 
 /*function colorRange(s_date, e_date, colorfunction) {
   console.log("colorRange: months=");
+>>>>>>> branch 'master' of https://github.com/jhupli/bud5.git
   console.log(months);
   if (!s_date || !e_date || !colorfunction || !months) return
   var ixd = new Date(s_date)
+  
   do {
-	
+	console.log(colorfunction(ixd))
     d3.select('#'+dateId(ixd)+_BG).attr("fill", colorfunction(ixd))
     ixd.setDate(ixd.getDate() + 1);
   } while(dates.compare(ixd, e_date) < 1)
@@ -389,7 +391,11 @@ function normalize_selection() {
   prev_end = end
 
   colorRange(start, end, () => {return COLOR_DAY_BACKGROUND_SELECTED})
+<<<<<<< HEAD
+}
+=======
 }*/
+>>>>>>> branch 'master' of https://github.com/jhupli/bud5.git
 
 function cursor(cursor) {
   document.body.style.cursor = cursor
@@ -801,7 +807,7 @@ function updateMonth(month) {
       }
     )
     
-    d3.select('#' + date_id + _BG)
+   d3.select('#' + date_id + _BG)
       .transition()
       .attr({
       "fill": function(d) {return bgColor(d)}

@@ -53,6 +53,7 @@ class Minibars extends React.Component {
     }
     // This binding is necessary to make `this` work in the callback
     this.select = this.select.bind(this);
+  
     //this.dataprovider = dataprovider.bind(this);
     props.load();
   }
@@ -72,18 +73,23 @@ class Minibars extends React.Component {
   }
   
   select(start, end) {
+	  console.log("***************************** select ")
+	  debugger
+	  this.su = false;
       this.props.setDateRange(new Date(start), new Date(end), "rangePicker1")
-    }
+  }
   
   componentWillReceiveProps(nextProps){
-//	  console.log("***************************** componentWillReceiveProps ")
+	  console.log("***************************** componentWillReceiveProps ")
 //	  console.log(nextProps)
 	  this.minibars.generate(nextProps.balances)
 	  this.minibars.select(nextProps.start, nextProps.end)
+	  
   }
 
   render() {
-	//  console.log("***************************** render ")
+	 
+	 console.log("***************************** render ")
   
     return (
     	<div>

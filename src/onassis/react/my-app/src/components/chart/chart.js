@@ -16,7 +16,7 @@ import currencyFormat from '../../util/currency'
 
 
 var dateFormat = require('dateformat');
-var _index_ = -1
+var selectedDayOrAccount = -1
 
 var SELECTONHOVER = true
 
@@ -33,12 +33,13 @@ class Chart extends React.Component {
     		curves: null, //Curves
     		constants: props.getConstants('acc'), // return null, but launches fetch
     		refreshTime: null,
-    		queryType: '',
+    		selectedType: '',
     		nextday: null,
     		prevday: null,
     		today: null
         }
         
+        this.hahlo_ix = null
         this.hahlo = null
         this.draw = this.draw.bind(this)
         this.dateselect = this.dateselect.bind(this)
@@ -130,7 +131,7 @@ class Chart extends React.Component {
                 }
             }
         }
-        this.props.chartLoad(this.state.start ,this.state.end)
+        //this.props.chartLoad(this.state.start ,this.state.end)
     }
 
     onmouseout() {
@@ -141,65 +142,34 @@ class Chart extends React.Component {
     
     onmouseover(d) {
     	//console.log(d)
-    	
-    	if (this.timer) {
-            clearTimeout(this.timer)
-        }
-
-       // if (d.id === "I") { //this is because event will be trigger for all curves and we want to load day only once
-    	var f = () => {
-    		this.dateselect(d.x)
+    	if(d.id === "I" && daydiff(d.x, this.selectedDate) !== 0) {
+    		 if (this.timer) {
+    	       	clearTimeout(this.timer)
+    	    }
+    		var f = () => {
+    			this.dateselect(d.x)
+    		}
+    		
+    		console.log("FIRE:" + d.id+ " " + d.x + " " + this.selectedDate)
+	        this.timer = setTimeout(f, 300)
     	}
-          /*  var f = () => {
-            	//vähän vois kyl kauniimmaks laittaa:
-                this.props.dayLoad(d)
-                var d1 = addDays(d.x, -1)
-                var d1_str = dateFormat(d1, "yyyymmdd") + "T12"
-                var d2_str = dateFormat(d.x, "yyyymmdd") + "T12"
-            //    debugger
-                if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
-	                this.chart_config.regions = [
-	                    {"start": d1_str, "end": d2_str}
-	                 ]
-	                this.draw()
-                }
-            }*/
-           // console.log("FIRE")
-            this.timer = setTimeout(f, 300)
-      //  }
+    	/*
+    	if (this.timer) {
+    	       	clearTimeout(this.timer)
+    	    }
+
+
+       if (d.id === "I") { //this is because event will be trigger for all curves and we want to load day only once
+	    	var f = () => {
+	    		this.dateselect(d.x)
+	    	}
+
+	           console.log("FIRE:" + d.id+ " " + d.x)
+	           this.timer = setTimeout(f, 300)
+       }*/
     }
     
-    dateselect(d) {
-    			this.selectedDate = d
-    			//CHG-13this.legendnames(this.props.curves, this.props.constants)
-            	//vähän vois kyl kauniimmaks laittaa:
-    			var ix = this.find_ix(d)
-    			if(null != ix && ix == -1)  {
-    				//console.log("vasemmalta yli "+ix)
-    				this.props.daterangePrevBlock()
-    				ix = this.chart_config.data.columns[0].length - 2
-    				//console.log("vasemmalta yli "+ix)
-    			}
-    			if(null != ix && ix == this.chart_config.data.columns[0].length - 1)  {
-    				//console.log("oikealta yli "+ix)
-    				this.props.daterangeNextBlock()
-    				ix = 0
-    			}
-
-                this.props.dayLoad(d, ix)
-                var d1 = addDays(d, -1)
-                var d1_str = dateFormat(d1, "yyyymmdd") + "T12"
-                var d2_str = dateFormat(d, "yyyymmdd") + "T12"
-            //    debugger
-                if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
-                	console.log("****");
-                	this.hahlo = {"start": d1_str, "end": d2_str, class:'gray'}
-	                /*this.chart_config.regions = [
-	                    {"start": d1_str, "end": d2_str, class:'gray'}
-	                 ]*/
-	                this.draw()
-                }
-    }
+   
     
     chartDatetoDate(d) {
     	var year = d.substring(0,4)
@@ -239,6 +209,7 @@ class Chart extends React.Component {
     }
 
     today() {
+    	console.log("TODAY")
     		var now = new Date()
     		//console.log("diff="+diff)
     		this.props.setDateRange(addDays(now, -10), addDays(now, +10))
@@ -259,23 +230,102 @@ class Chart extends React.Component {
         this.timer = setTimeout(f, 300)
     }
     
+    dateselect(d) {
+    			console.log("DATESEL")
+    			this.selectedDate = d
+    			debugger
+
+    			
+    			//CHG-13this.legendnames(this.props.curves, this.props.constants)
+            	//vähän vois kyl kauniimmaks laittaa:
+    			var ix = this.find_ix(d)
+    			if(null != ix && ix == -1)  {
+    				//console.log("vasemmalta yli "+ix)
+    				this.props.daterangePrevBlock()
+    				ix = this.chart_config.data.columns[0].length - 2
+    				//console.log("vasemmalta yli "+ix)
+    			}
+    			if(null != ix && ix == this.chart_config.data.columns[0].length - 1)  {
+    				//console.log("oikealta yli "+ix)
+    				this.props.daterangeNextBlock()
+    				ix = 0
+    			}
+
+                this.props.dayLoad(d, ix)
+                
+                if(this.hahlo_ix) {
+	    			//dayselection:
+	    			var alku = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
+	    			var loppu = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
+	    			this.chart_config.regions[this.hahlo_ix].start = alku
+	    			this.chart_config.regions[this.hahlo_ix].end = loppu
+	    			c3.generate(this.chart_config)
+    			}
+             /*   
+                var d1 = addDays(d, -1)
+                var d1_str = dateFormat(d1, "yyyymmdd") + "T20"
+                var d2_str = dateFormat(d, "yyyymmdd") + "T4"
+            //    debugger
+                if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
+                	console.log("****");
+                	this.hahlo = {"start": d1_str, "end": d2_str, class:'gray'}
+
+                	if(this.chart_config.regions) {
+                		console.log("push hahlo");
+                		this.chart_config.regions.push(this.hahlo)
+                	} else {
+                		console.log("not push hahlo");
+                	}
+                	
+	                //this.draw() //TODO: POISTA TÄÄ JOS VAAN SAAT POIS
+                }*/
+    }
+    
     draw() {
-    	if(!this.chart_config.data.columns) return //data not yet there
+    	console.log("draw()0")
+    	if(!this.chart_config.data.columns) {
+    		console.log("draw() nothing yet")
+    		return //data not yet there
+    	}
     	/* red backgrounds here*/
     	//debugger;
-    	console.log("draw()***********")
+    	
     	
         
-       this.chart_config.regions = [
-         ];
-    	
+       /*this.chart_config.regions = [
+         ];*/
+       console.log("draw()***********")
+       //debugger;
+       if(!this.chart_config.regions) {
+    	   //init with white
+    	   this.chart_config.regions = []
+       	   console.log("draw()regions redraw") 	  
+    	   for(var x=1; x<(this.chart_config.data.columns[0].length); x++) { //x date 
+    		   
+    		   for(var y=3; y<this.chart_config.data.columns.length; y++) { //y accounts start with 3 
+    				var alku = dateFormat(addDays(this.chartDatetoDate(this.chart_config.data.columns[0][x]),-1), "yyyymmdd") + "T12"
+    				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
+
+    				this.chart_config.regions.push( 
+	                    {"start": alku, "end": loppu, class: this.chart_config.data.columns[y][x] < 0 ? "red" : "white"}
+	                 )		
+    		   }
+    	   }
+    	   //dayselection as last in array:
+    	   this.hahlo_ix = this.chart_config.regions.length
+    	   var alku = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
+    	   var loppu = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
+    	   this.chart_config.regions.push( 
+	            {"start": alku, "end": loppu, class: "gray"}
+	       )
+       }
        
-    	
+       
+    	/*
     	for(var x=1; x<(this.chart_config.data.columns[0].length - 1); x++) { //x date 
     		
     		for(var y=3; y<this.chart_config.data.columns.length; y++) { //y accounts start with 3 
     			if(this.chart_config.data.columns[y][x] < 0) {
-    				debugger
     				var alku = dateFormat(addDays(this.chartDatetoDate(this.chart_config.data.columns[0][x]),-1), "yyyymmdd") + "T12"
     				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
     	
@@ -284,9 +334,9 @@ class Chart extends React.Component {
 	                 )		
     			}
     		}
-    	}
-    	
-    	this.chart_config.regions.push(this.hahlo)
+    	}*/
+    	//console.log("draw() push hahlo")
+    	//this.chart_config.regions.push(this.hahlo)
     	
     	
     	
@@ -296,6 +346,7 @@ class Chart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+    	console.log("componentWillReceiveProps")
     	if(nextProps.nextday !== this.props.nextday) {
     		this.nextday()
     	}
@@ -305,10 +356,10 @@ class Chart extends React.Component {
     	if(nextProps.today !== this.props.today) {
     		this.today()
     	}
-    	if(nextProps.queryType !== this.props.queryType) {
+    	if(nextProps.selectedType !== this.props.selectedType) {
     		//console.log('reset')
     		//console.log(nextProps)
-    		_index_ = -1
+    		selectedDayOrAccount = -1 //reset
     	}
     	if( nextProps.constants && nextProps.constants[this.props.constants_id]) {
     		var constants = nextProps.constants[this.props.constants_id]
@@ -321,7 +372,11 @@ class Chart extends React.Component {
 		    		'items' : validConstants		
 		    })
     	}
-        if (this.state.start !== nextProps.start || this.state.end !== nextProps.end) { //selected date span changed?
+        if (
+        	!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
+        	|| 
+        	!(this.state.end == nextProps.end)
+        ){ //selected date span changed?
         	this.setState({
 		    		start : nextProps.start,
 		    		end : nextProps.end		
@@ -330,17 +385,20 @@ class Chart extends React.Component {
         } else if (nextProps.curves != this.props.curves || nextProps.refreshTime != this.props.refreshTime){
         	//TODO jäi tähän laita värit ja nimet tilit on jo account#ssa
         	//debugger //muista types!!!!!
+        	console.log("curves")
         	this.chart_config.data.names = {}
         	this.chart_config.data.types = {}
         	this.chart_config.data.colors = {}
         	this.chart_config.data.columns = nextProps.curves //curves updated
-
+        	this.chart_config.regions = null 
         	this.legendnames(nextProps.curves, nextProps.constants)
         	//this.chart_config.data.names['I'] ='Income'
         	this.chart_config.data.colors['I'] ='green'
         	//this.chart_config.data.names['E'] ='Exp'
         	this.chart_config.data.colors['E'] ='red'
+        	var max = 0, min = 0
         	if (nextProps.curves) {
+        		console.log("curves 1")
 	        	for(var i=3; i<nextProps.curves.length; i++) {
 	        		var key = nextProps.curves[i][0]
 	        		var acc = findInArray(nextProps.constants['acc'], n => { return key == n.value})
@@ -350,7 +408,15 @@ class Chart extends React.Component {
 	        		//this.chart_config.data.names[key] = acc.label
 	        		this.chart_config.data.colors[key] = acc.color
 	        		this.chart_config.data.types[key] = 'line'
+	        		
+	        		/*var m = findInArray(nextProps.curves[i], n => {return n > max})
+	        		max = m>max ? m : max
+	        			
+	        		m = findInArray(nextProps.curves[i], n => {return n < min})
+	        		min = m<min ? m : min*/ //taulu ei ala 0:sta
+	        			
 	        	}
+	        	console.log("min="+min+" max="+max)
 	            this.draw()
         	}
            
@@ -397,6 +463,7 @@ class Chart extends React.Component {
     }
     
     render() {
+    	console.log("render");
         return ( 
         	<div id = "chart" onMouseOut = {() => this.onmouseout()} />
         )
@@ -413,7 +480,7 @@ const mapStateToProps = (store) => {
         today: store.chart.today,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
-        queryType: store.payments.queryType
+        selectedType: store.payments.queryType
     }
 }
 
@@ -421,17 +488,17 @@ const mapStateToProps = (store) => {
 function mapDispatchToProps(dispatch) {
     return ({
         chartLoad: (s, e) => {
-        	_index_ = -1;
+        	selectedDayOrAccount = -1; //reset
             dispatch(chart_load(s, e))
         },
         dayLoad: (d, index) => {
-        	if (index === _index_) return;
-        	_index_ = index;
+        	if (index === selectedDayOrAccount) return;
+        	selectedDayOrAccount = index;
             dispatch(day_load(d))
         },
         accountLoad: (a, d1, d2) => {
-        	if (a === _index_) return;
-        	_index_ = a;
+        	if (a === selectedDayOrAccount) return;
+        	selectedDayOrAccount = a;
             dispatch(account_load(a, d1, d2))
         },
         getConstants: (id) => {

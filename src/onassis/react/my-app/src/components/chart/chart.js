@@ -407,7 +407,7 @@ class Chart extends React.Component {
 	        		)*/
 	        		//this.chart_config.data.names[key] = acc.label
 	        		this.chart_config.data.colors[key] = acc.color
-	        		this.chart_config.data.types[key] = 'line'
+	        		this.chart_config.data.types[key] = 'spline'
 	        		
 	        		/*var m = findInArray(nextProps.curves[i], n => {return n > max})
 	        		max = m>max ? m : max

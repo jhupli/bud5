@@ -328,7 +328,7 @@ function select(start_, end_) {
 	  console.assert(null != start_ && null != end_) 
 	  return
   }
-  debugger
+  //debugger
   normalize(start_,end_) 
   
   //console.log("select")
@@ -395,7 +395,7 @@ function normalize_selection() {
 }
 =======
 }*/
->>>>>>> branch 'master' of https://github.com/jhupli/bud5.git
+
 
 function cursor(cursor) {
   document.body.style.cursor = cursor

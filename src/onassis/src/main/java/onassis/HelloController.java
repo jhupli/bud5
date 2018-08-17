@@ -359,7 +359,7 @@ public class HelloController {
                 namedParameters,
                 new RowMapperResultSetExtractor<P>(rmP));
             
-            final String balancesQuery = "SELECT d, b, i, e, a FROM b WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
+            final String balancesQuery = "SELECT d, b, i, e, a, smallestb FROM b WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
             balancesList = jdbcTemplate.query(balancesQuery, 
                 namedParameters,
                 new RowMapperResultSetExtractor<B>(rmB));

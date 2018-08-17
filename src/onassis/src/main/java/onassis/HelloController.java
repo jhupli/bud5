@@ -607,7 +607,7 @@ public class HelloController {
     @RequestMapping(value = "cat/update", method = RequestMethod.POST)
     void catUpdate(@RequestBody  Updates<C> updates) throws SQLException, ParseException {
     	createC(updates.created);
-    	removeC(updates.deleted);
+    	//removeC(updates.deleted);
     	modifyC(updates.modified);
     }
 
@@ -661,7 +661,7 @@ public class HelloController {
     @RequestMapping(value = "acc/update", method = RequestMethod.POST)
     void accUpdate(@RequestBody  Updates<A> updates) throws SQLException, ParseException {
     	createA(updates.created);
-    	removeA(updates.deleted);
+    	//removeA(updates.deleted);
     	modifyA(updates.modified);
     }    
 }

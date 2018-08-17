@@ -143,7 +143,10 @@ input[type="text"]:disabled {
 		
 #categories_table .deleted_header 
 	{ 
-		width: 50px;
+		padding-top: 13px;
+		padding-bottom: 0;
+		text-align: center;
+		width: 42px;
 	}
 	
 #categories_table .deleted_cell

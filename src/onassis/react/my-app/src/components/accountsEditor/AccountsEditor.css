@@ -141,11 +141,13 @@ input[type="text"]:disabled {
 		width: 50px;
 	}
 
-		
 #accounts_table .deleted_header 
 	{ 
-		width: 50px;
-	}
+		padding-top: 13px;
+		padding-bottom: 0;
+		text-align: center;
+		width: 42px;
+	}		
 	
 #accounts_table .deleted_cell
 	{ 

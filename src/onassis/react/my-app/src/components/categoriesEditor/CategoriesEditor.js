@@ -240,8 +240,8 @@ class CategoriesEditor extends React.Component {
 		  		<FontAwesome name = 'remove' style = {{'color': 'red'}}/>
 		    </button>)
 		}
-	  		
-		return(
+	  	return	
+		/*return(
 	  	<div>
 	  		<CheckboxField 
 		  		id = {'deletedcat_'+index}
@@ -251,7 +251,7 @@ class CategoriesEditor extends React.Component {
 	  			index = {index}
 	  			touched = {false}
 		  	/>
-	    </div>)
+	    </div>)*/
 	}
 		
 	setSortF(field) {
@@ -370,11 +370,11 @@ class CategoriesEditor extends React.Component {
 	 		{[...fields].map( (f) => { 
 	 			return this.td(index, f) 
 	 		})}
-	 		{/*
+	 		
 	      	<td className={this.tdClassName(index, 'deleted')}>
 	      		{this.renderDeletedContentF(index)}
 	      	</td>
-	      	*/}
+	      	
 		</tr>)
     }
     
@@ -492,11 +492,11 @@ class CategoriesEditor extends React.Component {
 			  			{this.th('descr', 'Name')}
 			  			{this.th('i', 'Default')}
 			  			{this.th('active', 'Active')}
-			  			{/*
+			  			
 			  			<th className={this.thClassName('deleted')}>
 			  				<FontAwesome name='remove' style={{'color': 'red'}}/>
 			  			</th>
-			  			*/}
+			  			
 					</tr>				  			
 				</thead>
 				<tbody>
@@ -587,7 +587,6 @@ function mapDispatchToProps(dispatch) {
     })
 }
 
-//export default connect(null, mapDispatchToProps)(withMedia(CategoriesEditor))
 export default connect(null, mapDispatchToProps)(CategoriesEditor)
 
 

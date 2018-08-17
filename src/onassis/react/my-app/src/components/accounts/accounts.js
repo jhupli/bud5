@@ -36,35 +36,18 @@ class Accounts extends React.Component {
 	
 	render() {
 		return(
-<div>
-<table>
-<th><td>id : 503                </td><td>crud      </td><td>date      </td><td>sum   </td></th>
-<tr><td>        </td><td>Created</td><td>88.88.2018</td><td>vuokra    </td><td>auto  </td></tr>
-<tr><td>2018-06-05 15:20:02.024></td><td>Created   </td><td>88.88.2018</td><td>vuokra</td></tr>
-</table>
-	<span style={{
-		 fontFamily: 'monospace', 
-		 whiteSpace: 'pre-wrap',
-		 display: 'block'
-	}}>
-	
-	
-	
-id: 503                 |crud     |date      |sum        |category   |account    |group      |s|descr<br/>
-------------------------|---------|----------|-----------|-----------|-----------|-----------|-|-----<br/>
-                        |Created  |88.88.2018 |-1000000.00|vuokra    |aktia      |           |1|<br/>
-2018-06-05 15:20:02.024 |Updated  |6.12.2018 |-1000000.00|vuokra     |aktia      |           |1|<br/>
-&nbsp;                       |Updated  |6.12.2018 |-1000000.00|vuokra     |aktia      |           |1|<br/>
-<br/>			                        
-id: 503                 |crud     |date      |sum        |category   |account    |group      |s|descr<br/>
-------------------------|---------|----------|-----------|-----------|-----------|-----------|-|-----<br/>
-                        |Created  |88.88.2018 |-1000000.00|vuokra    |aktia      |           |1|<br/>
-2018-06-05 15:20:02.024 |Updated  |6.12.2018 |-1000000.00|vuokra     |aktia      |           |1|<br/>
-                        |Updated  |6.12.2018 |-1000000.00|vuokra     |aktia      |           |1|<br/>
-<br/>			                        
-	</span>
-
-</div>			
+			<div>
+			  <Panel >
+			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
+				  	<span style={{display: "flow-root", alignItems: "center"}}>
+				  		Accounts 
+				  	</span>
+			  	</Panel.Heading>
+			  	<Panel.Body>					
+					<AccountsEditor initAccounts={this.props.accounts} />
+				</Panel.Body>
+			  </Panel>
+			</div>
 			)
 	}
 }

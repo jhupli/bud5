@@ -15,11 +15,19 @@ class Categories extends React.Component {
 	
 	render() {
 		return(
-		<div>
-			<Panel header="Categories">
-				<CategoriesEditor initCategories={this.props.categories} />
-			</Panel>
-		</div>)
+			<div>
+			  <Panel >
+			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
+				  	<span style={{display: "flow-root", alignItems: "center"}}>
+				  		Categories 
+				  	</span>
+			  	</Panel.Heading>
+			  	<Panel.Body>					
+					<CategoriesEditor initCategories={this.props.categories} />
+				</Panel.Body>
+			  </Panel>
+			</div>
+			)
 	}
 }
 

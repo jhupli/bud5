@@ -22,7 +22,7 @@ import {
 		fields,
 		initState,
 		defaultValues,
-		initialMaskValues, 
+//		initialMaskValues, 
 		validators,
 		preInitFormat,
 		preSubmitFormat,
@@ -83,7 +83,7 @@ class AccountsEditor extends React.Component {
         this.isPersistedR = this.isPersistedR.bind(this)
 
         //render
-        this.renderCategoryR = this.renderCategoryR.bind(this)
+        this.renderAccountR = this.renderAccountR.bind(this)
 
         //Table related:
         this.resetT =  this.resetT.bind(this)
@@ -238,8 +238,8 @@ class AccountsEditor extends React.Component {
 		  		<FontAwesome name = 'remove' style = {{'color': 'red'}}/>
 		    </button>)
 		}
-	  		
-		return(
+	  	return 
+		/*return(
 	  	<div>
 	  		<CheckboxField 
 		  		id = {'deletedacc_'+index}
@@ -249,7 +249,7 @@ class AccountsEditor extends React.Component {
 	  			index = {index}
 	  			touched = {false}
 		  	/>
-	    </div>)
+	    </div>)*/
 	}
 		
 	setSortF(field) {
@@ -362,17 +362,17 @@ class AccountsEditor extends React.Component {
 		return this.state.values[index].id >=0
 	}
     
-    renderCategoryR(index) {
+    renderAccountR(index) {
     	return(
     	<tr key={index}>
 	 		{[...fields].map( (f) => { 
 	 			return this.td(index, f) 
 	 		})}
-	 		{/*
+	 		
 	      	<td className={this.tdClassName(index, 'deleted')}>
 	      		{this.renderDeletedContentF(index)}
 	      	</td>
-	      	*/}
+	      	
 		</tr>)
     }
     
@@ -490,15 +490,15 @@ class AccountsEditor extends React.Component {
 			  			{this.th('descr', 'Name')}
 			  			{this.th('credit', 'Credit')}
 			  			{this.th('active', 'Active')}
-			  			{/*
+			  			{
 			  			<th className={this.thClassName('deleted')}>
 			  				<FontAwesome name='remove' style={{'color': 'red'}}/>
 			  			</th>
-			  			*/}
+			  			}
 					</tr>				  			
 				</thead>
 				<tbody>
-				  	{this.sortedValues.map((p) => this.renderCategoryR(p.index))}
+				  	{this.sortedValues.map((p) => this.renderAccountR(p.index))}
 				</tbody>
 			</Table>
 		</Panel.Body>

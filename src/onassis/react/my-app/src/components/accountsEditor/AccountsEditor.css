@@ -148,9 +148,14 @@ input[type="text"]:disabled {
 		text-align: center;
 		width: 42px;
 	}		
-	
+
 #accounts_table .deleted_cell
 	{ 
-		width: 50px;
+		width: 42px;
+		padding-top: 7px;
 	}
 
+#accounts_table .deleted_cell .form-control
+	{ 
+		padding-left: 9px;
+	}

@@ -40,7 +40,7 @@ const paymentsUpdateResponseAction = () => ({
 const update = (updates) => (
     (dispatch: Redux.Dispatch) => {
         dispatch(paymentsUpdateRequestAction(updates))
-        axios.post('http://localhost:8080/update', updates)
+        axios.post('http://localhost:8080/payments/update', updates)
             .then(function(response) {
                 dispatch(paymentsUpdateResponseAction())
                 //tähän kaikki refrhesit, jotka update aiheuttaa
@@ -60,7 +60,7 @@ const update = (updates) => (
 
 function get(dispatch) {
     dispatch(paymentsRequestAction())
-    axios.get('http://localhost:8080/day?ts='+Date.now(), {
+    axios.get('http://localhost:8080/payments?ts='+Date.now(), {
         port: 8080,
         "params": params
     })

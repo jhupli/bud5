@@ -58,7 +58,7 @@ var params = null
 
 function get(dispatch) {
     dispatch(chartRequestAction(params.s, params.e));
-    axios.get('http://localhost:8080/details?ts='+Date.now(), {		  
+    axios.get('http://localhost:8080/chart?ts='+Date.now(), {		  
 		  port: 8080,
 		  params: params
 	  })

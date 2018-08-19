@@ -20,7 +20,7 @@ const balances_load = (cat) => (
     (dispatch: Redux.Dispatch) => {
     	prev_cat = cat
         dispatch(balancesRequestAction())
-        axios.get('http://localhost:8080/calc?ts='+Date.now(), {
+        axios.get('http://localhost:8080/minibars?ts='+Date.now(), {
                 port: 8080,
                 params: {
                     "cat": cat

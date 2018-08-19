@@ -110,7 +110,7 @@ public class HelloController {
     
     // SQL sample
 
-    @RequestMapping("calc")
+    @RequestMapping("minibars")
     List calc(@RequestParam int cat) {
     	//final String query = "SELECT d,b,i,e,a FROM B WHERE A=0 ORDER BY D ASC";
     	
@@ -242,7 +242,7 @@ public class HelloController {
     }*/
     
     // SQL sample
-    @RequestMapping("details")
+    @RequestMapping("chart")
     List<List<Object>> details(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {
     	
     	LocalDate start = LocalDate.parse(s);
@@ -310,7 +310,7 @@ public class HelloController {
         return slices; 
     }
     
-    @RequestMapping("day")
+    @RequestMapping("payments")
     List<List<? extends Object>> day(@RequestParam String e, 
                 @RequestParam(required=false) String d, 
                 @RequestParam(required=false) String a,
@@ -476,7 +476,7 @@ public class HelloController {
 	   }
    }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "payments/update", method = RequestMethod.POST)
     void update(@RequestBody  Updates<P> updates) throws SQLException, ParseException {
     	createP(updates.created);
     	removeP(updates.deleted);

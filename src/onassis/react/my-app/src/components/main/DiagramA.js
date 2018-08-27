@@ -3,6 +3,8 @@ import { Panel } from 'react-bootstrap';
 
 import Chart from '../chart/chart'
 import Buttons from '../chart/buttons'
+import Spinner from './Spinner'
+import { connect } from 'react-redux'
 
 class DiagramA extends React.Component{
 	render(){
@@ -10,7 +12,7 @@ class DiagramA extends React.Component{
 		<div>
 			<Panel>
 			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
-			  		Diagram
+			  		Diagram<Spinner fetching={this.props.fetching} />
 			  			<span className="pull-right">
 				  			<Buttons />
 				  	    </span>
@@ -24,4 +26,10 @@ class DiagramA extends React.Component{
 	}
 }
 
-export default DiagramA
+const mapStateToProps = (store) => {
+    return {
+        fetching: store.chart.fetching
+    }
+}
+
+export default connect(mapStateToProps)(DiagramA)

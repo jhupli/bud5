@@ -233,7 +233,7 @@ class Chart extends React.Component {
     dateselect(d) {
     			console.log("DATESEL")
     			this.selectedDate = d
-    			debugger
+
 
     			
     			//CHG-13this.legendnames(this.props.curves, this.props.constants)

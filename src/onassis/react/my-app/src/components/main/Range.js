@@ -11,7 +11,10 @@ import ConstantFilter from '../constantfilter/ConstantFilter'
 
 import { connect } from 'react-redux'
 
+import Spinner from './Spinner'
+
 var FontAwesome = require('react-fontawesome');
+
 
 class Range extends React.Component{
 	render(){
@@ -24,7 +27,7 @@ class Range extends React.Component{
 				              <DatePicker componentWillReceiveProps = {true} pickerName="rangePicker1" pickerType="range"
 					              pickerCallback=
 					              	{(start, end, name) => {this.props.setDateRange(new Date(start), new Date(end))}}
-				              /> 
+				              /><Spinner fetching={this.props.fetching} /> 
 		               </div>
 				       <span className="pull-right" style={{paddingLeft: "20px"}}>  
 				       		<ConstantFilter />
@@ -50,5 +53,12 @@ function mapDispatchToProps(dispatch) {
         }
     })
 }
-export default connect(null, mapDispatchToProps)(Range)
+
+const mapStateToProps = (store) => {
+    return {
+        fetching: store.minibars.fetching
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Range)
 						

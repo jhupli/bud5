@@ -9,7 +9,7 @@ class DiagramB extends React.Component{
 		return(
 			<div>
 				<Panel>
-			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>Pie<Spinner fetching={this.props.fetching} /></Panel.Heading>
+			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>Pie <Spinner fetching={this.props.fetching} /></Panel.Heading>
 			  		<Panel.Body>					
 			  		<Pie />
 				</Panel.Body>

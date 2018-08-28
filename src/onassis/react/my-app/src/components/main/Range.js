@@ -27,7 +27,7 @@ class Range extends React.Component{
 				              <DatePicker componentWillReceiveProps = {true} pickerName="rangePicker1" pickerType="range"
 					              pickerCallback=
 					              	{(start, end, name) => {this.props.setDateRange(new Date(start), new Date(end))}}
-				              /><Spinner fetching={this.props.fetching} /> 
+				              />&nbsp;<Spinner fetching={this.props.fetching} /> 
 		               </div>
 				       <span className="pull-right" style={{paddingLeft: "20px"}}>  
 				       		<ConstantFilter />

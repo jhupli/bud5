@@ -12,7 +12,7 @@ class DiagramA extends React.Component{
 		<div>
 			<Panel>
 			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
-			  		Diagram<Spinner fetching={this.props.fetching} />
+			  		Diagram <Spinner fetching={this.props.fetching} />
 			  			<span className="pull-right">
 				  			<Buttons />
 				  	    </span>

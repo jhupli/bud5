@@ -74,7 +74,6 @@ class Minibars extends React.Component {
   
   select(start, end) {
 	  console.log("***************************** select ")
-	  debugger
 	  this.su = false;
       this.props.setDateRange(new Date(start), new Date(end), "rangePicker1")
   }

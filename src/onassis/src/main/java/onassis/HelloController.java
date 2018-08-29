@@ -186,9 +186,11 @@ public class HelloController {
             hashtable.put(localDate.format(df), BigDecimal.ZERO);
             localDate = localDate.plusDays( 1 );
         }
-        //TODO: TÄMÄ TULEE UUDELLEENKIRJOITTAA S.E hakee arvot 0-tililtä (i,e)
         conn = ds.getConnection();
-        String sumSQL = "select d, sum(i) from p where i " + (positives ? ">0" : "<0") +" and d>='"+s.format(sqldf)+"' and d<='"+e.format(sqldf)+"' and not a=0 group by d order by d asc"; 
+        //TODO: TÄMÄ TULEE UUDELLEENKIRJOITTAA S.E hakee arvot 0-tililtä (i,e) CHG-24
+        //String sumSQL = "select d, sum(i) from p where i " + (positives ? ">0" : "<0") +" and d>='"+s.format(sqldf)+"' and d<='"+e.format(sqldf)+"' and not a=0 group by d order by d asc"; 
+        String sumSQL = "select d, "+(positives ? "i" : "e") +" from b where d>='"+s.format(sqldf)+"' and d<='"+e.format(sqldf)+"' and a = 0 order by d asc"; 
+ 
         sumstmnt = conn.prepareStatement(sumSQL);
         if( !sumstmnt.execute() ) {
             throw new RuntimeException("incomes - execute failed");

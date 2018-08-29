@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Data;
 import onassis.db.functions.Balance;
 import onassis.db.functions.DataProvider;
+import onassis.db.functions.History;
 import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.C;
@@ -74,6 +75,7 @@ public class HelloController {
     void init(){
     	DataProvider.ds = this.ds;
     	Balance.ds = this.ds;
+    	History.ds = this.ds;
     }
 
     @Data

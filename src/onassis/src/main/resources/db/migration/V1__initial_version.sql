@@ -108,6 +108,15 @@ modifies sql data
 external name 
 'onassis.db.functions.DataProvider.random_data';
 
+create procedure history(
+	old_l boolean, new_l boolean,
+ 	new_id int, new_d date , new_i decimal(10,2), new_c int, new_a int, new_s boolean, new_g varchar(15), new_descr varchar(50))
+parameter style java
+language java
+modifies sql data
+external name 
+'onassis.db.functions.History.history';
+
 --triggers------------------------------
 --payments: audit log (history), 
 	--insert payment: 
@@ -121,10 +130,11 @@ external name
 	--update payment: 
 	create trigger p_audit_update 
 	after update on p 
-	referencing new as new
+	referencing old as old new as new 
 	for each row mode db2sql
-	insert into h(id, d, i, c, a, s, g, descr, op, hd, rownr) values 
-		(new.id, new.d, new.i, new.c, new.a, new.s, new.g, new.descr, 'U', current_timestamp, (select max(rownr) + 1 from h where id = new.id));
+	call history(old.l, new.l, new.id, new.d, new.i, new.c, new.a, new.s, new.g, new.descr);
+	--insert into h(id, d, i, c, a, s, g, descr, op, hd, rownr) values 
+	--	(new.id, new.d, new.i, new.c, new.a, new.s, new.g, new.descr, 'U', current_timestamp, (select max(rownr) + 1 from h where id = new.id));
 
 	--delete payment: 
 	create trigger p_audit_delete 

@@ -11,11 +11,12 @@ import java.util.Calendar;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Balance {
-	//@Autowired
+	@Autowired
 	static public DataSource ds;
 	
 	//@Value(value = "${buddb.jdbc.url}")
@@ -25,7 +26,7 @@ public class Balance {
 		Connection conn = null;
 		if (null == ds) {
 		    if(null == jdbcUrl) {
-		        jdbcUrl = "jdbc:derby:C:\\Users\\jahup1\\Google Drive\\bud5\\bud5\\src\\onassis\\BudDB.v5";
+		        jdbcUrl = "jdbc:derby:memory:onassisTest;create=true";
 		    }
 			conn = DriverManager.getConnection(jdbcUrl);
 		} else {

@@ -24,14 +24,15 @@ public class Balance {
 	
 	public static BigDecimal smallestBalanceAt(Date d) throws SQLException {
 		Connection conn = null;
-		if (null == ds) {
+		/*if (null == ds) {
 		    if(null == jdbcUrl) {
-		        jdbcUrl = "jdbc:derby:memory:onassisTest;create=true";
+		        jdbcUrl = "jdbc:derby:memory:onassisTest";
 		    }
 			conn = DriverManager.getConnection(jdbcUrl);
 		} else {
 			conn = ds.getConnection();
-		}
+		}*/
+		conn = ds.getConnection();
 		conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 		//System.out.println("day "+d + " accoount "+a+ " i "+i);
 		String DML = "select id from a";

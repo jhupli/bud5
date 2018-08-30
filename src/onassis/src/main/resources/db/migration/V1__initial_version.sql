@@ -110,6 +110,7 @@ external name
 
 create procedure history(
 	old_l boolean, new_l boolean,
+	old_id int, old_d date , old_i decimal(10,2), old_c int, old_a int, old_s boolean, old_g varchar(15), old_descr varchar(50),
  	new_id int, new_d date , new_i decimal(10,2), new_c int, new_a int, new_s boolean, new_g varchar(15), new_descr varchar(50))
 parameter style java
 language java
@@ -132,7 +133,9 @@ external name
 	after update on p 
 	referencing old as old new as new 
 	for each row mode db2sql
-	call history(old.l, new.l, new.id, new.d, new.i, new.c, new.a, new.s, new.g, new.descr);
+	call history(old.l, new.l, 
+	old.id, old.d, old.i, old.c, old.a, old.s, old.g, old.descr,
+	new.id, new.d, new.i, new.c, new.a, new.s, new.g, new.descr);
 	--insert into h(id, d, i, c, a, s, g, descr, op, hd, rownr) values 
 	--	(new.id, new.d, new.i, new.c, new.a, new.s, new.g, new.descr, 'U', current_timestamp, (select max(rownr) + 1 from h where id = new.id));
 

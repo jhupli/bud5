@@ -85,7 +85,7 @@ public class DataProvider {
 			conn = ds.getConnection();
 		}*/
 		
-		if (null == ds) {
+	/*	if (null == ds) {
     		//String connectionURL = "jdbc:default:connection";
     		//String connectionURL = "jdbc:derby:/Users/Janne/tmp/BudDB";
 
@@ -98,7 +98,7 @@ public class DataProvider {
 			conn = DriverManager.getConnection(jdbcUrl);
 		} else {
 			//conn = ds.getConnection();
-		}
+		}*/
 
 		for(int c = MIN_C; c<=MAX_C ; c++) {
 			conn = ds.getConnection();

@@ -162,9 +162,11 @@ public class DBTestUtils {
         return maxId;
     }
     
- 
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id) throws Exception {
-        assertTrue(null != d || null !=i || null!= c || null != a);
+    	update_p(d, i, c, a, id, null);
+    }
+    public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id, Boolean l) throws Exception {
+        assertTrue(null != d || null !=i || null!= c || null != a || null != l);
         String set = "";
         
         if (null != d) {
@@ -179,7 +181,9 @@ public class DBTestUtils {
         if (null != a) {
             set += (set.length()>0  ? "," : "") + " a = :a";
         }
-        
+        if (null != l) {
+            set += (set.length()>0  ? "," : "") + " l = :l";
+        }
         sql = "update p set "+set+" where id = :id";
         
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -187,6 +191,7 @@ public class DBTestUtils {
                 .addValue("i", i)
                 .addValue("c", c)
                 .addValue("a", a)
+                .addValue("l", l)
                 .addValue("id", id);
         
         jdbcTemplate.update( sql, namedParameters );

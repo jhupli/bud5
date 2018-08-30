@@ -3,6 +3,7 @@ package onassis;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -12,13 +13,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.H;
 import onassis.dto.P;
-
 /**
  * @author Janne Hupli
  * @version 1.0 Aug 2017
@@ -37,6 +38,7 @@ public class DBFunctionsTest extends DBTestUtils{
     int a2 = 2;
     int a3 = 3;
     int c = 1;
+    int c2 = 2;
     
     @Before
     public void before() throws Exception {
@@ -72,7 +74,7 @@ public class DBFunctionsTest extends DBTestUtils{
     }
     
     @Test
-    public void triggers_h() throws Exception {
+    public void triggers_h_010() throws Exception {
     	int id = insert_p(new Date(df.parse("1.1.2016").getTime()), bd(1), c, a);
     	P p0 = select_p(id);
     	assertTrue(select_h0().isEmpty());
@@ -100,6 +102,76 @@ public class DBFunctionsTest extends DBTestUtils{
         assertTrue(comparePtoH(hList.get(3), p3, 3, "U"));
         assertTrue(comparePtoH(hList.get(4), p4, 4, "U"));
         assertTrue(comparePtoH(hList.get(5), p4, 5, "D"));
+    }
+    
+    @Test
+    public void triggers_h_020() throws Exception {
+    	int id = insert_p(new Date(df.parse("1.1.2016").getTime()), bd(1), c, a);
+    	P p0 = select_p(id);
+    	assertTrue(select_h0().isEmpty());
+
+        update_p(new Date(df.parse("1.1.2018").getTime()),null, null, null, id);
+        assertTrue(select_h0().isEmpty());
+
+        P p1 = select_p(id);
+        update_p(null, bd(2), null, null, id);
+        update_p(null, null, null, null, id, true);
+        P p2 = select_p(id);
+        update_p(null, null, null, 2, id);
+        update_p(null, null, null, null, id, false);
+        P p3 = select_p(id);           
+        update_p(new Date(df.parse("31.12.2017").getTime()), bd(2), null, 2, id);
+        P p4 = select_p(id);
+        update_p(null, null, null, null, id, false);
+        
+        delete_p(id);
+        
+        assertTrue(select_h0().isEmpty());
+        
+        List<H> hList = select_h(id);
+        assertTrue(hList.size()==6);
+        assertTrue(comparePtoH(hList.get(0), p0, 0, "C"));
+        assertTrue(comparePtoH(hList.get(1), p1, 1, "U"));
+        assertTrue(comparePtoH(hList.get(2), p2, 2, "U"));
+        assertTrue(comparePtoH(hList.get(3), p3, 3, "U"));
+        assertTrue(comparePtoH(hList.get(4), p4, 4, "U"));
+        assertTrue(comparePtoH(hList.get(5), p4, 5, "D"));
+    }
+    
+    @Test(expected = UncategorizedSQLException.class)
+    public void triggers_h_030() throws Exception {
+    	int id = insert_p(new Date(df.parse("1.1.2016").getTime()), bd(1), c, a); 
+        update_p(new Date(df.parse("1.1.2018").getTime()),null, null, null, id, true);
+    }
+   
+    @Test
+    public void triggers_h_031() throws Exception {
+    	int id = insert_p(new Date(df.parse("1.1.2016").getTime()), bd(1), c, a); 
+    	P p0 = select_p(id);
+        update_p(new Date(df.parse("1.1.2018").getTime()),null, null, null, id, false); //no real change in l, so update ok
+        P p1 = select_p(id);
+        List<H> hList = select_h(id);
+        assertTrue(hList.size()==2);
+        assertTrue(comparePtoH(hList.get(0), p0, 0, "C"));
+        assertTrue(comparePtoH(hList.get(1), p1, 1, "U"));
+    }
+    
+    @Test(expected = UncategorizedSQLException.class)
+    public void triggers_h_040() throws Exception {
+    	int id = insert_p(new Date(df.parse("1.1.2016").getTime()), bd(1), c, a); 
+        update_p(null, bd(100), null, null, id, true);
+    }
+    
+    @Test(expected = UncategorizedSQLException.class)
+    public void triggers_h_050() throws Exception {
+    	int id = insert_p(new Date(df.parse("1.1.2016").getTime()), bd(1), c, a); 
+        update_p(null, null, a2, null, id, true);
+    }
+    
+    @Test(expected = UncategorizedSQLException.class)
+    public void triggers_h_060() throws Exception {
+    	int id = insert_p(new Date(df.parse("1.1.2016").getTime()), bd(1), c, a); 
+        update_p(null, null, null, c2, id, true);
     }
     
     @Test    

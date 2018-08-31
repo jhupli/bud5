@@ -271,7 +271,8 @@ public class HelloController {
     
     @RequestMapping("history") 
     List<LogEntry> history() throws SQLException, ParseException {
-    	String hidQuery = "SELECT hd, op, rownr, id, d, i, a, c, s, g, descr FROM h ORDER BY hd DESC";
+    	//String hidQuery = "SELECT hd, op, rownr, id, d, i, a, c, s, g, descr FROM h ORDER BY hd DESC";
+    	String hidQuery = "SELECT id, rownr FROM h ORDER BY hd DESC";
     	List<LogEntry> allhistory = new ArrayList<LogEntry>();
         try (
                 Connection conn = this.ds.getConnection();
@@ -279,7 +280,7 @@ public class HelloController {
         ) {
             try (ResultSet result = pstmt.executeQuery()) {
             	while (result.next()) {
-            		String paymetsQuery = "SELECT hd, op, rownr, id, d, i, a, c, s, g, descr FROM h where id=:id ORDER BY rownr ASC";
+            		String paymetsQuery = "SELECT hd, op, rownr, id, d, i, c, c_descr, a, a_descr, s, g, descr FROM h where id=:id ORDER BY rownr ASC";
             		MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", result.getInt("id"));
             		List<H> history= jdbcTemplate.query(paymetsQuery, 
                         namedParameters,

@@ -54,29 +54,33 @@ public class History {
 		}
 		
 		String insertSQL =
-		"insert into h(id, d, i, c, a, s, g, descr, op, hd, rownr) values "+
+		"insert into h(id, d, i, c, c_descr, a, a_descr, s, g, descr, op, hd, rownr) values "+
 		"(?, "+ //new.id 1
 		 "?, "+ //new.d  2 
 		 "?, "+	//new.i  3
 		 "?, "+ //new.c  4
-		 "?, "+ //new.a  5
-		 "?, "+ //new.s  6
-		 "?, "+ //new.g  7 
-		 "?, "+ //new.descr 8, 
+		 "(select descr from c where id = ?), "+ //new.c  5
+		 "?, "+ //new.a  6
+		 "(select descr from a where id = ?), "+ //new.a  7
+		 "?, "+ //new.s  8
+		 "?, "+ //new.g  9 
+		 "?, "+ //new.descr 10, 
 		 "'U', current_timestamp, "+
 		 "(select max(rownr) + 1 from h "+
-		 " where id = ?))"; //new.id 9
+		 " where id = ?))"; //new.id 11
 
 		PreparedStatement pstmnt = conn.prepareStatement(insertSQL);
 		pstmnt.setLong(1, new_id);
 		pstmnt.setDate(2, new_d);
 		pstmnt.setBigDecimal(3, new_i);
 		pstmnt.setLong(4, new_c);
-		pstmnt.setLong(5, new_a);
-		pstmnt.setBoolean(6, new_s);
-		pstmnt.setString(7, new_g);
-		pstmnt.setString(8, new_descr);
-		pstmnt.setLong(9, new_id);
+		pstmnt.setLong(5, new_c);
+		pstmnt.setLong(6, new_a);
+		pstmnt.setLong(7, new_a);
+		pstmnt.setBoolean(8, new_s);
+		pstmnt.setString(9, new_g);
+		pstmnt.setString(10, new_descr);
+		pstmnt.setLong(11, new_id);
 		
 		pstmnt.executeUpdate();
 		

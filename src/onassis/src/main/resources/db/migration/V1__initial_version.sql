@@ -38,7 +38,9 @@ create table h(
 	d date not null, 
 	i decimal(10,2) not null, 
 	c int not null, 
+	c_descr varchar(20) not null,
 	a int not null,
+	a_descr varchar(20) not null,
 	s boolean not null,
 	g varchar(15),
 	descr varchar(50),
@@ -125,8 +127,8 @@ external name
 	after insert on p 
 	referencing new as new
 	for each row mode db2sql
-	insert into h(id, d, i, c, a, s, g, descr, op, hd, rownr) values 
-		(new.id, new.d, new.i, new.c, new.a, new.s, new.g, new.descr, 'C', current_timestamp, 0);
+	insert into h(id, d, i, c, c_descr, a, a_descr, s, g, descr, op, hd, rownr) values 
+		(new.id, new.d, new.i, new.c, (select descr from c where id = new.c), new.a, (select descr from a where id = new.a), new.s, new.g, new.descr, 'C', current_timestamp, 0);
 		
 	--update payment: 
 	create trigger p_audit_update 
@@ -144,8 +146,8 @@ external name
 	after delete on p
 	referencing old as old
 	for each row mode db2sql
-	insert into h(id, d, i, c, a, s, g, descr, op, hd, rownr) values 
-		(old.id, old.d, old.i, old.c, old.a, old.s, old.g, old.descr,'D', current_timestamp, 
+	insert into h(id, d, i, c, c_descr, a, a_descr, s, g, descr, op, hd, rownr) values 
+		(old.id, old.d, old.i, old.c, (select descr from c where id = old.c), old.a, (select descr from a where id = old.a), old.s, old.g, old.descr,'D', current_timestamp, 
 		(select max(rownr) + 1 from h where id = old.id));
 
 --payments: balances insert:

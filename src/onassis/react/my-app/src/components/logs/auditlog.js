@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Panel } from 'react-bootstrap'
-import AccountsEditor from '../accountsEditor/AccountsEditor'
-import { load } from '../../actions/accounts'
+//import AccountsEditor from '../accountsEditor/AccountsEditor'
+import { load } from '../../actions/auditlog'
 
 /*
  * package test;
@@ -25,13 +25,12 @@ public class Test {
 }
  */
 
-class Accounts extends React.Component {
+class AuditLog extends React.Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {
-	        accounts: []
+	        logentries: []
 	    }
-	    //this.props.accountsLoad() //loaded as needed
 	}
 	
 	render() {
@@ -40,11 +39,10 @@ class Accounts extends React.Component {
 			  <Panel >
 			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
 				  	<span style={{display: "flow-root", alignItems: "center"}}>
-				  		Accounts 
+				  		Audit log 
 				  	</span>
 			  	</Panel.Heading>
 			  	<Panel.Body>					
-					<AccountsEditor initAccounts={this.props.accounts} />
 				</Panel.Body>
 			  </Panel>
 			</div>
@@ -54,15 +52,17 @@ class Accounts extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
-        accounts: store.accounts.accounts
+    	//TODO
+        logentries: store.auditlog.logentries
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return ({
-        accountsLoad: () => {
+    	//TODO
+        auditlogLoad: () => {
             dispatch(load())
         }       
     })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Accounts)
+export default connect(mapStateToProps, mapDispatchToProps)(AuditLog)

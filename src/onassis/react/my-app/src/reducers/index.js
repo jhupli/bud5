@@ -13,6 +13,7 @@ import constants from './constants'
 import accounts from './accounts'
 import categories from './categories'
 import navi from './navi'
+import auditlog from './auditlog'
 
 const rootReducer = combineReducers({
   ping,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   accounts,
   categories,
   navi,
+  auditlog,
   form: formReducer     // <---- Mounted at 'form'
   
   //,visibilityFilter

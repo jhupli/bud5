@@ -19,7 +19,9 @@ public class MapH implements RowMapper<H> {
                 rs.getDate("d"),				
                 rs.getBigDecimal("i"),
 				rs.getInt("c"),
+				rs.getString("c_descr"),
 				rs.getInt("a"),
+				rs.getString("a_descr"),
 				rs.getBoolean("s"),
 				rs.getString("g"),
 				rs.getString("descr")

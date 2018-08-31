@@ -3,6 +3,7 @@ import { Grid, Row, Col} from 'react-bootstrap';
 
 import Categories from '../categories/categories'
 import Accounts from '../accounts/accounts'
+import AuditLog from '../logs/auditlog'
 
 import Range from './Range'
 import Details from './Details'
@@ -59,6 +60,16 @@ const Cat = () => (
 	</Grid>
 )
 
+const Log = () => (
+	<Grid>
+		 	<Row>
+				<Col md={12}>
+					<AuditLog />
+				</Col>
+			</Row>
+	</Grid>
+)
+
 class Content extends React.Component {
 	render() {
 		//console.log('render' + this.props.view);
@@ -72,6 +83,9 @@ class Content extends React.Component {
 					</div>
 					<div style={{display : (this.props.view === 'c') ? '' : 'none'}}>
 							<Cat /> 
+					</div>
+					<div style={{display : (this.props.view === 'l') ? '' : 'none'}}>
+							<Log /> 
 					</div>
 				</div>
 		)

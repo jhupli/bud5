@@ -10,7 +10,7 @@ class Categories extends React.Component {
 	    this.state = {
 	        categories: []
 	    }
-	    this.props.categoriesLoad()
+	    //this.props.categoriesLoad() //loaded as needed
 	}
 	
 	render() {

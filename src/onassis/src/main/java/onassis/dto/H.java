@@ -12,12 +12,14 @@ public class H {
     Date d;
     BigDecimal i;
     Integer c;
+    String c_descr;
     Integer a;
+    String a_descr;
     Boolean s;
 	String g;
 	String descr;
        
-    public H(Timestamp hd, String op, Integer rownr, Integer id, Date d, BigDecimal i, Integer c, Integer a, Boolean s,
+    public H(Timestamp hd, String op, Integer rownr, Integer id, Date d, BigDecimal i, Integer c, String c_descr, Integer a, String a_descr, Boolean s,
 			String g, String descr) {
 		super();
 		this.hd = hd;
@@ -27,7 +29,9 @@ public class H {
 		this.d = d;
 		this.i = i;
 		this.c = c;
+		this.c_descr = c_descr;
 		this.a = a;
+		this.a_descr = a_descr;
 		this.s = s;
 		this.g = g;
 		this.descr = descr;
@@ -89,12 +93,28 @@ public class H {
 		this.c = c;
 	}
 
+	public String getC_descr() {
+		return c_descr;
+	}
+
+	public void setC_descr(String c_descr) {
+		this.c_descr = c_descr;
+	}
+
 	public Integer getA() {
 		return a;
 	}
 
 	public void setA(Integer a) {
 		this.a = a;
+	}
+
+	public String getA_descr() {
+		return a_descr;
+	}
+
+	public void setA_descr(String a_descr) {
+		this.a_descr = a_descr;
 	}
 
 	public Boolean getS() {

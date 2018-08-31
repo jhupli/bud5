@@ -28,11 +28,15 @@ class MenuBar extends React.Component{
 				                	{this.props.view === 'a' ? 'X' : '' } Accounts
 				                </MenuItem>
 				                <MenuItem divider />
-				                <MenuItem eventKey={3.4}> Settings </MenuItem>
+				                <MenuItem eventKey={3.4} onSelect={(e) => {this.props.showView('l')}}>
+				                	{this.props.view === 'l' ? 'X' : '' } Logs
+				                </MenuItem>
+				                <MenuItem divider />
+				                <MenuItem eventKey={3.5}> Settings </MenuItem>
 				            </NavDropdown>
 				        </Nav>
 				        <Nav pullRight>
-				            <NavItem eventKey={1} href="#"> Logout </NavItem>
+				            <NavItem eventKey={2} href="#"> Logout </NavItem>
 				        </Nav>
 				    </Navbar.Collapse>
 				</Navbar>

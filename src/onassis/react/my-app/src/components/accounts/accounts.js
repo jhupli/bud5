@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Panel } from 'react-bootstrap'
 import AccountsEditor from '../accountsEditor/AccountsEditor'
-import { load } from '../../actions/accounts'
 
 /*
  * package test;
@@ -58,11 +57,4 @@ const mapStateToProps = (store) => {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return ({
-        accountsLoad: () => {
-            dispatch(load())
-        }       
-    })
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Accounts)
+export default connect(mapStateToProps)(Accounts)

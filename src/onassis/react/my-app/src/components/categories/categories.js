@@ -2,15 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Panel } from 'react-bootstrap'
 import CategoriesEditor from '../categoriesEditor/CategoriesEditor'
-import { load } from '../../actions/categories'
 
 class Categories extends React.Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {
-	        categories: []
-	    }
-	    //this.props.categoriesLoad() //loaded as needed
 	}
 	
 	render() {
@@ -37,11 +32,4 @@ const mapStateToProps = (store) => {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return ({
-        categoriesLoad: () => {
-            dispatch(load())
-        }       
-    })
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Categories)
+export default connect(mapStateToProps)(Categories)

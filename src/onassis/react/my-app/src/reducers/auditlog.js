@@ -10,7 +10,7 @@ const reducer = (state = [], action) => {
       console.log("handling AUDITLOG_RESPONSE")
       return Object.assign({}, state, {
     	 fetching: false,
-         accounts: action.auditlog.logentries,
+         logentries: action.payload.logentries,
        })
     default:
       return state

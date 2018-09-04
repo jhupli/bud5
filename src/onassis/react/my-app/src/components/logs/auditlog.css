@@ -1,0 +1,176 @@
+ #auditlog_table  { display: block; }
+
+/*#auditlog_table label
+	{ 
+	  display: flex;
+	  width: 30px;
+	  margin-left: 0;
+	}
+*/
+
+#auditlog_table th
+	{ 
+	  font-size: 10px;
+	  height: 20px;
+	  padding: 0px 0px 0px 4px;
+	 
+	}
+
+#auditlog_table td
+	{ 
+	  font-size: 10px;
+	  height: 20px;
+	  padding: 0px 0px 0px 4px;
+	  color: lightgray;
+      font-style: italic;
+	}
+
+
+
+
+ /* START */
+ #auditlog_table  table {
+            width: 100%;
+ }
+
+ #auditlog_table  thead,  
+ #auditlog_table tbody,  
+ #auditlog_table tr,  
+ #auditlog_table td,  
+ #auditlog_table th { 
+ 	border: none;
+ 	margin: 0px 0px 0px 0px;
+ 	display: block; 
+ }
+
+
+ #auditlog_table tr:after {
+            content: ' ';
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+ #auditlog_table tbody {
+     /*  CHG-1     height: 375px;
+            overflow-y: auto;*/
+        }
+
+ #auditlog_table  thead {
+        }
+
+
+ #auditlog_table tbody td,
+ #auditlog_table thead th {
+            float: left;
+        }
+        
+.actualRow
+{
+	 color: black !important;
+     font-style: normal !important;
+     font-weight: 600;
+}
+
+.updatedRow
+{
+	background-color: lightyellow; /*!important;*/
+	border-color: #c2dac3 !important;
+}
+
+
+#auditlog_table .w_header 
+	{ 
+		width: 118px;
+	}
+			
+#auditlog_table .w_cell 
+	{ 
+		width: 118px;
+		font-style: normal !important;
+		/*font-family: "Courier New", Courier, monospace;
+		font-style: normal !important;
+		font-size: 8px;*/
+	}
+
+#auditlog_table .op_header 
+	{ 
+		width: 65px;
+	}
+			
+#auditlog_table .op_cell 
+	{ 
+		width: 65px;
+		font-style: normal !important;
+		/*font-family: "Lucida Console", Monaco, monospace;
+		font-style: normal !important;
+		font-size: 8px;*/
+	}
+	
+#auditlog_table .d_header 
+	{ 
+		width: 60px;
+	}
+			
+#auditlog_table .d_cell 
+	{ 
+		width: 60px;
+	}
+	
+#auditlog_table .i_header 
+	{ 
+		width: 80px;
+		text-align: right;
+	}
+	
+#auditlog_table .i_cell 
+	{ 
+		width: 80px;
+		text-align: right;
+	}
+
+#auditlog_table .c_header,
+#auditlog_table .a_header 
+	{ 
+		width: 115px;
+	}
+
+#auditlog_table .c_cell, 
+#auditlog_table .a_cell
+	{ 
+		width: 115px;
+	}
+
+#auditlog_table .s_header 
+	{ 
+		width: 13px;
+	}
+
+#auditlog_table .s_cell 
+	{ 
+		width: 13px;
+	}
+		
+#auditlog_table .g_header 
+	{ 
+		width: 35px;
+	}
+		
+#auditlog_table .g_cell 
+	{ 
+		width: 35px;
+	}
+
+#auditlog_table .descr_header 
+	{ 
+		width: 30px;
+		
+	}
+			
+#auditlog_table .descr_cell 
+	{ 
+		width: 30px;
+		white-space: nowrap;
+	}
+
+

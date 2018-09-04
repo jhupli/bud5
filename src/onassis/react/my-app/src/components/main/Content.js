@@ -3,7 +3,7 @@ import { Grid, Row, Col} from 'react-bootstrap';
 
 import Categories from '../categories/categories'
 import Accounts from '../accounts/accounts'
-import AuditLog from '../logs/auditlog'
+import Logs from '../logs/logs'
 
 import Range from './Range'
 import Details from './Details'
@@ -64,7 +64,7 @@ const Log = () => (
 	<Grid>
 		 	<Row>
 				<Col md={12}>
-					<AuditLog />
+					<Logs />
 				</Col>
 			</Row>
 	</Grid>

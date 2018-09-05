@@ -11,6 +11,8 @@ const reducer = (state = [], action) => {
       return Object.assign({}, state, {
     	 fetching: false,
          logentries: action.payload.logentries,
+         firstpage: action.payload.firstpage,
+         lastpage: action.payload.lastpage
        })
     default:
       return state

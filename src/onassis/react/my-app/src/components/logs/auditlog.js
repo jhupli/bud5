@@ -7,7 +7,8 @@ import currencyFormat  from '../../util/currency'
 //import { load } from '../../actions/auditlog'
 //import TextField from './TextField'
 import './auditlog.css'
-
+import Spinner from '../main/Spinner'
+import Buttons from './buttons'
 const fields = ['d','i','s','g','c','a','descr']
 
 class AuditLog extends React.Component {
@@ -143,7 +144,7 @@ class AuditLog extends React.Component {
 		<Panel key={'al_panel_'+r.hs[0].id+'_'+r.rownr} >
 	        <Panel.Heading >
 	            <Panel.Title >
-	            	{this.chooseValueF(r.hs[r.rownr], 'o')} at { fiDateTimeMillis(r.hs[r.rownr].hd) } ( id: {r.hs[0].id} )
+	            	{this.chooseValueF(r.hs[r.rownr], 'op')} at { fiDateTimeMillis(r.hs[r.rownr].hd) } ( id: {r.hs[0].id} )
 				</Panel.Title >
 			 </Panel.Heading >	
 			 <Panel.Body>			
@@ -186,9 +187,29 @@ class AuditLog extends React.Component {
 			  </Panel>
 			</div>
 			)*/
+		
 		return(
 			<div>
+				<div>
+					<Panel>
+					  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
+					  		Audit Log <Spinner fetching={this.props.fetching} />
+					  			<span className="pull-right">
+						  			<Buttons />
+						  	    </span>
+					  	</Panel.Heading>
+					 </Panel>
+				 </div>
 				{entries.map((r) => this.renderLogEntry(r))}
+				<div>
+					<Panel>
+					  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
+					  			<span className="pull-right">
+						  			<Buttons />
+						  	    </span>
+					  	</Panel.Heading>
+					 </Panel>
+				 </div>
 			</div>
 		)
 	}
@@ -196,8 +217,8 @@ class AuditLog extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
-    	//TODO
-        logentries: store.auditlog.logentries
+        logentries: store.auditlog.logentries,
+        fetching: store.auditlog.fetching
     }
 }
 

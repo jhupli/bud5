@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -270,17 +271,41 @@ public class HelloController {
     } 
     
     @RequestMapping("history") 
-    List<LogEntry> history() throws SQLException, ParseException {
-    	//String hidQuery = "SELECT hd, op, rownr, id, d, i, a, c, s, g, descr FROM h ORDER BY hd DESC";
-    	String hidQuery = "SELECT id, rownr FROM h ORDER BY hd DESC";
+    List<LogEntry> history(
+    		@RequestParam(required=false) Long s,
+    		@RequestParam(required=false) Long e
+    	) throws SQLException, ParseException {
+    	
+    	if( s!= null && e != null) {
+    		return null;
+    	}
+    	
+    	Long t = null;
+    	String hidQuery = "SELECT id, rownr FROM h";
+    	if(s != null) {
+    		hidQuery += " WHERE HD < ?  ORDER BY hd DESC";
+    		t = s;
+    	} else if(e != null) {
+    		hidQuery += " WHERE HD > ?  ORDER BY hd ASC";
+    		t = e;
+    	} else {
+    		hidQuery += " ORDER BY hd DESC";
+    	}
+    	
+    	hidQuery += " fetch first 51 rows only"; //note: this must be page_size + 1 in order for client to detect last/first page
+    	
     	List<LogEntry> allhistory = new ArrayList<LogEntry>();
         try (
                 Connection conn = this.ds.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(hidQuery);
+  
         ) {
+        	if(t != null) {
+        		pstmt.setTimestamp(1, new java.sql.Timestamp(t));
+        	}
             try (ResultSet result = pstmt.executeQuery()) {
             	while (result.next()) {
-            		String paymetsQuery = "SELECT hd, op, rownr, id, d, i, c, c_descr, a, a_descr, s, g, descr FROM h where id=:id ORDER BY rownr ASC";
+            		String paymetsQuery = "SELECT hd, op, rownr, id, d, i, c, c_descr, a, a_descr, s, g, descr FROM h where id=:id ORDER BY rownr ASC ";
             		MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", result.getInt("id"));
             		List<H> history= jdbcTemplate.query(paymetsQuery, 
                         namedParameters,
@@ -288,6 +313,9 @@ public class HelloController {
             		allhistory.add(new LogEntry(history, result.getInt("rownr")));
             	}
             }
+        }
+        if(null != e) {
+            Collections.reverse(allhistory);
         }
     	return allhistory;
     }

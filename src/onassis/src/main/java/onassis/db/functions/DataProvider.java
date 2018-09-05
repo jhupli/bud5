@@ -57,7 +57,7 @@ public class DataProvider {
 		
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		
-		int count = 1000;
+		int count = 500;
 		
 		long MAX_I = 1120;
 		long MIN_I = -1100;

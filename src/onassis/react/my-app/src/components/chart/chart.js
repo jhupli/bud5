@@ -18,7 +18,7 @@ import currencyFormat from '../../util/currency'
 var dateFormat = require('dateformat');
 var selectedDayOrAccount = -1
 
-var SELECTONHOVER = true
+var SELECTONHOVER = false
 
 class Chart extends React.Component {
     constructor(props) {
@@ -106,7 +106,10 @@ class Chart extends React.Component {
                 x: {
                     type: 'timeseries',
                     tick: {
-                        format: '%d.%m.'
+                    	culling: {
+                    		max: 10 // the number of tick texts will be adjusted to less than this value note: does not work?
+                    	},
+                        format: x => {return dateFormat(x, "dd.mm.yyyy ddd")}
                     }
                 }
             },
@@ -141,17 +144,21 @@ class Chart extends React.Component {
     }
     
     onmouseover(d) {
-    	//console.log(d)
-    	if(d.id === "I" && daydiff(d.x, this.selectedDate) !== 0) {
-    		 if (this.timer) {
-    	       	clearTimeout(this.timer)
-    	    }
-    		var f = () => {
-    			this.dateselect(d.x)
-    		}
-    		
-    		console.log("FIRE:" + d.id+ " " + d.x + " " + this.selectedDate)
-	        this.timer = setTimeout(f, 300)
+    	console.log(d)
+    	if(SELECTONHOVER) {
+	    		if(d.id === "I" && daydiff(d.x, this.selectedDate) !== 0) {
+	    		 if (this.timer) {
+	    	       	clearTimeout(this.timer)
+	    	    }
+	    		var f = () => {
+	    			this.dateselect(d.x)
+	    		}
+	    		
+	    		console.log("FIRE:" + d.id+ " " + d.x + " " + this.selectedDate)
+		        this.timer = setTimeout(f, 300)
+	    	}
+    	} else {
+    		this.dateselect(d.x)
     	}
     	/*
     	if (this.timer) {

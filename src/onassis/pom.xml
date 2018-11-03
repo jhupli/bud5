@@ -74,7 +74,13 @@
             <version>${rest.assured.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
+		<dependency>
+		    <groupId>com.opencsv</groupId>
+		    <artifactId>opencsv</artifactId>
+		    <version>4.2</version>
+		</dependency>
+
     </dependencies>
     <build>
         <plugins>

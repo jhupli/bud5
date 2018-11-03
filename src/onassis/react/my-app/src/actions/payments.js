@@ -17,6 +17,7 @@ const PAYMENTS_RESPONSE = 'PAYMENTS_RESPONSE'
 const paymentsResponseAction = (payments, balances) => ({
     type: PAYMENTS_RESPONSE,
     payload: {
+    	"params" : params,
     	"queryType" : params.e,
         "payments": payments,
         "balances": balances

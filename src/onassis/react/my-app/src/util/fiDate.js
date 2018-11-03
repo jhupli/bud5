@@ -11,7 +11,7 @@ function toDateFi(fiDate) {
 }
 
 function fiDateTimeMillis(millis) {
-	
+		//TODO: any more elegant ways?
 		var d = new Date(millis)
 		
 		var day = '00' + d.getDate()
@@ -36,8 +36,8 @@ function fiDateTimeMillis(millis) {
 		m + '.' +
 		d.getFullYear() + ' ' +
 		h + ':' +
-		mi + '.'+
-		sec + ',' +
+		mi + ':'+
+		sec + '.' +
 		mspart 
 		return r
 }

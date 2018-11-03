@@ -100,8 +100,8 @@ class Minibars extends React.Component {
 }
 const mapStateToProps = (store) => {
 	  return {
-  		start: store.dateRange.s,
-		end: store.dateRange.e,
+  		start: store.daterange.s,
+		end: store.daterange.e,
 		balances: store.minibars.balances
 	  }
   }

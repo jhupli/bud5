@@ -307,8 +307,8 @@ Pie.defaultProps = {
 }
 const mapStateToProps = (store) => {
     return {
-        start: store.dateRange.s,
-        end: store.dateRange.e,
+        start: store.daterange.s,
+        end: store.daterange.e,
         slices: store.pie.slices,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants

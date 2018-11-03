@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
 import ping from './ping'
-import dateRange from './daterange'
+import daterange from './daterange'
 import minibars from './minibars'
 import chart from './chart'
 import pie from './pie'
@@ -17,7 +17,7 @@ import auditlog from './auditlog'
 
 const rootReducer = combineReducers({
   ping,
-  dateRange,
+  daterange,
   minibars,
   chart,
   pie,

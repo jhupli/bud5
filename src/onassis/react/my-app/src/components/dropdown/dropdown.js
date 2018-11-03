@@ -57,13 +57,13 @@ class Dropdown extends React.Component {
 					 whiteSpace: 'nowrap',
 					 maxWidth: (width-50)+'px'
 	    		}}>
-				<span style = {{'marginRight':'5px', 'marginLeft':'5px'}}>
-					<FontAwesome name = 'square' style = {{'color': item.color}} />
-				</span>
-    			<span>
-    				{item.label}
-    			</span>
-    		</span>
+					<span style = {{'marginRight':'5px', 'marginLeft':'5px'}}>
+						<FontAwesome name = 'square' style = {{'color': item.color}} />
+					</span>
+	    			<span>
+	    				{item.label}
+	    			</span>
+	    		</span>
 			</div>
     	)    	
     }

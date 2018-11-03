@@ -1,6 +1,9 @@
 package onassis;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
@@ -17,8 +20,11 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +38,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.opencsv.CSVWriter;
+import com.opencsv.ResultSetHelperService;
 
 import lombok.Data;
 import onassis.db.functions.Balance;
@@ -64,7 +73,7 @@ public class HelloController {
     
     @RequestMapping("/")
     String hello() {
-        return "Hello World, This is Onassis! Can you here me?";
+        return "Hello World, This is Onassis 5.0.0 (Keitele) ! Can you here me?";
     }
     
     @RequestMapping("/ping")
@@ -79,30 +88,7 @@ public class HelloController {
     	History.ds = this.ds;
     }
 
-    @Data
-    static class Result {
-        public int getLeft() {
-			return left;
-		}
-		public int getRight() {
-			return right;
-		}
-		public long getAnswer() {
-			return answer;
-		}
-		public Result(int left, int right, long answer) {
-			super();
-			this.left = left;
-			this.right = right;
-			this.answer = answer;
-		}
-        
-		private final int left;
-        private final int right;
-        private final long answer;
-    }
-
-    
+    //Rowmappers:
     MapB rmB = new MapB();
     MapP rmP = new MapP();
     MapC rmC = new MapC();
@@ -110,6 +96,51 @@ public class HelloController {
     MapH rmH = new MapH();
     MapSlice rmSlice = new MapSlice();
 
+    @RequestMapping(value="/log", produces="application/zip")
+    public void zipAuditLog(HttpServletResponse response) throws IOException, SQLException {
+
+    //setting headers  
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.addHeader("Content-Disposition", "attachment; filename=\"janne.zip\"");
+
+    ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
+
+    // create a list to add files to be zipped
+    //ArrayList<File> files = new ArrayList<>(2);
+    //files.add(new File("README.md"));
+    //ZipEntry ze = new ZipEntry(
+    		
+    
+    //Jh
+    Writer writer = new OutputStreamWriter(zipOutputStream);
+    CSVWriter csvWriter = new CSVWriter(writer);
+    zipOutputStream.putNextEntry(new ZipEntry("auditlog.csv"));
+
+
+    ResultSetHelperService helper = new ResultSetHelperService();
+    helper.setDateTimeFormat("dd.MM.yyyy HH:mm:ss.SSS");
+    helper.setDateFormat("dd.MM.yyyy");
+    csvWriter.setResultService(helper);
+    String query = "SELECT hd, op, id, rownr, d, i, c, c_descr, a, a_descr, s, g, descr FROM h ORDER BY hd ASC, rownr ASC ";
+            try (
+            		
+                Connection conn = this.ds.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(query);
+  
+        ) {
+            try (ResultSet result = pstmt.executeQuery()) {
+            	while (result.next()) {
+            		csvWriter.writeAll(result, false);
+            	}
+            }
+     } 
+     csvWriter.flush();
+     zipOutputStream.closeEntry();
+     csvWriter.close();
+     writer.close();
+     zipOutputStream.close();
+
+}
     
     // SQL sample
 

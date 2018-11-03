@@ -34,8 +34,8 @@ class Buttons extends React.Component{
 		     <Button onClick={this.next} disabled={this.props.lastpage}>
 		     	<FontAwesome name='caret-right'/>
 		     </Button>
-		     <Button onClick={this.next}>
-		     	Download
+		     <Button href="http://localhost:8080/log">
+		     	<FontAwesome name='download'/>
 		     </Button>
 	    </div>
 	    )

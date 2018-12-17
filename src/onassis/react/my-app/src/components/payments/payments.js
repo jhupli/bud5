@@ -15,14 +15,14 @@ class Payments extends React.Component {
 	
 	render() {
 		return(
-		<div>
-			<PaymentsEditor initPayments={this.props.payments} />
-		</div>)
+			<PaymentsEditor initPayments={this.props.payments} queryType={this.props.queryType} />
+		)
 	}
 }
 
 const mapStateToProps = (store) => {
     return {
+    	queryType: store.payments.queryType,
         payments: store.payments.payments,
         balances: store.payments.balances //TODO: needed?, if not remove from backend too!
     }

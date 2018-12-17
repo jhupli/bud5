@@ -3,7 +3,7 @@ import {SimpleSelect, MultiSelect} from 'react-selectize'
 import 'react-selectize/themes/index.css'
 import { get_constants } from '../../actions/constants'
 import { connect } from 'react-redux'
-import findInArray from '../../util/findInArray'
+import { findInArray } from '../../util/findInArray'
 
 var FontAwesome = require('react-fontawesome');
 
@@ -49,7 +49,10 @@ class Dropdown extends React.Component {
 			return
 		}
     	return (
-			<div >
+			<span style={{
+	 				 display: 'block', 
+	 				 whiteSpace: 'nowrap',
+			}}>
 				<span style={{
 	 				 display: 'block', 
 					 textOverflow: 'ellipsis',
@@ -64,7 +67,7 @@ class Dropdown extends React.Component {
 	    				{item.label}
 	    			</span>
 	    		</span>
-			</div>
+			</span>
     	)    	
     }
 	

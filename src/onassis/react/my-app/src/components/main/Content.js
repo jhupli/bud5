@@ -26,8 +26,7 @@ const Main = () => (
 					<DiagramA /> 
 				</Col>
 
-						
-				<Col xsHidden smHidden md={4} >
+				<Col md={4} >
 					<DiagramB /> 
 				</Col>
 									

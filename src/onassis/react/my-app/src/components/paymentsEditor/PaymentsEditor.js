@@ -89,7 +89,8 @@ class PaymentsEditor extends React.Component {
         this.maskedF = this.maskedF.bind(this) //is field masked 
         this.touchedF = this.touchedF.bind(this) //dirty?
         this.isDifferentFromInitialF = this.isDifferentFromInitialF.bind(this)        
-
+        this.drawBalanceF = this.drawBalanceF.bind(this)
+        
         //choose right value for render
         this.chooseValueF = this.chooseValueF.bind(this)
 
@@ -204,7 +205,7 @@ class PaymentsEditor extends React.Component {
     	}
     }
     
-	changePropertyLF(value, field, index) { //updated on-the-fly, so don't set touched, set initial
+	changePropertyLF(value, field, index) { //updated on-the-fly (ie. lock-field), so don't set touched, set initial
 		var valuesCopy = copyArray(this.state.values)
 		valuesCopy[index].l = value
 		var initialCopy = copyArray(this.state.initial)
@@ -372,6 +373,15 @@ class PaymentsEditor extends React.Component {
 				  			touched = {this.touchedF(index, 'd')}
 				    	 />
 				    </div>)
+    	case 'b' :  return(
+    				<div>
+     					<CurrencyField 
+						  		value = {'' + this.chooseValueF(index, 'b')}
+					  			field = 'b'
+						  		readOnly = {true}
+					  			touched = {false}
+						 />	
+     				</div>)
     	case 'i' :
 					return(
 				  	<div>
@@ -414,8 +424,7 @@ class PaymentsEditor extends React.Component {
 				  			linkCb = {this.groupLoad}
 					  	/>
 				    </div>)
-    	case 'c' :
-     	case 'a' :
+     	case 'c' :
 					return(
 				  	<div>
 				  		<DropdownField 
@@ -423,12 +432,26 @@ class PaymentsEditor extends React.Component {
 				  			value = {value}
 				  			readOnly = {this.readOnlyR(index, field)}
 				  			placeholder = 'select'
-				  			field = {field}
+				  			field = 'c'
 				  			index = {index}
 				  			touched = {this.touchedF(index, field)}
-				  			constants_id = {field === 'a' ? ACCOUNT : CATEGORY}
+				  			constants_id = {CATEGORY}
 					  	/>
 				    </div>)
+     	case 'a' :
+ 					return(
+					  	<div style={{"display": "inline-flex", "whiteSpace": "nowrap"}}>
+					  		<DropdownField 
+					  			onValueChanged = {this.changePropertyF}
+					  			value = {value}
+					  			readOnly = {this.readOnlyR(index, field)}
+					  			placeholder = 'select'
+					  			field = 'a'
+					  			index = {index}
+					  			touched = {this.touchedF(index, field)}
+					  			constants_id = {ACCOUNT}
+						  	/>
+					    </div>)
      	case 'descr' :
 					return(
 				  	<div>
@@ -747,6 +770,7 @@ class PaymentsEditor extends React.Component {
 	  			</th>
 		  		<th className={this.thClassName('l')} />
 	  			{this.th('d', 'Date')}
+		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
 	  			{this.th('i', 'Pay')}
 	  			<th className={this.thClassName('s')} />
 	  			{this.th('g', 'Ref')}
@@ -844,7 +868,12 @@ class PaymentsEditor extends React.Component {
 			   (this.state.errors[index][field] ? ' error' : '')
 	}
 	
+	drawBalanceF() {
+		return( this.props.queryType === 'a' && this.pristine )
+	}
+	
 	td(index, field) {
+		if( field ==='b' && !this.drawBalanceF()) return
 		return (
 		<td key={index+'_'+field} className={this.tdClassName(index, field)}>
 		      		{this.renderContentF(field, index)}	
@@ -857,7 +886,21 @@ class PaymentsEditor extends React.Component {
 			   (oneIsTrue(this.state.masked) ? ' header_tall' : '')
 	}
 	
-	th(field, label = null) {
+	th(field, label = null, sort = true) {
+		if(!sort) {
+			return(
+			<th className={this.thClassName(field)}>
+	  			<div>
+		  			<span style={{display: "flex"}} >
+		  				<div  style={{marginTop: 8}}>
+		  					<a>{label !== null ? label : ''}</a>
+		  				</div>
+		  			</span>
+		  		</div>
+	  		</th>)
+		}
+		
+		
 		var arrow = (<FontAwesome name = {this.state.asc ? 'sort-asc' : 'sort-desc'} />)
 
 		var sortField = (<div>{this.state.sort === field ? arrow : ''}</div>)
@@ -927,21 +970,15 @@ class PaymentsEditor extends React.Component {
 		return(
 			<div>
 		        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
-
-			{/*
-				<form>
-				*/}
-					{this.renderPaymentsT()}
-					{/*
-			   </form>
-			   */}	
+				{this.renderPaymentsT()}
 		   </div>
 		)
 	}
 }
 
 PaymentsEditor.defaultProps = {
-		initPayments: []
+		initPayments: [],
+		queryType: null
 }
 
 function mapDispatchToProps(dispatch) {

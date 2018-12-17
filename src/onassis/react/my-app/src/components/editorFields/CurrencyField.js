@@ -59,7 +59,7 @@ class CurrencyField extends React.Component {
 	}
 	
 	render() {
-		const {id, readOnly, field, index, onValueChanged, placeholder, touched} = this.props
+		const {id, readOnly, field, index, onValueChanged, placeholder, touched, fontSize} = this.props
 
 		return (
 	    <div>
@@ -74,6 +74,7 @@ class CurrencyField extends React.Component {
 	          type="text"
 	          className="form-control" 
 	    	  style={{
+	    		  'fontSize': fontSize,
 	    		  'textAlign': 'right', 
 	    		  //'color' : this.state.currencyValue && this.state.currencyValue.startsWith('-') ? 'red' : 'green',
 	    		  'color' : this.state.currencyValue && (this.state.currencyValue.substr(0,1) === '-') ? 'red' : 'green',
@@ -94,7 +95,8 @@ CurrencyField.defaultProps = {
 		readOnly : false,
 		field: null,
 		index: null,
-		touched: false
+		touched: false,
+		fontSize: 'inherit'
 }
 
 export default CurrencyField

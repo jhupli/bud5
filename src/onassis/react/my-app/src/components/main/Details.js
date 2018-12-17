@@ -5,7 +5,9 @@ import Payments from '../payments/payments'
 import PaymentSelection from '../paymentSelection/paymentSelection'
 import Spinner from './Spinner'
 import { get_constants } from '../../actions/constants'
-import findInArray from '../../util/findInArray'
+import { findInArray, findIndexInArray } from '../../util/findInArray'
+
+import currencyFormat from '../../util/currency'
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
@@ -30,6 +32,9 @@ class Details extends React.Component{
 		    		accs : nextProps.constants['cat']
 		    })
     	}
+    	
+    	
+    	
     }
 	render(){
 		var info = '';
@@ -69,10 +74,32 @@ class Details extends React.Component{
 				info = 'Group: ' + this.props.params.g
 				break;
 			case 'l' : 
-				info = 'All selected'
+				info = 'Checked'
 				break;
-
 		}
+		var a_table = null;
+		
+		if(this.props.queryType === 'd' && this.props.curves) {
+			var d = dateFormat(this.props.params.d, 'yyyymmdd') + 'T00'
+			var ix = findIndexInArray( this.props.curves[0], n => { return d === n})
+			var trs = []
+			for(var i=3; i<this.props.curves.length; i++) {
+				var acc = findInArray(this.props.constants['acc'], n => { return this.props.curves[i][0] == n.value})
+				trs.push(
+						<tr className='c3-tooltip-name--data2'>
+			                      <td className="name"><span style={{backgroundColor: acc.color}}></span></td>
+			                      <td className="value" >{currencyFormat(this.props.curves[i][ix])}</td>
+			            </tr>
+			     )
+			}
+			a_table = 
+				        <table class='c3-tooltip'>
+			              <tbody>
+			              	  {trs}
+			              </tbody>
+			            </table>
+		}
+		
 		return(
 			<div>
 			  <Panel >
@@ -85,7 +112,16 @@ class Details extends React.Component{
 				  	</span>
 			  	</Panel.Heading>
 			  	<Panel.Body>					
-					<Payments />
+			  	<table>
+			  	  <tr>
+        			<td style={{width: '100%'}}>
+	        			<Payments />
+	        		</td>
+	        		<td style={{width: '30px', verticalAlign: 'top', paddingLeft: '4px'}}>
+	        		{a_table}
+	        		</td>
+	        	   </tr>
+        	      </table>
 				</Panel.Body>
 			  </Panel>
 			</div>					
@@ -99,7 +135,8 @@ const mapStateToProps = (store) => {
         queryType: store.payments.queryType,
         params: store.payments.params,
         refreshTime:  store.constants.refreshTime,
-        constants: store.constants.constants
+        constants: store.constants.constants,
+        curves: store.chart.curves
     }
 }
 

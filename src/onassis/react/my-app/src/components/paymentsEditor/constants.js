@@ -3,7 +3,7 @@ import currencyFormat  from '../../util/currency'
 
 var dateFormat = require('dateformat')
 
-const fields = ['d','i','s','g','c','a','descr']
+const fields = ['d','b','i','s','g','c','a','descr']
 
 const defaultValues = {
 	id: null,
@@ -14,7 +14,8 @@ const defaultValues = {
 	a: null,
 	s: true,
 	g: "",
-	descr: ""
+	descr: "",
+	b: null
 }
 
 const initialMaskValues = {
@@ -26,7 +27,8 @@ const initialMaskValues = {
 	a: null,
 	s: true,
 	g: '',
-	descr: ''
+	descr: '',
+	b: null
 }
 
 const 	validators = {
@@ -55,6 +57,9 @@ const 	validators = {
 			return null
 		  },
 	'descr': (value) => {
+			return null
+		  },
+	'b': (value) => {
 			return null
 		  }
 }
@@ -114,7 +119,8 @@ function copyPayment(payment, checkedList, index = null) {
 		a: payment.a,
 		s: payment.s,
 		g: payment.g,
-		descr: payment.descr
+		descr: payment.descr,
+		b: payment.b
 	}
 }
 

@@ -389,7 +389,7 @@ public class HelloController {
         
     	if(e.equals("l") && null != ids) {
 
-    	    final String query = "SELECT id, d, i, a, c, l, s, g, descr FROM P WHERE id in (:ids) ORDER BY a ASC";
+    	    final String query = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b  FROM P WHERE id in (:ids) ORDER BY a ASC";
     	    MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("ids", ids);
     	    
@@ -400,7 +400,7 @@ public class HelloController {
     	
     	if(e.equals("d") && null != d) {
     	    LocalDate day = LocalDate.parse(d);
-    	    final String query = "SELECT id, d, i, a, c, l, s, g, descr FROM P WHERE d=:day ORDER BY a ASC";
+    	    final String query = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d=:day ORDER BY a ASC";
     	    MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("day", day.format(sqldf));
     	    
@@ -418,15 +418,15 @@ public class HelloController {
                     .addValue("d2", day2.format(sqldf))
                     .addValue("a", a);
             
-            final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr FROM P WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
+            final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
             paymentsList = jdbcTemplate.query(paymetsQuery, 
                 namedParameters,
                 new RowMapperResultSetExtractor<P>(rmP));
-            
+            /*
             final String balancesQuery = "SELECT d, b, i, e, a, smallestb FROM b WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
             balancesList = jdbcTemplate.query(balancesQuery, 
                 namedParameters,
-                new RowMapperResultSetExtractor<B>(rmB));
+                new RowMapperResultSetExtractor<B>(rmB));*/
         }
         
         if(e.equals("c") && null != c && null != d1 && null != d2) {
@@ -438,7 +438,7 @@ public class HelloController {
                     .addValue("d2", day2.format(sqldf))
                     .addValue("c", c);
             
-            final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr FROM P WHERE d BETWEEN :d1 and :d2 AND c=:c ORDER BY d ASC";
+            final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d BETWEEN :d1 and :d2 AND c=:c ORDER BY d ASC";
             paymentsList = jdbcTemplate.query(paymetsQuery, 
                 namedParameters,
                 new RowMapperResultSetExtractor<P>(rmP));
@@ -448,7 +448,7 @@ public class HelloController {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("g", g);
             
-            final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr FROM P WHERE g=:g ORDER BY d ASC";
+            final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE g=:g ORDER BY d ASC";
             paymentsList = jdbcTemplate.query(paymetsQuery, 
                 namedParameters,
                 new RowMapperResultSetExtractor<P>(rmP));

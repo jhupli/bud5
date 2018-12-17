@@ -10,7 +10,7 @@ import currencyFormat from '../../util/currency'
 import initials from '../../util/initials'
 import { get_constants } from '../../actions/constants'
 
-import findInArray from '../../util/findInArray'
+import { findInArray } from '../../util/findInArray'
 
 import './pie.css'
 

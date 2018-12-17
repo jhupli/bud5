@@ -11,9 +11,10 @@ import { set_daterange, daterange_next_block, daterange_prev_block } from '../..
 
 import '../../../node_modules/c3/c3.min.css'
 import './style_region.css'
-import findInArray from '../../util/findInArray'
+import {findInArray} from '../../util/findInArray'
 import currencyFormat from '../../util/currency'
 
+var d3 = require('d3');
 
 var dateFormat = require('dateformat');
 var selectedDayOrAccount = -1
@@ -52,8 +53,11 @@ class Chart extends React.Component {
         this.onmouseout = this.onmouseout.bind(this)
         this.find_ix = this.find_ix.bind(this)
         this.chartDatetoDate = this.chartDatetoDate.bind(this)
+        this.c3onRendered = this.c3onRendered.bind(this)
+        
         this.timer = null
         this.chart_config = {
+        	onrendered: this.c3onRendered,
             bindto: '#chart',
             /*grid: {
                 y: {
@@ -74,7 +78,10 @@ class Chart extends React.Component {
                 }
             },
             tooltip: {
-                grouped: true // Default true
+                grouped: true, // Default true
+                format: {
+                	value: function (value, ratio, id, index) { return currencyFormat(value) }
+                }
             },
             /*regions: [
                 {start:"20180202T12", end: "20180203T12"},
@@ -136,7 +143,42 @@ class Chart extends React.Component {
         }
         //this.props.chartLoad(this.state.start ,this.state.end)
     }
+    c3onRendered() {
+    	this.chart_config.data.columns[0].forEach((el, i) => {
+    		if(i>0) {
+    			var svg = d3.selectAll('#chart').select('.c3-event-rect-'+(i-1))
+    			var dd=this.chartDatetoDate(el)
+    			svg[0][0].onclick = () => {
 
+    				debugger
+    				console.log('^'+dd)
+    				this.dateselect(dd)
+    			    		}
+    		}
+    	})
+    	/*
+    	for(var i=1; i<this.chart_config.data.columns[0].length; i++) {
+    		var svg = d3.selectAll('#chart').select('.c3-event-rect-'+(i-1))
+    		var d=this.chart_config.data.columns[0][i];
+    		var dd=this.chartDatetoDate(d)
+    		svg[0][0].onclick = () => {
+    			var t = i;
+    			debugger
+    			console.log('^'+dd)
+    			this.dateselect(dd)
+    		}
+    	}*/
+    	/*
+    	var svg = d3.selectAll("#chart").select(".c3-event-rect-0")
+    	svg[0][0].onclick = x => {console.log(x)}
+    	svg = d3.selectAll("#chart").select(".c3-event-rect-1")
+    	svg[0][0].onclick = x => {
+    		console.log(this.chartDatetoDate(this.chart_config.data.columns[0][2]))
+    		this.dateselect(this.chartDatetoDate(this.chart_config.data.columns[0][2]))
+    	}*/
+    	
+    	
+    }
     onmouseout() {
         if (this.timer) {
             clearTimeout(this.timer)
@@ -179,6 +221,7 @@ class Chart extends React.Component {
    
     
     chartDatetoDate(d) {
+    	console.log('*'+d)
     	var year = d.substring(0,4)
     	var month = d.substring(4,6) - 1
     	var day = d.substring(6,8)

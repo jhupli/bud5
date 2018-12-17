@@ -135,7 +135,18 @@ input[type="text"]:disabled {
 		width: 112px;
 		padding-top: 7px;
 	}
+
+#payments_table .b_header 
+	{ 
+		width: 97px;
+	}
 	
+#payments_table .b_cell 
+	{ 
+		width: 97px;
+		padding-top: 7px;
+	}
+		
 #payments_table .i_header 
 	{ 
 		width: 97px;
@@ -147,13 +158,21 @@ input[type="text"]:disabled {
 		padding-top: 7px;
 	}
 
-#payments_table .c_header,
-#payments_table .a_header 
+#payments_table .c_header
 	{ 
 		width: 162px;
 	}
 
-#payments_table .c_cell, 
+#payments_table .a_header 
+	{ 
+		width: 162px;
+	}
+	
+#payments_table .c_cell 
+	{ 
+		width: 162px;
+	}
+
 #payments_table .a_cell
 	{ 
 		width: 162px;

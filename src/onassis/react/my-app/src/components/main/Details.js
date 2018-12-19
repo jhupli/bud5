@@ -86,14 +86,14 @@ class Details extends React.Component{
 			for(var i=3; i<this.props.curves.length; i++) {
 				var acc = findInArray(this.props.constants['acc'], n => { return this.props.curves[i][0] == n.value})
 				trs.push(
-						<tr className='c3-tooltip-name--data2'>
+						<tr className='c3-tooltip-name--data2' key={acc.value}>
 			                      <td className="name"><span style={{backgroundColor: acc.color}}></span></td>
 			                      <td className="value" >{currencyFormat(this.props.curves[i][ix])}</td>
 			            </tr>
 			     )
 			}
 			a_table = 
-				        <table class='c3-tooltip'>
+				        <table className='c3-tooltip'>
 			              <tbody>
 			              	  {trs}
 			              </tbody>
@@ -113,14 +113,16 @@ class Details extends React.Component{
 			  	</Panel.Heading>
 			  	<Panel.Body>					
 			  	<table>
-			  	  <tr>
-        			<td style={{width: '100%'}}>
-	        			<Payments />
-	        		</td>
-	        		<td style={{width: '30px', verticalAlign: 'top', paddingLeft: '4px'}}>
-	        		{a_table}
-	        		</td>
-	        	   </tr>
+			  	  <tbody>
+				  	  <tr>
+	        			<td style={{width: '100%'}}>
+		        			<Payments />
+		        		</td>
+		        		<td style={{width: '30px', verticalAlign: 'top', paddingLeft: '4px'}}>
+		        		{a_table}
+		        		</td>
+		        	   </tr>
+	        	   </tbody>
         	      </table>
 				</Panel.Body>
 			  </Panel>

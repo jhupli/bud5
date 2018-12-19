@@ -527,6 +527,7 @@ class PaymentsEditor extends React.Component {
 		switch(this.state.sort) {
 		case 'i': 
 		//TODO: a:n ja c:n tekstiarvolla sorttaus ei id:llä
+		// eslint-disable-next-line
 		case 'a':
 		case 'c':
 			return (a, b) => {

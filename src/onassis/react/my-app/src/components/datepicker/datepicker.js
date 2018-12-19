@@ -74,13 +74,12 @@ class DatePicker extends React.Component {
   }
   
   componentWillReceiveProps(nextProps){
-//	    console.log('componentWillReceiveProps' + this.props.componentWillReceiveProps)
-	    
+	    //console.log('componentWillReceiveProps' + this.props.componentWillReceiveProps)
 	    if(nextProps.value) {
 	    	//console.log("VALUE=" + nextProps.value)
 	    	$('#' + this.props.pickerName).data('daterangepicker').setStartDate(nextProps.value)
 	    	$('#' + this.props.pickerName).data('daterangepicker').setEndDate(nextProps.value)
-	    } else if (this.props.componentWillReceiveProps) {
+	    } else if (nextProps.start) {
 	    	  //console.log("START=" + nextProps.start)
 			  $('#' + this.props.pickerName).data('daterangepicker').setStartDate(nextProps.start)
 			  $('#' + this.props.pickerName).data('daterangepicker').setEndDate(nextProps.end)

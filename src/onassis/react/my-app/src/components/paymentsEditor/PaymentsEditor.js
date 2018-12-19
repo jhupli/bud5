@@ -150,7 +150,7 @@ class PaymentsEditor extends React.Component {
 		this.msg.show('SAVE YOUR CHANGES, OR RESET FIRST!', {
 	      time: 5000,
 	      type: 'success',
-	      icon: <img src="stop.png" />
+	      icon: <img src="stop.png" alt="SAVE YOUR CHANGES, OR RESET FIRST!"/>
 	    })
 	 }
 
@@ -158,7 +158,7 @@ class PaymentsEditor extends React.Component {
 		this.msg.show('SAVED SUCCESSFULLY', {
 	      time: 2000,
 	      type: 'success',
-	      icon: <img src="yes.png" />
+	      icon: <img src="yes.png" alt="save ok" />
 	    })
 	 }
 	

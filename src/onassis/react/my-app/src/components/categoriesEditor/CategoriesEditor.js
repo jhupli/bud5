@@ -413,7 +413,7 @@ class CategoriesEditor extends React.Component {
 		this.msg.show('SAVED SUCCESSFULLY', {
 	      time: 2000,
 	      type: 'success',
-	      icon: <img src="yes.png" />
+	      icon: <img src="yes.png" alt="save ok"/>
 	    })
 	 }
 	

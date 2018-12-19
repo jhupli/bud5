@@ -25,7 +25,7 @@ class TextField extends React.Component {
 	}
 	
 	render() {
-		const {id, placeholder, readOnly, touched, width, linkCb} = this.props
+		const {id, placeholder, readOnly, touched, linkCb} = this.props
 		return(
 	    <div>
 	    <a onClick={(e) => {
@@ -35,14 +35,12 @@ class TextField extends React.Component {
 	    	    id={id}
 	    		value={this.state.txtValue}
 	    	    disabled={readOnly}
-	    	    style={{'width': width}}
+	    	    style={{'backgroundColor' : (touched ? 'lightyellow' : '')}}
 	    		placeholder={readOnly ? '' : placeholder} 
 	    		type="text" 
 	    		onChange={this.onChange}
 	    		className="form-control"
-	    	 	style={{
-	    		  'backgroundColor' : (touched ? 'lightyellow' : '')
-	    	 	}}
+	  
 	    	/>
 	    </a>
 	    </div>)
@@ -58,7 +56,6 @@ TextField.defaultProps = {
 		field: null,
 		index: null,
 		touched: false,
-		width: '60px',
 		linkCb: null
 }
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 class TextField extends React.Component {
 
@@ -26,7 +25,7 @@ class TextField extends React.Component {
 	}
 	
 	render() {
-		const {id, value, placeholder, readOnly, touched, width, linkCb} = this.props
+		const {id, placeholder, readOnly, touched, width, linkCb} = this.props
 		return(
 	    <div>
 	    <a onClick={(e) => {

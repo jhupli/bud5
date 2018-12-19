@@ -1,7 +1,4 @@
 import React from 'react';
-import d3 from 'd3';
-import axios from 'axios';
-//import minibars from './minibars';
 
 import {balances_load} from '../../actions/minibars'
 import {set_daterange} from '../../actions/daterange'
@@ -9,8 +6,6 @@ import '../../../node_modules/c3/c3.min.css'
 
 import { connect } from 'react-redux'
 import { minibars } from './minibars_d3'
-
-import {addDays} from '../../util/addDays'
 
 //var minibars = require('./minibars_d3')
 /*var i=0;

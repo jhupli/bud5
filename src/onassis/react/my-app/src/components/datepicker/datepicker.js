@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import initials from '../../util/initials'
 import $ from 'jquery';
+// eslint-disable-next-line
 import daterangepicker from 'daterangepicker';
 import { connect } from 'react-redux'
 

@@ -1,7 +1,5 @@
-import { dispatch } from 'redux' // ← Main Redux library
 import { chunk_rawdata } from './chunkdata'
-import addDays from '../../util/addDays'
-import initials from '../../util/initials'
+
 //var chunk_rawdata = require('./chunkdata');
 var dates = require('./helpers');
 
@@ -61,7 +59,6 @@ var minibars = (function() {
   var bottom_margin
 
   //y-coords
-  var top_margin_y
   var datearea_y
   var center_margin_y
   var month_y
@@ -74,8 +71,6 @@ var minibars = (function() {
   
 
   var miny, maxy
-  //var miny_text, maxy_text,
-  var minmax_width
   var scale
 
   //date range selection
@@ -111,7 +106,6 @@ var minibars = (function() {
     bottom_margin = config.bottom_margin || bottom_margin || 3 
 
     //y-coords
-    top_margin_y = 0
     datearea_y = top_margin
 
     center_margin_y = datearea_y + datearea_height

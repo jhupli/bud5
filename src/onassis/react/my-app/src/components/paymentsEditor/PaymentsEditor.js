@@ -1,5 +1,4 @@
 import React from 'react'
-import { render } from 'react-dom' 
 import { connect } from 'react-redux'
 
 import { update } from '../../actions/payments'
@@ -15,12 +14,10 @@ import CurrencyField from '../editorFields/CurrencyField'
 import CheckboxField from '../editorFields/CheckboxField'
 import DropdownField from '../editorFields/DropdownField'
 import TextField from '../editorFields/TextField'
-import TextareaField from '../editorFields/TextareaField'
 import DateField from '../editorFields/DateField'
 //import Recur from '../recur/recur' 
 
 import NumericInput from 'react-numeric-input';
-import {addDays} from '../../util/addDays'
 import alertOptions from '../../util/alertoptions'
 
 import './PaymentsEditor.css'
@@ -43,7 +40,6 @@ import {
 		fields,
 		initState,
 		defaultValues,
-		initialMaskValues, 
 		validators,
 		preInitFormat,
 		preSubmitFormat,
@@ -53,7 +49,6 @@ import {
 		copyPayment
 } from './constants'
 
-var dateFormat = require('dateformat')
 var FontAwesome = require('react-fontawesome')
 
 var tempId = -1

@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import DatePicker from '../datepicker/datepicker'
 import {Popover, OverlayTrigger} from 'react-bootstrap';
 import detectIt from 'detect-it';
 
@@ -18,7 +16,7 @@ class TextareaField extends React.Component {
 	}
 	
 	onChange(e) {
-		const {id, onValueChanged, field, index} = this.props
+		const {onValueChanged, field, index} = this.props
 		this.setState({
 			txtValue : e.target.value
 		})
@@ -38,7 +36,7 @@ class TextareaField extends React.Component {
 	}
   
 	render() {
-		const {id, value, placeholder, readOnly, touched, width} = this.props
+		const {id, placeholder, readOnly, touched, width} = this.props
 
 		var inputArea = (
 		<div>

@@ -1,8 +1,3 @@
-import {toDBFormatFi} from '../../util/fiDate'
-import currencyFormat  from '../../util/currency'
-
-var dateFormat = require('dateformat')
-
 const fields = ['color','descr','credit','active']
 
 const defaultValues = {

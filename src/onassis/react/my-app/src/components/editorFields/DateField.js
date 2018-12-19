@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import DatePicker from '../datepicker/datepicker'
 
 var dateFormat = require('dateformat');

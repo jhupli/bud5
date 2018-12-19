@@ -1,6 +1,6 @@
 import React from 'react' // ← Main React library
 import { connect } from 'react-redux'
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import Payments from '../payments/payments'
 import PaymentSelection from '../paymentSelection/paymentSelection'
 import Spinner from './Spinner'

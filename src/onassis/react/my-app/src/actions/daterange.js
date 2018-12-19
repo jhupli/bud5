@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {addDays, daydiff} from '../util/addDays'
 
 const DATE_RANGE_SELECTED = 'DATE_RANGE_SELECTED'

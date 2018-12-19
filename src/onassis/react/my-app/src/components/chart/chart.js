@@ -230,7 +230,6 @@ class Chart extends React.Component {
 
     find_ix(d) {
     	if(!this.chart_config.data.columns) return null;
-    	var d_str = dateFormat(d, "yyyymmdd") + "T00"
 
     	var ix = daydiff(this.chartDatetoDate(this.chart_config.data.columns[0][1]), d)
     	//console.log("*******" +ix)

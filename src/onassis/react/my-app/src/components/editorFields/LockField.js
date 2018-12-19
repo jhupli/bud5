@@ -28,7 +28,7 @@ class LockField extends React.Component {
 	  }
 	  
 	  toggleLock(e) {
-		  	const {id, field, index} = this.props
+		  	const {field, index} = this.props
 			var locked = !e.target.checked;
 			this.props.onValueChanged(locked, field, index )
 			this.props.lockPayment(this.props.id, locked)
@@ -40,7 +40,7 @@ class LockField extends React.Component {
 		  })
 	  }
 	  render() {
-		const {id, readOnly, field, index, label, onValueChanged, checked} = this.props
+		const {readOnly, checked} = this.props
 
 	    return (
 	    <div style={{paddingTop: 8}}>

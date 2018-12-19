@@ -1,10 +1,9 @@
 import axios from 'axios'
-import { payments_refresh } from './payments'
 
 const LOCK_PAYMENT_REQUEST = 'LOCK_PAYMENT_REQUEST'
 const lockPaymentRequestAction = (lock_payment_request, locked) => {
     return {
-        type: 'LOCK_PAYMENT_REQUEST',
+        type: LOCK_PAYMENT_REQUEST,
         payload: {
             lock_payment_request: lock_payment_request,
             locked: locked
@@ -15,7 +14,7 @@ const lockPaymentRequestAction = (lock_payment_request, locked) => {
 const LOCK_PAYMENT_RESPONSE = 'LOCK_PAYMENT_RESPONSE'
 const lockPaymentResponseAction = (payment, locked) => {
     return {
-        type: 'LOCK_PAYMENT_RESPONSE',
+        type: LOCK_PAYMENT_RESPONSE,
         payload: {
             payment: payment
         }
@@ -48,7 +47,7 @@ const lock_payment = (payment, locked) => (
 const PAYMENT_SELECTION = 'PAYMENT_SELECTION'
 const paymentSelectionAction = (payments) => {
     return {
-        type: 'PAYMENT_SELECTION',
+        type: PAYMENT_SELECTION,
         payload: {
             "payments": payments
         }

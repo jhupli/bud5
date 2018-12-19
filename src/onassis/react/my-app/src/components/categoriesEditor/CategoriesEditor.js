@@ -1,5 +1,4 @@
 import React from 'react'
-import { render } from 'react-dom' 
 import { connect } from 'react-redux'
 import { Table, Panel, Button } from 'react-bootstrap';
 
@@ -23,8 +22,7 @@ import alertOptions from '../../util/alertoptions'
 import {
 		fields,
 		initState,
-		defaultValues,
-		initialMaskValues, 
+		defaultValues, 
 		validators,
 		preInitFormat,
 		preSubmitFormat,

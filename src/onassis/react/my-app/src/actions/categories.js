@@ -1,7 +1,4 @@
 import axios from 'axios';
-//import { chart_refresh } from './chart'
-//import { pie_refresh } from './pie'
-import { payments_refresh } from './payments'
 import { invalidate } from './constants'
 
 const CATEGORY = 'cat'

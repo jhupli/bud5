@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const normalizeCurrency = value => {
     if (!value) {
@@ -43,7 +42,7 @@ class CurrencyField extends React.Component {
 
 	onChange(e) {
 		
-		const {id, onValueChanged, field, index} = this.props
+		const {onValueChanged, field, index} = this.props
 		var newCurrencyValue = normalizeCurrency(e.target.value)
 		this.setState({
 			currencyValue : newCurrencyValue
@@ -59,7 +58,7 @@ class CurrencyField extends React.Component {
 	}
 	
 	render() {
-		const {id, readOnly, field, index, onValueChanged, placeholder, touched, fontSize} = this.props
+		const {id, readOnly, placeholder, touched, fontSize} = this.props
 
 		return (
 	    <div>

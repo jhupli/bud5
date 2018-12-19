@@ -1,4 +1,3 @@
-import Toggle from 'react-toggle'
 import React from 'react'
 import { connect } from 'react-redux'
 import { list_load } from '../../actions/payments'

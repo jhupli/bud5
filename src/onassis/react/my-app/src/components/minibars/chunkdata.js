@@ -1,5 +1,3 @@
-import {dateDiffInDays} from './helpers'
-
 //produces array of objects containing
 //months in input and dates of each month and more...
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {SimpleSelect, MultiSelect} from 'react-selectize'
+import {SimpleSelect} from 'react-selectize'
 import 'react-selectize/themes/index.css'
 import { get_constants } from '../../actions/constants'
 import { connect } from 'react-redux'

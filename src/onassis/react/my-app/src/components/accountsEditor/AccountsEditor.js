@@ -1,11 +1,9 @@
 import React from 'react'
-import { render } from 'react-dom' 
 import { connect } from 'react-redux'
 import { Table, Panel, Button } from 'react-bootstrap';
 
 import { update } from '../../actions/accounts'
 
-import CurrencyField from '../editorFields/CurrencyField'
 import CheckboxField from '../editorFields/CheckboxField'
 import TextField from '../editorFields/TextField'
 import ColorField from '../editorFields/ColorField'

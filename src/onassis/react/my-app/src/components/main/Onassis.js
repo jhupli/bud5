@@ -2,7 +2,6 @@ import React from 'react' // ← Main React library
 import Content from './Content'
 import MenuBar from '../navi/MenuBar'
 import Ping from '../ping/ping'
-import {addDays} from '../../util/addDays'
 import { connect } from 'react-redux'
 import { chart_today } from '../../actions/chart'
 //CHG-10 import { set_daterange } from '../../actions/daterange'

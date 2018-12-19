@@ -8,11 +8,6 @@ import { chart_today } from '../../actions/chart'
 //CHG-10 import { set_daterange } from '../../actions/daterange'
 
 class Onassis extends React.Component{
-	constructor(props) {
-		super(props);
-		//CHG-10 this.props.setDateRange(addDays(new Date(),-10), addDays(new Date(),+10))
-		//this.props.chartToday()
-  	}
 	componentDidMount() {
 		//this.props.setDateRange(addDays(new Date(),-10), addDays(new Date(),+10))
 		this.props.chartToday()

@@ -4,10 +4,6 @@ import { Panel } from 'react-bootstrap'
 import CategoriesEditor from '../categoriesEditor/CategoriesEditor'
 
 class Categories extends React.Component {
-	constructor(props) {
-	    super(props);
-	}
-	
 	render() {
 		return(
 			<div>

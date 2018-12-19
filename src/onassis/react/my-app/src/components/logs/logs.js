@@ -3,11 +3,6 @@ import { connect } from 'react-redux'
 import AuditLog from './auditlog'
 
 class Logs extends React.Component {
-
-	constructor(props) {
-	    super(props);
-	}
-
 	render() {
 		return(
 			<div>

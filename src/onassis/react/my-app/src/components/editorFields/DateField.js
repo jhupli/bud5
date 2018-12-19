@@ -5,11 +5,6 @@ import DatePicker from '../datepicker/datepicker'
 var dateFormat = require('dateformat');
 
 class DateField extends React.Component {
-
-	constructor(props) {
-        super(props)
-    }
-
 	render() {
 		const {id, onValueChanged, value, readOnly, field, index, touched} = this.props
 		return(

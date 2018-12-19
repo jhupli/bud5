@@ -2,11 +2,6 @@ import React from 'react';
 import Dropdown from '../dropdown/dropdown'
 
 class DropdownField extends React.Component {
-
-	constructor(props) {
-        super(props)
-    }
-
 	render() {
 		const {readOnly, field, index, onValueChanged, placeholder, touched, constants_id} = this.props
 	

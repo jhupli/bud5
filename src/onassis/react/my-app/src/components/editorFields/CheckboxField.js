@@ -2,11 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 class CheckboxField extends React.Component {
-
-	constructor(props) {
-        super(props)
-    }
-
 	render() {
 		const {id, readOnly, field, index, onValueChanged, touched, checked} = this.props
 		return(

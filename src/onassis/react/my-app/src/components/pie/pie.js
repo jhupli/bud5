@@ -158,7 +158,7 @@ class Pie extends React.Component {
     
     c3onRendered() {
     	var total  = this.chart_config.sum_i - this.chart_config.sum_e
-    	if( total == 0 ) return
+    	if( total === 0 ) return
     	//debugger
     	var middlepoint = (-this.chart_config.sum_e/total)*2*Math.PI
 
@@ -233,7 +233,7 @@ class Pie extends React.Component {
         	if (nextProps.slices) {
 	        	nextProps.slices.forEach(
 	        		(s) => {
-	        			var cat = findInArray(nextProps.constants['cat'], n => { return s.c == n.value})
+	        			var cat = findInArray(nextProps.constants['cat'], n => { return s.c === n.value})
 	        			/* var cat = nextProps.constants['cat'].find( 
 		        			n => { return s.c == n.value}
 	        			 )*/

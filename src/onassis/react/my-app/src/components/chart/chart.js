@@ -288,13 +288,13 @@ class Chart extends React.Component {
     			//CHG-13this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
     			var ix = this.find_ix(d)
-    			if(null != ix && ix == -1)  {
+    			if(null !== ix && ix === -1)  {
     				//console.log("vasemmalta yli "+ix)
     				this.props.daterangePrevBlock()
     				ix = this.chart_config.data.columns[0].length - 2
     				//console.log("vasemmalta yli "+ix)
     			}
-    			if(null != ix && ix == this.chart_config.data.columns[0].length - 1)  {
+    			if(null != ix && ix === this.chart_config.data.columns[0].length - 1)  {
     				//console.log("oikealta yli "+ix)
     				this.props.daterangeNextBlock()
     				ix = 0
@@ -422,16 +422,16 @@ class Chart extends React.Component {
 		    })
     	}
         if (
-        	!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
+        	!(this.state.start === nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
         	|| 
-        	!(this.state.end == nextProps.end)
+        	!(this.state.end === nextProps.end)
         ){ //selected date span changed?
         	this.setState({
 		    		start : nextProps.start,
 		    		end : nextProps.end		
 		    })
             this.props.chartLoad(nextProps.start, nextProps.end)
-        } else if (nextProps.curves != this.props.curves || nextProps.refreshTime != this.props.refreshTime){
+        } else if (nextProps.curves !== this.props.curves || nextProps.refreshTime !== this.props.refreshTime){
         	//TODO jäi tähän laita värit ja nimet tilit on jo account#ssa
         	//debugger //muista types!!!!!
         	console.log("curves")
@@ -450,7 +450,7 @@ class Chart extends React.Component {
         		console.log("curves 1")
 	        	for(var i=3; i<nextProps.curves.length; i++) {
 	        		var key = nextProps.curves[i][0]
-	        		var acc = findInArray(nextProps.constants['acc'], n => { return key == n.value})
+	        		var acc = findInArray(nextProps.constants['acc'], n => { return key === '' + n.value})
 	        		/*var acc = nextProps.constants['acc'].find( 
 	        			n => { return key == n.value}
 	        		)*/
@@ -480,7 +480,7 @@ class Chart extends React.Component {
         if (curves) {
 	        	for(var i=3; i<curves.length; i++) {
 	        		var key = curves[i][0]
-	        		var acc = findInArray(constants['acc'], n => { return key == n.value})
+	        		var acc = findInArray(constants['acc'], n => { return key === ''+n.value})
 	        		this.chart_config.data.names[key] = acc.label
 	        	}
         }

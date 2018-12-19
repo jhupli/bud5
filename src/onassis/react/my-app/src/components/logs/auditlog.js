@@ -98,12 +98,12 @@ class AuditLog extends React.Component {
 	
 	tdClassName(r, index, field) {
 		var ret = field + '_cell' 
-		if(r.hs[index].op == 'U' 
+		if(r.hs[index].op === 'U' 
 		   && (fields.indexOf(field) > -1) 
 		   && r.hs[index][field] !== r.hs[index - 1][field]) {
 			ret += ' updatedRow'
 		}
-		if(index == r.rownr) {
+		if(index === r.rownr) {
 			ret += ' actualRow'
 		}
 		return ret

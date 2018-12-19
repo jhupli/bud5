@@ -297,7 +297,7 @@ function show_tip(data) {
   var bg = document.getElementById(dateId(data.d) + _BG).getBoundingClientRect()
   var offsetRect = document.getElementsByClassName("col-md-12")[0].getBoundingClientRect()
   //console.log("offsetRect:" + offsetRect.left)
-  d3.select('#' + mid + _TIP_I_DIV).style("display", (data.i == 0 && data.e == 0) ? "none" : "table-row")
+  d3.select('#' + mid + _TIP_I_DIV).style("display", (data.i === 0 && data.e === 0) ? "none" : "table-row")
   d3.select('#' + mid + _TIP_DIV).
   style(
     {"display": "inline",

@@ -7,7 +7,7 @@ function chunk_rawdata(daydata) {
   //  - (III) update the corresponding array index data (var data_i) to data of that date (var dayArray)
   
   // if account == -1, we must calculate balances ourselves (i.e denotes that category filter is on)
-  var balances_given = (daydata[0].a != -1);
+  var balances_given = (daydata[0].a !== -1);
 	
   //trivial checks
 
@@ -53,11 +53,11 @@ function chunk_rawdata(daydata) {
       && (y * (12 * 31) + m * 31 + d) < (y_i * (12 * 31) + m_i * 31 + d_i),
      "input array must be ascending")
     d = d_i
-    while (m != m_i || y != y_i) {
+    while (m !== m_i || y !== y_i) {
       //(II)
       //a new month encountered: construct empty array for that month and the months before
       m++
-      if (m == 12) {
+      if (m === 12) {
         y++
         m=0
       }

@@ -64,7 +64,7 @@ Ping.propTypes = {
 
 const mapStateToProps = (store) => {
     return {
-        show: (store.ping.length==0 ? false : !store.ping.up)
+        show: (store.ping.length === 0 ? false : !store.ping.up)
     }
 }
 

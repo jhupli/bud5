@@ -43,7 +43,7 @@ class Details extends React.Component{
 				info = dateFormat(this.props.params.d, "dd.mm.yyyy ddd")
 				break;
 			case 'a' :
-				var acc = findInArray(this.props.constants['acc'], n => { return this.props.params.a == n.value})
+				var acc = findInArray(this.props.constants['acc'], n => { return this.props.params.a === '' + n.value})
 				info = 
 				<span >
 					<span style = {{'marginRight':'5px', 'marginLeft':'5px'}}>
@@ -57,7 +57,7 @@ class Details extends React.Component{
 				
 				break;
 			case 'c' : 
-				var cat = findInArray(this.props.constants['cat'], n => { return this.props.params.c == n.value})
+				var cat = findInArray(this.props.constants['cat'], n => { return this.props.params.c === '' + n.value})
 				info = 
 				<span >
 					<span style = {{'marginRight':'5px', 'marginLeft':'5px'}}>
@@ -84,7 +84,7 @@ class Details extends React.Component{
 			var ix = findIndexInArray( this.props.curves[0], n => { return d === n})
 			var trs = []
 			for(var i=3; i<this.props.curves.length; i++) {
-				var acc = findInArray(this.props.constants['acc'], n => { return this.props.curves[i][0] == n.value})
+				var acc = findInArray(this.props.constants['acc'], n => { return this.props.curves[i][0] === '' + n.value})
 				trs.push(
 						<tr className='c3-tooltip-name--data2' key={acc.value}>
 			                      <td className="name"><span style={{backgroundColor: acc.color}}></span></td>

@@ -12,14 +12,14 @@ class Buttons extends React.Component{
 	}
 	
 	next() {
-		if(!this.props.logentries || this.props.logentries.length == 0) return
+		if(!this.props.logentries || this.props.logentries.length === 0) return
 		var last = this.props.logentries[this.props.logentries.length - 1]
 		var s = last.hs[last.rownr].hd
 		this.props.next(s)
 	}
 
 	prev() {
-		if(!this.props.logentries || this.props.logentries.length == 0) return
+		if(!this.props.logentries || this.props.logentries.length === 0) return
 		var first = this.props.logentries[0]
 		var e = first.hs[first.rownr].hd
 		this.props.prev(e)

@@ -23,7 +23,7 @@ const PAGE_SIZE = 50
         axios.get('http://localhost:8080/history?ts='+Date.now())
             .then(function(response) {
             	var lastPage = true
-               if(response.data.length == (PAGE_SIZE + 1)) {
+               if(response.data.length === (PAGE_SIZE + 1)) {
             	   lastPage = false
             	   response.data.pop()
                }
@@ -43,7 +43,7 @@ const next = (s) => (
         axios.get('http://localhost:8080/history?ts='+Date.now()+"&s="+s)
             .then(function(response) {
                var lastPage = true
-               if(response.data.length == (PAGE_SIZE + 1)) {
+               if(response.data.length === (PAGE_SIZE + 1)) {
             	   lastPage = false
             	   response.data.pop()
                }
@@ -63,7 +63,7 @@ const next = (s) => (
         axios.get('http://localhost:8080/history?ts='+Date.now()+"&e="+e)
             .then(function(response) {
                var firstPage = true
-               if(response.data.length == (PAGE_SIZE + 1)) {
+               if(response.data.length === (PAGE_SIZE + 1)) {
             	   firstPage = false
             	   response.data.shift()
                }

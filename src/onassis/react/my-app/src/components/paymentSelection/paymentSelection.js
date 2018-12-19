@@ -66,7 +66,7 @@ class PaymentSelection extends React.Component {
 	}
 	
 	render() {
-		if( this.props.payments.length == 0 ) return null
+		if( this.props.payments.length === 0 ) return null
 	    return (
 	     <Button onClick={this.list}><Badge>{this.props.payments.length}</Badge></Button>
 	    );

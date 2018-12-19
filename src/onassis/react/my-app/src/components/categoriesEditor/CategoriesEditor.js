@@ -143,7 +143,7 @@ class CategoriesEditor extends React.Component {
 	validateF(field, value, index) {
 		var original = this.state.errors[index][field]
 		var result = validators[field](value) 
-		if( result != original ) {
+		if( result !== original ) {
 			var copy = copyArray(this.state.errors)
 			copy[index][field] = validators[field](value) 
 			this.setState({errors : copy})
@@ -158,7 +158,7 @@ class CategoriesEditor extends React.Component {
 	}
 	
 	isDifferentFromInitialF(value, field, index) {
-		return (value != this.state.initial[index][field])
+		return (value !== this.state.initial[index][field])
 	}
 
 	chooseValueF(index, field) {
@@ -390,7 +390,7 @@ class CategoriesEditor extends React.Component {
     		})
     	})
     	return pristine &&
-    		   (this.state.initial.length == this.state.values.length) && 
+    		   (this.state.initial.length === this.state.values.length) && 
     	       !this.deleteCount 
 	}
 	

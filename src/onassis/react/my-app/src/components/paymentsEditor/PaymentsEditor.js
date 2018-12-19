@@ -262,7 +262,7 @@ class PaymentsEditor extends React.Component {
 	validateF(field, value, index) {
 		var original = this.state.errors[index][field]
 		var result = validators[field](value) 
-		if( result != original ) {
+		if( result !== original ) {
 			var copy = copyArray(this.state.errors)
 			copy[index][field] = validators[field](value) 
 			this.setState({errors : copy})
@@ -292,7 +292,7 @@ class PaymentsEditor extends React.Component {
 	}
 	
 	isDifferentFromInitialF(value, field, index) {
-		return (value != this.state.initial[index][field])
+		return (value !== this.state.initial[index][field])
 	}
 
 	chooseValueF(index, field) {
@@ -301,7 +301,7 @@ class PaymentsEditor extends React.Component {
 	}
 	
 	renderContentF(field, index) {
-    	if(index == -1) {//mask -checkbox
+    	if(index === -1) {//mask -checkbox
     		return(
 	    	<div>
 		  		<CheckboxField 
@@ -315,10 +315,10 @@ class PaymentsEditor extends React.Component {
 		    </div>)
     	}
 
-    	if(index == -2 && !this.state.masked[field]) return //draw maskValue only if masked
+    	if(index === -2 && !this.state.masked[field]) return //draw maskValue only if masked
     	
     	var  value = null
-    	if(index == -2) { //mask value
+    	if(index === -2) { //mask value
     		value = this.state.maskValues[field]
     	} else {
     	   value = this.chooseValueF(index, field)
@@ -674,7 +674,7 @@ class PaymentsEditor extends React.Component {
     		})
     	})
     	return pristine &&
-    		   (this.state.initial.length == this.state.values.length) && 
+    		   (this.state.initial.length === this.state.values.length) && 
     	       !oneIsTrue(this.state.masked) &&
     	       !this.deleteCount 
 	}
@@ -746,7 +746,7 @@ class PaymentsEditor extends React.Component {
     }
 
     renderPaymentsHeaderT = () => {
-    	if (!this.state.values || this.state.values.length == 0) { 
+    	if (!this.state.values || this.state.values.length === 0) { 
     		return (<thead><tr><th /></tr></thead>)
     	}
     	return (
@@ -799,7 +799,7 @@ class PaymentsEditor extends React.Component {
 						{/*this.errors ? ' errors' : ' no errors'*/}
 						<span className="pull-right" style={{marginTop: "6px"}}>
 							<Panel.Toggle componentClass="a" onClick={this.setRecurring} >
-							{   (!this.state.values || this.state.values.length == 0) ?
+							{   (!this.state.values || this.state.values.length === 0) ?
 								''
 								:
 		            			(this.state.recurring.recur ? 'No recur' : 'Recurring...') }

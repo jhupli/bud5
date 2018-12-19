@@ -322,7 +322,6 @@ function select(start_, end_) {
 	  console.assert(null != start_ && null != end_) 
 	  return
   }
-  //debugger
   normalize(start_,end_) 
   
   //console.log("select")
@@ -779,7 +778,6 @@ function updateMonth(month) {
 
   //for (var ix = 0, len = month.columns.length; ix < len; ix++) {
   month.columns.forEach( m => {
-	debugger
     var date_id = dateId(m.d)
 
     d3.select('#' + date_id + _I)
@@ -905,8 +903,7 @@ const nullData =
 function generate(provideddata) {
 	if (!provideddata || !provideddata.data) return
 	  if (!provideddata.data.length) {
-		  provideddata = nullData
-		 
+		  provideddata = nullData	 
 	  }
 	  //console.log("generate")
 	  console.assert(bindto, "config must be called first!")

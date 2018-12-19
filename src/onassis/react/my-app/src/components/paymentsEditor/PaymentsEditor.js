@@ -689,7 +689,6 @@ class PaymentsEditor extends React.Component {
     	this.state.errors.forEach( (v) => {
     		errors = errors || oneIsTrue(v) 
     	})
-    	//debugger
     	return errors || oneIsTrue(this.state.maskErrors)
 	}
 	
@@ -950,7 +949,6 @@ class PaymentsEditor extends React.Component {
 	}
 
 	updateCheckedSet(value, index, values = null) {
-		//debugger
 		if(index<0 || this.disabledCheckR(index)) return
 		var pos = checkedSet.indexOf(this.state.values[index].id)
 		if(value && pos < 0) {

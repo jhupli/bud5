@@ -69,7 +69,6 @@ function get(dispatch) {
         dispatch(paymentsResponseAction(response.data[0], response.data[1]))
     })
     .catch(function(error) {
-        debugger
         console.log("TODO____________________")
             console.log(error)
     })

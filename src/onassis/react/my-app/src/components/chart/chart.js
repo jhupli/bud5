@@ -150,7 +150,6 @@ class Chart extends React.Component {
     			var dd=this.chartDatetoDate(el)
     			svg[0][0].onclick = () => {
 
-    				debugger
     				console.log('^'+dd)
     				this.dateselect(dd)
     			    		}
@@ -163,7 +162,6 @@ class Chart extends React.Component {
     		var dd=this.chartDatetoDate(d)
     		svg[0][0].onclick = () => {
     			var t = i;
-    			debugger
     			console.log('^'+dd)
     			this.dateselect(dd)
     		}
@@ -313,7 +311,6 @@ class Chart extends React.Component {
                 var d1 = addDays(d, -1)
                 var d1_str = dateFormat(d1, "yyyymmdd") + "T20"
                 var d2_str = dateFormat(d, "yyyymmdd") + "T4"
-            //    debugger
                 if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
                 	console.log("****");
                 	this.hahlo = {"start": d1_str, "end": d2_str, class:'gray'}
@@ -336,18 +333,14 @@ class Chart extends React.Component {
     		return //data not yet there
     	}
     	/* red backgrounds here*/
-    	//debugger;
     	
     	
         
        /*this.chart_config.regions = [
          ];*/
-       console.log("draw()***********")
-       //debugger;
        if(!this.chart_config.regions) {
     	   //init with white
     	   this.chart_config.regions = []
-       	   console.log("draw()regions redraw") 	  
     	   for(var x=1; x<(this.chart_config.data.columns[0].length); x++) { //x date 
     		   
     		   for(var y=3; y<this.chart_config.data.columns.length; y++) { //y accounts start with 3 
@@ -432,8 +425,6 @@ class Chart extends React.Component {
             this.props.chartLoad(nextProps.start, nextProps.end)
         } else if (nextProps.curves !== this.props.curves || nextProps.refreshTime !== this.props.refreshTime){
         	//TODO jäi tähän laita värit ja nimet tilit on jo account#ssa
-        	//debugger //muista types!!!!!
-        	console.log("curves")
         	this.chart_config.data.names = {}
         	this.chart_config.data.types = {}
         	this.chart_config.data.colors = {}
@@ -486,9 +477,7 @@ class Chart extends React.Component {
 	        	}
         }
     	/*CHG-13
-    	//debugger
     	if( this.selectedDate && this.chart_config.data.columns) {
-    		//debugger
     		var ix = this.find_ix(this.selectedDate) + 1 //first column is name
     		console.log("xx"+ix)
     		if(ix && ix>0 && ix<this.chart_config.data.columns[0].length) {

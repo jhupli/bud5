@@ -159,7 +159,6 @@ class Pie extends React.Component {
     c3onRendered() {
     	var total  = this.chart_config.sum_i - this.chart_config.sum_e
     	if( total === 0 ) return
-    	//debugger
     	var middlepoint = (-this.chart_config.sum_e/total)*2*Math.PI
 
 	var arc_minus = d3.svg.arc()

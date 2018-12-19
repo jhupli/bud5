@@ -777,17 +777,19 @@ function updateMonth(month) {
       "y": center_margin_y - scale(0) + 3 + top_margin + line_width,
     })
 
-  for (var ix = 0, len = month.columns.length; ix < len; ix++) {
-    var date_id = dateId(month.columns[ix].d)
+  //for (var ix = 0, len = month.columns.length; ix < len; ix++) {
+  month.columns.forEach( m => {
+	debugger
+    var date_id = dateId(m.d)
 
     d3.select('#' + date_id + _I)
       .datum(function(d) {
-        d.i =  month.columns[ix].i
-        d.e =  month.columns[ix].e
-        d.b =  month.columns[ix].b
-        d.smallestb =  month.columns[ix].smallestb
-        d.prev_b =  month.columns[ix].prev_b
-        d.next_b =  month.columns[ix].next_b
+        d.i =  m.i
+        d.e =  m.e
+        d.b =  m.b
+        d.smallestb =  m.smallestb
+        d.prev_b =  m.prev_b
+        d.next_b =  m.next_b
         return d
       })
       .transition()
@@ -855,7 +857,7 @@ function updateMonth(month) {
           return center_margin_y - scale(null != d.next_b ? d.next_b : d.b) + top_margin + line_width
         }
       })
-  }
+  })
 } //updateMonth(month)
 
 

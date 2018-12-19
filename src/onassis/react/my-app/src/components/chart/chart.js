@@ -221,7 +221,6 @@ class Chart extends React.Component {
    
     
     chartDatetoDate(d) {
-    	console.log('*'+d)
     	var year = d.substring(0,4)
     	var month = d.substring(4,6) - 1
     	var day = d.substring(6,8)
@@ -448,9 +447,10 @@ class Chart extends React.Component {
         	var max = 0, min = 0
         	if (nextProps.curves) {
         		console.log("curves 1")
+        		var f = n =>  { return key === '' + n.value}
 	        	for(var i=3; i<nextProps.curves.length; i++) {
 	        		var key = nextProps.curves[i][0]
-	        		var acc = findInArray(nextProps.constants['acc'], n => { return key === '' + n.value})
+	        		var acc = findInArray(nextProps.constants['acc'], f)
 	        		/*var acc = nextProps.constants['acc'].find( 
 	        			n => { return key == n.value}
 	        		)*/
@@ -478,9 +478,10 @@ class Chart extends React.Component {
     	this.chart_config.data.names['I'] ='Income'
     	this.chart_config.data.names['E'] ='Exp'
         if (curves) {
+        		var f = n => { return key === ''+n.value}
 	        	for(var i=3; i<curves.length; i++) {
 	        		var key = curves[i][0]
-	        		var acc = findInArray(constants['acc'], n => { return key === ''+n.value})
+	        		var acc = findInArray(constants['acc'], f)
 	        		this.chart_config.data.names[key] = acc.label
 	        	}
         }

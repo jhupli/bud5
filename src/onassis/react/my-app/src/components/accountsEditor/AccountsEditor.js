@@ -436,12 +436,13 @@ class AccountsEditor extends React.Component {
 		})
 		
 		var modified = []
-		for(var index=0; index<this.state.values.length; index++) {
+		//for(var index=0; index<this.state.values.length; index++) {
+		this.state.values.forEach( (v, index) => {
 			if(this.isPersistedR(index)) {
 				var p={}
 				fields.forEach((field) => {
 					 if(this.touchedF(index, field)) {
-						 p.id = this.state.values[index].id
+						 p.id = v.id
 						 p[field] = this.chooseValueF(index, field)
 					 }
 				 })
@@ -449,7 +450,7 @@ class AccountsEditor extends React.Component {
 					 modified.push(p)
 				 }
 			}
-		}
+		})
 
 		var updates = {
 				'created' : preSubmitFormat(created),

@@ -225,6 +225,8 @@ class CategoriesEditor extends React.Component {
 				  			touched = {this.touchedF(index, 'color')}
 					  	/>
 				    </div>)
+		default: console.log('UNKONWN field: '+field)
+			  	   return null
     	}
     }
 	
@@ -292,6 +294,7 @@ class CategoriesEditor extends React.Component {
 			return (a, b) => {
 				 return inv * (a.active && b.active ? 0 : (a.active? 1 : -1))
 			}
+		default: return (a, b) => {return 0}
 		}
 	}
 	

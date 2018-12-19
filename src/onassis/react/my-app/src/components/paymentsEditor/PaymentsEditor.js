@@ -472,7 +472,9 @@ class PaymentsEditor extends React.Component {
 				  			placeholder = 'description'
 				  			width = '180px'
 					  	/>*/}
-				    </div>)					    
+				    </div>)	
+		  default: console.log('UNKONWN field: '+field)
+			  	   return null
     	}
     }
 	
@@ -546,6 +548,7 @@ class PaymentsEditor extends React.Component {
 				 return inv * 
 				 ((textA < textB) ? -1 : (textA > textB) ? 1 : 0)
 			}
+		default: return (a, b) => {return 0}
 		}
 	}
 		

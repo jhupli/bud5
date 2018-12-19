@@ -41,7 +41,7 @@ class Details extends React.Component{
 		switch(this.props.queryType) {
 			case 'd' : 
 				info = dateFormat(this.props.params.d, "dd.mm.yyyy ddd")
-				break;
+				break
 			case 'a' :
 				var acc = findInArray(this.props.constants['acc'], n => { return this.props.params.a === '' + n.value})
 				info = 
@@ -55,7 +55,7 @@ class Details extends React.Component{
 	    			</span>
 	    		</span>
 				
-				break;
+				break
 			case 'c' : 
 				var cat = findInArray(this.props.constants['cat'], n => { return this.props.params.c === '' + n.value})
 				info = 
@@ -69,13 +69,15 @@ class Details extends React.Component{
 	    			</span>
 	    		</span>
 	    		
-				break;
+				break
 			case 'g' :
 				info = 'Group: ' + this.props.params.g
-				break;
+				break
 			case 'l' : 
 				info = 'Checked'
-				break;
+				break
+			default: info = '';
+				break
 		}
 		var a_table = null;
 		

@@ -47,6 +47,8 @@ class AuditLog extends React.Component {
 	    		case 'C' : return 'creation'
 	    		case 'U' : return 'modification'
 	    		case 'D' : return 'deletion'
+	    		default : console.log('UNKONWN op:' + p.op)
+	    				  return null
 	    		}
 	    	}
 	    		
@@ -57,6 +59,8 @@ class AuditLog extends React.Component {
 	    	case 'c' : return p.c_descr
 	    	case 'a' : return p.a_descr
 	    	case 'descr' : return p.descr
+	    	default : console.log('UNKONWN field: '+field)
+	    			return null
     	}
     	
 	}

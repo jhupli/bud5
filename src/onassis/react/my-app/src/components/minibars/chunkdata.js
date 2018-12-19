@@ -18,8 +18,8 @@ function chunk_rawdata(daydata) {
 
   //convert date-strings to date
   if (typeof daydata[0].d  === "string") {
-	  for (var i = 0, len = daydata.length; i < len; i++) {
-		  daydata[i].d = new Date(daydata[i].d)
+	  for (var idaydata = 0, lendaydata = daydata.length; idaydata < lendaydata; idaydata++) {
+		  daydata[idaydata].d = new Date(daydata[idaydata].d)
 	  }
   }
 
@@ -101,9 +101,9 @@ function chunk_rawdata(daydata) {
     }
     
     //fill up the array from this date  till end of month with balance
-    for(var z = data_i.d.getDate(), zlen = dayArray.length; z < zlen; z++) {
-       dayArray[z].b = b
-       dayArray[z].smallestb = smallestb
+    for(var z2 = data_i.d.getDate(), zlen2 = dayArray.length; z2 < zlen2; z2++) {
+       dayArray[z2].b = b
+       dayArray[z2].smallestb = smallestb
     }
     //update i, e and balance in array
     dayArray[data_i.d.getDate()-1].i = data_i.i

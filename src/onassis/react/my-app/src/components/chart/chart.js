@@ -362,10 +362,10 @@ class Chart extends React.Component {
     	   }
     	   //dayselection as last in array:
     	   this.hahlo_ix = this.chart_config.regions.length
-    	   var alku = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
-    	   var loppu = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
+    	   var alku1 = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
+    	   var loppu1 = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
     	   this.chart_config.regions.push( 
-	            {"start": alku, "end": loppu, class: "gray"}
+	            {"start": alku1, "end": loppu1, class: "gray"}
 	       )
        }
        

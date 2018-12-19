@@ -10,7 +10,7 @@ const normalizeCurrency = value => {
     var plus = value.lastIndexOf('+');
     var minus = value.lastIndexOf('-');
 
-    var value = value.replace(/[^\d]/g, '')
+    value = value.replace(/[^\d]/g, '')
     if (value === "") {
         value = "0"
     }

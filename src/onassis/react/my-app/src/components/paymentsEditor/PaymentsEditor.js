@@ -252,11 +252,11 @@ class PaymentsEditor extends React.Component {
 		this.setState({maskErrors : copy})
 
 		//clear/set errors of existing values masked
-		var copy = copyArray(this.state.errors)
+		var copy2 = copyArray(this.state.errors)
 		this.state.values.forEach( (v, index) => {
-			copy[index][field] = set ? null : validators[field](v[field])
+			copy2[index][field] = set ? null : validators[field](v[field])
 		})
-		this.setState({errors : copy})
+		this.setState({errors : copy2})
 	}
 	
 	validateF(field, value, index) {

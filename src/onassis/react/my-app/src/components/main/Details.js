@@ -86,10 +86,10 @@ class Details extends React.Component{
 			var ix = findIndexInArray( this.props.curves[0], n => { return d === n})
 			var trs = []
 			for(var i=3; i<this.props.curves.length; i++) {
-				var acc = findInArray(this.props.constants['acc'], n => { return this.props.curves[i][0] === '' + n.value})
+				var acc2 = findInArray(this.props.constants['acc'], n => { return this.props.curves[i][0] === '' + n.value})
 				trs.push(
-						<tr className='c3-tooltip-name--data2' key={acc.value}>
-			                      <td className="name"><span style={{backgroundColor: acc.color}}></span></td>
+						<tr className='c3-tooltip-name--data2' key={acc2.value}>
+			                      <td className="name"><span style={{backgroundColor: acc2.color}}></span></td>
 			                      <td className="value" >{currencyFormat(this.props.curves[i][ix])}</td>
 			            </tr>
 			     )

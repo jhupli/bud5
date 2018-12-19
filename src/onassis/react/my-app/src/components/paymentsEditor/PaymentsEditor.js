@@ -226,7 +226,8 @@ class PaymentsEditor extends React.Component {
 	setValueCheckAllF(value, field, index) {
 		var copy = this.state.values.slice(0)
 		copy.map( (v) => { 
-			this.updateCheckedSet(value, v.index, copy) 
+			this.updateCheckedSet(value, v.index, copy)
+			return null
 		})
 		this.setState({
 			values: copy,

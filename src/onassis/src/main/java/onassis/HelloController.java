@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.opencsv.CSVWriter;
 import com.opencsv.ResultSetHelperService;
 
-import lombok.Data;
 import onassis.db.functions.Balance;
 import onassis.db.functions.DataProvider;
 import onassis.db.functions.History;
@@ -101,7 +101,9 @@ public class HelloController {
 
     //setting headers  
     response.setStatus(HttpServletResponse.SC_OK);
-    response.addHeader("Content-Disposition", "attachment; filename=\"janne.zip\"");
+    SimpleDateFormat format = new SimpleDateFormat("dd_M_yyyy_hh_mm_ss");
+    
+    response.addHeader("Content-Disposition", "attachment; filename=\"Bud_5_Onassis_Log_"+format.format(new java.util.Date()) + ".zip\"");
 
     ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
 

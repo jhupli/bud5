@@ -1,5 +1,5 @@
-import axios from 'axios';
-var dateFormat = require('dateformat');
+import { axios_get_params } from './axios'
+var dateFormat = require('dateformat')
 
 const PIE_REQUEST = 'PIE_REQUEST'
 const pieRequestAction = (s, e) => ({
@@ -26,22 +26,20 @@ var params = null
 
 function get(dispatch) {
     dispatch(pieRequestAction(params.s, params.e));
-    axios.get('http://localhost:8080/pie?ts='+Date.now(), {		  
-		  port: 8080,
-		  params: params
-	  })
-	  .then(function (response) {
-  		 // console.log(response);
-  		  dispatch(pieResponseAction(response.data))
-	  })
-	  .catch(function (error) {
-		  console.log(error);
-	  });
-
+    axios_get_params('pie?ts='+Date.now(), 
+    		{		  
+		  		params: params
+    		},
+    		response => {
+    			// console.log(response);
+    			dispatch(pieResponseAction(response.data))
+    		},
+    		dispatch
+	  )
 }
 
 const pie_load = (s, e) => (
-  (dispatch: Redux.Dispatch) => {
+  (dispatch) => {
 	  params = {
 			  's': dateFormat(s, "yyyy-mm-dd"),
 			  'e': dateFormat(e, "yyyy-mm-dd")
@@ -51,7 +49,7 @@ const pie_load = (s, e) => (
 )
 
 const pie_refresh = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         console.assert(params)
         get(dispatch)
     }

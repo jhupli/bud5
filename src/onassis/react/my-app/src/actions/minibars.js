@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axios_get_params} from './axios';
 
 const MINIBARS_REQUEST = 'MINIBARS_REQUEST'
 const balancesRequestAction = () => ({
@@ -17,27 +17,23 @@ const balancesResponseAction = (response) => ({
 var prev_cat = 0
 
 const balances_load = (cat) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	prev_cat = cat
         dispatch(balancesRequestAction())
-        axios.get('http://localhost:8080/minibars?ts='+Date.now(), {
-                port: 8080,
-                params: {
-                    "cat": cat
-                }
-            })
-            .then(function(response) {
+        axios_get_params('minibars?ts='+Date.now(), 
+        		{ 
+        			params: {"cat": cat}
+        		},
+        		response => {
 //                console.log(response);
-                var ret = {
-                    "data": response.data,
-                    balance: 0
-                }
-                dispatch(balancesResponseAction(ret))
-            })
-            .catch(function(error) {
-                console.log("TODO____________________");
-                console.log(error);
-            })
+        			var ret = {
+        					"data": response.data,
+        					balance: 0
+        			}
+        			dispatch(balancesResponseAction(ret))
+        		},
+        		dispatch
+        )
     }
 )
 

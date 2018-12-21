@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axios_get_params, axios_post } from './axios';
 import { balances_refresh } from '../actions/minibars'
 import { chart_refresh } from '../actions/chart'
 import { pie_refresh } from '../actions/pie'
@@ -39,43 +39,39 @@ const paymentsUpdateResponseAction = () => ({
 })
 
 const update = (updates) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(paymentsUpdateRequestAction(updates))
-        axios.post('http://localhost:8080/payments/update', updates)
-            .then(function(response) {
-                dispatch(paymentsUpdateResponseAction())
-                //tähän kaikki refrhesit, jotka update aiheuttaa
-                                //refresh pie and minibars
-               dispatch(payments_refresh())
-               dispatch(pie_refresh())
-               dispatch(balances_refresh())
-               dispatch(chart_refresh())
-            })
-            .catch(function(error) {
-                console.log("TODO____________________")
-                console.log(error)
-            }
+        axios_post('payments/update', 
+        		updates,
+        		response => {
+        			dispatch(paymentsUpdateResponseAction())
+        			//tähän kaikki refrhesit, jotka update aiheuttaa
+                    //refresh pie and minibars
+        			dispatch(payments_refresh())
+        			dispatch(pie_refresh())
+        			dispatch(balances_refresh())
+        			dispatch(chart_refresh())
+        		},
+        		dispatch
         )
     }
  )
 
 function get(dispatch) {
     dispatch(paymentsRequestAction())
-    axios.get('http://localhost:8080/payments?ts='+Date.now(), {
-        port: 8080,
-        "params": params
-    })
-    .then(function(response) {
-        dispatch(paymentsResponseAction(response.data[0], response.data[1]))
-    })
-    .catch(function(error) {
-        console.log("TODO____________________")
-            console.log(error)
-    })
+    axios_get_params('payments?ts='+Date.now(), 
+    		{
+        		"params": params
+    		},
+    		(response) => {
+    			dispatch(paymentsResponseAction(response.data[0], response.data[1]))
+    		},
+    		dispatch
+    )
 }
 
 const day_load = (d) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         params = {
             "e": "d",
             "d": dateFormat(d, "yyyy-mm-dd")
@@ -85,7 +81,7 @@ const day_load = (d) => (
 )
 
 const account_load = (a, d1, d2) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         params = {
             "e": "a",
             "a": a,
@@ -97,7 +93,7 @@ const account_load = (a, d1, d2) => (
 )
 
 const category_load = (c, d1, d2) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         params = {
             "e": "c",
             "c": c,
@@ -109,7 +105,7 @@ const category_load = (c, d1, d2) => (
 )
 
 const group_load = (g) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         params = {
             "e": "g",
             "g": g
@@ -119,7 +115,7 @@ const group_load = (g) => (
 )
 
 const list_load = (ids) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         params = {
             "e": "l",
             "ids": ids
@@ -129,7 +125,7 @@ const list_load = (ids) => (
 )
 
 const payments_refresh = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         console.assert(params)
         get(dispatch)
     }

@@ -1,5 +1,6 @@
 import React from 'react' // ← Main React library
 import Content from './Content'
+import ErrorMessage from './ErrorMessage'
 import MenuBar from '../navi/MenuBar'
 import Ping from '../ping/ping'
 import { connect } from 'react-redux'
@@ -17,6 +18,7 @@ class Onassis extends React.Component{
 	    	<div>
 	    	 <Ping />
 	    	 <MenuBar />
+	    	 <ErrorMessage />
 	    	 <Content /> 
 			 {/*
 				<FooterInstance />

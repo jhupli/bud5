@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { axios_get } from './axios'
 
 const PING_REQUEST = 'PING_REQUEST'
 const PingRequestAction = () => {
@@ -18,23 +18,19 @@ const PingResponseAction = (status) => {
 }
 
 const ping = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(PingRequestAction())
-        axios.get('http://localhost:8080/ping?ts='+Date.now(), {
-                port: 8080
-            })
-            .then(function(response) {
-                dispatch(PingResponseAction(true))
-            })
-            .catch(function(error) {
-				dispatch(PingResponseAction(false))
-            }
+        axios_get('ping?ts='+Date.now(),
+        		response => {
+        			dispatch(PingResponseAction(true))
+        		},
+        		dispatch
         )
     }
  )
 
 const noping = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
 				dispatch(PingResponseAction(false))
     }
  )

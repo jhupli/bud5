@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axios_get, axios_post} from './axios';
 import { chart_refresh } from './chart'
 import { invalidate } from './constants'
 
@@ -31,42 +31,32 @@ const accountsUpdateResponseAction = () => ({
 })
 
 const update = (updates) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(accountsUpdateRequestAction(updates))
-        axios.post('http://localhost:8080/acc/update', updates)
-            .then(function(response) {
+        axios_post('acc/update', updates,
+            response => {
                dispatch(accountsUpdateResponseAction())
                dispatch(load())
                invalidate(ACCOUNT, dispatch)
                dispatch(chart_refresh())
-               
-             //  dispatch(payments_refresh())
-             //  dispatch(pie_refresh())
-               //dispatch(balances_load())
-               //dispatch(chart_refresh())
-            })
-            .catch(function(error) {
-                console.log("TODO____________________")
-                console.log(error)
-            }
+            },
+            dispatch
         )
     }
  )
 
  const load = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(accountsRequestAction())
-        axios.get('http://localhost:8080/acc/list?ts='+Date.now())
-            .then(function(response) {
+        axios_get('acc/list?ts='+Date.now(),
+            response => {
                dispatch(accountsResponseAction(response.data))
-            })
-            .catch(function(error) {
-                console.log("TODO____________________")
-                console.log(error)
-            }
+            },
+            dispatch
         )
     }
  )
+ 
 export {
 	ACCOUNT,
     load,

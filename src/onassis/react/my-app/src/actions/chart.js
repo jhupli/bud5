@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axios_get_params} from './axios';
 
 var dateFormat = require('dateformat');
 
@@ -58,22 +58,18 @@ var params = null
 
 function get(dispatch) {
     dispatch(chartRequestAction(params.s, params.e));
-    axios.get('http://localhost:8080/chart?ts='+Date.now(), {		  
-		  port: 8080,
-		  params: params
-	  })
-	  .then(function (response) {
-  		  //console.log(response);
-  		  dispatch(chartResponseAction(response.data))
-	  })
-	  .catch(function (error) {
-		  console.log(error);
-	  });
+    axios_get_params('chart?ts='+Date.now(), 
+    				{params: params},
+				    response => {
+			  		  dispatch(chartResponseAction(response.data))
+				    },
+				    dispatch
+	)
 
 }
 
 const chart_load = (s, e) => (
-  (dispatch: Redux.Dispatch) => {
+  (dispatch) => {
 	  params = {
 			  's': dateFormat(s, "yyyy-mm-dd"),
 			  'e': dateFormat(e, "yyyy-mm-dd")
@@ -84,26 +80,26 @@ const chart_load = (s, e) => (
 
 
 const chart_refresh = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         console.assert(params)
         get(dispatch)
     }
 )
 
 const chart_next_day = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	dispatch(chartNextDayAction())
     }
 )
 
 const chart_prev_day = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	dispatch(chartPrevDayAction())
     }
 )
 
 const chart_today = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	dispatch(chartTodayAction())
     }
 )

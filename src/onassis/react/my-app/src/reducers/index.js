@@ -14,6 +14,7 @@ import accounts from './accounts'
 import categories from './categories'
 import navi from './navi'
 import auditlog from './auditlog'
+import errorMessage from './errorMessage'
 
 const rootReducer = combineReducers({
   ping,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   categories,
   navi,
   auditlog,
+  errorMessage,
   form: formReducer     // <---- Mounted at 'form'
   
   //,visibilityFilter

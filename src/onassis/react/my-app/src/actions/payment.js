@@ -1,4 +1,4 @@
-import axios from 'axios'
+import {axios_get_params} from './axios';
 
 const LOCK_PAYMENT_REQUEST = 'LOCK_PAYMENT_REQUEST'
 const lockPaymentRequestAction = (lock_payment_request, locked) => {
@@ -22,24 +22,21 @@ const lockPaymentResponseAction = (payment, locked) => {
 }
 
 const lock_payment = (payment, locked) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(lockPaymentRequestAction(payment, locked))
-        axios.get('http://localhost:8080/lock?ts='+Date.now(), {
-                port: 8080,
-                params: {
-                    "id": payment,
-                    "l": locked
-                }
-            })
-            .then(function(response) {
-                dispatch(lockPaymentResponseAction(payment, locked))
+        axios_get_params('lock?ts='+Date.now(), 
+        		{
+                	params: {
+                		"id": payment,
+                		"l": locked
+                	}
+        		},
+        		response => {
+        			dispatch(lockPaymentResponseAction(payment, locked))
                 //DO NOT dispatch(payments_refresh()) : it will refresh possibly unsubmitted payments, 
                 
-            })
-            .catch(function(error) {
-                console.log("TODO____________________")
-                console.log(error)
-            }
+        		},
+        		dispatch
         )
     }
  )
@@ -55,7 +52,7 @@ const paymentSelectionAction = (payments) => {
 }
 
 const payment_selection = (payments) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(paymentSelectionAction(payments))
     }
 )

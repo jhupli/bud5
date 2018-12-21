@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axios_get, axios_post} from './axios';
 import { invalidate } from './constants'
 
 const CATEGORY = 'cat'
@@ -30,36 +30,31 @@ const categoriesUpdateResponseAction = () => ({
 })
 
 const update = (updates) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(categoriesUpdateRequestAction(updates))
-        axios.post('http://localhost:8080/cat/update', updates)
-            .then(function(response) {
+        axios_post('cat/update', updates,
+            (response) => {
                dispatch(categoriesUpdateResponseAction())
                dispatch(load())
                invalidate(CATEGORY, dispatch)
-            })
-            .catch(function(error) {
-                console.log("TODO____________________")
-                console.log(error)
-            }
+            },
+            dispatch
         )
     }
  )
 
  const load = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
         dispatch(categoriesRequestAction())
-        axios.get('http://localhost:8080/cat/list?ts='+Date.now())
-            .then(function(response) {
+        axios_get('cat/list?ts='+Date.now(),
+            response => {
                dispatch(categoriesResponseAction(response.data))
-            })
-            .catch(function(error) {
-                console.log("TODO____________________")
-                console.log(error)
-            }
+            },
+            dispatch
         )
     }
  )
+ 
 export {
 	CATEGORY,
     load,

@@ -45,7 +45,7 @@ const daterangeTodayAction = () => (
 var prev_s, prev_e
 
 const set_daterange = (s, e) => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	prev_s = s
     	prev_e = e
         dispatch(setDateRangeAction(s, e))
@@ -53,7 +53,7 @@ const set_daterange = (s, e) => (
 )
 
 const daterange_next_block = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	//dispatch(daterangeNextBlockAction())
     	var diff = daydiff(prev_s, prev_e)
     	dispatch(set_daterange(addDays(prev_s, diff + 1), addDays(prev_e, diff + 1)))
@@ -61,7 +61,7 @@ const daterange_next_block = () => (
 )
 
 const daterange_prev_block = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	//dispatch(daterangePrevBlockAction())
     	var diff = daydiff(prev_e, prev_s)
     	dispatch(set_daterange(addDays(prev_s, diff - 1), addDays(prev_e, diff - 1)))
@@ -69,7 +69,7 @@ const daterange_prev_block = () => (
 )
 
 const daterange_today = () => (
-    (dispatch: Redux.Dispatch) => {
+    (dispatch) => {
     	//dispatch(daterangeTodayAction())
     }
 )

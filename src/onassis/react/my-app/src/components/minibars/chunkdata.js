@@ -104,9 +104,9 @@ function chunk_rawdata(daydata) {
     }
     
     //fill up the array from this date  till end of month with balance
-    for(var z2 = data_i.d.getDate(), zlen2 = dayArray.length; z2 < zlen2; z2++) {
-       dayArray[z2].b = b
-       dayArray[z2].smallestb = smallestb
+    for(var z0 = data_i.d.getDate(), zlen0 = dayArray.length; z0 < zlen0; z0++) {
+       dayArray[z0].b = b
+       dayArray[z0].smallestb = smallestb
     }
     //update i, e and balance in array
     dayArray[data_i.d.getDate()-1].i = data_i.i

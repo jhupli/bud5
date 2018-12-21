@@ -5,7 +5,10 @@ function chunk_rawdata(daydata) {
   // (I) loop daydata (must be ascending by date and date is unique) (var i)
   //  - (II) for each dates (var data_i) construct array of dates for that month - if needed. (var dayArray)
   //  - (III) update the corresponding array index data (var data_i) to data of that date (var dayArray)
-  
+  //  - (IV) add to each day balances of previous and next days
+  //  - (V) add empty month to the beginning and end
+	
+	
   // if account == -1, we must calculate balances ourselves (i.e denotes that category filter is on)
   var balances_given = (daydata[0].a !== -1);
 	
@@ -131,8 +134,60 @@ function chunk_rawdata(daydata) {
       if (typeof data.next_b === "undefined") {
         data.next_b = r[ax].columns[ix + 1].b       
       }
-    }
+    }  
   }
+  
+  //  - (V) add empty month to the beginning and end
+ dayArray = []
+ var prevm = new Date(r[0].columns[0].d)
+ prevm.setMonth(prevm.getMonth()-1);
+ m = prevm.getMonth()
+ y = prevm.getFullYear()
+ for(var z1=1, zlen1 = monthDays(m, y); z1 <= zlen1; z1++) {
+        dayArray.push(
+          { 
+            "i": 0,
+            "e": 0,
+            "d": new Date(y, m, z1),
+            "b": 0,
+            "smallestb": 0
+          }
+        )
+  }
+  r.unshift({
+    "columns": dayArray,
+    "range_text": (m + 1) + "/" + y
+  })
+
+ dayArray = []
+ var last = r[r.length-1].columns[r[r.length-1].columns.length-1]
+ last.next_b = last.b
+ var nextm = new Date(last.d)
+ nextm.setDate(1)
+ nextm.setMonth(nextm.getMonth() + 1);
+
+ m = nextm.getMonth()
+ y = nextm.getFullYear()
+ for(var z2=1, zlen2 = monthDays(m, y); z2 <= zlen2; z2++) {
+	 
+        dayArray.push(
+          { 
+            "i": 0,
+            "e": 0,
+            "d": new Date(y, m, z2),
+            "b": last.b,
+            "smallestb": last.smallestb,
+            "prev_b": last.b,
+            "next_b": last.b          
+          }
+        )
+  }
+ dayArray[dayArray.length -1].next_b = null
+  r.push({
+    "columns": dayArray,
+    "range_text": (m + 1) + "/" + y
+  })
+
   return r;
 }
 

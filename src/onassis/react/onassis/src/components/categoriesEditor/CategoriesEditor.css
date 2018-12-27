@@ -1,0 +1,161 @@
+ #categories_table  { display: block; }
+
+#categories_table th, 
+#categories_table td
+	{ 
+	  height: 50px;
+	}
+
+
+ #categories_table  table {
+            width: 100%;
+ }
+
+ #categories_table  thead,  
+ #categories_table tbody,  
+ #categories_table tr,  
+ #categories_table td,  
+ #categories_table th { 
+  	border: none;
+	display: block; 
+ }
+
+ #categories_table tr:after {
+            content: ' ';
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+ #categories_table tbody {
+         /* CHG-1   height: 375px;
+            overflow-y: auto; */
+        }
+
+ #categories_table  thead {
+        }
+
+
+ #categories_table tbody td,
+ #categories_table thead th {
+            float: left;
+        }
+
+input[type="text"]:disabled {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.simpledropdown_touched .react-selectize-search-field-and-selected-values
+{
+    background-color: lightyellow !important;
+}
+
+.newRow
+{
+	background-color: lightyellow; /*!important;*/
+	border-color: #c2dac3 !important;
+}
+
+.deleted 
+{
+	background-color: #c16;
+}
+
+.selected
+{
+	background-color: powderblue;
+}
+
+.error
+{
+	background-color: pink;
+}
+
+.simpledropdown_ro_touched .react-selectize-control 
+{
+	background-image: none !important;
+    background-color: transparent !important;
+    border: none  !important;
+	background-color: lightyellow !important;
+}
+.simpledropdown_ro .react-selectize-control 
+{
+	
+	background-image: none !important;
+    background-color: transparent !important;
+    border: none  !important;
+}
+
+.simpledropdown_ro .react-selectize-toggle-button-container 
+{
+    display: none  !important;
+}
+
+#categories_table .i_header 
+	{ 
+		width: 97px;
+	}
+	
+#categories_table .i_cell 
+	{ 
+		width: 97px;
+	}
+
+.hide 
+	{ 
+		display: none; 
+	}
+
+
+#categories_table .active_header 
+	{ 
+		width: 62px;
+	}
+
+
+#categories_table .active_cell 
+	{ 
+		width: 42px;
+	}
+		
+#categories_table .descr_header 
+	{ 
+		width: 172px;
+	}
+		
+#categories_table .descr_cell 
+	{ 
+		width: 172px;
+	}
+
+#categories_table .color_header 
+	{ 
+		width: 50px;
+	}
+		
+#categories_table .color_cell 
+	{ 
+		width: 50px;
+	}
+
+		
+#categories_table .deleted_header 
+	{ 
+		padding-top: 13px;
+		padding-bottom: 0;
+		text-align: center;
+		width: 42px;
+	}
+
+#categories_table .deleted_cell
+	{ 
+		width: 42px;
+		padding-top: 7px;
+	}
+
+#categories_table .deleted_cell .form-control
+	{ 
+		padding-left: 9px;
+	}

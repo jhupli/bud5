@@ -1,6 +1,9 @@
 import React from 'react'
 import c3 from 'c3'
+import ReactDOMServer from 'react-dom/server';
+
 import {addDays, daydiff} from '../../util/addDays'
+import {accountsTooltipTable} from '../../util/tooltip'
 
 import { chart_load } from '../../actions/chart'
 import { day_load, account_load } from '../../actions/payments'
@@ -11,8 +14,8 @@ import { set_daterange, daterange_next_block, daterange_prev_block } from '../..
 
 import '../../../node_modules/c3/c3.min.css'
 import './style_region.css'
+
 import {findInArray} from '../../util/findInArray'
-import currencyFormat from '../../util/currency'
 
 var d3 = require('d3');
 
@@ -53,6 +56,7 @@ class Chart extends React.Component {
         this.onmouseout = this.onmouseout.bind(this)
         this.find_ix = this.find_ix.bind(this)
         this.chartDatetoDate = this.chartDatetoDate.bind(this)
+        this.tooltip = this.tooltip.bind(this)
         this.c3onRendered = this.c3onRendered.bind(this)
         
         this.timer = null
@@ -79,8 +83,14 @@ class Chart extends React.Component {
             },
             tooltip: {
                 grouped: true, // Default true
-                format: {
-                	value: function (value, ratio, id, index) { return currencyFormat(value) }
+                /*format: {
+                	value: function (value, ratio, id, index) { return currencyFormat(value) },
+                	name: function (name, ratio, id, index) { return '' }
+                },*/
+                
+            
+              	contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+            	  	return that.tooltip(d)
                 }
             },
             /*regions: [
@@ -143,6 +153,12 @@ class Chart extends React.Component {
         }
         //this.props.chartLoad(this.state.start ,this.state.end)
     }
+    
+    tooltip(dt) {
+		var a_table = accountsTooltipTable(dt[0].x, this.props.curves, this.props.constants, true)
+		return ReactDOMServer.renderToStaticMarkup(a_table)
+    }
+    
     c3onRendered() {
     	this.chart_config.data.columns[0].forEach((el, i) => {
     		if(i>0) {
@@ -332,12 +348,7 @@ class Chart extends React.Component {
     		console.log("draw() nothing yet")
     		return //data not yet there
     	}
-    	/* red backgrounds here*/
-    	
-    	
-        
-       /*this.chart_config.regions = [
-         ];*/
+    	/* red / white backgrounds here*/
        if(!this.chart_config.regions) {
     	   //init with white
     	   this.chart_config.regions = []
@@ -352,6 +363,7 @@ class Chart extends React.Component {
 	                 )		
     		   }
     	   }
+    	   
     	   //dayselection as last in array:
     	   this.hahlo_ix = this.chart_config.regions.length
     	   var alku1 = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
@@ -360,29 +372,6 @@ class Chart extends React.Component {
 	            {"start": alku1, "end": loppu1, class: "gray"}
 	       )
        }
-       
-       
-    	/*
-    	for(var x=1; x<(this.chart_config.data.columns[0].length - 1); x++) { //x date 
-    		
-    		for(var y=3; y<this.chart_config.data.columns.length; y++) { //y accounts start with 3 
-    			if(this.chart_config.data.columns[y][x] < 0) {
-    				var alku = dateFormat(addDays(this.chartDatetoDate(this.chart_config.data.columns[0][x]),-1), "yyyymmdd") + "T12"
-    				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
-    	
-    				this.chart_config.regions.push( 
-	                    {"start": alku, "end": loppu, class:'red'}
-	                 )		
-    			}
-    		}
-    	}*/
-    	//console.log("draw() push hahlo")
-    	//this.chart_config.regions.push(this.hahlo)
-    	
-    	
-    	
-    	
-    	
         c3.generate(this.chart_config)
     }
 

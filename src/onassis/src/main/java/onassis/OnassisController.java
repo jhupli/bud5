@@ -62,7 +62,7 @@ import onassis.dto.mappers.MapSlice;
 
 @CrossOrigin(origins = "http://localhost:3000") //<-development only
 @RestController
-public class HelloController {
+public class OnassisController {
 	
 	@Autowired
 	public DataSource ds = null;

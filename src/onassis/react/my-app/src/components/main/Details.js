@@ -5,9 +5,8 @@ import Payments from '../payments/payments'
 import PaymentSelection from '../paymentSelection/paymentSelection'
 import Spinner from './Spinner'
 import { get_constants } from '../../actions/constants'
-import { findInArray, findIndexInArray } from '../../util/findInArray'
-
-import currencyFormat from '../../util/currency'
+import { findInArray } from '../../util/findInArray'
+import {accountsTooltipTable} from '../../util/tooltip'
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
@@ -79,32 +78,10 @@ class Details extends React.Component{
 			default: info = '';
 				break
 		}
-		var a_table = null;
+		var a_table = null
 		
 		if(this.props.queryType === 'd' && this.props.curves) {
-			var d = dateFormat(this.props.params.d, 'yyyymmdd') + 'T00'
-			var ix = findIndexInArray( this.props.curves[0], n => { return d === n})
-			var trs = []
-			
-			//for(var i=3; i<this.props.curves.length; i++) {
-			this.props.curves.forEach( (c, i) => {
-				if(i>=3) {
-					var acc2 = findInArray(this.props.constants['acc'], n => { return c[0] === '' + n.value})
-	
-					trs.push(
-							<tr className='c3-tooltip-name--data2' key={acc2.value}>
-				                      <td className="name"><span style={{backgroundColor: acc2.color}}></span></td>
-				                      <td className="value" >{currencyFormat(c[ix])}</td>
-				            </tr>
-				     )
-				}
-			})
-			a_table = 
-				        <table className='c3-tooltip'>
-			              <tbody>
-			              	  {trs}
-			              </tbody>
-			            </table>
+			a_table = accountsTooltipTable(this.props.params.d, this.props.curves, this.props.constants)
 		}
 		
 		return(

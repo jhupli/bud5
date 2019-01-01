@@ -1,4 +1,6 @@
 import React from 'react';
+import {Button} from 'react-bootstrap'
+var FontAwesome = require('react-fontawesome');
 
 class TextField extends React.Component {
 
@@ -26,11 +28,19 @@ class TextField extends React.Component {
 	
 	render() {
 		const {id, placeholder, readOnly, touched, linkCb} = this.props
+		
+		var button = linkCb && this.state.txtValue && this.state.txtValue.length > 0?
+				<Button bsSize="small" onClick={ () => {
+					linkCb(this.state.txtValue)}
+				}>
+				<FontAwesome name='caret-right' />
+      			</Button>
+		:
+		null
+		
 		return(
 	    <div>
-	    <a onClick={(e) => {
-	    	if(linkCb) {linkCb(e)}}
-	    	}>
+	    	<span style={{display: "inline-flex"}}>
 	    	<input 
 	    	    id={id}
 	    		value={this.state.txtValue}
@@ -40,9 +50,9 @@ class TextField extends React.Component {
 	    		type="text" 
 	    		onChange={this.onChange}
 	    		className="form-control"
-	  
 	    	/>
-	    </a>
+	    	{button}
+	    	</span>
 	    </div>)
 	}	
 }

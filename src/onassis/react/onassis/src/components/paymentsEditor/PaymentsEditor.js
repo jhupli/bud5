@@ -953,8 +953,8 @@ class PaymentsEditor extends React.Component {
 		if(values) values[index].check = value
 	}
 	
-	groupLoad(e) {
-		if(this.pristine && e.target.value && e.target.value.length > 0) this.props.groupLoad(e.target.value)
+	groupLoad(grp) {
+		if(this.pristine && grp && grp.length > 0) this.props.groupLoad(grp)
 	}
 	
 	render() {

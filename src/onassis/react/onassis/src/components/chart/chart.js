@@ -10,7 +10,7 @@ import { day_load, account_load } from '../../actions/payments'
 //import initials from '../../util/initials'
 import { connect } from 'react-redux'
 import { get_constants } from '../../actions/constants'
-import { set_daterange, daterange_next_block, daterange_prev_block } from '../../actions/daterange'
+import { set_daterange, set_todayrange, daterange_next_block, daterange_prev_block } from '../../actions/daterange'
 
 import '../../../node_modules/c3/c3.min.css'
 import './style_region.css'
@@ -274,7 +274,8 @@ class Chart extends React.Component {
     	console.log("TODAY")
     		var now = new Date()
     		//console.log("diff="+diff)
-    		this.props.setDateRange(addDays(now, -10), addDays(now, +10))
+    		//this.props.setDateRange(addDays(now, -10), addDays(now, +10))
+    		this.props.daterangeToday()
     		this.dateselect(now)
     }
     onmouseover_account(a) {
@@ -531,6 +532,9 @@ function mapDispatchToProps(dispatch) {
         },
         getConstants: (id) => {
         	get_constants(id, dispatch)
+        },
+        daterangeToday: () => {
+            dispatch(set_todayrange())
         },
         daterangeNextBlock: () => {
             dispatch(daterange_next_block())

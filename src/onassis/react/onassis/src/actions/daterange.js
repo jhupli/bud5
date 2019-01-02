@@ -1,4 +1,4 @@
-import {addDays, daydiff} from '../util/addDays'
+import {addDays, addMonths, daydiff, isFirstAndLastOfSameMonth, daysInMonth} from '../util/addDays'
 
 const DATE_RANGE_SELECTED = 'DATE_RANGE_SELECTED'
 const setDateRangeAction = (s, e, name) => ({
@@ -8,40 +8,7 @@ const setDateRangeAction = (s, e, name) => ({
         'e': e
     }
 })
-/*
-const DATE_RANGE_NEXTBLOCK = 'DATE_RANGE_NEXTBLOCK'
-const daterangeNextBlockAction = () => (
-  { 
-	type: DATE_RANGE_NEXTBLOCK,
-    payload: 
-    	{
-    		nextblock : (new Date()).getTime() //only signal
-    	} 
-  }
-)
 
-const DATE_RANGE_PREVBLOCK = 'DATE_RANGE_PREVBLOCK'
-const daterangePrevBlockAction = () => (
-  { 
-	type: DATE_RANGE_PREVBLOCK,
-    payload: 
-    	{
-    		prevblock : (new Date()).getTime() //only signal
-    	} 
-  }
-)
-
-const DATE_RANGE_TODAY = 'DATE_RANGE_TODAY'
-const daterangeTodayAction = () => (
-  { 
-	type: DATE_RANGE_TODAY,
-    payload: 
-    	{
-    		today : (new Date()).getTime() //only signal
-    	} 
-  }
-)
-*/
 var prev_s, prev_e
 
 const set_daterange = (s, e) => (
@@ -52,9 +19,19 @@ const set_daterange = (s, e) => (
     }
 )
 
+
 const daterange_next_block = () => (
     (dispatch) => {
-    	//dispatch(daterangeNextBlockAction())
+    	//if it is a even month so will be the next month be even
+    	if ( isFirstAndLastOfSameMonth(prev_s, prev_e) ) {
+    		var s = addMonths(prev_s, 1)
+    		var e = new Date(s)
+    		s.setDate(1)
+    		e.setDate(daysInMonth(e.getMonth(), e.getYear()))
+    		dispatch(set_daterange(s, e))
+    		return
+    		
+    	}
     	var diff = daydiff(prev_s, prev_e)
     	dispatch(set_daterange(addDays(prev_s, diff + 1), addDays(prev_e, diff + 1)))
     }
@@ -62,20 +39,38 @@ const daterange_next_block = () => (
 
 const daterange_prev_block = () => (
     (dispatch) => {
-    	//dispatch(daterangePrevBlockAction())
+    	//if it is a even month so will be the preious month be even
+    	if ( isFirstAndLastOfSameMonth(prev_s, prev_e) ) {
+    		var s = addMonths(prev_s, -1)
+    		var e = new Date(s)
+    		s.setDate(1)
+    		e.setDate(daysInMonth(e.getMonth(), e.getYear()))
+    		dispatch(set_daterange(s, e))
+    		return
+    	}
     	var diff = daydiff(prev_e, prev_s)
     	dispatch(set_daterange(addDays(prev_s, diff - 1), addDays(prev_e, diff - 1)))
     }
 )
 
-const daterange_today = () => (
+const set_todayrange = () => (
     (dispatch) => {
-    	//dispatch(daterangeTodayAction())
+    		var s = new Date(0)
+    		var today = new Date()
+    		s.setFullYear(today.getFullYear())
+    		s.setMonth(today.getMonth())
+    		s.setDate(1)
+    		s.setHours(0);
+    		var e = new Date(s)
+    		e.setDate(daysInMonth(e.getMonth(), e.getYear()))
+    		dispatch(set_daterange(s, e))
     }
 )
+
 export {
     set_daterange,
+    set_todayrange,
     daterange_prev_block,
-    daterange_next_block,
-    daterange_today
+    daterange_next_block
+    
 }

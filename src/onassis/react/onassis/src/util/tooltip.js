@@ -42,7 +42,7 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 		a_table = 
 			        <table className='c3-tooltip'>
 		              <tbody>
-		              	  {showdate ? <th colspan = '2'>{dateFormat(dt, "dd.mm.yyyy ddd")}</th>: null}
+		              	  {showdate ? <th colSpan = '2'>{dateFormat(dt, "dd.mm.yyyy ddd")}</th>: null}
 		              	  {trs}
 		              </tbody>
 		            </table>

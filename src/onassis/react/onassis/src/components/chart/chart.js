@@ -407,9 +407,10 @@ class Chart extends React.Component {
     	}
         if (
         		
-        		
+        	// eslint-disable-next-line	
         	!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
         	|| 
+        	// eslint-disable-next-line
         	!(this.state.end == nextProps.end)
         		
         		

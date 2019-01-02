@@ -806,7 +806,7 @@ class PaymentsEditor extends React.Component {
 						{/*this.pristine ? 'pristine' : 'not pristine'*/}
 						{/*this.errors ? ' errors' : ' no errors'*/}
 						<span className="pull-right" style={{marginTop: "6px"}}>
-							<Panel.Toggle componentClass="a" onClick={this.setRecurring} >
+							<Panel.Toggle componentClass="button" className="link-button" onClick={this.setRecurring} >
 							{   (!this.state.values || this.state.values.length === 0) ?
 								''
 								:
@@ -894,9 +894,9 @@ class PaymentsEditor extends React.Component {
 			return(
 			<th className={this.thClassName(field)}>
 	  			<div>
-		  			<span style={{display: "flex"}} >
-		  				<div  style={{marginTop: 8}}>
-		  					<a>{label !== null ? label : ''}</a>
+		  			<span style={{display: 'flex'}} >
+		  				<div  style={{marginTop: 8, textDecoration: 'none'}} className="link-button" >
+		  					{label !== null ? label : ''}
 		  				</div>
 		  			</span>
 		  		</div>
@@ -910,9 +910,9 @@ class PaymentsEditor extends React.Component {
 		
 		var labelField = (
 				<div  style={{marginTop: 8}}>
-  					<a  onClick={() => {this.setSortF(field)}}>
+  					<button type="button" className="link-button" onClick={() => {this.setSortF(field)}}>
   						{label}
-  					</a>
+  					</button>
 		  		</div>)
 		return(
 		<th className={this.thClassName(field)}>

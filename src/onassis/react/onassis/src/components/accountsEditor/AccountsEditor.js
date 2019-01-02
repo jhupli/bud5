@@ -534,9 +534,9 @@ class AccountsEditor extends React.Component {
 		
 		var labelField = (
 				<div  style={{marginTop: 8}}>
-  					<a  onClick={() => {this.setSortF(field)}}>
+  					<button  type="button" className="link-button" onClick={() => {this.setSortF(field)}}>
   						{label}
-  					</a>
+  					</button>
 		  		</div>)
 		return(
 		<th className={this.thClassName(field)}>

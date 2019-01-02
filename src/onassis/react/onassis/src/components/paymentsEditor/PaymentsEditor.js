@@ -775,7 +775,7 @@ class PaymentsEditor extends React.Component {
 		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
 	  			{this.th('i', 'Pay')}
 	  			<th className={this.thClassName('s')} />
-	  			{this.th('g', 'Ref')}
+	  			{this.th('g', <FontAwesome name='paperclip' size='lg' />)}
 	  			{this.th('c', 'Issue')}
 	  			{this.th('a', 'Account')}
 	  			{this.th('descr', 'Description')}		  			

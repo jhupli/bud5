@@ -7,6 +7,8 @@ import Spinner from './Spinner'
 import { connect } from 'react-redux'
 var dateFormat = require('dateformat');
 
+var FontAwesome = require('react-fontawesome');
+
 class ChartPanel extends React.Component{
 	render(){
 		var dates = " " + dateFormat(this.props.start, "dd.mm.yyyy ddd") + " - " + dateFormat(this.props.end, "dd.mm.yyyy ddd")
@@ -14,7 +16,7 @@ class ChartPanel extends React.Component{
 		<div>
 			<Panel>
 			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
-			  		Diagram <span style={{fontSize: "15px"}}>{dates}</span><Spinner fetching={this.props.fetching} />
+			  		<FontAwesome name='bar-chart' /> <span style={{fontSize: "15px"}}>{dates}</span><Spinner fetching={this.props.fetching} />
 			  			<span className="pull-right">
 				  			<Buttons />
 				  	    </span>

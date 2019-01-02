@@ -7,7 +7,7 @@ import Spinner from './Spinner'
 import { connect } from 'react-redux'
 var dateFormat = require('dateformat');
 
-class DiagramA extends React.Component{
+class ChartPanel extends React.Component{
 	render(){
 		var dates = " " + dateFormat(this.props.start, "dd.mm.yyyy ddd") + " - " + dateFormat(this.props.end, "dd.mm.yyyy ddd")
 		return(
@@ -36,4 +36,4 @@ const mapStateToProps = (store) => {
     }
 }
 
-export default connect(mapStateToProps)(DiagramA)
+export default connect(mapStateToProps)(ChartPanel)

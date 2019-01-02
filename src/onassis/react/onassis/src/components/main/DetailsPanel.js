@@ -11,7 +11,7 @@ import {accountsTooltipTable} from '../../util/tooltip'
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
 
-class Details extends React.Component{
+class DetailsPanel extends React.Component{
 	constructor(props) {
 	super(props);
 	this.state = {
@@ -133,5 +133,5 @@ function mapDispatchToProps(dispatch) {
         }
     })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Details)
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsPanel)
 

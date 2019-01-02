@@ -5,35 +5,49 @@ import Categories from '../categories/categories'
 import Accounts from '../accounts/accounts'
 import Logs from '../logs/logs'
 
-import Range from './Range'
-import Details from './Details'
-import DiagramA from './DiagramA' //chart
-import DiagramB from './DiagramB' //pie
+import RangePanel from './RangePanel'
+import DetailsPanel from './DetailsPanel'
+import ChartPanel from './ChartPanel'
+import PiePanel from './PiePanel'
 
 import { connect } from 'react-redux'
 import { show_view } from '../../actions/navi'
+
+/*
+<Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
+  <Tab eventKey={1} title="Tab 1">
+    Tab 1 content
+  </Tab>
+  <Tab eventKey={2} title="Tab 2">
+    Tab 2 content
+  </Tab>
+  <Tab eventKey={3} title="Tab 3" disabled>
+    Tab 3 content
+  </Tab>
+</Tabs>;
+*/
 
 const Main = () => (
 	<Grid>
 		 	<Row>
 				<Col md={12}>
-					<Range />
+					<RangePanel />
 				</Col>
 			</Row>  
 			
 			<Row>
 				<Col md={8}>
-					<DiagramA /> 
+					<ChartPanel /> 
 				</Col>
 
 				<Col md={4} >
-					<DiagramB /> 
+					<PiePanel /> 
 				</Col>
 									
 			</Row>				
 			<Row>
 				<Col md={12}>
-						<Details /> 
+						<DetailsPanel /> 
 				</Col>
 			</Row>
 	</Grid>

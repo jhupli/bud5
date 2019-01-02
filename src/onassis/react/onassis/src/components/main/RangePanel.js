@@ -16,7 +16,7 @@ import Spinner from './Spinner'
 var FontAwesome = require('react-fontawesome');
 
 
-class Range extends React.Component{
+class RangePanel extends React.Component{
 	render(){
 		return(
 		<div>
@@ -60,5 +60,5 @@ const mapStateToProps = (store) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Range)
+export default connect(mapStateToProps, mapDispatchToProps)(RangePanel)
 						

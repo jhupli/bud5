@@ -675,7 +675,6 @@ class PaymentsEditor extends React.Component {
 		var pristine = true
     	this.state.touched.forEach( (v) => {
     		fields.forEach( (f) => {
-    			console.log("field="+f+" touched="+v[f])
     			pristine = pristine && !v[f]
     		})
     	})

@@ -10,7 +10,6 @@ class Payments extends React.Component {
 	        payments: [],
 	        balances: [] //TODO: needed?, if not remove from backend too!
 	    }
-	    this.props.dayLoad(new Date())
 	}
 	
 	render() {

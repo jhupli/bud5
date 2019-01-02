@@ -112,7 +112,6 @@ class Pie extends React.Component {
                     }
                 }*/
     		}
-        this.props.pieLoad(props.start, props.end)
     }
 
     onmouseout() {

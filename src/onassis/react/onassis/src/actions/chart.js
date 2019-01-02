@@ -57,7 +57,7 @@ const chartTodayAction = () => (
 var params = null
 
 function get(dispatch) {
-    dispatch(chartRequestAction(params.s, params.e));
+    dispatch(chartRequestAction(params.s, params.e))
     axios_get_params('chart?ts='+Date.now(), 
     				{params: params},
 				    response => {

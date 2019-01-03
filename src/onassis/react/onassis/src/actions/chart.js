@@ -54,6 +54,18 @@ const chartTodayAction = () => (
     	} 
   }
 )
+
+const CHART_REDRAW = 'CHART_REDRAW'
+const chartRedrawAction = () => (
+  { 
+	type: CHART_REDRAW,
+    payload: 
+    	{
+    		redraw : (new Date()).getTime() //only signal
+    	} 
+  }
+)
+
 var params = null
 
 function get(dispatch) {
@@ -104,10 +116,18 @@ const chart_today = () => (
     }
 )
 
+const chart_redraw = () => (
+    (dispatch) => {
+    	dispatch(chartRedrawAction())
+    }
+)
+
+
 export {
 	chart_load,
 	chart_refresh,
 	chart_next_day,
 	chart_prev_day,
-	chart_today
+	chart_today,
+	chart_redraw
 }

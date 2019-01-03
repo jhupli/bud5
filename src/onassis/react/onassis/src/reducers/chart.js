@@ -24,7 +24,12 @@ const reducer = (state = [], action) => {
         //console.log("handling CHART_TODAY")
         return Object.assign({}, state, {
             today: action.payload.today,
-          }) 
+          })
+    case 'CHART_REDRAW':
+        //console.log("handling CHART_REDRAW")
+        return Object.assign({}, state, {
+            redraw: action.payload.redraw,
+        })
     default:
       return state
   }

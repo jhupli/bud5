@@ -40,9 +40,11 @@ class Chart extends React.Component {
     		selectedType: '',
     		nextday: null,
     		prevday: null,
-    		today: null
+    		today: null,
+    		redraw: null
         }
         
+        this.boundingRect = null
         this.hahlo_ix = null
         this.hahlo = null
         this.draw = this.draw.bind(this)
@@ -50,6 +52,7 @@ class Chart extends React.Component {
         this.nextday = this.nextday.bind(this)
         this.prevday = this.prevday.bind(this)
         this.today = this.today.bind(this)
+        this.redraw = this.redraw.bind(this)
         this.legendnames = this.legendnames.bind(this)
         this.onmouseover = this.onmouseover.bind(this)
         this.onmouseover_account = this.onmouseover_account.bind(this)
@@ -159,40 +162,6 @@ class Chart extends React.Component {
 		return ReactDOMServer.renderToStaticMarkup(a_table)
     }
     
-    c3onRendered() {
-    	this.chart_config.data.columns[0].forEach((el, i) => {
-    		if(i>0) {
-    			var svg = d3.selectAll('#chart').select('.c3-event-rect-'+(i-1))
-    			var dd=this.chartDatetoDate(el)
-    			svg[0][0].onclick = () => {
-
-    				console.log('^'+dd)
-    				this.dateselect(dd)
-    			    		}
-    		}
-    	})
-    	/*
-    	for(var i=1; i<this.chart_config.data.columns[0].length; i++) {
-    		var svg = d3.selectAll('#chart').select('.c3-event-rect-'+(i-1))
-    		var d=this.chart_config.data.columns[0][i];
-    		var dd=this.chartDatetoDate(d)
-    		svg[0][0].onclick = () => {
-    			var t = i;
-    			console.log('^'+dd)
-    			this.dateselect(dd)
-    		}
-    	}*/
-    	/*
-    	var svg = d3.selectAll("#chart").select(".c3-event-rect-0")
-    	svg[0][0].onclick = x => {console.log(x)}
-    	svg = d3.selectAll("#chart").select(".c3-event-rect-1")
-    	svg[0][0].onclick = x => {
-    		console.log(this.chartDatetoDate(this.chart_config.data.columns[0][2]))
-    		this.dateselect(this.chartDatetoDate(this.chart_config.data.columns[0][2]))
-    	}*/
-    	
-    	
-    }
     onmouseout() {
         if (this.timer) {
             clearTimeout(this.timer)
@@ -245,16 +214,7 @@ class Chart extends React.Component {
     	if(!this.chart_config.data.columns) return null;
 
     	var ix = daydiff(this.chartDatetoDate(this.chart_config.data.columns[0][1]), d)
-    	//console.log("*******" +ix)
     	return ix
-    	/*
-    	for(var i=0; i<this.chart_config.data.columns[0].length; i++) {
-    		if(d_str == this.chart_config.data.columns[0][i]) {
-    			console.log("i:"+i+" d_str:" + d_str)
-    			return i
-    		}
-    	}
-    	return null;*/
     }
 
     
@@ -271,13 +231,15 @@ class Chart extends React.Component {
     }
 
     today() {
-    	console.log("TODAY")
-    		var now = new Date()
-    		//console.log("diff="+diff)
-    		//this.props.setDateRange(addDays(now, -10), addDays(now, +10))
-    		this.props.daterangeToday()
-    		this.dateselect(now)
+		var now = new Date()
+		this.props.daterangeToday()
+		this.dateselect(now)
     }
+    
+    redraw() {
+    	this.draw()
+    }
+    
     onmouseover_account(a) {
     	if (a === "I" || a === "E") return;
         //magic copied from caller to do the default behaviour (i.e. dim other curves and focus the selected curve) :
@@ -296,9 +258,6 @@ class Chart extends React.Component {
     dateselect(d) {
     			console.log("DATESEL")
     			this.selectedDate = d
-
-
-    			
     			//CHG-13this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
     			var ix = this.find_ix(d)
@@ -324,27 +283,20 @@ class Chart extends React.Component {
 	    			this.chart_config.regions[this.hahlo_ix].end = loppu
 	    			c3.generate(this.chart_config)
     			}
-             /*   
-                var d1 = addDays(d, -1)
-                var d1_str = dateFormat(d1, "yyyymmdd") + "T20"
-                var d2_str = dateFormat(d, "yyyymmdd") + "T4"
-                if(!this.chart_config.regions || this.chart_config.regions[0].start != d1_str	) {
-                	console.log("****");
-                	this.hahlo = {"start": d1_str, "end": d2_str, class:'gray'}
-
-                	if(this.chart_config.regions) {
-                		console.log("push hahlo");
-                		this.chart_config.regions.push(this.hahlo)
-                	} else {
-                		console.log("not push hahlo");
-                	}
-                	
-	                //this.draw() //TODO: POISTA TÄÄ JOS VAAN SAAT POIS
-                }*/
     }
-    
+   
+    render() {
+    	//var width = document.getElementById('chart').getBoundingClientRect().width
+    	console.log("render()")
+        return ( 
+        	<div id = "chart" onMouseOut = {() => this.onmouseout()} />
+        )
+   }
+ 
     draw() {
-    	console.log("draw()0")
+    	this.boundingRect = document.getElementById('chart').getBoundingClientRect()
+    	console.log("draw() width = " + this.boundingRect)
+    	
     	if(!this.chart_config.data.columns) {
     		console.log("draw() nothing yet")
     		return //data not yet there
@@ -376,28 +328,48 @@ class Chart extends React.Component {
     	   }
        }
         c3.generate(this.chart_config)
+   }
+   
+   c3onRendered() {
+    	console.log("c3onRendered() width = " + this.boundingRect)
+    	this.chart_config.data.columns[0].forEach((el, i) => {
+    		if(i>0) {
+    			var svg = d3.selectAll('#chart').select('.c3-event-rect-'+(i-1))
+    			var dd=this.chartDatetoDate(el)
+    			svg[0][0].onclick = () => {
+    				this.dateselect(dd)
+    			}
+    		}
+    	})
     }
-
+    
     componentWillReceiveProps(nextProps) {
-    	console.log("componentWillReceiveProps")
+    	var width = document.getElementById('chart').getBoundingClientRect().width
+    	console.log("componentWillReceiveProps() width = " + width)
     	if(nextProps.nextday !== this.props.nextday) {
+    		console.log('N')
     		this.nextday()
     	}
     	if(nextProps.prevday !== this.props.prevday) {
+    		console.log('P')
     		this.prevday()
     	}
     	if(nextProps.today !== this.props.today) {
+    		console.log('T')
     		this.today()
     	}
+    	if(nextProps.redraw !== this.props.redraw) {
+    		console.log('RD')
+    		this.redraw()
+    	}
+    	
     	if(nextProps.selectedType !== this.props.selectedType) {
-    		//console.log('reset')
-    		//console.log(nextProps)
+    		console.log('TY')
     		selectedDayOrAccount = -1 //reset
     	}
     	if( nextProps.constants && nextProps.constants[this.props.constants_id]) {
+    		console.log('C')
     		var constants = nextProps.constants[this.props.constants_id]
-	    	//var selectedItem = constants.find( c => { return c.value === nextProps.selectedValue }) //not supported by IE11
-    		
     		var selectedItem = findInArray(constants, c => { return c.value === nextProps.selectedValue })
 	    	var validConstants = constants.filter(  c => { return (c.valid || c === selectedItem) })
 	    	this.setState({
@@ -406,21 +378,20 @@ class Chart extends React.Component {
 		    })
     	}
         if (
-        		
         	// eslint-disable-next-line	
-        	!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
+        		!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
         	|| 
         	// eslint-disable-next-line
-        	!(this.state.end == nextProps.end)
-        		
-        		
-        ){ //selected date span changed?
+        		!(this.state.end == nextProps.end)) { 
+        	console.log('R')
+        	//selected date span changed?
         	this.setState({
 		    		start : nextProps.start,
 		    		end : nextProps.end		
 		    })
             this.props.chartLoad(nextProps.start, nextProps.end)
-        } else if (nextProps.curves !== this.props.curves || nextProps.refreshTime !== this.props.refreshTime){
+        } else if (nextProps.curves !== this.props.curves || nextProps.refreshTime !== this.props.refreshTime) {
+        	console.log('CU')
         	//TODO jäi tähän laita värit ja nimet tilit on jo account#ssa
         	this.chart_config.data.names = {}
         	this.chart_config.data.types = {}
@@ -439,25 +410,12 @@ class Chart extends React.Component {
 	        	for(var i=3; i<nextProps.curves.length; i++) {
 	        		var key = nextProps.curves[i][0]
 	        		var acc = findInArray(nextProps.constants['acc'], f)
-	        		/*var acc = nextProps.constants['acc'].find( 
-	        			n => { return key == n.value}
-	        		)*/
-	        		//this.chart_config.data.names[key] = acc.label
 	        		this.chart_config.data.colors[key] = acc.color
 	        		this.chart_config.data.types[key] = 'spline'
-	        		
-	        		/*var m = findInArray(nextProps.curves[i], n => {return n > max})
-	        		max = m>max ? m : max
-	        			
-	        		m = findInArray(nextProps.curves[i], n => {return n < min})
-	        		min = m<min ? m : min*/ //taulu ei ala 0:sta
-	        			
 	        	}
-	        	console.log("min="+min+" max="+max)
 	            this.draw()
         	}
-           
-        }
+        } 
     }
     
     
@@ -473,37 +431,7 @@ class Chart extends React.Component {
 	        		this.chart_config.data.names[key] = acc.label
 	        	}
         }
-    	/*CHG-13
-    	if( this.selectedDate && this.chart_config.data.columns) {
-    		var ix = this.find_ix(this.selectedDate) + 1 //first column is name
-    		console.log("xx"+ix)
-    		if(ix && ix>0 && ix<this.chart_config.data.columns[0].length) {
-	    		//note: 0 column is the id
-	    		//var s = dateFormat(this.selectedDate.x, "dd.mm.yyyy")
-	    		//var i = this.selectedDate.index + 1
-	    		this.chart_config.data.names['I'] += " ["+currencyFormat(this.chart_config.data.columns[1][ix])+"]" //+s+ " "+i
-	    		this.chart_config.data.names['E'] += " ["+currencyFormat(this.chart_config.data.columns[2][ix])+"]"
-	
-	    		if (curves) {
-	    			console.log(curves)
-		        	for(var i=3; i<curves.length; i++) {
-		        		var key = curves[i][0]
-		        		var acc = findInArray(constants['acc'], n => { return key == n.value})
-		        		this.chart_config.data.names[key] += " ["+currencyFormat(this.chart_config.data.columns[i][ix])+"]"
-		        	}
-	    		}
-    		}
-    		
-    	}
-    	*/
-    }
-    
-    render() {
-    	console.log("render");
-        return ( 
-        	<div id = "chart" onMouseOut = {() => this.onmouseout()} />
-        )
-    }
+    } 
 }
 
 const mapStateToProps = (store) => {
@@ -514,6 +442,7 @@ const mapStateToProps = (store) => {
         nextday: store.chart.nextday,
         prevday: store.chart.prevday,
         today: store.chart.today,
+        redraw: store.chart.redraw,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
         selectedType: store.payments.queryType

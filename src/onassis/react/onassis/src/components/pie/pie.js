@@ -31,6 +31,7 @@ class Pie extends React.Component {
         this.state = {
         	constants: props.getConstants('cat'), // return null, but launches fetch
     		refreshTime: null,
+    		redraw: null
         }
 
         this.draw = this.draw.bind(this)

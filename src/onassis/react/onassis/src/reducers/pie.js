@@ -2,7 +2,7 @@ const reducer = (state = [], action) => {
  // console.log("pie reducer: "+action.type)
   switch (action.type) {
     case 'PIE_REQUEST':
-      console.log("handling PIE_REQUEST")
+      //console.log("handling PIE_REQUEST")
       return Object.assign({}, state, {
          fetching: true
     })

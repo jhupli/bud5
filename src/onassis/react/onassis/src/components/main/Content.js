@@ -1,10 +1,9 @@
 import React from 'react' // ← Main React library
-import { Grid, Row, Col, Tabs, Tab} from 'react-bootstrap';
+//import { Grid, Row, Col, Tabs, Tab} from 'react-bootstrap';
 
 import Categories from '../categories/categories'
 import Accounts from '../accounts/accounts'
 import Logs from '../logs/logs'
-import Chart from '../chart/chart'
 
 import RangePanel from './RangePanel'
 import DetailsPanel from './DetailsPanel'
@@ -44,12 +43,12 @@ const Log = () => (
 )
 
 class Content extends React.Component {
-	constructor(props) {
+	/*constructor(props) {
 		super(props)
 		this.handleSelect = this.handleSelect.bind(this)
-	}
+	}*/
 	
-	handleSelect(key) {
+	/*handleSelect(key) {
 		if(key === 1) {
 				var that = this
 				var f = () => {
@@ -65,11 +64,11 @@ class Content extends React.Component {
 	    		}
 		        setTimeout(f, 0)
 		}
-	}
+	}*/
    
 	render() {
-		this.props.chartRedraw()
-	    this.props.pieRedraw()
+		//this.props.chartRedraw()
+	    //this.props.pieRedraw()
 		
 		//console.log('render' + this.props.view);
 		var main = 
@@ -81,9 +80,7 @@ class Content extends React.Component {
 				<div style={{width: '100%'}}>
 							<div style={{width: '100%', "display": "inline-flex", "whiteSpace": "nowrap"}}>
 								<div style={{width: '70%'}} id='CHARTPANEL'>
-									<ChartPanel >
-										<Chart />
-									</ChartPanel>
+									<ChartPanel />
 								</div>
 								<div style={{width: '30%'}}>
 									<PiePanel />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, NavItem, Nav, NavDropdown, MenuItem} from 'react-bootstrap';
+import { Navbar, /*NavItem,*/ Nav, NavDropdown, MenuItem} from 'react-bootstrap';
 import { connect } from 'react-redux'
 
 import { show_view } from '../../actions/navi'
@@ -16,7 +16,7 @@ class MenuBar extends React.Component{
 				    </Navbar.Header>
 				    <Navbar.Collapse>
 				        <Nav>
-				            <NavItem eventKey={1} href="#">View</NavItem>
+				            {/*<NavItem eventKey={1} href="#">View</NavItem>*/}
 				            <NavDropdown eventKey={3} title="View" id="basic-nav-dropdown">
 				                <MenuItem eventKey={3.1} onSelect={(e) => {this.props.showView('main')}}>
 				                	{this.props.view === 'main' ? 'X' : '' } Main
@@ -31,13 +31,15 @@ class MenuBar extends React.Component{
 				                <MenuItem eventKey={3.4} onSelect={(e) => {this.props.showView('l')}}>
 				                	{this.props.view === 'l' ? 'X' : '' } Logs
 				                </MenuItem>
+				                	{/*
 				                <MenuItem divider />
-				                <MenuItem eventKey={3.5}> Settings </MenuItem>
+				                <MenuItem eventKey={3.5}> Settings </MenuItem>*/}
 				            </NavDropdown>
 				        </Nav>
+				        {/*
 				        <Nav pullRight>
 				            <NavItem eventKey={2} href="#"> Logout </NavItem>
-				        </Nav>
+				        </Nav>*/}
 				    </Navbar.Collapse>
 				</Navbar>
 			</div>

@@ -296,7 +296,7 @@ function show_tip(data) {
   var mid = monthId(data.d)
   var bg = document.getElementById(dateId(data.d) + _BG).getBoundingClientRect()
   var doc = document.documentElement;
-  var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+//  var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
   var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
   //console.log('top=' + top)
   var offsetRect = {left:0, 'top': -top} //document.getElementsByClassName("col-md-12")[0].getBoundingClientRect()

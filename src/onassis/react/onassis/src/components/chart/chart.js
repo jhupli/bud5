@@ -404,7 +404,7 @@ class Chart extends React.Component {
         	this.chart_config.data.colors['I'] ='green'
         	//this.chart_config.data.names['E'] ='Exp'
         	this.chart_config.data.colors['E'] ='red'
-        	var max = 0, min = 0
+//        	var max = 0, min = 0
         	if (nextProps.curves) {
         		//console.log("curves 1")
         		var f = n =>  { return key === '' + n.value}

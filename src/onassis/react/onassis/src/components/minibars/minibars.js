@@ -13,11 +13,13 @@ class Minibars extends React.Component {
     this.state = {
     		start: new Date(),
     		end: new Date(),
-    		balances: null
+    		balances: null,
+    		redraw: null
     }
     // This binding is necessary to make `this` work in the callback
     this.select = this.select.bind(this);
-      props.load();
+    this.redraw = this.redraw.bind(this);
+    props.load();
   }
   
   componentDidMount() {
@@ -36,10 +38,14 @@ class Minibars extends React.Component {
       this.props.setDateRange(new Date(start), new Date(end), "rangePicker1")
   }
   
+  redraw() {
+	  this.minibars.generate(this.props.balances)
+	  this.minibars.select(this.props.start, this.props.end)
+  }
+  
   componentWillReceiveProps(nextProps){
 	  this.minibars.generate(nextProps.balances)
 	  this.minibars.select(nextProps.start, nextProps.end)
-	  
   }
 
   render() {
@@ -47,15 +53,17 @@ class Minibars extends React.Component {
     	<div>
 	        <div id={this.props.name} />
         </div>
-        
     );
   }
+  
 }
+
 const mapStateToProps = (store) => {
 	  return {
   		start: store.daterange.s,
 		end: store.daterange.e,
-		balances: store.minibars.balances
+		balances: store.minibars.balances,
+		redraw: store.minibars.redraw,
 	  }
   }
 

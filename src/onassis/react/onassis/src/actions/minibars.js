@@ -14,6 +14,17 @@ const balancesResponseAction = (response) => ({
     }
 })
 
+const MINIBARS_REDRAW = 'MINIBARS_REDRAW'
+const minibarsRedrawAction = () => (
+  { 
+	type: MINIBARS_REDRAW,
+    payload: 
+    	{
+    		redraw : (new Date()).getTime() //only signal
+    	} 
+  }
+)
+
 var prev_cat = 0
 
 const balances_load = (cat) => (
@@ -42,7 +53,13 @@ const balances_refresh = () => (
 	balances_load(prev_cat)
 )
 
+const minibars_redraw = () => (
+    (dispatch) => {
+    	dispatch(minibarsRedrawAction())
+    }
+)
 export {
     balances_load,
-    balances_refresh
+    balances_refresh,
+    minibars_redraw
 }

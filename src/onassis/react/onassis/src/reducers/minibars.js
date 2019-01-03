@@ -11,7 +11,12 @@ const reducer = (state = [], action) => {
         return Object.assign({}, state, {
             balances: action.payload.balances,
             fetching: false
-          })        
+          }) 
+    case 'MINIBARS_REDRAW':
+        //console.log("handling MINIBARS_REDRAW")
+        return Object.assign({}, state, {
+            redraw: action.payload.redraw,
+        })
     default:
       return state
   }

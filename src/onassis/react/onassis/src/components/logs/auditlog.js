@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import { Table, Panel } from 'react-bootstrap';
 import {fiDateTimeMillis, toFiDBFormat} from '../../util/fiDate'
 import currencyFormat  from '../../util/currency'
-//import AccountsEditor from '../accountsEditor/AccountsEditor'
-//import { load } from '../../actions/auditlog'
-//import TextField from './TextField'
+
 import './auditlog.css'
 import Spinner from '../main/Spinner'
 import Buttons from './buttons'
@@ -13,13 +11,9 @@ const fields = ['d','i','s','g','c','a','descr']
 
 class AuditLog extends React.Component {
 	
-
-	
 	constructor(props) {
 	    super(props);
-/*	    this.state = {
-	        logentries: props.logentries
-	    }*/
+
 	    //render
 	    this.renderLogEntry = this.renderLogEntry.bind(this)
         this.renderPaymentsHeaderT = this.renderPaymentsHeaderT.bind(this)
@@ -141,8 +135,7 @@ class AuditLog extends React.Component {
     }
 	
 	renderLogEntry(r) {
-		console.log("renderLogEntry:")
-		console.log(r)
+
 		return (
 		
 		<Panel key={'al_panel_'+r.hs[0].id+'_'+r.rownr} >
@@ -173,25 +166,7 @@ class AuditLog extends React.Component {
 	render() {
 		
 		var entries = this.props.logentries || []
-		console.log("RENDER:")
-		console.log(entries)
-		/*return(
-			<div>
-			  <Panel >
-			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
-				  	<span style={{display: "flow-root", alignItems: "center"}}>
-				  		Audit log 
-				  	</span>
-			  	</Panel.Heading>
-			  	<Panel.Body>
-					<div>
-							{entries.map((r) => this.renderLogEntry(r))}
-				    </div>
-				</Panel.Body>
-			  </Panel>
-			</div>
-			)*/
-		
+
 		return(
 			<div>
 				<div>
@@ -226,12 +201,4 @@ const mapStateToProps = (store) => {
     }
 }
 
-/*function mapDispatchToProps(dispatch) {
-    return ({
-    	//TODO
-        auditlogLoad: () => {
-            dispatch(load())
-        }       
-    })
-}*/
 export default connect(mapStateToProps)(AuditLog)

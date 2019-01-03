@@ -22,7 +22,7 @@ class ChartPanel extends React.Component{
 				  	    </span>
 			  	</Panel.Heading>
 			  	<Panel.Body>					
-			  		<Chart />
+			  		{this.props.children}
 				</Panel.Body>
 			  </Panel>
 		</div>

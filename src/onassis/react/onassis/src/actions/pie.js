@@ -22,6 +22,17 @@ const pieResponseAction = (response) => (
   }
 )
 
+const PIE_REDRAW = 'PIE_REDRAW'
+const pieRedrawAction = () => (
+  { 
+	type: PIE_REDRAW,
+    payload: 
+    	{
+    		redraw : (new Date()).getTime() //only signal
+    	} 
+  }
+)
+
 var params = null
 
 function get(dispatch) {
@@ -55,8 +66,13 @@ const pie_refresh = () => (
     }
 )
 
-
+const pie_redraw = () => (
+    (dispatch) => {
+    	dispatch(pieRedrawAction())
+    }
+)
 export {
 	pie_load,
-	pie_refresh
+	pie_refresh,
+	pie_redraw
 }

@@ -11,7 +11,12 @@ const reducer = (state = [], action) => {
         return Object.assign({}, state, {
             slices: action.payload.slices,
             fetching: false
-          })        
+          })
+    case 'PIE_REDRAW':
+        //console.log("handling PIE_REDRAW")
+        return Object.assign({}, state, {
+            redraw: action.payload.redraw,
+        })
     default:
       return state
   }

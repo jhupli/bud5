@@ -32,12 +32,9 @@ class Pie extends React.Component {
         	constants: props.getConstants('cat'), // return null, but launches fetch
     		refreshTime: null,
         }
-     /*   this.state = {
-        	start: initials.startDate,
-        	end: initials.endDate,
-            slices: null
-        }*/
+
         this.draw = this.draw.bind(this)
+        this.redraw = this.redraw.bind(this)
         this.onmouseover = this.onmouseover.bind(this)
         this.onmouseout = this.onmouseout.bind(this)
         this.c3onRendered = this.c3onRendered.bind(this)
@@ -214,6 +211,10 @@ class Pie extends React.Component {
          c3.generate(this.chart_config)
     }
 
+    redraw() {
+    	this.draw()
+    }
+    
     componentWillReceiveProps(nextProps) {
         if (this.props.start !== nextProps.start || this.props.end !== nextProps.end) { //selected date span changed?
             this.props.pieLoad(nextProps.start, nextProps.end)
@@ -309,6 +310,7 @@ const mapStateToProps = (store) => {
         end: store.daterange.e,
         slices: store.pie.slices,
         refreshTime:  store.constants.refreshTime,
+        redraw: store.pie.redraw,
         constants: store.constants.constants
     }
 }

@@ -2,12 +2,10 @@ const reducer = (state = [], action) => {
   //console.log("chart reducer: "+action.type)
   switch (action.type) {
     case 'CHART_REQUEST':
-      console.log("handling CHART_REQUEST")
       return Object.assign({}, state, {
          fetching: true
     })
     case 'CHART_RESPONSE':
-        console.log("handling CHART_RESPONSE")
         return Object.assign({}, state, {
             curves: action.payload.curves,
             fetching: false

@@ -2,7 +2,7 @@ const reducer = (state = [], action) => {
   //console.log("minibars reducer: "+action.type)
   switch (action.type) {
     case 'MINIBARS_REQUEST':
-      console.log("handling MINIBARS_REQUEST")
+      //console.log("handling MINIBARS_REQUEST")
       return Object.assign({}, state, {
          fetching: true
     })

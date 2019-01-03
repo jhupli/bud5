@@ -66,6 +66,14 @@ class Content extends React.Component {
 		}
 	}*/
    
+	componentWillReceiveProps(nextProps) {
+		if(this.props.view !== 'main' && nextProps.view === 'main') {
+			//refresh c3-views (bug in lib)
+			this.props.minibarsRedraw()
+			this.props.chartRedraw()
+	    	this.props.pieRedraw()
+		}
+	}
 	render() {
 		//this.props.chartRedraw()
 	    //this.props.pieRedraw()
@@ -79,10 +87,10 @@ class Content extends React.Component {
 
 				<div style={{width: '100%'}}>
 							<div style={{width: '100%', "display": "inline-flex", "whiteSpace": "nowrap"}}>
-								<div style={{width: '70%'}} id='CHARTPANEL'>
+								<div style={{width: '75%'}} id='CHARTPANEL'>
 									<ChartPanel />
 								</div>
-								<div style={{width: '30%'}}>
+								<div style={{width: '25%'}}>
 									<PiePanel />
 								</div>
 							</div>

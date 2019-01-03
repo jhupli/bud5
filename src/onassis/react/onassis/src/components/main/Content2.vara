@@ -1,10 +1,9 @@
 import React from 'react' // ← Main React library
-import { Grid, Row, Col, Tabs, Tab} from 'react-bootstrap';
+import { Grid, Row, Col} from 'react-bootstrap';
 
 import Categories from '../categories/categories'
 import Accounts from '../accounts/accounts'
 import Logs from '../logs/logs'
-import Chart from '../chart/chart'
 
 import RangePanel from './RangePanel'
 import DetailsPanel from './DetailsPanel'
@@ -13,9 +12,7 @@ import PiePanel from './PiePanel'
 
 import { connect } from 'react-redux'
 import { show_view } from '../../actions/navi'
-import { chart_redraw } from '../../actions/chart'
-import { pie_redraw } from '../../actions/pie'
-import { minibars_redraw } from '../../actions/minibars'
+
 /*
 <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
   <Tab eventKey={1} title="Tab 1">
@@ -30,75 +27,69 @@ import { minibars_redraw } from '../../actions/minibars'
 </Tabs>;
 */
 
+const Main = () => (
+	<Grid>
+		 	<Row>
+				<Col md={12}>
+					<RangePanel />
+				</Col>
+			</Row>  
+			
+			<Row>
+				<Col md={8}>
+					<ChartPanel /> 
+				</Col>
+
+				<Col md={4} >
+					<PiePanel /> 
+				</Col>
+									
+			</Row>				
+			<Row>
+				<Col md={12}>
+						<DetailsPanel /> 
+				</Col>
+			</Row>
+	</Grid>
+)
+
 const Acc = () => (
+	<Grid>
+		 	<Row>
+				<Col md={12}>
 					<Accounts />
+				</Col>
+			</Row>
+	</Grid>
 )
 
 const Cat = () => (
-
+	<Grid>
+		 	<Row>
+				<Col md={12}>
 					<Categories />
+				</Col>
+			</Row>
+	</Grid>
 )
 
 const Log = () => (
+	<Grid>
+		 	<Row>
+				<Col md={12}>
 					<Logs />
+				</Col>
+			</Row>
+	</Grid>
 )
 
 class Content extends React.Component {
-	constructor(props) {
-		super(props)
-		this.handleSelect = this.handleSelect.bind(this)
-	}
-	
-	handleSelect(key) {
-		if(key === 1) {
-				var that = this
-				var f = () => {
-	    			that.props.minibarsRedraw()
-	    		}
-		        setTimeout(f, 0)
-		}
-		if(key === 2) {
-				var that = this
-				var f = () => {
-	    			that.props.chartRedraw()
-	    			that.props.pieRedraw()
-	    		}
-		        setTimeout(f, 0)
-		}
-	}
-   
 	render() {
-		this.props.chartRedraw()
-	    this.props.pieRedraw()
-		
 		//console.log('render' + this.props.view);
-		var main = 
-			<div>
-				<div style={{width: '100%'}}>
-							<RangePanel />
-				</div>
-
-				<div style={{width: '100%'}}>
-							<div style={{width: '100%', "display": "inline-flex", "whiteSpace": "nowrap"}}>
-								<div style={{width: '70%'}} id='CHARTPANEL'>
-									<ChartPanel >
-										<Chart />
-									</ChartPanel>
-								</div>
-								<div style={{width: '30%'}}>
-									<PiePanel />
-								</div>
-							</div>
-							<DetailsPanel />
-				</div>
-			</div>
-
-		
-			
 		return(
 				<div> 
 					<div style={{display : (this.props.view === 'main') ? '' : 'none'}}>
-							{main}
+							<Main />
 					</div>
 					<div style={{display : (this.props.view === 'a') ? '' : 'none'}}>
 							<Acc />
@@ -128,15 +119,6 @@ function mapDispatchToProps(dispatch) {
     return ({
         showView: (view) => {
             dispatch(show_view(view))
-        },
-        chartRedraw: () => {
-            dispatch(chart_redraw())
-        },
-        pieRedraw: () => {
-            dispatch(pie_redraw())
-        },
-        minibarsRedraw: () => {
-            dispatch(minibars_redraw())
         }
     })
 }

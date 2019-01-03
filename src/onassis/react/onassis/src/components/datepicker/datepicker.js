@@ -90,7 +90,7 @@ class DatePicker extends React.Component {
 			$('#' + this.props.pickerName).daterangepicker(
 					dateSingle_pickeroptions, 
 					(start) =>  {
-						console.log('New single date selected: ' + start.format('MM.DD.YYYY'));
+						//console.log('New single date selected: ' + start.format('MM.DD.YYYY'));
 						this.props.pickerCallback(start, this.props.pickerName)
 					}
 			)
@@ -99,7 +99,7 @@ class DatePicker extends React.Component {
 			$('#' + this.props.pickerName).daterangepicker(
 					  dateRange_pickeroptions, 
 					  (start, end) => { 
-							console.log('New date range selected: ' + start.format('MM.DD.YYYY')+ " - " + end.format('MM.DD.YYYY'));
+							//console.log('New date range selected: ' + start.format('MM.DD.YYYY')+ " - " + end.format('MM.DD.YYYY'));
 							this.props.pickerCallback(start, end, this.props.pickerName)
 				    }
 			  )

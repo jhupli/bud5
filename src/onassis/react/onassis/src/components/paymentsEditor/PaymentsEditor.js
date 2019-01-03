@@ -505,7 +505,7 @@ class PaymentsEditor extends React.Component {
 	}
 		
 	setSortF(field) {
-		console.log(field)
+		//console.log(field)
 		if(!this.state.sort || this.state.sort !==field) {
 			this.setState({
 				sort : field,

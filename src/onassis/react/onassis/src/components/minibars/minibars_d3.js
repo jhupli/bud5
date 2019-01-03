@@ -295,7 +295,11 @@ function withinSelection(d) {
 function show_tip(data) {
   var mid = monthId(data.d)
   var bg = document.getElementById(dateId(data.d) + _BG).getBoundingClientRect()
-  var offsetRect = {left:0, top:0}//document.getElementsByClassName("col-md-12")[0].getBoundingClientRect()
+  var doc = document.documentElement;
+  var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+  var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+  //console.log('top=' + top)
+  var offsetRect = {left:0, 'top': -top} //document.getElementsByClassName("col-md-12")[0].getBoundingClientRect()
   //console.log("offsetRect:" + offsetRect.left)
   d3.select('#' + mid + _TIP_I_DIV).style("display", (data.i === 0 && data.e === 0) ? "none" : "table-row")
   d3.select('#' + mid + _TIP_DIV)
@@ -317,7 +321,7 @@ function hide_tip(data) {
 
 
 function select(start_, end_) {
-  console.log("select!")
+  //console.log("select!")
   if (!start_ || !end_ ) {
 	  console.assert(null != start_ && null != end_) 
 	  return

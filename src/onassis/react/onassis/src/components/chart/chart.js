@@ -154,7 +154,7 @@ class Chart extends React.Component {
                 }
             }
         }
-        //this.props.chartLoad(this.state.start ,this.state.end)
+       //this.props.chartLoad(this.state.start ,this.state.end)
     }
     
     tooltip(dt) {
@@ -169,7 +169,7 @@ class Chart extends React.Component {
     }
     
     onmouseover(d) {
-    	console.log(d)
+    	//console.log(d)
     	if(SELECTONHOVER) {
 	    		if(d.id === "I" && daydiff(d.x, this.selectedDate) !== 0) {
 	    		 if (this.timer) {
@@ -179,7 +179,7 @@ class Chart extends React.Component {
 	    			this.dateselect(d.x)
 	    		}
 	    		
-	    		console.log("FIRE:" + d.id+ " " + d.x + " " + this.selectedDate)
+	    		//console.log("FIRE:" + d.id+ " " + d.x + " " + this.selectedDate)
 		        this.timer = setTimeout(f, 300)
 	    	}
     	} else {
@@ -256,7 +256,7 @@ class Chart extends React.Component {
     }
     
     dateselect(d) {
-    			console.log("DATESEL")
+    			//console.log("DATESEL")
     			this.selectedDate = d
     			//CHG-13this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
@@ -287,7 +287,7 @@ class Chart extends React.Component {
    
     render() {
     	//var width = document.getElementById('chart').getBoundingClientRect().width
-    	console.log("render()")
+    	//console.log("render()")
         return ( 
         	<div id = "chart" onMouseOut = {() => this.onmouseout()} />
         )
@@ -295,10 +295,10 @@ class Chart extends React.Component {
  
     draw() {
     	this.boundingRect = document.getElementById('chart').getBoundingClientRect()
-    	console.log("draw() width = " + this.boundingRect)
+    	//console.log("draw() width = " + this.boundingRect)
     	
     	if(!this.chart_config.data.columns) {
-    		console.log("draw() nothing yet")
+    		//console.log("draw() nothing yet")
     		return //data not yet there
     	}
     	/* red / white backgrounds here*/
@@ -331,7 +331,7 @@ class Chart extends React.Component {
    }
    
    c3onRendered() {
-    	console.log("c3onRendered() width = " + this.boundingRect)
+    	//console.log("c3onRendered() width = " + this.boundingRect)
     	this.chart_config.data.columns[0].forEach((el, i) => {
     		if(i>0) {
     			var svg = d3.selectAll('#chart').select('.c3-event-rect-'+(i-1))
@@ -344,31 +344,31 @@ class Chart extends React.Component {
     }
     
     componentWillReceiveProps(nextProps) {
-    	var width = document.getElementById('chart').getBoundingClientRect().width
-    	console.log("componentWillReceiveProps() width = " + width)
+    	//var width = document.getElementById('chart').getBoundingClientRect().width
+    	//console.log("componentWillReceiveProps() width = " + width)
     	if(nextProps.nextday !== this.props.nextday) {
-    		console.log('N')
+    		//console.log('N')
     		this.nextday()
     	}
     	if(nextProps.prevday !== this.props.prevday) {
-    		console.log('P')
+    		//console.log('P')
     		this.prevday()
     	}
     	if(nextProps.today !== this.props.today) {
-    		console.log('T')
+    		//console.log('T')
     		this.today()
     	}
     	if(nextProps.redraw !== this.props.redraw) {
-    		console.log('RD')
+    		//console.log('RD')
     		this.redraw()
     	}
     	
     	if(nextProps.selectedType !== this.props.selectedType) {
-    		console.log('TY')
+    		//console.log('TY')
     		selectedDayOrAccount = -1 //reset
     	}
     	if( nextProps.constants && nextProps.constants[this.props.constants_id]) {
-    		console.log('C')
+    		//console.log('C')
     		var constants = nextProps.constants[this.props.constants_id]
     		var selectedItem = findInArray(constants, c => { return c.value === nextProps.selectedValue })
 	    	var validConstants = constants.filter(  c => { return (c.valid || c === selectedItem) })
@@ -377,13 +377,14 @@ class Chart extends React.Component {
 		    		'items' : validConstants		
 		    })
     	}
+    	
         if (
         	// eslint-disable-next-line	
         		!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
         	|| 
         	// eslint-disable-next-line
         		!(this.state.end == nextProps.end)) { 
-        	console.log('R')
+        	//console.log('R')
         	//selected date span changed?
         	this.setState({
 		    		start : nextProps.start,
@@ -391,7 +392,7 @@ class Chart extends React.Component {
 		    })
             this.props.chartLoad(nextProps.start, nextProps.end)
         } else if (nextProps.curves !== this.props.curves || nextProps.refreshTime !== this.props.refreshTime) {
-        	console.log('CU')
+        	//console.log('CU')
         	//TODO jäi tähän laita värit ja nimet tilit on jo account#ssa
         	this.chart_config.data.names = {}
         	this.chart_config.data.types = {}
@@ -405,7 +406,7 @@ class Chart extends React.Component {
         	this.chart_config.data.colors['E'] ='red'
         	var max = 0, min = 0
         	if (nextProps.curves) {
-        		console.log("curves 1")
+        		//console.log("curves 1")
         		var f = n =>  { return key === '' + n.value}
 	        	for(var i=3; i<nextProps.curves.length; i++) {
 	        		var key = nextProps.curves[i][0]

@@ -253,7 +253,6 @@ class AccountsEditor extends React.Component {
 	}
 		
 	setSortF(field) {
-		console.log(field)
 		if(!this.state.sort || this.state.sort !==field) {
 			this.setState({
 				sort : field,
@@ -457,7 +456,7 @@ class AccountsEditor extends React.Component {
 				'deleted' : deleted,
 				'modified' : preSubmitFormat(modified)
 		}
-		console.log(JSON.stringify(updates,null,4))
+		//console.log(JSON.stringify(updates,null,4))
 		//"submit"
 		this.pristine = null
 		this.props.update(updates)

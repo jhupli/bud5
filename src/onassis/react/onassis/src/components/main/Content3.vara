@@ -50,11 +50,13 @@ class Content extends React.Component {
 	}
 	
 	handleSelect(key) {
+		console.log(`selected ${key}`)
 		if(key === 1) {
 				var that = this
 				var f = () => {
 	    			that.props.minibarsRedraw()
 	    		}
+	    		console.log("FIRE:")
 		        setTimeout(f, 0)
 		}
 		if(key === 2) {
@@ -63,6 +65,7 @@ class Content extends React.Component {
 	    			that.props.chartRedraw()
 	    			that.props.pieRedraw()
 	    		}
+	    		console.log("FIRE:")
 		        setTimeout(f, 0)
 		}
 	}
@@ -72,27 +75,29 @@ class Content extends React.Component {
 	    this.props.pieRedraw()
 		
 		//console.log('render' + this.props.view);
-		var main = 
-			<div>
+		var main = 		
+		<Tabs onSelect={this.handleSelect} id="controlled-tab-example" animation={false}>
+			<Tab eventKey={1} title='Tab 1'>
 				<div style={{width: '100%'}}>
 							<RangePanel />
 				</div>
-
+			</Tab>
+			<Tab eventKey={2} title='Tab 2'>
 				<div style={{width: '100%'}}>
 							<div style={{width: '100%', "display": "inline-flex", "whiteSpace": "nowrap"}}>
-								<div style={{width: '70%'}} id='CHARTPANEL'>
+								<div style={{width: '60%'}} id='CHARTPANEL'>
 									<ChartPanel >
 										<Chart />
 									</ChartPanel>
 								</div>
-								<div style={{width: '30%'}}>
+								<div style={{width: '40%'}}>
 									<PiePanel />
 								</div>
 							</div>
 							<DetailsPanel />
 				</div>
-			</div>
-
+			</Tab>
+		</Tabs>
 		
 			
 		return(

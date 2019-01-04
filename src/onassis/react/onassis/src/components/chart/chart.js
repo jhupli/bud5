@@ -129,7 +129,8 @@ class Chart extends React.Component {
                     	culling: {
                     		max: 10 // the number of tick texts will be adjusted to less than this value note: does not work?
                     	},
-                        format: x => {return dateFormat(x, "dd.mm.yyyy ddd")}
+                        //format: x => {return dateFormat(x, "dd.mm.yyyy ddd")}
+                    	format: x => {return dateFormat(x, "dd.mm")}
                     }
                 }
             },

@@ -39,6 +39,7 @@ class RangePanel extends React.Component{
 			  	</Panel.Heading>
 			  	<Panel.Body>
 			  		<Minibars name="minibar"/>
+			  		{this.props.children}
 				</Panel.Body>
 			  </Panel>
 		</div>

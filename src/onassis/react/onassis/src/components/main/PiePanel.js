@@ -14,7 +14,9 @@ class PiePanel extends React.Component{
 		return(
 			<div>
 				<Panel>
-			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}><FontAwesome name='pie-chart' /> <span style={{fontSize: "15px"}}>{dates}</span><Spinner fetching={this.props.fetching} /></Panel.Heading>
+				{/*
+			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}><FontAwesome name='pie-chart' /> <span style={{fontSize: "15px"}}>{dates}</span><Spinner fetching={this.props.fetching} />
+			  	</Panel.Heading> */}
 			  		<Panel.Body>					
 			  		<Pie />
 				</Panel.Body>

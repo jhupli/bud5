@@ -75,35 +75,23 @@ class Content extends React.Component {
 		}
 	}
 	render() {
-		//this.props.chartRedraw()
-	    //this.props.pieRedraw()
-		
-		//console.log('render' + this.props.view);
 		var main = 
 			<div>
 				<div style={{width: '100%'}}>
-							<RangePanel >
-							
-					<div style={{width: '100%'}}>
-								<div style={{width: '100%', paddingTop: '30px', "display": "inline-flex", "whiteSpace": "nowrap"}}>
-									<div style={{width: '75%', paddingRight: '2px'}} id='CHARTPANEL'>
-										<ChartPanel />
-									</div>
-									<div style={{width: '25%', paddingLeft: '2px'}}>
-										<PiePanel />
-									</div>
-								</div>
-
+					<RangePanel />
+				</div>
+				<div style={{width: '100%'}}>
+					<div style={{width: '100%', "display": "inline-flex", "whiteSpace": "nowrap"}}>
+						<div style={{width: '75%', paddingRight: '2px'}}>
+							<ChartPanel />
+						</div>
+						<div style={{width: '25%', paddingLeft: '2px'}}>
+							<PiePanel />
+						</div>
 					</div>
-					
-						</RangePanel>
-							
-							
 				</div>
 				<DetailsPanel />
 			</div>
-
-		
 			
 		return(
 				<div style={{padding: '15px'}}> 

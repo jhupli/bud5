@@ -7,6 +7,7 @@ import Spinner from './Spinner'
 import { get_constants } from '../../actions/constants'
 import { findInArray } from '../../util/findInArray'
 import {accountsTooltipTable} from '../../util/tooltip'
+import Buttons from '../chart/buttons'
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
@@ -70,7 +71,10 @@ class DetailsPanel extends React.Component{
 	    		
 				break
 			case 'g' :
-				info = 'Group: ' + this.props.params.g
+				info = 
+					<span>
+						<FontAwesome name='paperclip' size='lg' />  {this.props.params.g}
+					</span>
 				break
 			case 'l' : 
 				info = 'Checked'
@@ -91,6 +95,7 @@ class DetailsPanel extends React.Component{
 				  	<span style={{display: "flow-root", alignItems: "center"}}>
 				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><Spinner fetching={this.props.fetching} />
 				  		<span className="pull-right">
+				  			<Buttons />
 				  			<PaymentSelection />
 				  		</span>
 				  	</span>

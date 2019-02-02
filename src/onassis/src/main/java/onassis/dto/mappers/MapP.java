@@ -20,7 +20,6 @@ public class MapP implements RowMapper<P> {
 				rs.getBoolean("s"),
 				rs.getString("g"),
 				rs.getString("descr"),
-				rs.getBoolean("l"),
-				rs.getBigDecimal("b"));
+				rs.getBoolean("l"));
 	}
 }

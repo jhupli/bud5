@@ -13,13 +13,12 @@ public class P {
 	public String g;
 	public String descr;
 	public Boolean l;
-	public BigDecimal b;
 	
 	public P() {
 		super();
 	}
 	
-	public P(Long id, Date d, BigDecimal i, Integer c, Integer a, Boolean s, String g, String descr, Boolean l, BigDecimal b) {
+	public P(Long id, Date d, BigDecimal i, Integer c, Integer a, Boolean s, String g, String descr, Boolean l) {
 		super();
 		this.id = id;
 		this.d = d;
@@ -30,7 +29,6 @@ public class P {
 		this.g = g;
 		this.descr = descr;
 		this.l = l;
-		this.b = b;
 	}
 
 	public Long getId() {
@@ -90,13 +88,5 @@ public class P {
 	}
 	public void setL(Boolean l) {
 		this.l = l;
-	}
-
-	public BigDecimal getB() {
-		return b;
-	}
-
-	public void setB(BigDecimal b) {
-		this.b = b;
 	}
 }

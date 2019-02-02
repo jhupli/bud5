@@ -2,16 +2,16 @@ import React from 'react' // ← Main React library
 import { Panel } from 'react-bootstrap';
 
 import Chart from '../chart/chart'
-import Buttons from '../chart/buttons'
-import Spinner from './Spinner'
+//import Buttons from '../chart/buttons'
+//import Spinner from './Spinner'
 import { connect } from 'react-redux'
-var dateFormat = require('dateformat');
+//var dateFormat = require('dateformat');
 
-var FontAwesome = require('react-fontawesome');
+//var FontAwesome = require('react-fontawesome');
 
 class ChartPanel extends React.Component{
 	render(){
-		var dates = " " + dateFormat(this.props.start, "dd.mm.yyyy ddd") + " - " + dateFormat(this.props.end, "dd.mm.yyyy ddd")
+//		var dates = " " + dateFormat(this.props.start, "dd.mm.yyyy ddd") + " - " + dateFormat(this.props.end, "dd.mm.yyyy ddd")
 		return(
 		<div>
 			<Panel>
@@ -23,7 +23,6 @@ class ChartPanel extends React.Component{
 				  	    </span>
 			  	</Panel.Heading> */}
 			  	<Panel.Body>
-			  		<Buttons />
 			  		<Chart />
 				</Panel.Body>
 			  </Panel>

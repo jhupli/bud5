@@ -52,12 +52,14 @@ import onassis.dto.C;
 import onassis.dto.H;
 import onassis.dto.LogEntry;
 import onassis.dto.P;
+import onassis.dto.Pb;
 import onassis.dto.Slice;
 import onassis.dto.mappers.MapA;
 import onassis.dto.mappers.MapB;
 import onassis.dto.mappers.MapC;
 import onassis.dto.mappers.MapH;
 import onassis.dto.mappers.MapP;
+import onassis.dto.mappers.MapPb;
 import onassis.dto.mappers.MapSlice;
 
 @CrossOrigin(origins = "http://localhost:3000") //<-development only
@@ -91,6 +93,7 @@ public class OnassisController {
     //Rowmappers:
     MapB rmB = new MapB();
     MapP rmP = new MapP();
+    MapPb rmPb = new MapPb();
     MapC rmC = new MapC();
     MapA rmA = new MapA();
     MapH rmH = new MapH();
@@ -412,6 +415,7 @@ public class OnassisController {
     	}
 
         if(e.equals("a") && null != a && null != d1 && null != d2) {
+        	List<Pb> paymentsListb = null;
             LocalDate day1 = LocalDate.parse(d1);
             LocalDate day2 = LocalDate.parse(d2);
             
@@ -421,9 +425,11 @@ public class OnassisController {
                     .addValue("a", a);
             
             final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
-            paymentsList = jdbcTemplate.query(paymetsQuery, 
+            paymentsListb = jdbcTemplate.query(paymetsQuery, 
                 namedParameters,
-                new RowMapperResultSetExtractor<P>(rmP));
+                new RowMapperResultSetExtractor<Pb>(rmPb));
+            
+            return Arrays.asList(paymentsListb, balancesList);
             /*
             final String balancesQuery = "SELECT d, b, i, e, a, smallestb FROM b WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
             balancesList = jdbcTemplate.query(balancesQuery, 

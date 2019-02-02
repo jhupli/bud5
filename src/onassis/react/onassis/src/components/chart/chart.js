@@ -257,7 +257,7 @@ class Chart extends React.Component {
     }
     
     dateselect(d) {
-    			//console.log("DATESEL")
+    			console.log("DATESEL")
     			this.selectedDate = d
     			//CHG-13this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
@@ -275,8 +275,7 @@ class Chart extends React.Component {
     			}
 
                 this.props.dayLoad(d, ix)
-                
-                if(this.hahlo_ix) {
+                if(this.hahlo_ix != null) {
 	    			//dayselection:
 	    			var alku = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
 	    			var loppu = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
@@ -317,7 +316,6 @@ class Chart extends React.Component {
 	                 )		
     		   }
     	   }
-    	   
     	   if(this.selectedDate) {
     	   //dayselection as last in array:
 	    	   this.hahlo_ix = this.chart_config.regions.length

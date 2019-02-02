@@ -10,7 +10,7 @@ const PingRequestAction = () => {
 const PING_RESPONSE = 'PING_RESPONSE'
 const PingResponseAction = (status) => {
     return {
-        type: 'PING_RESPONSE',
+        type: PING_RESPONSE,
         payload: {
             up: status
         }

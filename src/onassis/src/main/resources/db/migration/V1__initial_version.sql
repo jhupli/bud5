@@ -335,3 +335,15 @@ external name
 	update b set smallestb = smallestBalanceAt(d)
 	where a = 0 and d >= earlier(new.d, old.d);
 
+	--some data
+	insert into c(descr, i, active, color) values ('Palkka', 1200, true, '#145A32');
+	insert into c(descr, i, active, color) values ('Ruoka', -40, true, '#3498DB');
+	insert into c(descr, i, active, color) values ('Vuokra', -600, true, '#C0392B');
+	insert into c(descr, i, active, color) values ('Laina', -200, true, '#7B241C');
+
+	insert into a(descr, active, color, credit) values ('Käteinen', true, '#1ABC9C', false);
+	insert into a(descr, active, color, credit) values ('Pankkitili 1', true, '#8E44AD', false);
+	insert into a(descr, active, color, credit) values ('Pankkitili 2', true, '#F1C40F', false);
+
+
+	

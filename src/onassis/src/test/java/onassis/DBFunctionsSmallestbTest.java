@@ -37,6 +37,7 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     
     @Before
     public void before() throws Exception {
+    	empty_db();
         d1 = new Date(df.parse("2.1.2016").getTime());
         d2 = new Date(df.parse("4.1.2016").getTime());
         d3 = new Date(df.parse("6.1.2016").getTime());

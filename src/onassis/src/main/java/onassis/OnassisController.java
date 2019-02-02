@@ -71,7 +71,7 @@ public class OnassisController {
     NamedParameterJdbcTemplate jdbcTemplate;
 
     
-    @RequestMapping("/")
+    @RequestMapping("/hello")
     String hello() {
         return "Hello World, This is Onassis 5.0.0 (Keitele) ! Can you here me?";
     }

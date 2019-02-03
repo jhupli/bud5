@@ -608,10 +608,11 @@ class PaymentsEditor extends React.Component {
 		var last = defaultValues
 		if (this.sortedValues.length){
 			last = this.sortedValues[this.sortedValues.length - 1]
+		} else {
+			last.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		}
 
 		var res = {...last}
-		res.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		return res
 	}
     

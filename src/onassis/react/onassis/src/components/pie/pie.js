@@ -142,7 +142,7 @@ class Pie extends React.Component {
     	var br = this.getBoudingRect()
     	d3.select('#incomes')
     	.style(
-    			{"display": "inline", "left": -60 + br. left + 'px', top: 150 + br.top + 'px'}
+    			{"display": "inline", "left": -60 + br.left + "px", top: 150 + br.top + "px"}
     	)
     }
     
@@ -157,7 +157,7 @@ class Pie extends React.Component {
     	var br = this.getBoudingRect()
     	d3.select('#expences')
     	.style(
-    			{"display": "inline", "left": br. left + 'px', top: 150 + br.top + 'px'}
+    			{"display": "inline", "left": br.left + 'px', top: 150 + br.top + 'px'}
     	)
     }
     

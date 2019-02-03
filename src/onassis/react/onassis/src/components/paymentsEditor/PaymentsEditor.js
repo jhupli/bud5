@@ -803,7 +803,13 @@ class PaymentsEditor extends React.Component {
 
 					<Button onClick={() => this.resetT()} disabled={this.pristine} bsStyle={this.pristine ? "default":"primary"}>Reset</Button>
 					<Button onClick={() => this.preSubmitT()} disabled={this.pristine  || (this.errors != null)} bsStyle={this.pristine ? "default":"primary"}>Save</Button>
-					<Button onClick={() => this.addR()}>Add</Button>
+					<Button onClick={() => this.addR()}>
+						{ 		this.state.values.length === 0 ? 
+								'New' 
+								:
+								(this.state.recurring.recur ? 'Recur last' : 'Copy last') 
+						}
+					</Button>
 
 
 						{/*this.pristine ? 'pristine' : 'not pristine'*/}

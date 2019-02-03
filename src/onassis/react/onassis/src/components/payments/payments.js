@@ -13,9 +13,16 @@ class Payments extends React.Component {
 	
 	render() {
 		return(
-			<PaymentsEditor initPayments={this.props.payments} queryType={this.props.queryType} />
+			<PaymentsEditor 
+				initPayments={this.props.payments} 
+				queryType={this.props.queryType} 
+				defaultDate={this.props.defaultDate}/>
 		)
 	}
+}
+
+Payments.defaultProps = {
+		defaultDate: new Date()
 }
 
 const mapStateToProps = (store) => {

@@ -20,6 +20,7 @@ class DetailsPanel extends React.Component{
     		cats: props.getConstants('cat'), // return null, but launches fetch
     		refreshTime: null,
      	}
+	 this.defaultDate = new Date()
 	}
     componentWillReceiveProps(nextProps){
     	if( nextProps.constants && nextProps.constants['acc']) {
@@ -41,6 +42,7 @@ class DetailsPanel extends React.Component{
 		switch(this.props.queryType) {
 			case 'd' : 
 				info = dateFormat(this.props.params.d, "dd.mm.yyyy ddd")
+				this.defaultDate = this.props.params.d
 				break
 			case 'a' :
 				var acc = findInArray(this.props.constants['acc'], n => { return this.props.params.a === '' + n.value})
@@ -87,7 +89,6 @@ class DetailsPanel extends React.Component{
 		if(this.props.queryType === 'd' && this.props.curves) {
 			a_table = accountsTooltipTable(this.props.params.d, this.props.curves, this.props.constants)
 		}
-		
 		return(
 			<div>
 			  <Panel >
@@ -105,7 +106,7 @@ class DetailsPanel extends React.Component{
 			  	  <tbody>
 				  	  <tr>
 	        			<td style={{width: '100%'}}>
-		        			<Payments />
+		        			<Payments defaultDate={this.defaultDate}/>
 		        		</td>
 		        		<td style={{width: '30px', verticalAlign: 'top', paddingLeft: '4px'}}>
 		        		{a_table}

@@ -33,6 +33,7 @@ import recurrent from './recurrent'
 
 import AlertContainer from 'react-alert'
 
+
 //import { withMedia } from 'react-media-query-hoc';
 
 
@@ -50,6 +51,7 @@ import {
 } from './constants'
 
 var FontAwesome = require('react-fontawesome')
+var dateFormat = require('dateformat');
 
 var tempId = -1
 var checkedSet = []
@@ -609,6 +611,7 @@ class PaymentsEditor extends React.Component {
 		}
 
 		var res = {...last}
+		res.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		return res
 	}
     

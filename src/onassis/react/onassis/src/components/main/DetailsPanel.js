@@ -105,7 +105,7 @@ class DetailsPanel extends React.Component{
 			  	<table>
 			  	  <tbody>
 				  	  <tr>
-	        			<td style={{width: '100%'}}>
+	        			<td style={{width: '100%', verticalAlign: 'top'}}>
 		        			<Payments defaultDate={this.defaultDate}/>
 		        		</td>
 		        		<td style={{width: '30px', verticalAlign: 'top', paddingLeft: '4px'}}>

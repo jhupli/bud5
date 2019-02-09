@@ -13,6 +13,7 @@ import categories from './categories'
 import navi from './navi'
 import auditlog from './auditlog'
 import errorMessage from './errorMessage'
+import group from './group'
 
 const rootReducer = combineReducers({
   ping,
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
   categories,
   navi,
   auditlog,
-  errorMessage 
+  errorMessage ,
+  group
 })
 
 export default rootReducer

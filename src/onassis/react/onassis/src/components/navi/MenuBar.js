@@ -2,13 +2,45 @@ import React from 'react';
 import { Navbar, /*NavItem,*/ Nav, NavDropdown, MenuItem} from 'react-bootstrap';
 import { connect } from 'react-redux'
 
+import AlertContainer from 'react-alert'
+import alertOptions from '../../util/alertoptions'
+
 import { show_view } from '../../actions/navi'
+import { new_group } from '../../actions/group'
+
+const copy = require('clipboard-copy')
+
 
 class MenuBar extends React.Component{
+	constructor(props) {
+        super(props)
+        this.generatedOk = this.generatedOk.bind(this)
+        this.generateGroup = this.generateGroup.bind(this)
+	}
+	
+	generatedOk(g) {
+		this.msg.show('NEW GROUPID ON CLIPBOARD', {
+	      time: 2000,
+	      type: 'success',
+	      icon: <img src="yes.png" alt="save ok" />
+	    })
+	 }
+	
+	generateGroup(){
+		this.props.newGroup()
+	}
+	
+	componentWillReceiveProps(nextprops) {
+		if( nextprops.g !== this.props.g) {
+			copy(nextprops.g)
+			this.generatedOk(nextprops.g)
+		}
+	}
 	
 	render(){	
 		return(
 			<div>
+				<AlertContainer ref={a => this.msg = a} {...alertOptions} />
 				<Navbar>
 				    <Navbar.Header>
 				        <Navbar.Brand> Onassis </Navbar.Brand>
@@ -35,6 +67,11 @@ class MenuBar extends React.Component{
 				                <MenuItem divider />
 				                <MenuItem eventKey={3.5}> Settings </MenuItem>*/}
 				            </NavDropdown>
+				            <NavDropdown eventKey={4} title="Util" id="basic-nav-dropdown">
+				                <MenuItem eventKey={4.1} onSelect={(e) => {this.generateGroup()}}>
+				                	 Generate unused groupid
+				                </MenuItem>
+				            </NavDropdown>
 				        </Nav>
 				        {/*
 				        <Nav pullRight>
@@ -53,7 +90,8 @@ MenuBar.defaultProps = {
 
 const mapStateToProps = (store) => {
     return {
-        view: store.navi.view
+        view: store.navi.view,
+        g: store.group.g
     }
 }
 
@@ -61,7 +99,10 @@ function mapDispatchToProps(dispatch) {
     return ({
         showView: (view) => {
             dispatch(show_view(view))
-        }       
+        },
+        newGroup: () => {
+            dispatch(new_group())
+        }
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(MenuBar)

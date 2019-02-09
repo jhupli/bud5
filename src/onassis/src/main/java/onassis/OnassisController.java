@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -735,5 +736,22 @@ public class OnassisController {
     	createA(updates.created);
     	//removeA(updates.deleted);
     	modifyA(updates.modified);
-    }    
+    }   
+    
+    @RequestMapping("group/newid")
+    String newGroupId() throws SQLException, ParseException {
+    	int length = 1;
+    	boolean used = true;
+    	String newVar = "";
+    	String sql = "SELECT COUNT(*) FROM P WHERE g=:g";
+    	while(used) {
+    		newVar = UUID.randomUUID().toString().substring(0, length);
+    		MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+		    .addValue("g", newVar);
+    		int total = jdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
+    		used = total > 0;
+    		length++;
+    	} 
+    	return newVar;
+    }
 }

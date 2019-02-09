@@ -91,10 +91,8 @@ class Pie extends React.Component {
     		            }
     		        }
     		    },
-    		    legend: {
-    		    	show: false
-    		    }
-                /*legend: {
+                legend: {
+                	show: true,
                     item: {
                         onclick: function(c) {
                         	that.onmouseover(c)
@@ -110,7 +108,7 @@ class Pie extends React.Component {
                             }
                         }
                     }
-                }*/
+                }
     		}
     }
 

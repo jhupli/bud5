@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Table, Panel } from 'react-bootstrap';
-import {fiDateTimeMillis, toFiDBFormat} from '../../util/fiDate'
-import currencyFormat  from '../../util/currency'
+import { Panel } from 'react-bootstrap';
 
 import './auditlog.css'
 import Spinner from '../main/Spinner'

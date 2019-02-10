@@ -5,9 +5,10 @@ import { update } from '../../actions/payments'
 import { payment_selection } from '../../actions/payment'
 import { CATEGORY } from '../../actions/categories'
 import { ACCOUNT } from '../../actions/accounts'
+import { load as history_load } from '../../actions/auditlog'
 
-
-import { Table, Panel, Button } from 'react-bootstrap';
+import { Table, Panel, Button } from 'react-bootstrap'
+import HistoryModal from '../history/HistoryModal'
 
 import LockField from '../editorFields/LockField'
 import CurrencyField from '../editorFields/CurrencyField'
@@ -143,9 +144,10 @@ class PaymentsEditor extends React.Component {
         this.th = this.th.bind(this)
         
         this.groupLoad = this.groupLoad.bind(this)
+        this.showHistory = this.showHistory.bind(this)
         
         this.init()
-        this.state = {...initState(this.preInitT(props.initPayments), checkedSet)}
+        this.state = {...initState(this.preInitT(props.initPayments), checkedSet), historyShow: false}
     }
 	
 	showAlert() {
@@ -666,6 +668,11 @@ class PaymentsEditor extends React.Component {
 	      	<td className={this.tdClassName(index, 'deleted')}>
 	      		{this.renderDeletedContentF(index)}
 	      	</td>
+	      	<td>
+	            <Button variant="primary" onClick={() => this.showHistory(this.chooseValueF(index, 'id'))} >
+	            <FontAwesome name='history' />
+	            </Button>
+	      	</td>
 		</tr>)
     }
     
@@ -785,6 +792,8 @@ class PaymentsEditor extends React.Component {
 	  			{this.th('descr', 'Description')}		  			
 	  			<th className={this.thClassName('deleted')}>
 	  				<FontAwesome name='remove' style={{'color': 'red'}}/>
+	  			</th>
+	  			<th>
 	  			</th>
 			</tr>				  			
 		</thead>)
@@ -965,14 +974,24 @@ class PaymentsEditor extends React.Component {
 	groupLoad(grp) {
 		if(this.pristine && grp && grp.length > 0) this.props.groupLoad(grp)
 	}
+	showHistory(id) {
+		this.props.historyLoad(id)
+		this.setState({ historyShow: true })
+	}
 	
 	render() {
+		let historyClose = () => this.setState({ historyShow: false });
+		
 		this.pristine = this.isPristineT()
 		this.errors = this.hasErrorsT()
 		return(
 			<div>
 		        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
 				{this.renderPaymentsT()}
+				<HistoryModal
+					show={this.state.historyShow}
+					onHide={historyClose}
+				/>
 		   </div>
 		)
 	}
@@ -993,6 +1012,9 @@ function mapDispatchToProps(dispatch) {
         },
         groupLoad: (g) => {
             dispatch(group_load(g))
+        },
+        historyLoad: (id) => {
+            dispatch(history_load(id))
         }
     })
 }

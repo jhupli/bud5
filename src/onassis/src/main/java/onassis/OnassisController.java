@@ -320,7 +320,7 @@ public class OnassisController {
     List<LogEntry> singleHistory(Long id) throws SQLException, ParseException {
     	List<LogEntry> singleHistory = new ArrayList<LogEntry>();
     	List<H> history = getHistoryRows(id);
-        singleHistory.add(new LogEntry(history, -1));
+        singleHistory.add(new LogEntry(history, 0));
         return singleHistory;
     	
     }

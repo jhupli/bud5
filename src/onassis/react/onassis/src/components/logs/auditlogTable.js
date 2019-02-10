@@ -97,7 +97,8 @@ class AuditLogTable extends React.Component {
 		   && r.hs[index][field] !== r.hs[index - 1][field]) {
 			ret += ' updatedRow'
 		}
-		if(index === r.rownr) {
+		debugger
+		if(index === r.rownr || this.props.single) {
 			ret += ' actualRow'
 		}
 		return ret
@@ -131,17 +132,7 @@ class AuditLogTable extends React.Component {
     }
 	
 	renderLogEntry(r) {
-
-		return (
-		
-		<Panel key={'al_panel_'+r.hs[0].id+'_'+r.rownr} >
-	        <Panel.Heading >
-	            <Panel.Title >
-	            	{this.chooseValueF(r.hs[r.rownr], 'op')} at { fiDateTimeMillis(r.hs[r.rownr].hd) } ( id: {r.hs[0].id} )
-				</Panel.Title >
-			 </Panel.Heading >	
-			 <Panel.Body>			
-				<div>
+		var table =
 					<Table id="auditlog_table" key={'al_table_'+r.id} striped bordered hover condensed>
 						{
 							this.renderPaymentsHeaderT()
@@ -152,7 +143,25 @@ class AuditLogTable extends React.Component {
 						  	}
 						</tbody>
 					</Table>
-				</div>
+		
+		if(this.props.single) {
+			return( <>
+					{table}
+					</>
+			)
+		}
+		
+				
+		return (
+		
+		<Panel key={'al_panel_'+r.hs[0].id+'_'+r.rownr} >
+				<Panel.Heading >
+				<Panel.Title >
+	            	{this.chooseValueF(r.hs[r.rownr], 'op')} at { fiDateTimeMillis(r.hs[r.rownr].hd) } ( id: {r.hs[0].id} )
+				</Panel.Title >
+	            </Panel.Heading >
+			 <Panel.Body>
+			 	{table}
 			</Panel.Body>
 		</Panel >
 		
@@ -170,4 +179,7 @@ class AuditLogTable extends React.Component {
 	}
 }
 
+AuditLogTable.defaultProps = {
+		single: false
+}
 export default AuditLogTable

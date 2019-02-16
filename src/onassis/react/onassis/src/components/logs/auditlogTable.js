@@ -12,7 +12,7 @@ class AuditLogTable extends React.Component {
 
 	    //render
 	    this.renderLogEntry = this.renderLogEntry.bind(this)
-        this.renderPaymentsHeaderT = this.renderPaymentsHeaderT.bind(this)
+        this.renderLogHeaderT = this.renderLogHeaderT.bind(this)
         this.renderPaymentR = this.renderPaymentR.bind(this)
 
         //render
@@ -114,7 +114,7 @@ class AuditLogTable extends React.Component {
 		</td>)
 	}
 	
-	renderPaymentsHeaderT = () => {
+	renderLogHeaderT = () => {
     	return (
 		<thead>
 	  		<tr>
@@ -135,7 +135,7 @@ class AuditLogTable extends React.Component {
 		var table =
 					<Table id="auditlog_table" key={'al_table_'+r.id} striped bordered hover condensed>
 						{
-							this.renderPaymentsHeaderT()
+							this.renderLogHeaderT()
 						}
 						<tbody>
 						  	{

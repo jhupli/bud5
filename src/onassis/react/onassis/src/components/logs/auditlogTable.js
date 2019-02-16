@@ -13,7 +13,7 @@ class AuditLogTable extends React.Component {
 	    //render
 	    this.renderLogEntry = this.renderLogEntry.bind(this)
         this.renderLogHeaderT = this.renderLogHeaderT.bind(this)
-        this.renderPaymentR = this.renderPaymentR.bind(this)
+        this.renderLogR = this.renderLogR.bind(this)
 
         //render
         this.renderContentF = this.renderContentF.bind(this)
@@ -81,7 +81,7 @@ class AuditLogTable extends React.Component {
 		</th>)
 	}
 
-	renderPaymentR(r, index) {
+	renderLogR(r, index) {
 	    	return(
     	<tr key={r.hs[index].id+'_'+r.hs[index].rownr}>
 	 		{['w','op', ...fields].map( (f) => { 
@@ -139,7 +139,7 @@ class AuditLogTable extends React.Component {
 						}
 						<tbody>
 						  	{
-						  		r.hs.map((p, ix) => { return this.renderPaymentR(r, ix) })
+						  		r.hs.map((p, ix) => { return this.renderLogR(r, ix) })
 						  	}
 						</tbody>
 					</Table>

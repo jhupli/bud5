@@ -15,6 +15,7 @@ import CurrencyField from '../editorFields/CurrencyField'
 import CheckboxField from '../editorFields/CheckboxField'
 import DropdownField from '../editorFields/DropdownField'
 import TextField from '../editorFields/TextField'
+import TextFieldPopover from '../editorFields/TextFieldPopover'
 import DateField from '../editorFields/DateField'
 //import Recur from '../recur/recur' 
 
@@ -412,7 +413,7 @@ class PaymentsEditor extends React.Component {
     	case 'g' :
 					return(
 				  	<div>
-				  		<TextField 
+				  		<TextFieldPopover 
 					  		id = {'g_'+index}
 					  		onValueChanged = {this.changePropertyF}
 					  		value = {value}
@@ -421,7 +422,8 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'g')}
 				  			placeholder = 'gId'
-				  			linkCb = {this.groupLoad}
+				  			linkCb = {index == -2 || !this.isPristineT() ? null : this.groupLoad}
+				  			popoverText = {'Show all in group "' + value + '"...'}
 					  	/>
 				    </div>)
      	case 'c' :

@@ -1,7 +1,5 @@
 import React from 'react';
-import { Table, Panel } from 'react-bootstrap';
-import {fiDateTimeMillis, toFiDBFormat} from '../../util/fiDate'
-import currencyFormat  from '../../util/currency'
+import { Table } from 'react-bootstrap';
 import {chooseValueF} from './logCommons'
 
 const fields = ['d','i','s','g','c','a','descr']

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Table, Panel } from 'react-bootstrap';
-import {fiDateTimeMillis, toFiDBFormat} from '../../util/fiDate'
-import currencyFormat  from '../../util/currency'
+import { Panel } from 'react-bootstrap';
+import {fiDateTimeMillis} from '../../util/fiDate'
 import LogEntry from './logEntry'
 import {chooseValueF} from './logCommons'
 

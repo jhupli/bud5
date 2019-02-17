@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button, OverlayTrigger, Popover} from 'react-bootstrap'
-var FontAwesome = require('react-fontawesome');
 
 class TextField extends React.Component {
 
@@ -51,7 +50,7 @@ class TextField extends React.Component {
 	    } else if( touched 
 	    		|| linkCb == null 
 	    		|| this.state.txtValue == null 
-	    		|| this.state.txtValue.length == 0) {
+	    		|| this.state.txtValue.length === 0) {
 	    		
 		    return (
 	    	<span style={{display: "inline-flex"}}>

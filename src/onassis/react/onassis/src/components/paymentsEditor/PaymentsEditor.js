@@ -422,7 +422,7 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'g')}
 				  			placeholder = 'gId'
-				  			linkCb = {index == -2 || !this.isPristineT() ? null : this.groupLoad}
+				  			linkCb = {index === -2 || !this.isPristineT() ? null : this.groupLoad}
 				  			popoverText = {'Show all in group "' + value + '"...'}
 					  	/>
 				    </div>)

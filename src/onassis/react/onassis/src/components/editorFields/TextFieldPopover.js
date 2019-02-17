@@ -30,6 +30,7 @@ class TextField extends React.Component {
 		
 		var inputField = 
 		<input 
+				autoComplete='off'
 	    	    id={id}
 	    		value={this.state.txtValue}
 	    	    disabled={readOnly}

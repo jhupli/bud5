@@ -116,6 +116,7 @@ class DatePicker extends React.Component {
     return (
     		<div>
     			<input disabled = {this.props.disabled}
+    				autoComplete='off'
     				onKeyDown={function(e) { 
     					var char = e.which || e.keyCode;
     					if( char !== 9) {

@@ -64,7 +64,7 @@ class CurrencyField extends React.Component {
 	    <div>
 			<input
 			  onFocus={this.handleFocus}
-
+			  autoComplete='off'
 			  id={id}
 			  disabled={readOnly}
 			  value={this.state.currencyValue}

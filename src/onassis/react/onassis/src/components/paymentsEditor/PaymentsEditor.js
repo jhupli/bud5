@@ -16,8 +16,7 @@ import CheckboxField from '../editorFields/CheckboxField'
 import DropdownField from '../editorFields/DropdownField'
 import TextField from '../editorFields/TextField'
 import TextFieldPopover from '../editorFields/TextFieldPopover'
-import DateField from '../editorFields/DateField'
-//import Recur from '../recur/recur' 
+import DateFieldPopover from '../editorFields/DateFieldPopover'
 
 import NumericInput from 'react-numeric-input';
 import alertOptions from '../../util/alertoptions'
@@ -26,6 +25,7 @@ import './PaymentsEditor.css'
 import '../../customMultiSelect.css'
 
 import { group_load } from '../../actions/payments'
+import { day_load } from '../../actions/payments'
 
 import {SimpleSelect} from 'react-selectize'
 
@@ -145,6 +145,7 @@ class PaymentsEditor extends React.Component {
         this.th = this.th.bind(this)
         
         this.groupLoad = this.groupLoad.bind(this)
+        this.dayLoad = this.dayLoad.bind(this)
         this.showHistory = this.showHistory.bind(this)
         
         this.init()
@@ -364,7 +365,7 @@ class PaymentsEditor extends React.Component {
     	case 'd' :
 					return(		
 					<div>
-				    	<DateField 
+				    	<DateFieldPopover 
 				    		id = {'d_'+index}
 					  		onValueChanged = {this.changePropertyF}
 					  		value = {value}
@@ -372,6 +373,8 @@ class PaymentsEditor extends React.Component {
 				  			field = 'd'
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'd')}
+				    		linkCb = {this.props.queryType === 'd' || index === -2 || !this.isPristineT() ? null : this.dayLoad}
+				  			popoverText = {'Show day ' + value }
 				    	 />
 				    </div>)
     	case 'b' :  return(
@@ -423,7 +426,7 @@ class PaymentsEditor extends React.Component {
 				  			touched = {this.touchedF(index, 'g')}
 				  			placeholder = 'gId'
 				  			linkCb = {index === -2 || !this.isPristineT() ? null : this.groupLoad}
-				  			popoverText = {'Show all in group "' + value + '"...'}
+				  			popoverText = {'Show all in group "' + value + '"'}
 					  	/>
 				    </div>)
      	case 'c' :
@@ -976,6 +979,9 @@ class PaymentsEditor extends React.Component {
 	groupLoad(grp) {
 		if(this.pristine && grp && grp.length > 0) this.props.groupLoad(grp)
 	}
+	dayLoad(d) {
+		if(this.pristine && d && d.length > 0) this.props.dayLoad(toDateFi(d))
+	}
 	showHistory(id) {
 		this.props.historyLoad(id)
 		this.setState({ historyShow: true })
@@ -1014,6 +1020,9 @@ function mapDispatchToProps(dispatch) {
         },
         groupLoad: (g) => {
             dispatch(group_load(g))
+        },
+        dayLoad: (d) => {
+            dispatch(day_load(d))
         },
         historyLoad: (id) => {
             dispatch(history_load(id))

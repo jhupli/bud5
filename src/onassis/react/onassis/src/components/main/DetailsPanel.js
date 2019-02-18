@@ -7,7 +7,9 @@ import Spinner from './Spinner'
 import { get_constants } from '../../actions/constants'
 import { findInArray } from '../../util/findInArray'
 import {accountsTooltipTable} from '../../util/tooltip'
-import Buttons from '../chart/buttons'
+import ButtonL from '../chart/buttons/buttonL'
+import ButtonR from '../chart/buttons/buttonR'
+import ButtonToday from '../chart/buttons/buttonToday'
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
@@ -41,8 +43,20 @@ class DetailsPanel extends React.Component{
 		var info = '';
 		switch(this.props.queryType) {
 			case 'd' : 
-				info = dateFormat(this.props.params.d, "dd.mm.yyyy ddd")
-				this.defaultDate = this.props.params.d
+        info =
+          <span style = {{"display": "inline-flex",
+                          "whiteSpace": "nowrap",
+                           "alignItems": "center",
+                           'marginRight':'5px',
+                            'marginLeft':'5px'}}>
+            <ButtonL />
+              <div  style = {{'marginRight':'5px',  'marginLeft':'5px'}} >
+                {dateFormat(this.props.params.d, "dd.mm.yyyy ddd")}
+              </div>
+            <ButtonR />
+          </span>
+
+  				this.defaultDate = this.props.params.d
 				break
 			case 'a' :
 				var acc = findInArray(this.props.constants['acc'], n => { return this.props.params.a === '' + n.value})
@@ -96,7 +110,7 @@ class DetailsPanel extends React.Component{
 				  	<span style={{display: "flow-root", alignItems: "center"}}>
 				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><Spinner fetching={this.props.fetching} />
 				  		<span className="pull-right">
-				  			<Buttons />
+				  			<ButtonToday />
 				  			<PaymentSelection />
 				  		</span>
 				  	</span>

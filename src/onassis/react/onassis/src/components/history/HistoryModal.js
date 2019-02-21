@@ -7,9 +7,8 @@ import './style.css'
 class HistoryModal extends React.Component {
   render() {
 	if(this.props.logentries == null) return null
-    var r = this.props.logentries[0]
-	r.rownr = -1
-	
+  var r = this.props.logentries[0]
+
 	return (
       <Modal
         {...this.props}
@@ -24,7 +23,7 @@ class HistoryModal extends React.Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        	<LogEntry logEntry={r }/>
+        	<LogEntry logEntry={r} singleEntry={true}/>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.onHide}>Close</Button>

@@ -68,7 +68,7 @@ class LogEntry extends React.Component {
 			ret += ' updatedRow'
 		}
 		
-		if(index === r.rownr || r.rownr < 0) {
+		if(index === r.rownr || this.props.singleEntry) {
 			ret += ' actualRow'
 		}
 		return ret

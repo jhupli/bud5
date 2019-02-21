@@ -46,7 +46,8 @@ const update = (updates) => (
  const load = () => (
     (dispatch) => {
         dispatch(categoriesRequestAction())
-        axios_get('cat/list?ts='+Date.now(),
+        axios_get('cat/list',
+            null,
             response => {
                dispatch(categoriesResponseAction(response.data))
             },

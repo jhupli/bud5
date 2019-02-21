@@ -59,7 +59,7 @@ const update = (updates) => (
 
 function get(dispatch) {
     dispatch(paymentsRequestAction())
-    axios_get_params('payments?ts='+Date.now(), 
+    axios_get_params('payments',
     		{
         		"params": params
     		},

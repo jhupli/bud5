@@ -16,7 +16,8 @@ const newGroupResponseAction = (g) => ({
  const new_group = () => (
     (dispatch) => {
         dispatch(newGroupRequestAction())
-        axios_get('group/newid?ts='+Date.now(),
+        axios_get('group/newid',
+            null,
             response => {
                dispatch(newGroupResponseAction(response.data))
             },

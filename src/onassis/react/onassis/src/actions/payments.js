@@ -5,7 +5,9 @@ import { pie_refresh } from '../actions/pie'
 
 var dateFormat = require('dateformat');
 
-var params = null; //cache for refresh
+var params = null //cache for refresh
+var history = [] //day/account..  selection history
+var current = -1;
 
 
 const PAYMENTS_REQUEST = 'PAYMENTS_REQUEST'
@@ -19,8 +21,12 @@ const paymentsResponseAction = (payments, balances) => ({
     payload: {
     	"params" : params,
     	"queryType" : params.e,
-        "payments": payments,
-        "balances": balances
+      "payments": payments,
+      "balances": balances,
+      "historystack": {
+    	                   "last": current === history.length - 1,
+                         "first": current === 0,
+                      }
     }
 })
 
@@ -57,7 +63,21 @@ const update = (updates) => (
     }
  )
 
-function get(dispatch) {
+
+function make_history() {
+  history.push(params)
+  current++
+  history.forEach(x => console.log(x))
+  console.log("current:" + current)
+}
+
+
+
+function get(dispatch, historify = false) {
+    if(historify) {
+      make_history()
+    }
+
     dispatch(paymentsRequestAction())
     axios_get_params('payments',
     		{
@@ -76,7 +96,7 @@ const day_load = (d) => (
             "e": "d",
             "d": dateFormat(d, "yyyy-mm-dd")
         }
-        get(dispatch)
+        get(dispatch, true)
     }
 )
 
@@ -88,7 +108,7 @@ const account_load = (a, d1, d2) => (
             "d1": dateFormat(d1, "yyyy-mm-dd"),
             "d2": dateFormat(d2, "yyyy-mm-dd")
         }
-        get(dispatch)
+        get(dispatch, true)
     }
 )
 
@@ -100,7 +120,7 @@ const category_load = (c, d1, d2) => (
             "d1": dateFormat(d1, "yyyy-mm-dd"),
             "d2": dateFormat(d2, "yyyy-mm-dd")
         }
-        get(dispatch)
+        get(dispatch, true)
     }
 )
 
@@ -110,7 +130,7 @@ const group_load = (g) => (
             "e": "g",
             "g": g
         }
-        get(dispatch)
+        get(dispatch, true)
     }
 )
 
@@ -120,7 +140,7 @@ const list_load = (ids) => (
             "e": "l",
             "ids": ids
         }
-        get(dispatch)
+        get(dispatch, true)
     }
 )
 
@@ -131,7 +151,18 @@ const payments_refresh = () => (
     }
 )
 
+const prev_in_history = () => (
+  (dispatch) => {
+      debugger
+      current--
+      params = history[current]
+
+      get(dispatch)
+  }
+)
+
 export {
+    prev_in_history,
     day_load,
     account_load,
     category_load,

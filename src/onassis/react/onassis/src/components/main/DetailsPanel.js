@@ -1,6 +1,6 @@
 import React from 'react' // ← Main React library
 import { connect } from 'react-redux'
-import { Panel } from 'react-bootstrap';
+import { Panel, Button } from 'react-bootstrap';
 import Payments from '../payments/payments'
 import PaymentSelection from '../paymentSelection/paymentSelection'
 import Spinner from './Spinner'
@@ -10,6 +10,8 @@ import {accountsTooltipTable} from '../../util/tooltip'
 import ButtonL from '../chart/buttons/buttonL'
 import ButtonR from '../chart/buttons/buttonR'
 import ButtonToday from '../chart/buttons/buttonToday'
+
+import {prev_in_history} from '../../actions/payments'
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
@@ -22,7 +24,8 @@ class DetailsPanel extends React.Component{
     		cats: props.getConstants('cat'), // return null, but launches fetch
     		refreshTime: null,
      	}
-	 this.defaultDate = new Date()
+	  this.defaultDate = new Date()
+    this.prevHistory = this.prevHistory.bind(this)
 	}
     componentWillReceiveProps(nextProps){
     	if( nextProps.constants && nextProps.constants['acc']) {
@@ -39,6 +42,11 @@ class DetailsPanel extends React.Component{
     	
     	
     }
+
+  prevHistory() {
+    this.props.prevInHistory()
+  }
+
 	render(){
 		var info = '';
 		switch(this.props.queryType) {
@@ -103,6 +111,10 @@ class DetailsPanel extends React.Component{
 		if(this.props.queryType === 'd' && this.props.curves) {
 			a_table = accountsTooltipTable(this.props.params.d, this.props.curves, this.props.constants)
 		}
+
+    var hstackfirst = this.props.historystack != null && this.props.historystack.first != null ? this.props.historystack.first : true
+    var hstacklast = this.props.historystack != null && this.props.historystack.last != null ? this.props.historystack.last : true
+
 		return(
 			<div>
 			  <Panel >
@@ -110,7 +122,7 @@ class DetailsPanel extends React.Component{
 				  	<span style={{display: "flow-root", alignItems: "center"}}>
 				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><Spinner fetching={this.props.fetching} />
 				  		<span className="pull-right">
-				  			<ButtonToday />
+                <ButtonToday /><Button onClick={this.prevHistory} disabled={hstackfirst}>prev</Button><Button disabled={hstacklast}>next</Button>
 				  			<PaymentSelection />
 				  		</span>
 				  	</span>
@@ -139,6 +151,7 @@ const mapStateToProps = (store) => {
     return {
         fetching: store.payments.fetching,
         queryType: store.payments.queryType,
+        historystack: store.payments.historystack,
         params: store.payments.params,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
@@ -150,6 +163,9 @@ function mapDispatchToProps(dispatch) {
     return({
         getConstants: (id) => {
         	get_constants(id, dispatch)
+        },
+        prevInHistory: () => {
+          dispatch(prev_in_history())
         }
     })
 }

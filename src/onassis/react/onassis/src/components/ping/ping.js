@@ -13,7 +13,7 @@ class Ping extends React.Component {
         var f = () => {
         	this.props.ping()
         }
-        //this.timer = setInterval(f, 5000)
+        this.timer = setInterval(f, 5000)
     }
   
     render() {

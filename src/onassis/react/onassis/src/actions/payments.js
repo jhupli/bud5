@@ -24,7 +24,7 @@ const paymentsResponseAction = (payments, balances) => ({
       "payments": payments,
       "balances": balances,
       "historystack": {
-    	                   "last": current === history.length - 1,
+    	                 "last": current === history.length - 1,
                          "first": current === 0,
                       }
     }
@@ -65,10 +65,11 @@ const update = (updates) => (
 
 
 function make_history() {
+  if(current < history.length - 1) {
+	  history = history.slice(0, current + 1)
+  }
   history.push(params)
   current++
-  history.forEach(x => console.log(x))
-  console.log("current:" + current)
 }
 
 
@@ -77,7 +78,8 @@ function get(dispatch, historify = false) {
     if(historify) {
       make_history()
     }
-
+    history.forEach(x => console.log(x))
+   	console.log("---current:" + current)
     dispatch(paymentsRequestAction())
     axios_get_params('payments',
     		{
@@ -153,16 +155,23 @@ const payments_refresh = () => (
 
 const prev_in_history = () => (
   (dispatch) => {
-      debugger
       current--
       params = history[current]
+      get(dispatch)
+  }
+)
 
+const next_in_history = () => (
+  (dispatch) => {
+      current++
+      params = history[current]
       get(dispatch)
   }
 )
 
 export {
     prev_in_history,
+    next_in_history,
     day_load,
     account_load,
     category_load,

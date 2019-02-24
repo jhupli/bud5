@@ -11,7 +11,7 @@ import ButtonL from '../chart/buttons/buttonL'
 import ButtonR from '../chart/buttons/buttonR'
 import ButtonToday from '../chart/buttons/buttonToday'
 
-import {prev_in_history} from '../../actions/payments'
+import {prev_in_history, next_in_history} from '../../actions/payments'
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
@@ -26,6 +26,7 @@ class DetailsPanel extends React.Component{
      	}
 	  this.defaultDate = new Date()
     this.prevHistory = this.prevHistory.bind(this)
+    this.nextHistory = this.nextHistory.bind(this)
 	}
     componentWillReceiveProps(nextProps){
     	if( nextProps.constants && nextProps.constants['acc']) {
@@ -47,6 +48,9 @@ class DetailsPanel extends React.Component{
     this.props.prevInHistory()
   }
 
+  nextHistory() {
+    this.props.nextInHistory()
+  }
 	render(){
 		var info = '';
 		switch(this.props.queryType) {
@@ -122,7 +126,7 @@ class DetailsPanel extends React.Component{
 				  	<span style={{display: "flow-root", alignItems: "center"}}>
 				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><Spinner fetching={this.props.fetching} />
 				  		<span className="pull-right">
-                <ButtonToday /><Button onClick={this.prevHistory} disabled={hstackfirst}>prev</Button><Button disabled={hstacklast}>next</Button>
+                <ButtonToday /><Button onClick={this.prevHistory} disabled={hstackfirst}>prev</Button><Button disabled={hstacklast} onClick={this.nextHistory}>next</Button>
 				  			<PaymentSelection />
 				  		</span>
 				  	</span>
@@ -166,6 +170,9 @@ function mapDispatchToProps(dispatch) {
         },
         prevInHistory: () => {
           dispatch(prev_in_history())
+        },
+        nextInHistory: () => {
+          dispatch(next_in_history())
         }
     })
 }

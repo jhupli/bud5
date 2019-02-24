@@ -124,11 +124,13 @@ class DetailsPanel extends React.Component{
 			  <Panel >
 			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
 				  	<span style={{display: "flow-root", alignItems: "center"}}>
-				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><Spinner fetching={this.props.fetching} />
-				  		<span className="pull-right">
-                <ButtonToday /><Button onClick={this.prevHistory} disabled={hstackfirst}>prev</Button><Button disabled={hstacklast} onClick={this.nextHistory}>next</Button>
-				  			<PaymentSelection />
-				  		</span>
+				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+				  		<span className="pull-right" style={{display: "inline-flex"}}>
+					  		<ButtonToday />
+	
+					  			<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstackfirst ? "gray" : "darkblue")}} onClick={this.prevHistory} disabled={hstackfirst}><FontAwesome name='arrow-circle-left' size="2x" color="blue" /></Button>
+					  			<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstacklast ? "gray": "darkblue")}} disabled={hstacklast} onClick={this.nextHistory}><FontAwesome name='arrow-circle-right' size="2x" color="blue" /></Button>
+					  	</span>
 				  	</span>
 			  	</Panel.Heading>
 			  	<Panel.Body>					

@@ -14,6 +14,7 @@ import { findInArray } from '../../util/findInArray'
 
 import './pie.css'
 
+require('default-passive-events')
 
 var d3 = require('d3');
 

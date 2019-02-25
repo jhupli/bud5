@@ -281,7 +281,7 @@ class Chart extends React.Component {
    
     paint_dayselection() {
 	        if(this.hahlo_ix != null) {
-            	console.log("gray repaint:"+dateFormat(this.selectedDate, "yyyymmdd"))
+	          //console.log("gray repaint:"+dateFormat(this.selectedDate, "yyyymmdd"))
     			//dayselection : changing the initial
     			var alku = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
     			var loppu = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
@@ -324,7 +324,7 @@ class Chart extends React.Component {
     	   }
     	   if(this.selectedDate) {
     	   //initial dayselection as last in array:
-    		   console.log("gray:"+dateFormat(this.selectedDate, "yyyymmdd"))
+    		   //console.log("gray:"+dateFormat(this.selectedDate, "yyyymmdd"))
 	    	   this.hahlo_ix = this.chart_config.regions.length
 	    	   var alku1 = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
 	    	   var loppu1 = dateFormat(this.selectedDate, "yyyymmdd") + "T4"

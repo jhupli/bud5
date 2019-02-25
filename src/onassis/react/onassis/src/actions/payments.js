@@ -78,8 +78,8 @@ function get(dispatch, historify = false) {
     if(historify) {
       make_history()
     }
-    history.forEach(x => console.log(x))
-   	console.log("---current:" + current)
+    //history.forEach(x => console.log(x))
+   	//console.log("---current:" + current)
     dispatch(paymentsRequestAction())
     axios_get_params('payments',
     		{

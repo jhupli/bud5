@@ -9,12 +9,15 @@ class HistoryModal extends React.Component {
 	if(this.props.logentries == null) return null
   var r = this.props.logentries[0]
 
+  var {show, onHide} = {...this.props}
+	var props = {show, onHide}
 	return (
+
       <Modal
-        {...this.props}
+        {...props}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
-        centered
+        centered="true"
         dialogClassName="modal-90w"
       >
         <Modal.Header closeButton>
@@ -36,7 +39,7 @@ class HistoryModal extends React.Component {
 const mapStateToProps = (store) => {
     return {
         logentries: store.auditlog.logentries,
-        fetching: store.auditlog.fetching
+        //fetching: store.auditlog.fetching
     }
 }
 

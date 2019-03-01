@@ -95,8 +95,8 @@ class RangePanel extends React.Component{
 
 		            </div>
 		            <span>
-							<Panel.Toggle componentClass="button" className="link-button" onClick={this.showMinibars} >
-								{ (this.state.showMinibars ? <FontAwesome name='minus-square-o' /> : <FontAwesome name='plus-square-o' />) }
+							<Panel.Toggle componentClass="button" className="link-button" onClick={this.showMinibars} >&nbsp;
+								{ (this.state.showMinibars ? <FontAwesome name='caret-up' size='2x' /> : <FontAwesome name='caret-down' size='2x' />) }&nbsp;
 		            		</Panel.Toggle>
 	                </span><Spinner fetching={this.props.fetching} />
 

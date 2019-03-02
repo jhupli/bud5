@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "c3": "^0.4.15",
+    "clipboard-copy": "^2.0.1",
     "d3": "^3.5.17",
     "dateformat": "^3.0.3",
     "daterangepicker": "^2.1.25",
@@ -44,5 +45,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
+  }
 }

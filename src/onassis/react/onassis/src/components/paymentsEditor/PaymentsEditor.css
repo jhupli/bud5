@@ -198,12 +198,12 @@ input[type="text"]:disabled {
 		
 #payments_table .g_header 
 	{ 
-		width: 84px;
+		width: 69px;
 	}
 
 #payments_table .g_cell 
 	{ 
-		width: 84px;
+		width: 69px;
 		padding-top: 7px;
 	}
 

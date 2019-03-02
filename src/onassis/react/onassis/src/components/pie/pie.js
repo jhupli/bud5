@@ -14,6 +14,7 @@ import { findInArray } from '../../util/findInArray'
 
 import './pie.css'
 
+//require('default-passive-events')
 
 var d3 = require('d3');
 
@@ -43,6 +44,8 @@ class Pie extends React.Component {
         this.d3onMouseOutI = this.d3onMouseOutI.bind(this)
         this.d3onMouseE = this.d3onMouseE.bind(this)
         this.d3onMouseOutE = this.d3onMouseOutE.bind(this)
+        this.getBoudingRect = this.getBoudingRect.bind(this)
+        
         this.timer = null
         this.chart_config = {
         		onrendered: this.c3onRendered,
@@ -89,10 +92,8 @@ class Pie extends React.Component {
     		            }
     		        }
     		    },
-    		    legend: {
-    		    	show: false
-    		    }
-                /*legend: {
+                legend: {
+                	show: true,
                     item: {
                         onclick: function(c) {
                         	that.onmouseover(c)
@@ -108,7 +109,7 @@ class Pie extends React.Component {
                             }
                         }
                     }
-                }*/
+                }
     		}
     }
 
@@ -125,10 +126,22 @@ class Pie extends React.Component {
             this.timer = setTimeout(f, 300)
     }
     
+    getBoudingRect() {
+    	var br = document.getElementById(this.chart_config.bindto.substring(1)).getBoundingClientRect()
+    	var doc = document.documentElement
+    	var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0)
+    	var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0)
+    	return {
+    		"left": left + br.left,
+    		"top" : top + br.top
+    	}
+    	
+    }
     d3onMouseI() {
+    	var br = this.getBoudingRect()
     	d3.select('#incomes')
     	.style(
-    			{"display": "inline"}
+    			{"display": "inline", "left": -60 + br.left + "px", top: 150 + br.top + "px"}
     	)
     }
     
@@ -140,9 +153,10 @@ class Pie extends React.Component {
     }
     
     d3onMouseE() {
+    	var br = this.getBoudingRect()
     	d3.select('#expences')
     	.style(
-    			{"display": "inline"}
+    			{"display": "inline", "left": br.left + 'px', top: 150 + br.top + 'px'}
     	)
     }
     
@@ -270,7 +284,7 @@ class Pie extends React.Component {
         return (	 
         	<div>
         	<div id = "pie" onMouseOut = {() => this.onmouseout()} />
-        	<table id="incomes" className="c3-tooltip" style={{display: "none", left: "75px", top: "150px", position: "absolute"}}>
+        	<table id="incomes" className="c3-tooltip" style={{display: "none", position: "absolute"}}>
         	<tbody>
         		<tr>
         			<td >
@@ -282,7 +296,7 @@ class Pie extends React.Component {
         		</tr>
         	</tbody>
         	</table>
-        	<table id="expences" className="c3-tooltip" style={{display: "none", left: "250px", top: "250px", position: "absolute"}}>
+        	<table id="expences" className="c3-tooltip" style={{display: "none", position: "absolute"}}>
         	<tbody>
         		<tr>
         			<td >

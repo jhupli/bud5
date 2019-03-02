@@ -5,17 +5,18 @@ import { update } from '../../actions/payments'
 import { payment_selection } from '../../actions/payment'
 import { CATEGORY } from '../../actions/categories'
 import { ACCOUNT } from '../../actions/accounts'
+import { load as history_load } from '../../actions/auditlog'
 
-
-import { Table, Panel, Button } from 'react-bootstrap';
+import { Table, Panel, Button } from 'react-bootstrap'
+import HistoryModal from '../history/HistoryModal'
 
 import LockField from '../editorFields/LockField'
 import CurrencyField from '../editorFields/CurrencyField'
 import CheckboxField from '../editorFields/CheckboxField'
 import DropdownField from '../editorFields/DropdownField'
 import TextField from '../editorFields/TextField'
-import DateField from '../editorFields/DateField'
-//import Recur from '../recur/recur' 
+import TextFieldPopover from '../editorFields/TextFieldPopover'
+import DateFieldPopover from '../editorFields/DateFieldPopover'
 
 import NumericInput from 'react-numeric-input';
 import alertOptions from '../../util/alertoptions'
@@ -24,6 +25,7 @@ import './PaymentsEditor.css'
 import '../../customMultiSelect.css'
 
 import { group_load } from '../../actions/payments'
+import { day_load } from '../../actions/payments'
 
 import {SimpleSelect} from 'react-selectize'
 
@@ -32,6 +34,7 @@ import {toDateFi} from '../../util/fiDate'
 import recurrent from './recurrent'
 
 import AlertContainer from 'react-alert'
+
 
 //import { withMedia } from 'react-media-query-hoc';
 
@@ -50,6 +53,7 @@ import {
 } from './constants'
 
 var FontAwesome = require('react-fontawesome')
+var dateFormat = require('dateformat');
 
 var tempId = -1
 var checkedSet = []
@@ -141,9 +145,11 @@ class PaymentsEditor extends React.Component {
         this.th = this.th.bind(this)
         
         this.groupLoad = this.groupLoad.bind(this)
+        this.dayLoad = this.dayLoad.bind(this)
+        this.showHistory = this.showHistory.bind(this)
         
         this.init()
-        this.state = {...initState(this.preInitT(props.initPayments), checkedSet)}
+        this.state = {...initState(this.preInitT(props.initPayments), checkedSet), historyShow: false}
     }
 	
 	showAlert() {
@@ -359,7 +365,7 @@ class PaymentsEditor extends React.Component {
     	case 'd' :
 					return(		
 					<div>
-				    	<DateField 
+				    	<DateFieldPopover 
 				    		id = {'d_'+index}
 					  		onValueChanged = {this.changePropertyF}
 					  		value = {value}
@@ -367,6 +373,8 @@ class PaymentsEditor extends React.Component {
 				  			field = 'd'
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'd')}
+				    		linkCb = {this.props.queryType === 'd' || index === -2 || !this.isPristineT() ? null : this.dayLoad}
+				  			popoverText = {'Show day ' + value }
 				    	 />
 				    </div>)
     	case 'b' :  return(
@@ -408,7 +416,7 @@ class PaymentsEditor extends React.Component {
     	case 'g' :
 					return(
 				  	<div>
-				  		<TextField 
+				  		<TextFieldPopover 
 					  		id = {'g_'+index}
 					  		onValueChanged = {this.changePropertyF}
 					  		value = {value}
@@ -417,7 +425,8 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'g')}
 				  			placeholder = 'gId'
-				  			linkCb = {this.groupLoad}
+				  			linkCb = {index === -2 || !this.isPristineT() ? null : this.groupLoad}
+				  			popoverText = {'Show all in group "' + value + '"'}
 					  	/>
 				    </div>)
      	case 'c' :
@@ -606,6 +615,8 @@ class PaymentsEditor extends React.Component {
 		var last = defaultValues
 		if (this.sortedValues.length){
 			last = this.sortedValues[this.sortedValues.length - 1]
+		} else {
+			last.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		}
 
 		var res = {...last}
@@ -661,6 +672,11 @@ class PaymentsEditor extends React.Component {
 	 		})}
 	      	<td className={this.tdClassName(index, 'deleted')}>
 	      		{this.renderDeletedContentF(index)}
+	      	</td>
+	      	<td>
+	            <Button variant="primary" onClick={() => this.showHistory(this.chooseValueF(index, 'id'))} >
+	            <FontAwesome name='history' />
+	            </Button>
 	      	</td>
 		</tr>)
     }
@@ -782,6 +798,8 @@ class PaymentsEditor extends React.Component {
 	  			<th className={this.thClassName('deleted')}>
 	  				<FontAwesome name='remove' style={{'color': 'red'}}/>
 	  			</th>
+	  			<th>
+	  			</th>
 			</tr>				  			
 		</thead>)
     }
@@ -799,7 +817,13 @@ class PaymentsEditor extends React.Component {
 
 					<Button onClick={() => this.resetT()} disabled={this.pristine} bsStyle={this.pristine ? "default":"primary"}>Reset</Button>
 					<Button onClick={() => this.preSubmitT()} disabled={this.pristine  || (this.errors != null)} bsStyle={this.pristine ? "default":"primary"}>Save</Button>
-					<Button onClick={() => this.addR()}>Add</Button>
+					<Button onClick={() => this.addR()}>
+						{ 		this.state.values.length === 0 ? 
+								'New' 
+								:
+								(this.state.recurring.recur ? 'Recur last' : 'Copy last') 
+						}
+					</Button>
 
 
 						{/*this.pristine ? 'pristine' : 'not pristine'*/}
@@ -955,14 +979,27 @@ class PaymentsEditor extends React.Component {
 	groupLoad(grp) {
 		if(this.pristine && grp && grp.length > 0) this.props.groupLoad(grp)
 	}
+	dayLoad(d) {
+		if(this.pristine && d && d.length > 0) this.props.dayLoad(toDateFi(d))
+	}
+	showHistory(id) {
+		this.props.historyLoad(id)
+		this.setState({ historyShow: true })
+	}
 	
 	render() {
+		let historyClose = () => this.setState({ historyShow: false });
+		
 		this.pristine = this.isPristineT()
 		this.errors = this.hasErrorsT()
 		return(
 			<div>
 		        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
 				{this.renderPaymentsT()}
+				<HistoryModal
+					show={this.state.historyShow}
+					onHide={historyClose}
+				/>
 		   </div>
 		)
 	}
@@ -983,6 +1020,12 @@ function mapDispatchToProps(dispatch) {
         },
         groupLoad: (g) => {
             dispatch(group_load(g))
+        },
+        dayLoad: (d) => {
+            dispatch(day_load(d))
+        },
+        historyLoad: (id) => {
+            dispatch(history_load(id))
         }
     })
 }

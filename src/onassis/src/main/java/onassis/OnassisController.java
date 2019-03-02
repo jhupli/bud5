@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -147,8 +148,6 @@ public class OnassisController {
 
 }
     
-    // SQL sample
-
     @RequestMapping("minibars")
     List calc(@RequestParam int cat) {
     	//final String query = "SELECT d,b,i,e,a FROM B WHERE A=0 ORDER BY D ASC";
@@ -289,7 +288,6 @@ public class OnassisController {
     	LocalDate start = LocalDate.parse(s);
     	LocalDate end = LocalDate.parse(e);
 
-    	
     	List<List<Object>> accounts = new ArrayList<List<Object>>();
     	
     	accounts.add(dates(start,end));
@@ -309,8 +307,26 @@ public class OnassisController {
     @RequestMapping("history") 
     List<LogEntry> history(
     		@RequestParam(required=false) Long s,
-    		@RequestParam(required=false) Long e
+    		@RequestParam(required=false) Long e,
+    		@RequestParam(required=false) Long id
     	) throws SQLException, ParseException {
+    	if(null != id) {
+    		return singleHistory(id);
+    	}
+    	return allHistory(s,e);
+    }
+    
+    private
+    List<LogEntry> singleHistory(Long id) throws SQLException, ParseException {
+    	List<LogEntry> singleHistory = new ArrayList<LogEntry>();
+    	List<H> history = getHistoryRows(id);
+        singleHistory.add(new LogEntry(history, 0));
+        return singleHistory;
+    	
+    }
+
+    private
+    List<LogEntry> allHistory(Long s,Long e) throws SQLException, ParseException {
     	
     	if( s!= null && e != null) {
     		return null;
@@ -341,21 +357,26 @@ public class OnassisController {
         	}
             try (ResultSet result = pstmt.executeQuery()) {
             	while (result.next()) {
-            		String paymetsQuery = "SELECT hd, op, rownr, id, d, i, c, c_descr, a, a_descr, s, g, descr FROM h where id=:id ORDER BY rownr ASC ";
-            		MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", result.getInt("id"));
-            		List<H> history= jdbcTemplate.query(paymetsQuery, 
-                        namedParameters,
-                        new RowMapperResultSetExtractor<H>(rmH));
+            		List<H> history = getHistoryRows(result.getLong("id"));
             		allhistory.add(new LogEntry(history, result.getInt("rownr")));
             	}
             }
         }
+        
         if(null != e) {
             Collections.reverse(allhistory);
         }
     	return allhistory;
     }
     
+	private List<H> getHistoryRows(Long id) {
+		String paymetsQuery = "SELECT hd, op, rownr, id, d, i, c, c_descr, a, a_descr, s, g, descr FROM h where id=:id ORDER BY rownr ASC ";
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+		List<H> history = jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<H>(rmH));
+		return history;
+	}
+	
+    private
     @RequestMapping(value = "pie")
     List<Slice> pie(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {
         
@@ -735,5 +756,22 @@ public class OnassisController {
     	createA(updates.created);
     	//removeA(updates.deleted);
     	modifyA(updates.modified);
-    }    
+    }   
+    
+    @RequestMapping("group/newid")
+    String newGroupId() throws SQLException, ParseException {
+    	int length = 1;
+    	boolean used = true;
+    	String newVar = "";
+    	String sql = "SELECT COUNT(*) FROM P WHERE g=:g";
+    	while(used) {
+    		newVar = UUID.randomUUID().toString().substring(0, length);
+    		MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+		    .addValue("g", newVar);
+    		int total = jdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
+    		used = total > 0;
+    		length++;
+    	} 
+    	return newVar;
+    }
 }

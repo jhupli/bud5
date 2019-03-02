@@ -70,7 +70,7 @@ var params = null
 
 function get(dispatch) {
     dispatch(chartRequestAction(params.s, params.e))
-    axios_get_params('chart?ts='+Date.now(), 
+    axios_get_params('chart',
     				{params: params},
 				    response => {
 			  		  dispatch(chartResponseAction(response.data))

@@ -17,10 +17,11 @@ const auditlogResponseAction = (entries, fp, lp) => ({
 
 const PAGE_SIZE = 50
 //NOTE Backend should return always PAGE_SIZE + 1 so, we can detect last/first -page
- const load = () => (
+ const load = (id) => (
     (dispatch) => {
         dispatch(auditlogRequestAction())
-        axios_get('history?ts='+Date.now(),
+        axios_get('history',
+          (null != id ? 'id=' + id  : ''),
            response => {
         	   var lastPage = true
                if(response.data.length === (PAGE_SIZE + 1)) {
@@ -37,7 +38,8 @@ const PAGE_SIZE = 50
 const next = (s) => (
     (dispatch) => {
         dispatch(auditlogRequestAction(s))
-        axios_get('history?ts='+Date.now()+"&s="+s,
+        axios_get('history',
+          's='+s,
             response  => {
                var lastPage = true
                if(response.data.length === (PAGE_SIZE + 1)) {
@@ -54,7 +56,8 @@ const next = (s) => (
  const prev = (e) => (
 	(dispatch) => {
         dispatch(auditlogRequestAction(e))
-        axios_get('history?ts='+Date.now()+"&e="+e,
+        axios_get('history',
+          'e='+e,
             response => {
                var firstPage = true
                if(response.data.length === (PAGE_SIZE + 1)) {

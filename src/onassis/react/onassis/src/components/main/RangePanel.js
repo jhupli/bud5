@@ -80,36 +80,26 @@ class RangePanel extends React.Component{
 		<Panel style={{width: '100%'}} id="minibars-panel" expanded={this.state.showMinibars} onToggle={() => {}}  >
           <Panel.Heading style={{paddingTop: "3px", paddingBottom: "3px", height: "45px"}}>
          
-			  		    <div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
-                      <FontAwesome name='calendar' />-<FontAwesome name='calendar' />&nbsp;
-                      <div style={{paddingTop: "1px"}}>
-                        <ButtonL  />
-                      </div>
-				              <DatePicker componentWillReceiveProps = {true} pickerName="rangePicker1" pickerType="range"
-					              pickerCallback=
-					              	{(start, end, name) => {this.props.setDateRange(new Date(start), new Date(end))}}
-				              />
-                      <div style={{paddingTop: "1px"}}>
-                        <ButtonR />
-                      </div>
-
-		            </div>
-		            <span>
-							<Panel.Toggle componentClass="button" className="link-button" onClick={this.showMinibars} >&nbsp;
+			  		  <div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
+	                      <FontAwesome name='calendar' />-<FontAwesome name='calendar' />&nbsp;
+	                      	<div style={{paddingTop: "1px"}}>
+	                      		<ButtonL  />
+	                      	</div>
+					        <DatePicker componentWillReceiveProps = {true} pickerName="rangePicker1" pickerType="range"
+					              pickerCallback={(start, end, name) => {this.props.setDateRange(new Date(start), new Date(end))}}
+					        />
+					        <div style={{paddingTop: "1px"}}>
+	                        	<ButtonR />
+	                       </div>
+	
+			            </div>
+		             <span>
+							<Panel.Toggle componentClass="button" className="link-button" onClick={this.showMinibars} style={{textDecoration: 'none'}}>&nbsp;
 								{ (this.state.showMinibars ? <FontAwesome name='caret-up' size='2x' /> : <FontAwesome name='caret-down' size='2x' />) }&nbsp;
 		            		</Panel.Toggle>
 	                </span><Spinner fetching={this.props.fetching} />
 
-		            {ctrls}
-		            {/*
-				   <span style={{marginTop: "6px"}}>
-							<Panel.Toggle componentClass="button" className="link-button" onClick={this.showMinibars} >
-								{ (this.state.showMinibars ? 'Hide details' : 'Show details') }
-		            		</Panel.Toggle>
-	               </span>*/}
-		           
-
-         
+		           {ctrls}
           </Panel.Heading>
           <Panel.Collapse>
             <Panel.Body >

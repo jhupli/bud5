@@ -121,17 +121,19 @@ class DetailsPanel extends React.Component{
 
 		return(
 			<div>
-			  <Panel >
-			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
-				  	<span style={{display: "flow-root", alignItems: "center"}}>
+			  <Panel style={{width: '100%'}}>
+			  	<Panel.Heading style={{paddingTop: "3px", paddingBottom: "3px", height: "45px"}}>
+			  		<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
+				  	
 				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+				  	</div>
 				  		<span className="pull-right" style={{display: "inline-flex"}}>
 					  		<ButtonToday />
-	
-					  			<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstackfirst ? "gray" : "darkblue")}} onClick={this.prevHistory} disabled={hstackfirst}><FontAwesome name='arrow-circle-left' size="2x" color="blue" /></Button>
-					  			<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstacklast ? "gray": "darkblue")}} disabled={hstacklast} onClick={this.nextHistory}><FontAwesome name='arrow-circle-right' size="2x" color="blue" /></Button>
+					  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstackfirst ? "gray" : "darkblue")}} onClick={this.prevHistory} disabled={hstackfirst}><FontAwesome name='arrow-circle-left' size="2x" color="blue" /></Button>
+					  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstacklast ? "gray": "darkblue")}} disabled={hstacklast} onClick={this.nextHistory}><FontAwesome name='arrow-circle-right' size="2x" color="blue" /></Button>
 					  	</span>
-				  	</span>
+
+
 			  	</Panel.Heading>
 			  	<Panel.Body>					
 			  	<table>

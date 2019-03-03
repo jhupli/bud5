@@ -431,6 +431,7 @@ class PaymentsEditor extends React.Component {
 				  			placeholder = 'gId'
 				  			linkCb = {this.props.queryType === 'g' || index === -2 || !this.isPristineT() ? null : this.groupLoad}
 				  			popoverText = {'Show all in group "' + value + '"'}
+				  			maxLength = {15}
 					  	/>
 				    </div>)
      	case 'c' :
@@ -473,6 +474,7 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'description'
+				  			maxLength = {50}
 					  	/>
 				  		{ /* CHG-
 				  		<TextareaField 

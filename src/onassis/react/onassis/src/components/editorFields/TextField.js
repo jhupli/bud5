@@ -27,7 +27,7 @@ class TextField extends React.Component {
 	}
 	
 	render() {
-		const {id, placeholder, readOnly, touched, linkCb} = this.props
+		const {id, placeholder, readOnly, touched, linkCb, maxLength} = this.props
 		
 		var button = linkCb && this.state.txtValue && this.state.txtValue.length > 0?
 				<Button bsSize="small" onClick={ () => {
@@ -42,6 +42,7 @@ class TextField extends React.Component {
 	    <div>
 	    	<span style={{display: "inline-flex"}}>
 	    	<input 
+	    		maxlength={maxLength}
 	    	    id={id}
 	    		value={this.state.txtValue}
 	    	    disabled={readOnly}
@@ -66,7 +67,8 @@ TextField.defaultProps = {
 		field: null,
 		index: null,
 		touched: false,
-		linkCb: null
+		linkCb: null,
+		maxLength: 255
 }
 
 export default TextField

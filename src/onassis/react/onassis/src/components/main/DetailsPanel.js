@@ -132,7 +132,7 @@ class DetailsPanel extends React.Component{
 		return(
 			<div>
 			  <Panel style={{width: '100%'}}>
-			  	<Panel.Heading style={{paddingTop: "0px", paddingBottom: "3px", height: "45px"}}>
+			  	<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "45px"}}>
 			  		<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
 				  	
 				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />

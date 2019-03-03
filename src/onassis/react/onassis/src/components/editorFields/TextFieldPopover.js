@@ -41,7 +41,7 @@ class TextField extends React.Component {
 	    		className="form-control"
 	    />
 	
-	    if(readOnly) {
+	    if(readOnly && linkCb != null ) {
 	    	
 	    	return(
 	    	<Button className="link-button" onClick={ () => {linkCb(this.state.txtValue)} } >

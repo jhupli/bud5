@@ -103,7 +103,7 @@ class DetailsPanel extends React.Component{
 			case 'g' :
 				info = 
 					<span>
-						<FontAwesome name='paperclip' size='lg' />  {this.props.params.g}
+						&nbsp;<FontAwesome name='paperclip' size='lg' />  {this.props.params.g}
 					</span>
 				break
 			case 'l' : 

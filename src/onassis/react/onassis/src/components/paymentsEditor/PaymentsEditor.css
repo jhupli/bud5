@@ -184,13 +184,23 @@ input[type="text"]:disabled {
 		display: none; 
 	}
 
-#payments_table .check_header,
-#payments_table .s_header 
+#payments_table .check_header 
 	{ 
 		width: 42px;
 	}
 
-#payments_table .check_cell,
+#payments_table .check_cell
+	{ 
+		width: 42px;
+	}
+
+#payments_table .s_header 
+	{ 
+		width: 42px;
+		padding-left: 12px;
+		
+	}
+
 #payments_table .s_cell 
 	{ 
 		width: 42px;

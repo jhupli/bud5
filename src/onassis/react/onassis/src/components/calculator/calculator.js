@@ -5,6 +5,8 @@ import CurrencyField from '../editorFields/CurrencyField'
 import './Calculator.css'
 import currencyFormat from '../../util/currency'
 
+var FontAwesome = require('react-fontawesome')
+
 class Calculator extends React.Component {
 	constructor(props) {
         super(props)
@@ -62,12 +64,13 @@ class Calculator extends React.Component {
 		return(
 			<div >
 			  <Panel  >
-			  	<Panel.Heading style={{padding: "3px", height: "30px", fontSize: "15px"}}>
-				<span className="pull-right" style={{display: "inline-flex", alignItems: "center"}}>  	
+			  	<Panel.Heading style={{padding: "5px", height: "30px", fontSize: "15px"}}>
+				<span className="pull-right" style={{display: "inline-flex"}}>  	
 					{currencyFormat(sum)}
 				</span>
 			  	</Panel.Heading>
 			  	<Panel.Body style={{padding: "2px"}}>
+			  	{this.state.rows.length === 0 ? null : 
 			  	<Table id="calc_table" style={{marginBottom: '10px'}} striped hover condensed>
 				<tbody style={{border: 'none'}}>
 				
@@ -93,10 +96,12 @@ class Calculator extends React.Component {
 				}
 				
 				</tbody>
-			</Table>
-				<span>
-				<Button onClick={this.newRow}>+</Button>
-				<Button onClick={this.clear}>C</Button>
+			</Table>}
+	          <span className="pull-right" style = {{"display": "inline-flex", 
+              "whiteSpace": "nowrap",
+                'marginLeft':'1px'}}>
+				<Button onClick={this.newRow}><FontAwesome name = 'plus' /></Button>
+				{this.state.rows.length === 0 ? null : <Button style= {{fontStyle: 'italic', fontWeight: 'bold'}} onClick={this.clear}>C</Button> }
 				</span>
 				</Panel.Body>
 

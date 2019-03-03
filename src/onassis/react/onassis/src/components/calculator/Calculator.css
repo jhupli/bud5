@@ -1,0 +1,12 @@
+
+#calc_table thead, #calc_table tbody { display: block; }
+
+#calc_table tbody {
+    height: 250px; 
+    overflow-y: auto;    
+    overflow-x: hidden;  
+}
+
+#calc_table table {
+	margin-bottom: 10px;
+}

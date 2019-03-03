@@ -41,7 +41,7 @@ class MenuBar extends React.Component{
 		return(
 			<div>
 				<AlertContainer ref={a => this.msg = a} {...alertOptions} />
-				<Navbar>
+				<Navbar style={{marginBottom: '0px'}}>
 				    <Navbar.Header>
 				        <Navbar.Brand> Onassis </Navbar.Brand>
 				        <Navbar.Toggle /> 

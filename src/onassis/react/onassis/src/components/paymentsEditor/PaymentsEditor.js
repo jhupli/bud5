@@ -6,12 +6,13 @@ import { payment_selection } from '../../actions/payment'
 import { CATEGORY } from '../../actions/categories'
 import { ACCOUNT } from '../../actions/accounts'
 import { load as history_load } from '../../actions/auditlog'
+import { calc_add } from '../../actions/calculator'
 
 import { Table, Panel, Button } from 'react-bootstrap'
 import HistoryModal from '../history/HistoryModal'
 
 import LockField from '../editorFields/LockField'
-import CurrencyField from '../editorFields/CurrencyField'
+import CurrencyField from '../editorFields/CurrencyFieldPopover'
 import CheckboxField from '../editorFields/CheckboxField'
 import DropdownField from '../editorFields/DropdownField'
 import TextField from '../editorFields/TextField'
@@ -384,6 +385,7 @@ class PaymentsEditor extends React.Component {
 					  			field = 'b'
 						  		readOnly = {true}
 					  			touched = {false}
+				  				linkCb = {index === -2 ? null : this.props.calculatorAdd}
 						 />	
      				</div>)
     	case 'i' :
@@ -398,6 +400,8 @@ class PaymentsEditor extends React.Component {
 				  			field = 'i'
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'i')}
+				  			linkCb = {index === -2 ? null : this.props.calculatorAdd}
+				  			popoverText = 'Add to calculator'
 					  	/>
 				    </div>)
     	case 's' :
@@ -1026,6 +1030,9 @@ function mapDispatchToProps(dispatch) {
         },
         historyLoad: (id) => {
             dispatch(history_load(id))
+        },
+        calculatorAdd: (p) => {
+            dispatch(calc_add(p))
         }
     })
 }

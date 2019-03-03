@@ -35,7 +35,7 @@ class RangePanel extends React.Component{
 		var f = () => {
 	    			that.props.minibarsRedraw()
 	    }
-	    console.log("FIRE:")
+	    //console.log("FIRE:")
 	    setTimeout(f, 0)
 	}
 

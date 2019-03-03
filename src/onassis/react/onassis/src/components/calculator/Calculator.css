@@ -1,12 +1,26 @@
 
 #calc_table thead, #calc_table tbody { display: block; }
 
-#calc_table tbody {
+/*#calc_table tbody {
     height: 250px; 
     overflow-y: auto;    
     overflow-x: hidden;  
+}*/
+
+#calc_table table {
+	margin-bottom: 10px;
 }
 
 #calc_table table {
 	margin-bottom: 10px;
 }
+
+#calc_table .form-control {
+	font-size: 12px !important;
+    width: 100% !important;
+    padding: 3px;
+    height: 20px;
+}
+
+
+

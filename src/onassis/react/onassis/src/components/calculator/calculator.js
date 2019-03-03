@@ -52,8 +52,7 @@ class Calculator extends React.Component {
 	}
 	
 	render() {
-		if(this.state.rows.length === 0) 
-			return null
+		//if(this.state.rows.length === 0) return null
 			
 		var sum = 0
 		this.state.rows.map( r => {
@@ -61,21 +60,21 @@ class Calculator extends React.Component {
 			return null
 		} )
 		return(
-			<div style={{width: '125px', paddingLeft: '2px'}}>
-			  <Panel style={{height: "352px"}} >
-			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
+			<div >
+			  <Panel  >
+			  	<Panel.Heading style={{padding: "3px", height: "30px", fontSize: "15px"}}>
 				<span className="pull-right" style={{display: "inline-flex", alignItems: "center"}}>  	
 					{currencyFormat(sum)}
 				</span>
 			  	</Panel.Heading>
 			  	<Panel.Body style={{padding: "2px"}}>
-			  	<Table id="calc_table" style={{marginBottom: '10px'}} striped bordered hover condensed>
-				<tbody>
+			  	<Table id="calc_table" style={{marginBottom: '10px'}} striped hover condensed>
+				<tbody style={{border: 'none'}}>
 				
 				{this.state.rows.map( (row, index) => {
 					return(
 					<tr key={'calr'+index}>		
-					<td style={{border: 'none'}}>
+					<td style={{border: 'none', padding: '0px', margin: '0px'}}>
 					
 			  		<CurrencyField 
 			  				id = 'calcf'

@@ -728,13 +728,13 @@ function leadin(month) {
   var mid = monthId(month.columns[0].d)
   var e = document.getElementById(mid +_DIV)
   var x = e.getBoundingClientRect().left
-  var first = false
+  //var first = false
   
   var width = month.columns.length * slot_width +  line_width
   if( !leadin_x ) { //init lead_in x
 	  //console.log("first!")  
     leadin_x = x
-    first = true
+    //first = true
   }
   //console.log("x:"+x+" leadin:"+leadin_x+" add:"+ (leadin_x === x ? leadin_width : 0))
   /*d3.select('#' + mid +_DIV)
@@ -756,13 +756,13 @@ function leadin(month) {
     "width": (x <= leadin_x ? leadin_width : 0) + "px",
   })
   
-  if (first) {
+ // if (first) {
 	  d3.select('#' + mid + _MAX_TEXT)
 	  .text(roundNumberText(maxy))
 	
 	  d3.select('#' + mid + _MIN_TEXT)
 	  .text(roundNumberText(miny)) 
-  }
+  //}
 }
 
 function updateMonth(month) {

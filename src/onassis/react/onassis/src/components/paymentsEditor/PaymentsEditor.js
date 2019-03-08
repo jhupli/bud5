@@ -6,12 +6,13 @@ import { payment_selection } from '../../actions/payment'
 import { CATEGORY } from '../../actions/categories'
 import { ACCOUNT } from '../../actions/accounts'
 import { load as history_load } from '../../actions/auditlog'
+import { calc_add } from '../../actions/calculator'
 
 import { Table, Panel, Button } from 'react-bootstrap'
 import HistoryModal from '../history/HistoryModal'
 
 import LockField from '../editorFields/LockField'
-import CurrencyField from '../editorFields/CurrencyField'
+import CurrencyField from '../editorFields/CurrencyFieldPopover'
 import CheckboxField from '../editorFields/CheckboxField'
 import DropdownField from '../editorFields/DropdownField'
 import TextField from '../editorFields/TextField'
@@ -384,6 +385,7 @@ class PaymentsEditor extends React.Component {
 					  			field = 'b'
 						  		readOnly = {true}
 					  			touched = {false}
+				  				linkCb = {index === -2 ? null : this.props.calculatorAdd}
 						 />	
      				</div>)
     	case 'i' :
@@ -398,6 +400,8 @@ class PaymentsEditor extends React.Component {
 				  			field = 'i'
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'i')}
+				  			linkCb = {index === -2 ? null : this.props.calculatorAdd}
+				  			popoverText = 'Add to calculator'
 					  	/>
 				    </div>)
     	case 's' :
@@ -425,8 +429,9 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'g')}
 				  			placeholder = 'gId'
-				  			linkCb = {index === -2 || !this.isPristineT() ? null : this.groupLoad}
+				  			linkCb = {this.props.queryType === 'g' || index === -2 || !this.isPristineT() ? null : this.groupLoad}
 				  			popoverText = {'Show all in group "' + value + '"'}
+				  			maxLength = {15}
 					  	/>
 				    </div>)
      	case 'c' :
@@ -469,6 +474,7 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'description'
+				  			maxLength = {50}
 					  	/>
 				  		{ /* CHG-
 				  		<TextareaField 
@@ -790,7 +796,7 @@ class PaymentsEditor extends React.Component {
 	  			{this.th('d', 'Date')}
 		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
 	  			{this.th('i', 'Pay')}
-	  			<th className={this.thClassName('s')} />
+	  			{this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
 	  			{this.th('g', <FontAwesome name='paperclip' size='lg' />)}
 	  			{this.th('c', 'Issue')}
 	  			{this.th('a', 'Account')}
@@ -1026,6 +1032,9 @@ function mapDispatchToProps(dispatch) {
         },
         historyLoad: (id) => {
             dispatch(history_load(id))
+        },
+        calculatorAdd: (p) => {
+            dispatch(calc_add(p))
         }
     })
 }

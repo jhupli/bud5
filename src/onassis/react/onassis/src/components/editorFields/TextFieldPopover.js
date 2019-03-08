@@ -26,7 +26,7 @@ class TextField extends React.Component {
 	}
 	
 	render() {
-		const {id, placeholder, readOnly, touched, linkCb, popoverText} = this.props
+		const {id, placeholder, readOnly, touched, linkCb, popoverText, maxLength} = this.props
 		
 		var inputField = 
 		<input 
@@ -39,9 +39,10 @@ class TextField extends React.Component {
 	    		type="text" 
 	    		onChange={this.onChange}
 	    		className="form-control"
+	    		maxlength={maxLength}
 	    />
 	
-	    if(readOnly) {
+	    if(readOnly && linkCb != null ) {
 	    	
 	    	return(
 	    	<Button className="link-button" onClick={ () => {linkCb(this.state.txtValue)} } >
@@ -97,7 +98,8 @@ TextField.defaultProps = {
 		index: null,
 		touched: false,
 		linkCb: null,
-		popoverText: null
+		popoverText: null,
+		maxLength: 255
 }
 
 export default TextField

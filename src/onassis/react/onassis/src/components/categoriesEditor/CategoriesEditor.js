@@ -210,6 +210,7 @@ class CategoriesEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'name'
+				  			maxLength = {30}
 					  	/>
 				    </div>)
     	case 'color' :

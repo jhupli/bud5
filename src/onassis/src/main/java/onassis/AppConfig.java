@@ -9,10 +9,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+//import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
+//import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
 
 @Configuration
 public class AppConfig {
@@ -32,11 +32,11 @@ public class AppConfig {
         return dataSource;
     }
 
-    @Bean
+   /* @Bean
     @Primary
     DataSource dataSource() {
         return new DataSourceSpy(realDataSource());
-    }
+    }*/
     
 	@Bean
 	public JdbcTemplate getJdbcTemplate() {

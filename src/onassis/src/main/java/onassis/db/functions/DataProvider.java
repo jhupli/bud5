@@ -53,17 +53,17 @@ public class DataProvider {
 	
 	public static void random_data()
 	        throws SQLException, ParseException {
-		//System.out.println("ranodom: generating data to p");
+		////System.out.println("ranodom: generating data to p");
 		
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		
-		int count = 500;
+		int count = 1500;
 		
 		long MAX_I = 1120;
 		long MIN_I = -1100;
 
-		Date MAX_D = new Date(df.parse("1.1.2017").getTime());
-		Date MIN_D = new Date(df.parse("31.12.2018").getTime());
+		Date MAX_D = new Date(df.parse("8.3.2019").getTime());
+		Date MIN_D = new Date(df.parse("9.3.2020").getTime());
 
 		int MAX_C = 12;
 		int MIN_C = 1;
@@ -112,7 +112,7 @@ public class DataProvider {
 			pstmnt.setBoolean(3, true);
 			pstmnt.setString(4, randomColor());
 			pstmnt.executeUpdate();
-			System.out.println("added cat "+c);
+			////System.out.println("added cat "+c);
 			
 			pstmnt.close();
 		}
@@ -129,11 +129,13 @@ public class DataProvider {
 			pstmnt.setString(3, randomColor());
 			pstmnt.setBoolean(4, false);
 			pstmnt.executeUpdate();
-			System.out.println("added acc "+a);
+			//System.out.println("added acc "+a);
 			
 			pstmnt.close();
 		}
 		for (int ix = 0; ix<count; ix++) {
+			System.out.print(".");
+			if(ix % 100 == 0) System.out.println();
 			conn = ds.getConnection();
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 			String insertSQL =
@@ -148,9 +150,10 @@ public class DataProvider {
 			PreparedStatement sumstmnt = conn.prepareStatement(sumSQL);
 			PreparedStatement balancestmnt = conn.prepareStatement(balanceSQL);
 			ResultSet set = null;
-			System.out.println((ix+1) + "/" + count );
+			//System.out.println((ix+1) + "/" + count );
 			BigDecimal i = new BigDecimal(MIN_I + I_DIFF * Math.random()).setScale(2, RoundingMode.HALF_UP);
-			Date d = addDays(MIN_D, (int) Math.round(D_DIFF * Math.random()));
+			//Date d = addDays(MIN_D, (int) Math.round(D_DIFF * Math.random()));
+			Date d = addDays(MIN_D, ix);
 			int c = (int) Math.round(MIN_C + C_DIFF * Math.random());
 			int a = (int) Math.round(MIN_A + A_DIFF * Math.random());
 			boolean l = Math.random() >= 0.5;
@@ -165,9 +168,9 @@ public class DataProvider {
 			pstmnt.setString(8, "description of "+ix);
 			
 			pstmnt.executeUpdate();
-			System.out.println("isolation_1="+conn.getTransactionIsolation());
+			//System.out.println("isolation_1="+conn.getTransactionIsolation());
 			conn.commit();
-			System.out.println("isolation_2="+conn.getTransactionIsolation());
+			//System.out.println("isolation_2="+conn.getTransactionIsolation());
 
 		    int tx = conn.getMetaData().getDefaultTransactionIsolation();
 		    String txtxt=null;
@@ -185,7 +188,7 @@ public class DataProvider {
 		      default:
 		        txtxt = "UNKNOWN!!";
 		    }
-		    System.out.println(txtxt);
+		    //System.out.println(txtxt);
 			
 
 			sumstmnt.setDate(1, d);
@@ -197,7 +200,7 @@ public class DataProvider {
 		    		|| ((set = sumstmnt.getResultSet())==null)
 		    		|| !set.next()
 		    		) {
-		    	System.out.println("sum execute failed");
+		    	//System.out.println("sum execute failed");
 		    }
 		    BigDecimal sum = (BigDecimal) set.getBigDecimal(1);
 
@@ -205,15 +208,15 @@ public class DataProvider {
 		    		|| ((set = balancestmnt.getResultSet())==null)
 		    		|| !set.next()
 		    		) {
-		    	System.out.println("balance execute failed");
+		    	//System.out.println("balance execute failed");
 		    }
 		    BigDecimal balance = (BigDecimal) set.getBigDecimal(1);
 		    if (sum.compareTo(balance)!=0) {
-			    System.out.println("ERROR sum="+sum+" balance="+balance);
-				System.out.println((ix+1) + "/" + count + ": " +
-						"d: " + d +
-						", i: " + i +
-						", a: " + a );
+			    //System.out.println("ERROR sum="+sum+" balance="+balance);
+				//System.out.println((ix+1) + "/" + count + ": " +
+				//		"d: " + d +
+				//		", i: " + i +
+				//		", a: " + a );
 				break;
 		    }
 		    set.close();
@@ -221,8 +224,9 @@ public class DataProvider {
 			sumstmnt.close();
 			balancestmnt.close();
 			conn.close();
+			
 		}//for
-
+		System.out.println("Done.");
 
 	} 
 

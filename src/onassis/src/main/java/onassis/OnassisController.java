@@ -13,13 +13,16 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -149,7 +152,7 @@ public class OnassisController {
 }
     
     @RequestMapping("minibars")
-    List calc(@RequestParam int cat) {
+    List minibars(@RequestParam int cat) {
     	//final String query = "SELECT d,b,i,e,a FROM B WHERE A=0 ORDER BY D ASC";
     	
     	String query = null;
@@ -401,7 +404,7 @@ public class OnassisController {
     }
     
     @RequestMapping("payments")
-    List<List<? extends Object>> day(@RequestParam String e, 
+    List<List<? extends Object>> payments(@RequestParam String e, 
                 @RequestParam(required=false) String d, 
                 @RequestParam(required=false) String a,
                 @RequestParam(required=false) String c,
@@ -774,4 +777,27 @@ public class OnassisController {
     	} 
     	return newVar;
     }
+    
+    DateTimeFormatter dfs = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+    @RequestMapping(value = "test") 
+    void test() throws SQLException, ParseException {
+    	LocalDateTime now = LocalDateTime.now();
+    	
+    	String st = (now).format(dfs);
+    	System.out.println("Test starts at : " + st);
+    	long startTime = System.currentTimeMillis();
+    	//Your test starts here:
+    		this.minibars(0);
+    		this.minibars(1);
+    		this.minibars(2);
+    		this.minibars(3);
+    		this.minibars(4);
+    		this.minibars(5);
+    		this.minibars(6);
+    	//Your test ends here:
+    	long stopTime = System.currentTimeMillis();
+    	long elapsedTime = stopTime - startTime;
+    	System.out.println("Elapsed time (ms): "+elapsedTime);
+    }
+    
 }

@@ -42,7 +42,7 @@ class TextField extends React.Component {
 	    <div>
 	    	<span style={{display: "inline-flex"}}>
 	    	<input 
-	    		maxlength={maxLength}
+	    		maxLength={maxLength}
 	    	    id={id}
 	    		value={this.state.txtValue}
 	    	    disabled={readOnly}

@@ -11,6 +11,9 @@ import ButtonL from '../chart/buttons/buttonL'
 import ButtonR from '../chart/buttons/buttonR'
 import ButtonToday from '../chart/buttons/buttonToday'
 
+import { category_load } from '../../actions/payments'
+import { account_load } from '../../actions/payments'
+
 import Calculator from '../calculator/calculator'
 
 import {prev_in_history, next_in_history} from '../../actions/payments'
@@ -25,10 +28,12 @@ class DetailsPanel extends React.Component{
     		accs: props.getConstants('acc'), // return null, but launches fetch
     		cats: props.getConstants('cat'), // return null, but launches fetch
     		refreshTime: null,
-     	}
-	  this.defaultDate = new Date()
-    this.prevHistory = this.prevHistory.bind(this)
-    this.nextHistory = this.nextHistory.bind(this)
+        	start: null,
+        	end: null,   
+       }
+	   this.defaultDate = new Date()
+       this.prevHistory = this.prevHistory.bind(this)
+       this.nextHistory = this.nextHistory.bind(this)
 	}
     componentWillReceiveProps(nextProps){
     	if( nextProps.constants && nextProps.constants['acc']) {
@@ -42,7 +47,31 @@ class DetailsPanel extends React.Component{
 		    })
     	}
     	
-    	
+    	//range changed: load cat / acc anew
+    	if (this.state.start == null && nextProps.start != null) {
+	    	this.setState({
+		    		start : nextProps.start,
+		    		end : nextProps.end		
+		    })
+	  	} else if (
+        	// eslint-disable-next-line	
+        		!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
+        	|| 
+        	// eslint-disable-next-line
+        		!(this.state.end == nextProps.end)) { 
+    		this.setState({
+		    		start : nextProps.start,
+		    		end : nextProps.end		
+		    })
+    		switch(this.props.queryType) {
+    					case 'd' : break;
+    					case 'a' : debugger
+    							   this.props.accountLoad(this.props.params.a, nextProps.start, nextProps.end)
+    							   break;
+    					case 'c' : this.props.categoryLoad(this.props.params.c, nextProps.start, nextProps.end)
+    							   break;
+    		}
+    	}
     	
     }
 
@@ -53,8 +82,10 @@ class DetailsPanel extends React.Component{
   nextHistory() {
     this.props.nextInHistory()
   }
-	render(){
-		var info = '';
+  render(){
+
+
+	    var info = '';
 		switch(this.props.queryType) {
 			case 'd' : 
         info =
@@ -174,7 +205,10 @@ const mapStateToProps = (store) => {
         params: store.payments.params,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
-        curves: store.chart.curves
+        curves: store.chart.curves,
+        
+        start: store.daterange.s,
+        end: store.daterange.e,
     }
 }
 
@@ -188,7 +222,13 @@ function mapDispatchToProps(dispatch) {
         },
         nextInHistory: () => {
           dispatch(next_in_history())
-        }
+        },
+        accountLoad: (a, d1, d2) => {
+            dispatch(account_load(a, d1, d2))
+        },
+        categoryLoad: (c, d1, d2) => {
+            dispatch(category_load(c, d1, d2))
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsPanel)

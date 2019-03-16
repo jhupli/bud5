@@ -84,13 +84,14 @@ class CurrencyField extends React.Component {
 	      />
 	    </div>
 
-		if(readOnly) {	
+		if(readOnly) {
 	    	return(
 	    	<Button className="link-button" onClick={ () => {linkCb(this.state.currencyValue)} } >
 				{inputField}
 			</Button>)
-	    } else if( touched 
-	    		|| linkCb == null 
+	    } else if( 
+//	    		touched ||
+	    		 linkCb == null 
 	    		|| this.state.currencyValue == null 
 	    		|| this.state.currencyValue.length === 0) {
 		    return (

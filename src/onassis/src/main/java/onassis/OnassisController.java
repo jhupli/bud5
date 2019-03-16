@@ -66,7 +66,8 @@ import onassis.dto.mappers.MapP;
 import onassis.dto.mappers.MapPb;
 import onassis.dto.mappers.MapSlice;
 
-@CrossOrigin(origins = "http://localhost:3000") //<-development only
+//@CrossOrigin(origins = "http://localhost:3000") //<-development only
+@CrossOrigin
 @RestController
 public class OnassisController {
 	

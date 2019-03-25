@@ -17,9 +17,12 @@ import { account_load } from '../../actions/payments'
 import Calculator from '../calculator/calculator'
 
 import {prev_in_history, next_in_history} from '../../actions/payments'
+import Media from 'react-media';
+
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
+
 
 class DetailsPanel extends React.Component{
 	constructor(props) {
@@ -192,6 +195,17 @@ class DetailsPanel extends React.Component{
         	      </table>
 				</Panel.Body>
 			  </Panel>
+	<div>
+        <Media query="(max-width: 599px)">
+          {matches =>
+            matches ? (
+              <p>The document is less than 600px wide.</p>
+            ) : (
+              <p>The document is at least 600px wide.</p>
+            )
+          }
+        </Media>
+      </div>
 			</div>					
 		)
 	}

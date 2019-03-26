@@ -8,7 +8,8 @@ import { ACCOUNT } from '../../actions/accounts'
 import { load as history_load } from '../../actions/auditlog'
 import { calc_add } from '../../actions/calculator'
 
-import { Table, Panel, Button } from 'react-bootstrap'
+import { Table, Panel, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+
 import HistoryModal from '../history/HistoryModal'
 
 import LockField from '../editorFields/LockField'
@@ -35,6 +36,8 @@ import {toDateFi} from '../../util/fiDate'
 import recurrent from './recurrent'
 
 import AlertContainer from 'react-alert'
+
+import Media from 'react-media';
 
 
 //import { withMedia } from 'react-media-query-hoc';
@@ -138,7 +141,13 @@ class PaymentsEditor extends React.Component {
         //render
         this.renderPaymentsHeaderT = this.renderPaymentsHeaderT.bind(this)
         this.renderPaymentsT = this.renderPaymentsT.bind(this)
-
+        
+        this.renderNormalT = this.renderNormalT.bind(this)
+        this.renderNarrowT = this.renderNarrowT.bind(this)
+        
+        //save, new and rest aso
+        this.renderControls = this.renderControls.bind(this)
+        
         //css and stuff
         this.tdClassName = this.tdClassName.bind(this)
         this.td = this.td.bind(this)
@@ -681,7 +690,7 @@ class PaymentsEditor extends React.Component {
 	      	</td>
 	      	<td>
 	            <Button variant="primary" onClick={() => this.showHistory(this.chooseValueF(index, 'id'))} >
-	            <FontAwesome name='history' />
+	            	<FontAwesome name='history' />
 	            </Button>
 	      	</td>
 		</tr>)
@@ -810,13 +819,9 @@ class PaymentsEditor extends React.Component {
 		</thead>)
     }
     
-	renderPaymentsT = () => {
-		this.sortedValues = this.state.values.slice(0)
-		if (this.state.sort) this.sortedValues.sort(this.sortersF())
-		
-		return (
-		<div>
-			<div>
+	  				
+	renderControls = () => {
+	  	return (
 		<Panel id="ctrls-panel" expanded={this.state.recurring.recur} onToggle={() => {}}  >
           <Panel.Heading >
             <Panel.Title >
@@ -875,23 +880,88 @@ class PaymentsEditor extends React.Component {
             </Panel.Body>
           </Panel.Collapse>
         </Panel>
-			
-
-
-					  
-			</div>
-			
-
-			
-			<Table id="payments_table" striped bordered hover condensed>
+	  	)
+	}
+	  	
+	renderNarrowT  = () => {
+		return(
+			this.sortedValues.map(p => {
+				return(
+				<Table id="payments_table_s" bordered condensed>
+					<tbody>
+		       			<tr  >
+       					  <td className="field_value">{this.renderContentF('l', p.index)}</td>
+	                      <td className="field_value">
+	                      	<span style={{float: 'right'}}>
+	                      		<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center"}}>
+	                      		mark {this.renderContentF('check', p.index)}
+	                      		<FontAwesome name='remove' style={{'color': 'red'}}/>
+	                      		{this.renderDeletedContentF(p.index)} 
+	                      		
+	                      		</div>
+	                      	</span>
+	                      </td>
+			            </tr>
+						<tr  >
+	                      <td className="field_name"><span style={{float: 'right'}}>Date</span></td>
+	                      <td className={this.tdClassName(p.index, 'd')}>{this.renderContentF('d', p.index)}</td>
+			            </tr>
+			           	<tr  >
+	                      <td className="field_name"><span style={{float: 'right'}}>Sum</span></td>
+	                      <td className={this.tdClassName(p.index, 'i')}>{this.renderContentF('i', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>In <FontAwesome name='pie-chart' size='lg' /></span></td>
+	                      <td className={this.tdClassName(p.index, 's')}>{this.renderContentF('s', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>Issue</span></td>
+	                      <td className={this.tdClassName(p.index, 'c')}>{this.renderContentF('c', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}><FontAwesome name='paperclip' size='lg' /></span></td>
+	                      <td className={this.tdClassName(p.index, 'g')}>{this.renderContentF('g', p.index)}</td>
+			            </tr >			            
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>Account</span></td>
+	                      <td className={this.tdClassName(p.index, 'd')}>{this.renderContentF('a', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>Descr</span></td>
+	                      <td className={this.tdClassName(p.index, 'descr')}>{this.renderContentF('descr', p.index)}</td>
+			            </tr >
+			            
+			          </tbody>
+		            </Table>
+		            )}
+				)
+		)
+	}
+	                      
+	renderNormalT  = () => {
+		return(
+		<Table id="payments_table" striped bordered hover condensed>
 				{this.renderPaymentsHeaderT()}
 				<tbody>
 				  	{this.sortedValues.map((p) => this.renderPaymentR(p.index))}
 				</tbody>
-			</Table>
-		</div>)
+		</Table>
+		)
+	}
+	
+	renderPaymentsT = () => {
+		this.sortedValues = this.state.values.slice(0)
+		if (this.state.sort) this.sortedValues.sort(this.sortersF())
+		
+		return (
+		<div>
+			{this.renderControls()}
+			{this.lessThan735 ? this.renderNarrowT() : this.renderNormalT()}
+		</div>
+		)
 	}
 		
+	
 	tdClassName(index, field) {
 		return field + '_cell' + 
 			   (!this.isPersistedR(index) ? ' newRow' : '') +
@@ -1000,12 +1070,24 @@ class PaymentsEditor extends React.Component {
 		this.errors = this.hasErrorsT()
 		return(
 			<div>
+			    <Media query="(max-width: 734px)">
+    				{matches => this.lessThan735 = matches }
+    			</Media>
 		        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
 				{this.renderPaymentsT()}
 				<HistoryModal
 					show={this.state.historyShow}
 					onHide={historyClose}
 				/>
+
+    <FormGroup>
+      <ControlLabel>Copyright</ControlLabel>
+      <FormControl.Static>jhupli@gmail.com</FormControl.Static>
+    </FormGroup>
+				
+				
+				
+				
 		   </div>
 		)
 	}

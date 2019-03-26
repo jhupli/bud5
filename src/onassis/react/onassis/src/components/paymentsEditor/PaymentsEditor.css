@@ -268,6 +268,23 @@ input[type="text"]:disabled {
 	}
 
 
+#payments_table_s 
+	{
+		width: 200px;
+	}
+#payments_table_s .field_name 
+	{ 
+		padding-top: 10px;
+		padding-left: 1px;
+		background-color: lightgray;
+		/*float:right;*/
+	}
+
+#payments_table_s .field_value 
+	{ 
+		width: 160px;
+		background-color: white;
+	}
 #recurringTimes
 {
 		height: 38px;

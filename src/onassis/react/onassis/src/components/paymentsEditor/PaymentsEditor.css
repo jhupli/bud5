@@ -196,14 +196,14 @@ input[type="text"]:disabled {
 
 #payments_table .s_header 
 	{ 
-		width: 42px;
-		padding-left: 12px;
+		width: 31px;
+		padding-left: 8px;
 		
 	}
 
 #payments_table .s_cell 
 	{ 
-		width: 42px;
+		width: 31px;
 	}
 		
 #payments_table .g_header 
@@ -243,12 +243,12 @@ input[type="text"]:disabled {
 		padding-top: 13px;
 		padding-bottom: 0;
 		text-align: center;
-		width: 42px;
+		width: 31px;
 	}
 	
 #payments_table .deleted_cell
 	{ 
-		width: 42px;
+		width: 31px;
 		padding-top: 7px;
 	}
 

@@ -14,7 +14,6 @@ class CheckboxField extends React.Component {
 						disabled = {readOnly}
 					    id = {id}  
 						checked = {checked}
-						touched = {touched}
 						onChange = {(e) => onValueChanged(e.target.checked, field, index)}
 						style = { readOnly ? {backgroundColor: 'lightgray', borderColor: 'lightgray'} : 
 							         (touched ? {backgroundColor: 'darkKhaki', borderColor: 'darkKhaki'} : {})}

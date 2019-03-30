@@ -163,22 +163,42 @@ class DetailsPanel extends React.Component{
     var hstackfirst = this.props.historystack != null && this.props.historystack.first != null ? this.props.historystack.first : true
     var hstacklast = this.props.historystack != null && this.props.historystack.last != null ? this.props.historystack.last : true
 
-		return(
-			<div>
-			  <Panel style={{width: '100%'}}>
-			  	<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "45px"}}>
-			  		<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
-				  	
-				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
-				  	</div>
+    var headerNormal =
+    				<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "45px"}}>
+    				  	<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
+				  			<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+				  		</div>
 				  		<span className="pull-right" style={{display: "inline-flex"}}>
 					  		<ButtonToday />
 					  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstackfirst ? "gray" : "darkblue")}} onClick={this.prevHistory} disabled={hstackfirst}><FontAwesome name='arrow-circle-left' size="2x" color="blue" /></Button>
 					  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstacklast ? "gray": "darkblue")}} disabled={hstacklast} onClick={this.nextHistory}><FontAwesome name='arrow-circle-right' size="2x" color="blue" /></Button>
 					  	</span>
-
-
-			  	</Panel.Heading>
+					</Panel.Heading>
+	
+	var headerNarrow =
+				<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "80px"}}>
+				  	<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
+			  			<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+			  		</div>
+			  		<span style={{display: "inline-flex"}}>
+				  		<ButtonToday />
+				  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstackfirst ? "gray" : "darkblue")}} onClick={this.prevHistory} disabled={hstackfirst}><FontAwesome name='arrow-circle-left' size="2x" color="blue" /></Button>
+				  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstacklast ? "gray": "darkblue")}} disabled={hstacklast} onClick={this.nextHistory}><FontAwesome name='arrow-circle-right' size="2x" color="blue" /></Button>
+				  	</span>
+				</Panel.Heading>
+	return(
+			<div>
+			  <Panel style={{width: '100%'}}>
+			  	<Media query="(max-width: 435px)">
+			          {matches =>
+			            matches ? (
+			              headerNarrow
+			            ) : (
+			              headerNormal
+			            )
+			          }
+    			</Media>
+			  	
 			  	<Panel.Body>					
 			  	<table>
 			  	  <tbody>

@@ -189,7 +189,7 @@ class DetailsPanel extends React.Component{
 	return(
 			<div>
 			  <Panel style={{width: '100%'}}>
-			  	<Media query="(max-width: 435px)">
+			  	<Media query="(max-width: 432px)">
 			          {matches =>
 			            matches ? (
 			              headerNarrow
@@ -215,17 +215,6 @@ class DetailsPanel extends React.Component{
         	      </table>
 				</Panel.Body>
 			  </Panel>
-	<div>
-        <Media query="(max-width: 599px)">
-          {matches =>
-            matches ? (
-              <p>The document is less than 600px wide.</p>
-            ) : (
-              <p>The document is at least 600px wide.</p>
-            )
-          }
-        </Media>
-      </div>
 			</div>					
 		)
 	}

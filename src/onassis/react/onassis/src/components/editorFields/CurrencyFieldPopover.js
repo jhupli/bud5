@@ -38,7 +38,7 @@ class CurrencyField extends React.Component {
     }
 	
 	handleFocus(event) {
-		  event.target.select();
+		 // event.target.select();
 	}
 
 	onChange(e) {

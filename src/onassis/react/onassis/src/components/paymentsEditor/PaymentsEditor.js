@@ -39,10 +39,6 @@ import AlertContainer from 'react-alert'
 
 import Media from 'react-media';
 
-
-//import { withMedia } from 'react-media-query-hoc';
-
-
 import {
 		fields,
 		initState,
@@ -949,14 +945,14 @@ class PaymentsEditor extends React.Component {
 		)
 	}
 	
-	renderPaymentsT = () => {
+	renderPaymentsT = (width) => {
 		this.sortedValues = this.state.values.slice(0)
 		if (this.state.sort) this.sortedValues.sort(this.sortersF())
 		
 		return (
 		<div>
 			{this.renderControls()}
-			{this.lessThan735 ? this.renderNarrowT() : this.renderNormalT()}
+			{width === 'narrow' ? this.renderNarrowT() : this.renderNormalT()}
 		</div>
 		)
 	}
@@ -1070,11 +1066,17 @@ class PaymentsEditor extends React.Component {
 		this.errors = this.hasErrorsT()
 		return(
 			<div>
-			    <Media query="(max-width: 734px)">
-    				{matches => this.lessThan735 = matches }
-    			</Media>
 		        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
-				{this.renderPaymentsT()}
+			    <Media query="(max-width: 734px)">
+			          {matches =>
+			            matches ? (
+			              this.renderPaymentsT('narrow')
+			            ) : (
+			              this.renderPaymentsT('wide')
+			            )
+			          }
+    			</Media>
+
 				<HistoryModal
 					show={this.state.historyShow}
 					onHide={historyClose}
@@ -1121,7 +1123,6 @@ function mapDispatchToProps(dispatch) {
     })
 }
 
-//export default connect(null, mapDispatchToProps)(withMedia(PaymentsEditor))
 export default connect(null, mapDispatchToProps)(PaymentsEditor)
 
 

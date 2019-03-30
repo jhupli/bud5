@@ -254,7 +254,7 @@ input[type="text"]:disabled {
 
 #payments_table .deleted_cell .form-control
 	{ 
-		padding-left: 9px;
+		padding-left: 4px;
 	}
 
 #payments_table .header_tall

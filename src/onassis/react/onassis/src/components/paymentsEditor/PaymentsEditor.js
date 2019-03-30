@@ -835,7 +835,7 @@ class PaymentsEditor extends React.Component {
 
 						{/*this.pristine ? 'pristine' : 'not pristine'*/}
 						{/*this.errors ? ' errors' : ' no errors'*/}
-						<span className="pull-right" style={{marginTop: "6px"}}>
+						<span style={{marginTop: "6px"}}>
 							<Panel.Toggle componentClass="button" className="link-button" onClick={this.setRecurring} >
 							{   (!this.state.values || this.state.values.length === 0) ?
 								''

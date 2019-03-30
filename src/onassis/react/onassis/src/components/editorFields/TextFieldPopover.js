@@ -39,7 +39,7 @@ class TextField extends React.Component {
 	    		type="text" 
 	    		onChange={this.onChange}
 	    		className="form-control"
-	    		maxlength={maxLength}
+	    		maxLength={maxLength}
 	    />
 	
 	    if(readOnly && linkCb != null ) {

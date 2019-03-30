@@ -12,14 +12,15 @@ import { get_constants } from '../../actions/constants'
 
 import { findInArray } from '../../util/findInArray'
 
+import Media from 'react-media';
+
 import './pie.css'
 
 //require('default-passive-events')
 
 var d3 = require('d3');
 
-const INNER_ARC = 0
-const OUTER_ARC = 40
+
     
 var SELECTONHOVER = false
 var names = {}
@@ -168,6 +169,10 @@ class Pie extends React.Component {
     }
     
     c3onRendered() {
+    	
+    	var INNER_ARC = 0
+    	var OUTER_ARC = this.lessThan700 ? this.lessThan450 ? 8 : 20 : 40
+   
     	var total  = this.chart_config.sum_i - this.chart_config.sum_e
     	if( total === 0 ) return
     	var middlepoint = (-this.chart_config.sum_e/total)*2*Math.PI
@@ -281,8 +286,16 @@ class Pie extends React.Component {
     }
 
     render() {
-        return (	 
+        return (
         	<div>
+        	
+    	        <Media query="(max-width: 699px)">
+    				{matches => this.lessThan700 = matches }
+    			</Media>
+     	        <Media query="(max-width: 449px)">
+    				{matches => this.lessThan450 = matches }
+    			</Media>
+    			
         	<div id = "pie" onMouseOut = {() => this.onmouseout()} />
         	<table id="incomes" className="c3-tooltip" style={{display: "none", position: "absolute"}}>
         	<tbody>

@@ -1,6 +1,14 @@
 import axios from 'axios';
 import { show_error } from './errorMessage'
-const HOST = 'http://localhost:8080/'
+//const HOST = 'http://localhost:8080/'
+
+function parseUrl( url ) {
+    var a = document.createElement('a');
+    a.href = url;
+    return a;
+}
+
+var HOST = 'http://'+parseUrl(document.URL).hostname + ':8080/'
 
 function _contextUrl(ctx_path, params) {
   return ctx_path + '?' + (null == params ? "" : params + '&') + 'ts=' + Date.now()

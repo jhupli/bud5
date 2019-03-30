@@ -11,12 +11,18 @@ import ButtonL from '../chart/buttons/buttonL'
 import ButtonR from '../chart/buttons/buttonR'
 import ButtonToday from '../chart/buttons/buttonToday'
 
+import { category_load } from '../../actions/payments'
+import { account_load } from '../../actions/payments'
+
 import Calculator from '../calculator/calculator'
 
 import {prev_in_history, next_in_history} from '../../actions/payments'
+import Media from 'react-media';
+
 
 var dateFormat = require('dateformat');
 var FontAwesome = require('react-fontawesome');
+
 
 class DetailsPanel extends React.Component{
 	constructor(props) {
@@ -25,10 +31,12 @@ class DetailsPanel extends React.Component{
     		accs: props.getConstants('acc'), // return null, but launches fetch
     		cats: props.getConstants('cat'), // return null, but launches fetch
     		refreshTime: null,
-     	}
-	  this.defaultDate = new Date()
-    this.prevHistory = this.prevHistory.bind(this)
-    this.nextHistory = this.nextHistory.bind(this)
+        	start: null,
+        	end: null,   
+       }
+	   this.defaultDate = new Date()
+       this.prevHistory = this.prevHistory.bind(this)
+       this.nextHistory = this.nextHistory.bind(this)
 	}
     componentWillReceiveProps(nextProps){
     	if( nextProps.constants && nextProps.constants['acc']) {
@@ -42,7 +50,31 @@ class DetailsPanel extends React.Component{
 		    })
     	}
     	
-    	
+    	//range changed: load cat / acc anew
+    	if (this.state.start == null && nextProps.start != null) {
+	    	this.setState({
+		    		start : nextProps.start,
+		    		end : nextProps.end		
+		    })
+	  	} else if (
+        	// eslint-disable-next-line	
+        		!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
+        	|| 
+        	// eslint-disable-next-line
+        		!(this.state.end == nextProps.end)) { 
+    		this.setState({
+		    		start : nextProps.start,
+		    		end : nextProps.end		
+		    })
+    		switch(this.props.queryType) {
+    					case 'd' : break;
+    					case 'a' : debugger
+    							   this.props.accountLoad(this.props.params.a, nextProps.start, nextProps.end)
+    							   break;
+    					case 'c' : this.props.categoryLoad(this.props.params.c, nextProps.start, nextProps.end)
+    							   break;
+    		}
+    	}
     	
     }
 
@@ -53,8 +85,10 @@ class DetailsPanel extends React.Component{
   nextHistory() {
     this.props.nextInHistory()
   }
-	render(){
-		var info = '';
+  render(){
+
+
+	    var info = '';
 		switch(this.props.queryType) {
 			case 'd' : 
         info =
@@ -129,22 +163,42 @@ class DetailsPanel extends React.Component{
     var hstackfirst = this.props.historystack != null && this.props.historystack.first != null ? this.props.historystack.first : true
     var hstacklast = this.props.historystack != null && this.props.historystack.last != null ? this.props.historystack.last : true
 
-		return(
-			<div>
-			  <Panel style={{width: '100%'}}>
-			  	<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "45px"}}>
-			  		<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
-				  	
-				  		<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
-				  	</div>
+    var headerNormal =
+    				<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "45px"}}>
+    				  	<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
+				  			<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+				  		</div>
 				  		<span className="pull-right" style={{display: "inline-flex"}}>
 					  		<ButtonToday />
 					  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstackfirst ? "gray" : "darkblue")}} onClick={this.prevHistory} disabled={hstackfirst}><FontAwesome name='arrow-circle-left' size="2x" color="blue" /></Button>
 					  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstacklast ? "gray": "darkblue")}} disabled={hstacklast} onClick={this.nextHistory}><FontAwesome name='arrow-circle-right' size="2x" color="blue" /></Button>
 					  	</span>
-
-
-			  	</Panel.Heading>
+					</Panel.Heading>
+	
+	var headerNarrow =
+				<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "80px"}}>
+				  	<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
+			  			<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+			  		</div>
+			  		<span style={{display: "inline-flex"}}>
+				  		<ButtonToday />
+				  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstackfirst ? "gray" : "darkblue")}} onClick={this.prevHistory} disabled={hstackfirst}><FontAwesome name='arrow-circle-left' size="2x" color="blue" /></Button>
+				  		<Button style={{borderRadius: '20px', height: '35px', paddingTop: '2px', color: (hstacklast ? "gray": "darkblue")}} disabled={hstacklast} onClick={this.nextHistory}><FontAwesome name='arrow-circle-right' size="2x" color="blue" /></Button>
+				  	</span>
+				</Panel.Heading>
+	return(
+			<div>
+			  <Panel style={{width: '100%'}}>
+			  	<Media query="(max-width: 432px)">
+			          {matches =>
+			            matches ? (
+			              headerNarrow
+			            ) : (
+			              headerNormal
+			            )
+			          }
+    			</Media>
+			  	
 			  	<Panel.Body>					
 			  	<table>
 			  	  <tbody>
@@ -174,7 +228,10 @@ const mapStateToProps = (store) => {
         params: store.payments.params,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
-        curves: store.chart.curves
+        curves: store.chart.curves,
+        
+        start: store.daterange.s,
+        end: store.daterange.e,
     }
 }
 
@@ -188,7 +245,13 @@ function mapDispatchToProps(dispatch) {
         },
         nextInHistory: () => {
           dispatch(next_in_history())
-        }
+        },
+        accountLoad: (a, d1, d2) => {
+            dispatch(account_load(a, d1, d2))
+        },
+        categoryLoad: (c, d1, d2) => {
+            dispatch(category_load(c, d1, d2))
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsPanel)

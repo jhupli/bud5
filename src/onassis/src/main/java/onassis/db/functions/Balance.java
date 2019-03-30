@@ -42,7 +42,7 @@ public class Balance {
 	    }
 	    ResultSet set = pstmnt.getResultSet();
 	    if (set==null) {
-	    	System.out.println("set is null");
+	    	//System.out.println("set is null");
 			pstmnt.close();
 			conn.close();
 		    return BigDecimal.ZERO;
@@ -52,15 +52,15 @@ public class Balance {
 		while( set.next() ) {
 			
 			int id = set.getInt(1);
-			System.out.println("account "+id+" res "+res);
+			//System.out.println("account "+id+" res "+res);
 			BigDecimal b = balanceAfter(d, id);
-			System.out.println("db "+b);
+			//System.out.println("db "+b);
 			/*if(a == id) {
 				b.add(i);
 			}*/
-			System.out.println("-> "+b);
+			//System.out.println("-> "+b);
 			if(res == null || b.compareTo(res) < 0) {
-				System.out.println("smaller");
+				//System.out.println("smaller");
 				res = b;
 			}
 		}
@@ -122,8 +122,8 @@ public class Balance {
 	    //System.out.println("b2");
 	    ResultSet set = pstmnt.getResultSet();
 	    if (set==null) {
-	    	System.out.println("set is null");
-	    	System.out.println("ZERO result");
+	    	//System.out.println("set is null");
+	    	//System.out.println("ZERO result");
 	    	pstmnt.close();
 			conn.close();
 		    return BigDecimal.ZERO;
@@ -139,7 +139,7 @@ public class Balance {
 			}
 	    	//System.out.println("result");
 	    	BigDecimal bd = (BigDecimal) set.getBigDecimal(1);
-	    	System.out.println("Balance before " + bd + "account: " + a + " ");
+	    	//System.out.println("Balance before " + bd + "account: " + a + " ");
 	    	
 	    	
 	    	set.close();

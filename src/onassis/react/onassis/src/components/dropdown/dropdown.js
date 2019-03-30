@@ -97,6 +97,7 @@ class Dropdown extends React.Component {
 	        options = {this.state.items}
 			value = {this.state.selectedValue}
 			hideResetButton = {true}
+			cancelKeyboardEventOnSelection = {false}
 		/>)
 	}
 }

@@ -15,6 +15,8 @@ import { connect } from 'react-redux'
 
 import Spinner from './Spinner'
 
+import Media from 'react-media';
+
 var FontAwesome = require('react-fontawesome');
 
 
@@ -75,12 +77,10 @@ class RangePanel extends React.Component{
 				       </span>
 				  	 :
 				  	   null
-			
-		return(
-		<Panel style={{width: '100%'}} id="minibars-panel" expanded={this.state.showMinibars} onToggle={() => {}}  >
-          <Panel.Heading style={{paddingTop: "3px", paddingBottom: "3px", height: "45px"}}>
-         
-			  		  <div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
+			//451
+		var header =
+			      <div>
+			  		   <div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
 	                      <FontAwesome name='calendar' />-<FontAwesome name='calendar' />&nbsp;
 	                      	<div style={{paddingTop: "1px"}}>
 	                      		<ButtonL  />
@@ -92,15 +92,33 @@ class RangePanel extends React.Component{
 	                        	<ButtonR />
 	                       </div>
 	
-			            </div>
-		             <span>
-							<Panel.Toggle componentClass="button" className="link-button" onClick={this.showMinibars} style={{textDecoration: 'none'}}>&nbsp;
-								{ (this.state.showMinibars ? <FontAwesome name='caret-up' size='2x' /> : <FontAwesome name='caret-down' size='2x' />) }&nbsp;
-		            		</Panel.Toggle>
-	                </span><Spinner fetching={this.props.fetching} />
-
+	                     </div>
+			             <span>
+								<Panel.Toggle componentClass="button" className="link-button" onClick={this.showMinibars} style={{textDecoration: 'none'}}>&nbsp;
+									{ (this.state.showMinibars ? <FontAwesome name='caret-up' size='2x' /> : <FontAwesome name='caret-down' size='2x' />) }&nbsp;
+			            		</Panel.Toggle>
+			            </span><Spinner fetching={this.props.fetching} />
 		           {ctrls}
-          </Panel.Heading>
+		         </div>
+			
+		return(
+		<Panel style={{width: '100%'}} id="minibars-panel" expanded={this.state.showMinibars} onToggle={() => {}}  >
+         
+				<Media query="(max-width: 604px)">
+			          {matches =>
+			            matches ? (
+			              		  <Panel.Heading style={{paddingTop: "3px", paddingBottom: "3px", height: "80px"}}>
+			              		  	{header}
+			              		 </Panel.Heading>
+			            ) : (
+			             		  <Panel.Heading style={{paddingTop: "3px", paddingBottom: "3px", height: "45px"}}>
+			             		  	{header}
+          						 </Panel.Heading>
+			            )
+			          }
+    			</Media>
+		
+
           <Panel.Collapse>
             <Panel.Body >
             	<Minibars name="minibar" />

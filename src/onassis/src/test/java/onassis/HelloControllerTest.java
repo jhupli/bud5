@@ -32,6 +32,8 @@ public class HelloControllerTest {
 
     @Test
     public void testHello() throws Exception {
+    	       
+        given().auth().basic("user","kakkakikkare").	
         when().get("/hello").then()
                 .body(is("Hello World, This is Onassis 5.0.0 (Keitele) ! Can you here me?"));
     }

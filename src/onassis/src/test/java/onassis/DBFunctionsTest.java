@@ -3,7 +3,6 @@ package onassis;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -11,10 +10,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import onassis.dto.A;
 import onassis.dto.B;
@@ -28,8 +30,15 @@ import onassis.dto.P;
  *  -without JPA (Hibernate) -layer.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
 @IntegrationTest({"spring.datasource.url:jdbc:derby:memory:onassisTest;create=true;"})
+
+@WebAppConfiguration
+@SpringBootApplication
+@SpringApplicationConfiguration( classes = {
+        SecurityConfig.class,
+        App.class
+} )
+
 public class DBFunctionsTest extends DBTestUtils{
     
     SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");

@@ -69,6 +69,11 @@ input[type="text"]:disabled {
     background-color: lightyellow !important;
 }
 
+.resizable-input
+{
+	display: none;
+}
+
 .newRow
 {
 	background-color: lightyellow; /*!important;*/

@@ -78,4 +78,28 @@ public class Balance {
             }
         }
     }
+    
+    public static Boolean hasUnlockedPayments(Date d) throws SQLException {
+        try (Connection conn = ds.getConnection()) {
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            try (PreparedStatement pstmnt = conn.prepareStatement("select id from p where d=? and l=false fetch first 1 rows only")) {
+                if (pstmnt == null) {
+                    throw new RuntimeException("prepareStatement failed");
+                }
+                pstmnt.setDate(1, d);
+                if (!pstmnt.execute()) {
+                    throw new RuntimeException("execute failed");
+                }
+                try (ResultSet set = pstmnt.getResultSet()) {
+                    if (set == null) {
+                        return false;
+                    }
+                    if (!set.next()) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+    }
 }

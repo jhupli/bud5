@@ -44,11 +44,13 @@ class Minibars extends React.Component {
   }
   
   componentWillReceiveProps(nextProps){
+	  console.log('receive')
 	  this.minibars.generate(nextProps.balances)
 	  this.minibars.select(nextProps.start, nextProps.end)
   }
 
   render() {
+	console.log('render')
     return (
     	<div>
 	        <div id={this.props.name} />

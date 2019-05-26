@@ -16,7 +16,8 @@ public class MapB implements RowMapper<B> {
 				rs.getBigDecimal("b"),
 				rs.getBigDecimal("i"),
 				rs.getBigDecimal("e"),
-				rs.getInt("a"));
+				rs.getInt("a"),
+				rs.getBoolean("l"));
 		result.setSmallestb(rs.getBigDecimal("smallestb"));
 		return result;
 	}

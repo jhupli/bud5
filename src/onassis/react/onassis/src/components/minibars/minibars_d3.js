@@ -673,7 +673,8 @@ function create(month) {
     .attr({
       "id": function(d){ return dateId(d.d) + _LINE_B_NEXT},
       "x1" : function(d, ix){ return (ix+0.5) * slot_width },
-      "x2" : function(d, ix){ return (ix+(null != d.next_b ? 1.5 : 0.5)) * slot_width},
+      "x2" : function(d, ix){ console.log("foo");
+    	  return (ix+(null != d.next_b ? 1.5 : 0.5)) * slot_width},
       "y1": function(d) {
         return center_margin_y - scale(d.b) + top_margin + line_width},
       "y2": function(d, ix){
@@ -699,6 +700,26 @@ function create(month) {
       })/*.style("cursor", "pointer") */
       .on(clicks)
     }
+  //JH
+
+   minibar_svg
+      .selectAll()
+      .data(month.columns)
+      .enter()    
+      .append("circle")
+      .style("shape-rendering","auto")
+      .attr({
+        "id": function(d) { return dateId(d.d) + _B + 'Pallo'},
+        "cx" : function(d, ix){ return ((ix + 0.5) * slot_width)},
+        "cy": function(d) { return top_margin - 4},
+        "r": 1.5, //slot_width / 6,
+        "fill": function(d) { console.log("is : " + d.l);
+        	return d.l ? 'MEDIUMSEAGREEN' : 'white' }
+      })/*.style("cursor", "pointer") */
+      .on(clicks)
+  
+  
+  
 
     minibar_svg
     .append("line")
@@ -786,12 +807,14 @@ function updateMonth(month) {
 
     d3.select('#' + date_id + _I)
       .datum(function(d) {
+    	debugger
         d.i =  m.i
         d.e =  m.e
         d.b =  m.b
         d.smallestb =  m.smallestb
         d.prev_b =  m.prev_b
         d.next_b =  m.next_b
+        d.l =  m.l
         return d
       })
       .transition()
@@ -817,6 +840,7 @@ function updateMonth(month) {
       .attr({
         "y": center_margin_y - scale(0) + top_margin + line_width,
         "height":  function(d) { 
+        	console.log("foo ");
         	return scale(0) - scale(d.e)  
         }
       }
@@ -829,7 +853,15 @@ function updateMonth(month) {
           return center_margin_y - scale(d.b) + top_margin + line_width
         }  
       })
-
+//JH
+     d3.select('#' + date_id + _B + 'Pallo')
+      .transition()
+      .attr({
+    	  "fill": function(d) { 
+    		  console.log("is : " + d.l);
+    		  return d.l ? 'MEDIUMSEAGREEN' : 'white' } 
+      })
+      
     d3.select('#' + date_id + _LINE_ZERO)
       .transition()
       .attr({
@@ -898,7 +930,8 @@ const nullData =
 			b:0, 
 			e:0, 
 			i:0,
-			smallestb: 0
+			smallestb: 0,
+			l: false,
 		}
 	]
 }
@@ -913,6 +946,7 @@ function generate(provideddata) {
 	  console.assert(bindto, "config must be called first!")
 	  //console.log(provideddata)
 	  //months = chunk_rawdata(provideddata.data, provideddata.balance)
+	  debugger
 	  months = chunk_rawdata(provideddata.data)
 	  var prev_month_markers = month_markers;
 	  //slot_width = calculateSlotWidth()

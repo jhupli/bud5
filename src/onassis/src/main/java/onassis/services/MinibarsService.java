@@ -22,10 +22,10 @@ public class MinibarsService extends ServicesBase {
     public List minibars(int cat) {
         String query = null;
         if (cat > 0) {
-            query = "SELECT d,0 as b,sum(positive(i)) as i, sum(negative(i)) as e, -1 as a, 0 as smallestb FROM P WHERE C = :cat "
+            query = "SELECT d,0 as b,sum(positive(i)) as i, sum(negative(i)) as e, -1 as a, 0 as smallestb, false as l FROM P WHERE C = :cat "
                     + "GROUP BY D ORDER BY D ASC ";
         } else {
-            query = "SELECT d, b, i, e, a, smallestb FROM B WHERE A=0 "
+            query = "SELECT d, b, i, e, a, smallestb, l FROM B WHERE A=0 "
                     + "ORDER BY D ASC ";
         }
 

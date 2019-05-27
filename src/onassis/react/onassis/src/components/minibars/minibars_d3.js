@@ -30,7 +30,8 @@ var minibars = (function() {
   var COLOR_MONTH_BACKGROUND_NORMAL_ODD = "lightblue"
   var COLOR_MONTH_BACKGROUND_NORMAL_EVEN = "lightblue"
   var COLOR_MONTH_TEXT = "black"
-
+  var COLOR_UNLOCKED = "lightgray"
+	  
   var COLOR_MONTH_SEPARATOR_LINE = "lightblue"
 
   //name of the element to bind to
@@ -139,6 +140,7 @@ var minibars = (function() {
   var _I = "_i_minibar"
   var _E = "_e_minibar"
   var _B = "_b_minibar"
+  var _UNLOCKED = "_b_unlocked"
   var _LINE_B_PREV = "_b_prev_minibar"
   var _LINE_B_NEXT = "_b_next_minibar"
   var _LINE_ZERO = "_zero_minibar"
@@ -277,20 +279,6 @@ function roundNumberText(number) {
 function withinSelection(d) {
   return (start && end && d.d && dates.inRange(d.d, start, end))
 }
-
-/*function colorRange(s_date, e_date, colorfunction) {
-  console.log("colorRange: months=");
->>>>>>> branch 'master' of https://github.com/jhupli/bud5.git
-  console.log(months);
-  if (!s_date || !e_date || !colorfunction || !months) return
-  var ixd = new Date(s_date)
-  
-  do {
-	console.log(colorfunction(ixd))
-    d3.select('#'+dateId(ixd)+_BG).attr("fill", colorfunction(ixd))
-    ixd.setDate(ixd.getDate() + 1);
-  } while(dates.compare(ixd, e_date) < 1)
-}*/
 
 function show_tip(data) {
   var mid = monthId(data.d)
@@ -673,8 +661,7 @@ function create(month) {
     .attr({
       "id": function(d){ return dateId(d.d) + _LINE_B_NEXT},
       "x1" : function(d, ix){ return (ix+0.5) * slot_width },
-      "x2" : function(d, ix){ console.log("foo");
-    	  return (ix+(null != d.next_b ? 1.5 : 0.5)) * slot_width},
+      "x2" : function(d, ix){ return (ix+(null != d.next_b ? 1.5 : 0.5)) * slot_width},
       "y1": function(d) {
         return center_margin_y - scale(d.b) + top_margin + line_width},
       "y2": function(d, ix){
@@ -697,10 +684,9 @@ function create(month) {
         "cy": function(d) { return center_margin_y - scale(d.b) + top_margin + line_width },
         "r": 1.5, //slot_width / 6,
         "fill": COLOR_BALANCE,
-      })/*.style("cursor", "pointer") */
+      })
       .on(clicks)
     }
-  //JH
 
    minibar_svg
       .selectAll()
@@ -709,18 +695,13 @@ function create(month) {
       .append("circle")
       .style("shape-rendering","auto")
       .attr({
-        "id": function(d) { return dateId(d.d) + _B + 'Pallo'},
+        "id": function(d) { return dateId(d.d) + _UNLOCKED},
         "cx" : function(d, ix){ return ((ix + 0.5) * slot_width)},
         "cy": function(d) { return top_margin - 4},
         "r": 1.5, //slot_width / 6,
-        "fill": function(d) { console.log("is : " + d.l);
-        	return d.l ? 'MEDIUMSEAGREEN' : 'white' }
-      })/*.style("cursor", "pointer") */
-      .on(clicks)
+        "fill": function(d) { return d.l ? COLOR_UNLOCKED : 'white' }
+      }).on(clicks)
   
-  
-  
-
     minibar_svg
     .append("line")
     .attr({
@@ -839,9 +820,7 @@ function updateMonth(month) {
       .transition()
       .attr({
         "y": center_margin_y - scale(0) + top_margin + line_width,
-        "height":  function(d) { 
-        	console.log("foo ");
-        	return scale(0) - scale(d.e)  
+        "height":  function(d) { return scale(0) - scale(d.e)  
         }
       }
     )
@@ -853,13 +832,12 @@ function updateMonth(month) {
           return center_margin_y - scale(d.b) + top_margin + line_width
         }  
       })
-//JH
-     d3.select('#' + date_id + _B + 'Pallo')
+
+     d3.select('#' + date_id + _UNLOCKED)
       .transition()
       .attr({
-    	  "fill": function(d) { 
-    		  console.log("is : " + d.l);
-    		  return d.l ? 'MEDIUMSEAGREEN' : 'white' } 
+    	  "fill": function(d) {
+    		  return d.l ? COLOR_UNLOCKED : 'white' } 
       })
       
     d3.select('#' + date_id + _LINE_ZERO)

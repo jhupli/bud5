@@ -49,6 +49,7 @@ class TextField extends React.Component {
 	    	    style={{'backgroundColor' : (touched ? 'lightyellow' : '')}}
 	    		placeholder={readOnly ? '' : placeholder} 
 	    		type="text" 
+	    		autoComplete='off'
 	    		onChange={this.onChange}
 	    		className="form-control"
 	    	/>

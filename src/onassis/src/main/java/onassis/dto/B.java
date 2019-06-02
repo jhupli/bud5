@@ -11,6 +11,7 @@ public class B {
 	BigDecimal e;
 	Integer a;
 	BigDecimal smallestb = BigDecimal.valueOf(0).setScale(2, RoundingMode.UP);
+	Boolean l;
 
 	public B(Date d, BigDecimal b, BigDecimal i, BigDecimal e, Integer a) {
 		super();
@@ -19,6 +20,17 @@ public class B {
 		this.i = i;
 		this.e = e;
 		this.a = a;
+		this.l = null;
+	}
+	
+	public B(Date d, BigDecimal b, BigDecimal i, BigDecimal e, Integer a, Boolean l) {
+		super();
+		this.d = d;
+		this.b = b;
+		this.i = i;
+		this.e = e;
+		this.a = a;
+		this.l = l;
 	}
 
 	public Date getD() {
@@ -67,5 +79,13 @@ public class B {
 
 	public void setSmallestb(BigDecimal smallestb) {
 		this.smallestb = smallestb;
+	}
+
+	public Boolean getL() {
+		return l;
+	}
+
+	public void setL(Boolean l) {
+		this.l = l;
 	}
 }

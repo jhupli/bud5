@@ -1,6 +1,26 @@
 import React from 'react';
 import {Button, OverlayTrigger, Popover} from 'react-bootstrap'
 
+function setCaretPosition(elemId, caretPos) {
+    var elem = document.getElementById(elemId);
+
+    if(elem != null) {
+        if(elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+        }
+        else {
+            if(elem.selectionStart) {
+                elem.focus();
+                elem.setSelectionRange(caretPos, caretPos);
+            }
+            else
+                elem.focus();
+        }
+    }
+}
+
 const normalizeCurrency = value => {
     if (!value) {
         return value
@@ -16,9 +36,9 @@ const normalizeCurrency = value => {
         value = "0"
     }
     value = "" + parseInt(value, 10);
-    if (value.length < 3) {
+    /*if (value.length < 3) {
         value = "00".slice(-3 + value.length) + value
-    }
+    }*/
 
     var res = (plus >= minus ? '+' : '-') + value.slice(0, -2) + "." + value.slice(-2)
     return res;
@@ -43,15 +63,26 @@ class CurrencyField extends React.Component {
 
 	onChange(e) {
 		
-		const {onValueChanged, field, index} = this.props
+		const {onValueChanged, field, index, id} = this.props
 		var newCurrencyValue = normalizeCurrency(e.target.value)
 		this.setState({
 			currencyValue : newCurrencyValue
 		})
 		onValueChanged(newCurrencyValue, field, index)
-
+		setCaretPosition(id, newCurrencyValue.length)
+		
 	}
 	
+	/*onChange(e) {
+		
+		const {onValueChanged, field, index} = this.props
+		//var newCurrencyValue = normalizeCurrency(e.target.value)
+		this.setState({
+			currencyValue : e.target.value
+		})
+		onValueChanged(e.target.value, field, index)
+
+	}*/
 	componentWillReceiveProps(nextprops) {
 		this.setState({
 			currencyValue : nextprops.value
@@ -93,7 +124,8 @@ class CurrencyField extends React.Component {
 //	    		touched ||
 	    		 linkCb == null 
 	    		|| this.state.currencyValue == null 
-	    		|| this.state.currencyValue.length === 0) {
+	    		//|| this.state.currencyValue.length === 0)
+	    		){
 		    return (
 	    	<span style={{display: "inline-flex"}}>
 					{inputField}

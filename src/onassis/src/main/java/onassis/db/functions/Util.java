@@ -1,7 +1,6 @@
 package onassis.db.functions;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.sql.Date;
 
@@ -44,7 +43,4 @@ public class Util {
 		 }
 		 return elseDecimal;
 	}
-	
-		
-
 }

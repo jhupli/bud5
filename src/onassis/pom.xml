@@ -4,7 +4,7 @@
 
     <groupId>hupli</groupId>
     <artifactId>onassis</artifactId>
-    <version>5.4-SNAPSHOT</version>
+    <version>5.4</version>
     <packaging>jar</packaging>
 
     <name>Spring Boot Blank Project (from https://github.com/making/spring-boot-blank)</name>

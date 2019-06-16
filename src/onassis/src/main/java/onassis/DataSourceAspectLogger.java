@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class DataSourceAspectLogger {
-
+/*
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
@@ -43,4 +43,5 @@ public class DataSourceAspectLogger {
         		((org.apache.tomcat.jdbc.pool.DataSource)
         		ds).getWaitCount()));
     }
+*/
 }

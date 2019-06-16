@@ -42,7 +42,6 @@ function chunk_rawdata(daydata) {
 
   //main loop (I)
   for (var i = 0, len = daydata.length; i < len; i++) {
-	debugger
     var data_i = daydata[i]
     console.assert(data_i.d, "d is mandatory")
     var m_i = data_i.d.getMonth()

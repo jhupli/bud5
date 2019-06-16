@@ -788,7 +788,6 @@ function updateMonth(month) {
 
     d3.select('#' + date_id + _I)
       .datum(function(d) {
-    	debugger
         d.i =  m.i
         d.e =  m.e
         d.b =  m.b
@@ -924,7 +923,6 @@ function generate(provideddata) {
 	  console.assert(bindto, "config must be called first!")
 	  //console.log(provideddata)
 	  //months = chunk_rawdata(provideddata.data, provideddata.balance)
-	  debugger
 	  months = chunk_rawdata(provideddata.data)
 	  var prev_month_markers = month_markers;
 	  //slot_width = calculateSlotWidth()

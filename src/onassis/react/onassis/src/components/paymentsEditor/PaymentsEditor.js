@@ -686,9 +686,13 @@ class PaymentsEditor extends React.Component {
 	      		{this.renderDeletedContentF(index)}
 	      	</td>
 	      	<td>
+	      	{	this.isPersistedR(index) ?
 	            <Button variant="primary" onClick={() => this.showHistory(this.chooseValueF(index, 'id'))} >
 	            	<FontAwesome name='history' />
 	            </Button>
+	            :
+	            null
+	      	}
 	      	</td>
 		</tr>)
     }

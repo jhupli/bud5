@@ -1020,11 +1020,11 @@ class PaymentsEditor extends React.Component {
 		<th className={this.thClassName(field)}>
   			<div>
 	  			<span style={{display: "flex"}}>			  						
-	  				{this.renderContentF(field, -1)}
 	  				<div style={{marginTop: 8, paddingRight: 3}}>
 	  					{sortField}
 	  				</div>
 	  				{label !== null ? labelField : ''}
+	  				&nbsp;{this.renderContentF(field, -1)}
 	  			</span>
 	  		</div>
 	  		{this.renderContentF(field, -2)}

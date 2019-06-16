@@ -494,7 +494,7 @@ class AccountsEditor extends React.Component {
 			  			{this.th('active', 'Active')}
 			  			{
 			  			<th className={this.thClassName('deleted')}>
-			  				<FontAwesome name='remove' style={{'color': 'red'}}/>
+			  				<FontAwesome name='trash'  size='lg' />
 			  			</th>
 			  			}
 					</tr>				  			

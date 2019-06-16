@@ -812,7 +812,7 @@ class PaymentsEditor extends React.Component {
 	  			{this.th('a', 'Account')}
 	  			{this.th('descr', 'Description')}		  			
 	  			<th className={this.thClassName('deleted')}>
-	  				<FontAwesome name='remove' style={{'color': 'red'}}/>
+	  				<FontAwesome name='trash'  size='lg' />
 	  			</th>
 	  			<th>
 	  			</th>

@@ -369,7 +369,8 @@ class CategoriesEditor extends React.Component {
     renderCategoryR(index) {
     	return(
     	<tr key={index}>
-	 		{[...fields].map( (f) => { 
+        {/*{[...fields].map( (f) => {*/}
+        {['color','descr','active'].map( (f) => {
 	 			return this.td(index, f) 
 	 		})}
 	 		
@@ -493,7 +494,7 @@ class CategoriesEditor extends React.Component {
 			  		<tr>
 			  			<th className={this.thClassName('color')} />
 			  			{this.th('descr', 'Name')}
-			  			{this.th('i', 'Default')}
+			  			{/*this.th('i', 'Default')*/}
 			  			{this.th('active', 'Active')}
 			  			
 			  			<th className={this.thClassName('deleted')}>

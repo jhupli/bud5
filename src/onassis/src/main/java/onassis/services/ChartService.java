@@ -18,11 +18,6 @@ import org.springframework.stereotype.Component;
 
 import onassis.db.functions.Balance;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class ChartService extends ServicesBase {
 

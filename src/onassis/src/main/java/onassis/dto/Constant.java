@@ -15,11 +15,6 @@ package onassis.dto;
 
 import java.io.Serializable;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 public class Constant implements Serializable {
     public long getValue() {
         return value;

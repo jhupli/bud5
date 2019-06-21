@@ -11,11 +11,6 @@ import org.springframework.stereotype.Component;
 import onassis.dto.C;
 import onassis.dto.mappers.MapC;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class CategoryService extends ServicesBase {
 

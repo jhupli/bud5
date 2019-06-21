@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import onassis.dto.B;
 import onassis.dto.mappers.MapB;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class MinibarsService extends ServicesBase {
     MapB rmB = new MapB();

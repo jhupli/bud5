@@ -22,11 +22,6 @@ import onassis.db.functions.Balance;
 import onassis.dto.Slice;
 import onassis.dto.mappers.MapSlice;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class PieService extends ServicesBase {
     MapSlice rmSlice = new MapSlice();

@@ -43,7 +43,7 @@ class MenuBar extends React.Component{
 				<AlertContainer ref={a => this.msg = a} {...alertOptions} />
 				<Navbar style={{marginBottom: '0px'}}>
 				    <Navbar.Header>
-				        <Navbar.Brand> Onassis </Navbar.Brand>
+				        <Navbar.Brand> Onassis 5.5</Navbar.Brand>
 				        <Navbar.Toggle /> 
 				    </Navbar.Header>
 				    <Navbar.Collapse>

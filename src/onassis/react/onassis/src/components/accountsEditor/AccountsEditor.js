@@ -366,7 +366,8 @@ class AccountsEditor extends React.Component {
     renderAccountR(index) {
     	return(
     	<tr key={index}>
-	 		{[...fields].map( (f) => { 
+        {/*{[...fields].map( (f) => {*/}
+      {['color','descr','active'].map( (f) => { //CHG-75
 	 			return this.td(index, f) 
 	 		})}
 	 		
@@ -490,7 +491,7 @@ class AccountsEditor extends React.Component {
 			  		<tr>
 			  			<th className={this.thClassName('color')} />
 			  			{this.th('descr', 'Name')}
-			  			{this.th('credit', 'Credit')}
+			  			{/*this.th('credit', 'Credit')*/}
 			  			{this.th('active', 'Active')}
 			  			{
 			  			<th className={this.thClassName('deleted')}>

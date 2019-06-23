@@ -17,11 +17,6 @@ import onassis.dto.C;
 import onassis.dto.mappers.MapA;
 import onassis.dto.mappers.MapC;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class AccountService extends ServicesBase {
 

@@ -102,7 +102,7 @@ class RangePanel extends React.Component{
 		         </div>
 			
 		return(
-		<Panel style={{width: '100%'}} id="minibars-panel" expanded={this.state.showMinibars} onToggle={() => {}}  >
+		<Panel style={{width: '100%', opacity: this.props.fetching ? 0.3 : 1 }} id="minibars-panel" expanded={this.state.showMinibars} onToggle={() => {}}  >
          
 				<Media query="(max-width: 604px)">
 			          {matches =>

@@ -28,11 +28,6 @@ import onassis.dto.LogEntry;
 import onassis.dto.mappers.MapB;
 import onassis.dto.mappers.MapH;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class HistoryLogService extends ServicesBase {
 

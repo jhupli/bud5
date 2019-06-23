@@ -2,11 +2,6 @@ package onassis.services;
 
 import org.springframework.stereotype.Component;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class HelloService extends ServicesBase {
     public String hello() {

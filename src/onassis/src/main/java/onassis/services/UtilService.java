@@ -17,11 +17,6 @@ import onassis.db.functions.History;
 import onassis.dto.A;
 import onassis.dto.mappers.MapA;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class UtilService extends ServicesBase {
     @PostConstruct

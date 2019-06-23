@@ -26,11 +26,6 @@ import onassis.dto.Pb;
 import onassis.dto.mappers.MapP;
 import onassis.dto.mappers.MapPb;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class PaymentService extends ServicesBase {
 

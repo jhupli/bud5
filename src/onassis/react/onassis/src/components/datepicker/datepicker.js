@@ -130,7 +130,7 @@ class DatePicker extends React.Component {
     				style={{
     						display: 'inline', 
     						width: this.props.pickerType === 'range' ? '185px' : '100px',
-    						'backgroundColor' : (this.props.touched ? 'lightyellow' : 'white')
+    						'backgroundColor' : (this.props.touched ? 'lightyellow' : this.props.disabled ? 'transparent' : 'white')
     				}}/>
     		</div>
     );

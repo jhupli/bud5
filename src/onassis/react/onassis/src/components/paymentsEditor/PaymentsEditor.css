@@ -54,8 +54,13 @@
  #payments_table tbody td,
  #payments_table thead th {
             float: left;
+            border-left-width: 1px;
+            border-left-style: dotted;
+            border-left-color: #ddd;
+
         }
         
+  
         
 
 input[type="text"]:disabled {

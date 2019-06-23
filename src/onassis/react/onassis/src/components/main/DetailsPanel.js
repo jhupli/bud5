@@ -188,7 +188,7 @@ class DetailsPanel extends React.Component{
 				</Panel.Heading>
 	return(
 			<div>
-			  <Panel style={{width: '100%'}}>
+			  <Panel style={{width: '100%', opacity: this.props.fetching ? 0.3 : 1 }}>
 			  	<Media query="(max-width: 432px)">
 			          {matches =>
 			            matches ? (

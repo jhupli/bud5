@@ -573,8 +573,8 @@ class PaymentsEditor extends React.Component {
 		}
 	}
 		
-	addR() {
-		var defaults = this.getDefaultR()
+	addR(copyLast = true) {
+		var defaults = this.getDefaultR(copyLast)
     	var valuesCopy = copyArray(this.state.values)
     	var errorsCopy = copyArray(this.state.errors)
     	var count = 1
@@ -599,6 +599,7 @@ class PaymentsEditor extends React.Component {
 			errorsCopy.push(this.validateR(defaults)) 
 		}
 		this.setState({
+					recurring : { ...this.state.recurring, recur: false },
     		    	values : valuesCopy,
     		    	errors : errorsCopy,
     	})
@@ -622,9 +623,9 @@ class PaymentsEditor extends React.Component {
     	})
 	}
 	
-	getDefaultR() {
+	getDefaultR(copyLast) {
 		var last = defaultValues
-		if (this.sortedValues.length){
+		if (copyLast && this.sortedValues.length){
 			last = this.sortedValues[this.sortedValues.length - 1]
 		} else {
 			last.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
@@ -685,9 +686,13 @@ class PaymentsEditor extends React.Component {
 	      		{this.renderDeletedContentF(index)}
 	      	</td>
 	      	<td>
+	      	{	this.isPersistedR(index) ?
 	            <Button variant="primary" onClick={() => this.showHistory(this.chooseValueF(index, 'id'))} >
 	            	<FontAwesome name='history' />
 	            </Button>
+	            :
+	            null
+	      	}
 	      	</td>
 		</tr>)
     }
@@ -807,7 +812,7 @@ class PaymentsEditor extends React.Component {
 	  			{this.th('a', 'Account')}
 	  			{this.th('descr', 'Description')}		  			
 	  			<th className={this.thClassName('deleted')}>
-	  				<FontAwesome name='remove' style={{'color': 'red'}}/>
+	  				<FontAwesome name='trash'  size='lg' />
 	  			</th>
 	  			<th>
 	  			</th>
@@ -824,31 +829,32 @@ class PaymentsEditor extends React.Component {
 
 					<Button onClick={() => this.resetT()} disabled={this.pristine} bsStyle={this.pristine ? "default":"primary"}>Reset</Button>
 					<Button onClick={() => this.preSubmitT()} disabled={this.pristine  || (this.errors != null)} bsStyle={this.pristine ? "default":"primary"}>Save</Button>
-					<Button onClick={() => this.addR()}>
-						{ 		this.state.values.length === 0 ? 
-								'New' 
-								:
-								(this.state.recurring.recur ? 'Recur last' : 'Copy last') 
-						}
-					</Button>
+					<Button onClick={() => this.addR(false)}><FontAwesome name='plus' /></Button> 
+					{ this.state.values.length > 0 ?
+							<Button onClick={() => this.addR()}>Duplicate last</Button>
+							:
+							null
+					}
 
-
-						{/*this.pristine ? 'pristine' : 'not pristine'*/}
-						{/*this.errors ? ' errors' : ' no errors'*/}
-						<span style={{marginTop: "6px"}}>
-							<Panel.Toggle componentClass="button" className="link-button" onClick={this.setRecurring} >
-							{   (!this.state.values || this.state.values.length === 0) ?
-								''
-								:
-		            			(this.state.recurring.recur ? 'No recur' : 'Recurring...') }
-		            		</Panel.Toggle>
-	            		</span>
+					{/*this.pristine ? 'pristine' : 'not pristine'*/}
+					{/*this.errors ? ' errors' : ' no errors'*/}
+					<span style={{marginTop: "6px"}}>
+						<Panel.Toggle componentClass="button" className="link-button" onClick={this.setRecurring} >
+						{   (!this.state.values || this.state.values.length === 0) ?
+							''
+							:
+	            			' ' + (this.state.recurring.recur ? 'No recur' : 'Recurring...') }
+	            		</Panel.Toggle>
+            		</span>
 
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
             <Panel.Body >
             <span style={{display: "inline-flex"}}>
+            	<span style={{marginTop: "6px"}}>
+            Repeat last row &nbsp;
+            	</span>
 				<SimpleSelect
 					style={{
 				    	width: '170px'
@@ -869,8 +875,9 @@ class PaymentsEditor extends React.Component {
 					onChange={this.setRecurringTimes} 
 				/> 
 				<span style={{marginTop: "6px"}}>
-				times.
+				&nbsp;times.&nbsp;
 				</span>
+				<Button onClick={() => this.addR()}>Ok</Button>
 			</span>
 
             </Panel.Body>
@@ -1013,11 +1020,11 @@ class PaymentsEditor extends React.Component {
 		<th className={this.thClassName(field)}>
   			<div>
 	  			<span style={{display: "flex"}}>			  						
-	  				{this.renderContentF(field, -1)}
 	  				<div style={{marginTop: 8, paddingRight: 3}}>
 	  					{sortField}
 	  				</div>
 	  				{label !== null ? labelField : ''}
+	  				&nbsp;{this.renderContentF(field, -1)}
 	  			</span>
 	  		</div>
 	  		{this.renderContentF(field, -2)}

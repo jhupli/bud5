@@ -15,11 +15,6 @@ import onassis.dto.C;
 import onassis.dto.Constant;
 import onassis.dto.mappers.MapA;
 
-/**
- * <Beschreibung>
- * <br>
- * @author jhupli
- */
 @Component
 public class ConstantService extends ServicesBase {
     @Autowired

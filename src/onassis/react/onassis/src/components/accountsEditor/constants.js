@@ -1,8 +1,8 @@
-const fields = ['color','descr','credit','active']
+const fields = ['color','descr', 'credit', 'active']
 
 const defaultValues = {
 	id: null,
-	credit: false,
+	credit: 0,
 	active: true,
 	descr: '',
 	color: 'blue'

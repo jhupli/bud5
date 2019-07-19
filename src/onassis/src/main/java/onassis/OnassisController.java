@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import onassis.db.functions.Balance;
+import onassis.db.functions.DBTestUtils;
 import onassis.db.functions.History;
 import onassis.dto.A;
 import onassis.dto.B;
@@ -47,7 +48,7 @@ import onassis.services.UtilService;
 public class OnassisController {
 
     @PostConstruct
-    void init() {
+    void init() throws SQLException {
         Balance.ds = this.ds;
         History.ds = this.ds;
     }

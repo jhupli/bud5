@@ -49,10 +49,12 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
         d2 = new Date(df.parse("4.1.2016").getTime());
         d3 = new Date(df.parse("6.1.2016").getTime());
         d4 = new Date(df.parse("8.1.2016").getTime());
+        statistics_start();
     }
 
     @After
     public void after() throws Exception {
+        statistics_end();
     	//xcheck_b0_b();
         empty_db();
     }

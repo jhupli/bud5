@@ -8,8 +8,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,7 +42,10 @@ import onassis.dto.mappers.MapP;
 
 @Component
 public class DBTestUtils {
-    
+
+    @Autowired
+    public static DataSource ds = null;
+
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
     String sql = null;
@@ -47,8 +58,17 @@ public class DBTestUtils {
         sql = "alter table "+tableName+" alter column id restart with 1";
         jdbcTemplate.update( sql, new MapSqlParameterSource() );
     }
-    
+
+    public void statistics_start() throws SQLException {
+        onassis.db.functions.DBTestUtils.statistics_start(jdbcTemplate, "MYSCHEMA");
+    }
+
+    public void statistics_end() throws SQLException {
+        onassis.db.functions.DBTestUtils.statistics_end(jdbcTemplate, "MYSCHEMA");
+    }
+
     public void empty_db() throws Exception {
+
         sql = "delete from p";
         jdbcTemplate.update( sql, new MapSqlParameterSource() );
         reset_sequencer("p");

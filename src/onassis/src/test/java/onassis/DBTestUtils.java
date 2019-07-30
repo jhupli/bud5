@@ -132,6 +132,12 @@ public class DBTestUtils {
     	return jdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
     }
     
+    public int get0BalancesCount() {
+    	sql = "select count(*) from b where i=0 and e=0 " ;
+    	MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+    	return jdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
+    }
+    
     public List<A> getAccounts() {
         sql = "select * from a" ;
         MapA rm = new MapA();

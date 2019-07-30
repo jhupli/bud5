@@ -78,6 +78,7 @@ public class DBFunctionsTest extends DBTestUtils{
     			 assertTrue(null != select_b(b.getD(), 0));
     		 }
     	 }
+    	 assertTrue(0 == get0BalancesCount());
     }
     
     public void xcheck_b0_smallestb() throws Exception {

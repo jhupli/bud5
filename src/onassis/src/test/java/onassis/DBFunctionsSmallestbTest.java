@@ -70,6 +70,7 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     			 assertTrue(null != select_b(b.getD(), 0));
     		 }
     	 }
+    	 assertTrue(0 == get0BalancesCount());
     }
     
     @Test    

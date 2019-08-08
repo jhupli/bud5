@@ -52,29 +52,33 @@ public class Balance {
 			c.add(Calendar.DATE, 1);
 			return balanceBefore(new Date(c.getTimeInMillis()), a);
 	}
-
+	
     public static BigDecimal balanceBefore(Date d, int a) throws SQLException {
-        try (Connection conn = ds.getConnection()) {
-            conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            try (PreparedStatement pstmnt = conn.prepareStatement("select b from b where d<? and a=? order by d desc fetch first 1 rows only")) {
-                if (pstmnt == null) {
-                    throw new RuntimeException("prepareStatement failed");
+    	try (Connection conn = ds.getConnection()) {
+    		return _balanceBefore(conn, d, a);
+		}
+    }
+
+    public static BigDecimal _balanceBefore(Connection conn, Date d, int a) throws SQLException {
+        conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+        try (PreparedStatement pstmnt = conn.prepareStatement("select b from b where d<? and a=? order by d desc fetch first 1 rows only")) {
+            if (pstmnt == null) {
+                throw new RuntimeException("prepareStatement failed");
+            }
+            pstmnt.setDate(1, d);
+            pstmnt.setInt(2, a);
+            if (!pstmnt.execute()) {
+                throw new RuntimeException("execute failed");
+            }
+            try (ResultSet set = pstmnt.getResultSet()) {
+                if (set == null) {
+                    return BigDecimal.ZERO;
                 }
-                pstmnt.setDate(1, d);
-                pstmnt.setInt(2, a);
-                if (!pstmnt.execute()) {
-                    throw new RuntimeException("execute failed");
+                if (!set.next()) {
+                    return BigDecimal.ZERO;
                 }
-                try (ResultSet set = pstmnt.getResultSet()) {
-                    if (set == null) {
-                        return BigDecimal.ZERO;
-                    }
-                    if (!set.next()) {
-                        return BigDecimal.ZERO;
-                    }
-                    BigDecimal bd = (BigDecimal) set.getBigDecimal(1);
-                    return bd;
-                }
+                BigDecimal bd = (BigDecimal) set.getBigDecimal(1);
+                return bd;
             }
         }
     }

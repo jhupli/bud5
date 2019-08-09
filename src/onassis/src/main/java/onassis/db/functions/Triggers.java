@@ -76,7 +76,6 @@ public class Triggers {
 			pstmnt.executeUpdate();
 
 		}
-		smallestB(con, d, null);
 	}
 
 	/*
@@ -89,7 +88,7 @@ public class Triggers {
 	 */
 	public static void i(Connection con, int a, BigDecimal s1, BigDecimal s2, Date d)
 			throws SQLException, ParseException {
-		BigDecimal delta = s2.subtract(s1);
+		BigDecimal delta = s1.subtract(s2);
 		String sql = " update b " + " set b = b - ? " + " where (a = ? or a = 0) and d >= ? ";
 
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
@@ -192,11 +191,10 @@ public class Triggers {
 			pstmnt.executeUpdate();
 		}
 	}
-	// TODO eristä Connection, s.e. kaikki käyttää samaa, ei luoda joka paikassa
-	// uutta (:/ kato jos vanhojaki vois optiomoida
+
 	public static void smallestB(Connection con, Date d, Date d2) throws SQLException, ParseException {
 		String sql = " update b set smallestb = smallestBalanceAt(d) " + " where a = 0 and "
-				+ (null != d2 ? " d >= ? " : " d between ? and ? ");
+				+ (null == d2 ? " d >= ? " : " d between ? and ? ");
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setDate(1, d);
 			if (null != d2) {
@@ -206,47 +204,7 @@ public class Triggers {
 		}
 	}
 
-	/*
-	 * public static void history( boolean old_l, Boolean new_l, int old_id,
-	 * Date old_d, BigDecimal old_i, int old_c, int old_a, boolean old_s, String
-	 * old_g, String old_descr, int new_id, Date new_d, BigDecimal new_i, int
-	 * new_c, int new_a, boolean new_s, String new_g, String new_descr ) throws
-	 * SQLException, ParseException {
-	 * 
-	 * if (xor(new_l, old_l)) { String olds = "" + old_id + "|" + old_d + "|" +
-	 * old_i + "|" + old_a + "|" + old_s + "|" + old_g + "|" + old_c + "|" +
-	 * old_descr; String news = "" + new_id + "|" + new_d + "|" + new_i + "|" +
-	 * new_a + "|" + new_s + "|" + new_g + "|" + new_c + "|" + new_descr; if
-	 * (olds.equals(news)) { return; //change of l will not be historified }
-	 * throw new
-	 * SQLException("if changing l, no other elements can be simultaenously changed"
-	 * ); } String olds = "" + old_l + "|" + old_id + "|" + old_d + "|" + old_i
-	 * + "|" + old_a + "|" + old_s + "|" + old_g + "|" + old_c + "|" +
-	 * old_descr; String news = "" + new_l + "|" + new_id + "|" + new_d + "|" +
-	 * new_i + "|" + new_a + "|" + new_s + "|" + new_g + "|" + new_c + "|" +
-	 * new_descr; if (olds.equals(news)) { return; //no change }
-	 * 
-	 * String insertSQL =
-	 * "insert into h(id, d, i, c, c_descr, a, a_descr, s, g, descr, op, hd, rownr) values "
-	 * + "(?, " + //new.id 1 "?, " + //new.d 2 "?, " + //new.i 3 "?, " + //new.c
-	 * 4 "(select descr from c where id = ?), " + //new.c 5 "?, " + //new.a 6
-	 * "(select descr from a where id = ?), " + //new.a 7 "?, " + //new.s 8
-	 * "?, " + //new.g 9 "?, " + //new.descr 10, "'U', current_timestamp, " +
-	 * "(select max(rownr) + 1 from h " + " where id = ?))"; //new.id 11
-	 * 
-	 * try(Connection conn = ds.getConnection()) {
-	 * conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-	 * 
-	 * try(PreparedStatement pstmnt = conn.prepareStatement(insertSQL)) {
-	 * pstmnt.setLong(1, new_id); pstmnt.setDate(2, new_d);
-	 * pstmnt.setBigDecimal(3, new_i); pstmnt.setLong(4, new_c);
-	 * pstmnt.setLong(5, new_c); pstmnt.setLong(6, new_a); pstmnt.setLong(7,
-	 * new_a); pstmnt.setBoolean(8, new_s); pstmnt.setString(9, new_g);
-	 * pstmnt.setString(10, new_descr); pstmnt.setLong(11, new_id);
-	 * 
-	 * pstmnt.executeUpdate(); } } }
-	 */
-	private static void createIfNotExists(Connection con, Date d, int a) throws SQLException, ParseException {
+	private static void createIfNotExists(Connection con, Date d, int a) throws SQLException {
 		String sql = "select a from b where d = ? and a = ?";
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setDate(1, d);
@@ -267,4 +225,22 @@ public class Triggers {
 			}
 		}
 	}
+
+	public static void balancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2) throws SQLException, ParseException {
+        try( Connection con = ds.getConnection(); ) {
+            if (a != a2) {
+                a(con, a, a2, i, d);
+            }
+            if (i.compareTo(i2) != 0) {
+                i(con, a, i, i2, d);
+            }
+            if ( (a != a2) || (i.compareTo(i2) != 0))  {
+                smallestB(con, d, null);
+            }
+            if(d.compareTo(d2) != 0) {
+                d(con, a, i, d, d2);
+                smallestB(con, d, d2);
+            }
+        }
+    }
 }

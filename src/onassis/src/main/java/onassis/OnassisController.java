@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import onassis.db.functions.Balance;
 import onassis.db.functions.DBTestUtils;
 import onassis.db.functions.History;
+import onassis.db.functions.Triggers;
 import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.C;
@@ -51,6 +52,7 @@ public class OnassisController {
     void init() throws SQLException {
         Balance.ds = this.ds;
         History.ds = this.ds;
+        Triggers.ds = this.ds;
     }
 
     @Autowired

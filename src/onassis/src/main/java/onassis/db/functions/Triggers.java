@@ -106,7 +106,7 @@ public class Triggers {
 		 * s1
 		 */
 		if (s1.signum() == 1 && s2.signum() == 1) {
-			sql = " update b " + " set i = i + ? " + " where (a = ? or a = 0) and d = ? ";
+			sql = " update b " + " set i = i - ? " + " where (a = ? or a = 0) and d = ? ";
 
 			try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 				pstmnt.setBigDecimal(1, delta);
@@ -151,8 +151,10 @@ public class Triggers {
 	 * 3:d------------------------------------------- 
 	 * r(a, i, d) -> r(d2), a!=0
 	 * 1° create r0(d2) if not there 
-	 * 2° Δ=i: b+=Δ, b0+=Δ where between d and d2, i0-=Δ, i0(d2)+=Δ, i-=Δ, i(d2)+=Δ
-	 * 3° smallest balance where between d and d2
+	 * 2° Δ=i: b+=Δ, b0+=Δ where between d and d2, i0-=Δ, i0(d2)+=Δ, i(d2)+=Δ
+	 * 3° delete r <-not necessary
+	 * 4° delete r0 if i=0 and e=0
+	 * 5° smallest balance where between d and d2
 	 */
 	private static void d(Connection con, int a, BigDecimal i, Date d, Date d2) throws SQLException, ParseException {
 		
@@ -190,8 +192,22 @@ public class Triggers {
 			pstmnt.setDate(3, d2);
 			pstmnt.executeUpdate();
 		}
+		/*
+		sql = " delete from b where a = ? and d = ?";
+		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
+			pstmnt.setLong(1, a);
+			pstmnt.setDate(2, d);
+			pstmnt.executeUpdate();
+		}*/
 	}
 
+	public static void clear0(Connection con) throws SQLException, ParseException {
+		String sql = " delete from b where i = 0 and e = 0";
+		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
+			pstmnt.executeUpdate();
+		}
+	}
+	
 	public static void smallestB(Connection con, Date d, Date d2) throws SQLException, ParseException {
 		String sql = " update b set smallestb = smallestBalanceAt(d) " + " where a = 0 and "
 				+ (null == d2 ? " d >= ? " : " d between ? and ? ");
@@ -216,10 +232,10 @@ public class Triggers {
 					BigDecimal balance = Balance._balanceBefore(con, d, a);
 					sql = " insert into b(d, b, i, e, a, smallestb) " + " values( ?, ?, 0, 0, ?, 0) ";
 					try (PreparedStatement ipstmnt = con.prepareStatement(sql)) {
-						pstmnt.setDate(1, d);
-						pstmnt.setBigDecimal(2, balance);
-						pstmnt.setLong(3, a);
-						pstmnt.executeUpdate();
+						ipstmnt.setDate(1, d);
+						ipstmnt.setBigDecimal(2, balance);
+						ipstmnt.setLong(3, a);
+						ipstmnt.executeUpdate();
 					}
 				}
 			}
@@ -230,9 +246,11 @@ public class Triggers {
         try( Connection con = ds.getConnection(); ) {
             if (a != a2) {
                 a(con, a, a2, i, d);
+                a = a2;
             }
             if (i.compareTo(i2) != 0) {
                 i(con, a, i, i2, d);
+                i = i2;
             }
             if ( (a != a2) || (i.compareTo(i2) != 0))  {
                 smallestB(con, d, null);
@@ -241,6 +259,7 @@ public class Triggers {
                 d(con, a, i, d, d2);
                 smallestB(con, d, d2);
             }
+            clear0(con);
         }
     }
 }

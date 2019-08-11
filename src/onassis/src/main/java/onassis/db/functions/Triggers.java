@@ -214,7 +214,8 @@ public class Triggers {
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setDate(1, d);
 			if (null != d2) {
-				pstmnt.setDate(2, d2);
+				pstmnt.setDate(1, d.after(d2) ? d2 : d);
+				pstmnt.setDate(2, d.after(d2) ? d : d2);
 			}
 			pstmnt.executeUpdate();
 		}
@@ -243,19 +244,23 @@ public class Triggers {
 	}
 
 	public static void balancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2) throws SQLException, ParseException {
-        try( Connection con = ds.getConnection(); ) {
-            if (a != a2) {
+        boolean aChanged =  (a != a2);
+		boolean iChanged =  (i != i2);
+		boolean dChanged =  (d != d2);
+		
+		try( Connection con = ds.getConnection(); ) {
+            if (aChanged) {
                 a(con, a, a2, i, d);
                 a = a2;
             }
-            if (i.compareTo(i2) != 0) {
+            if (iChanged) {
                 i(con, a, i, i2, d);
                 i = i2;
             }
-            if ( (a != a2) || (i.compareTo(i2) != 0))  {
+            if ( aChanged || iChanged)  {
                 smallestB(con, d, null);
             }
-            if(d.compareTo(d2) != 0) {
+            if(dChanged) {
                 d(con, a, i, d, d2);
                 smallestB(con, d, d2);
             }

@@ -415,16 +415,19 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     
     @Test    
     public void  p_u_sb_30() throws Exception {
-    	insert_basedata(2);
-    	int id1 = insert_p(d2, bd(1), c, a);
-    	int id2 = insert_p(d2, bd(3), c, a);
+    	insert_basedata(2);                                     //     d  b0,sbs b(a1) b(a2)
+    	int id1 = insert_p(d2, bd(1), c, a);                    //     d2 1, 0   1     0 
+    	
+    	                                                        //     d  b0,sbs b(a1) b(a2)
+    	int id2 = insert_p(d2, bd(3), c, a);                    //     d2 4, 0   3     0
     	{
     		B b = select_b(d2, 0);
     		B bExp = new B(d2, bd(4), bd(4), bd(0), 0);
     		bExp.setSmallestb(bd(0)); //b(a2)=0 
     		assertTrue(compareBs(b, bExp));
-    	}
-    	update_p(d3, bd(-1), null, a2, id2);
+    	}                                                       //     d  b0,sbs b(a1) b(a2)
+    	update_p(d3, bd(-1), null, a2, id2);                    //     d2 1, 0   1     0
+    	                                                        //     d3 0, -1  1     -1
     	{
     		B b = select_b(d3, 0);
     		B bExp = new B(d3, bd(0), bd(0), bd(-1), 0);
@@ -432,6 +435,12 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     		assertTrue(compareBs(b, bExp));
     	}
     	update_p(d1, bd(-2), null, a2, id2);
+    	                                                        //     d  b0,sbs b(a1) b(a2)
+    	                                                        //     d1 -2,-2  0     -2
+    	                                                        //     d2 -1,-2  1     -2
+    	                                                        //     d3  0,-2  1     -2
+    	
+    	
     	{
     		B b = select_b(d2, 0);
     		B bExp = new B(d2, bd(-1), bd(1), bd(0), 0);

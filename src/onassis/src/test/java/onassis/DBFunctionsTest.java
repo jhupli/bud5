@@ -10,10 +10,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -56,13 +58,13 @@ public class DBFunctionsTest extends DBTestUtils{
         d3 = new Date(df.parse("6.1.2016").getTime());
         d4 = new Date(df.parse("8.1.2016").getTime());
         insert_basedata();
-        statistics_start();
+        //statistics_start();
     }
 
     
     @After
     public void after() throws Exception {
-        statistics_end();
+        //statistics_end();
     	xcheck_b0_b();
         empty_db();
     }

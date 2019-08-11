@@ -64,7 +64,7 @@ public class DBTestUtils {
     }
 
     public void statistics_end() throws SQLException {
-        onassis.db.functions.DBTestUtils.statistics_end(jdbcTemplate, "MYSCHEMA");
+        onassis.db.functions.DBTestUtils.statistics_end(jdbcTemplate);
     }
 
     public void empty_db() throws Exception {

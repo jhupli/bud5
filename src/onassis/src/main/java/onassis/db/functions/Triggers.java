@@ -23,6 +23,9 @@ import java.text.ParseException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
 /**
  * <Beschreibung> <br>
  * 
@@ -243,12 +246,19 @@ public class Triggers {
 		}
 	}
 
+		
+    static NamedParameterJdbcTemplate jdbcTemplate;
 	public static void balancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2) throws SQLException, ParseException {
-        boolean aChanged =  (a != a2);
+		
+		boolean aChanged =  (a != a2);
 		boolean iChanged =  (i != i2);
 		boolean dChanged =  (d != d2);
 		
 		try( Connection con = ds.getConnection(); ) {
+			
+			jdbcTemplate = new NamedParameterJdbcTemplate(ds);
+			DBTestUtils.statistics_start(jdbcTemplate, "TRIGGERSCHEMA");
+			
             if (aChanged) {
                 a(con, a, a2, i, d);
                 a = a2;
@@ -265,6 +275,7 @@ public class Triggers {
                 smallestB(con, d, d2);
             }
             clear0(con);
+            DBTestUtils.statistics_end(jdbcTemplate);
         }
     }
 }

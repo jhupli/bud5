@@ -169,7 +169,31 @@ public class DBTestUtils {
             return null;
         }
     }
-    
+
+    /*private class ReplayLog {
+
+        private class ReplayEntry {
+            String op;
+            P p;
+
+            public ReplayEntry(String op, int id) {
+                this.op = op;
+                p = select_p(id);
+            }
+        }
+
+        List<ReplayEntry> logEntries = new ArrayList<>();
+
+        void logInsert(int id) {
+            logEntries.add(new ReplayEntry("I", id));
+        }
+        void logUpdate(int id) {
+            logEntries.add(new ReplayEntry("I", id));
+        }
+
+    }*/
+
+
     public int insert_p(Date d, BigDecimal i, int c, int a) throws Exception {
         assertNotNull(d);
         assertNotNull(i);
@@ -191,6 +215,7 @@ public class DBTestUtils {
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id) throws Exception {
     	update_p(d, i, c, a, id, null);
     }
+
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id, Boolean l) throws Exception {
         assertTrue(null != d || null !=i || null!= c || null != a || null != l);
         String set = "";

@@ -248,7 +248,15 @@ public class Triggers {
 
 		
     static NamedParameterJdbcTemplate jdbcTemplate;
-	public static void balancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2) throws SQLException, ParseException {
+    public static void balancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2) throws SQLException, ParseException {
+        _balancesUpdateTrigger( d, d2, i, i2, a, a2, false);
+    }
+
+    public static void balancesUpdateTriggerDebug( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2) throws SQLException, ParseException {
+        _balancesUpdateTrigger( d, d2, i, i2, a, a2, true);
+    }
+
+    private static void _balancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2, boolean dblog) throws SQLException, ParseException {
 		
 		boolean aChanged =  (a != a2);
 		boolean iChanged =  (i != i2);
@@ -257,7 +265,9 @@ public class Triggers {
 		try( Connection con = ds.getConnection(); ) {
 			
 			jdbcTemplate = new NamedParameterJdbcTemplate(ds);
-			DBTestUtils.statistics_start(jdbcTemplate, "TRIGGERSCHEMA");
+			if (dblog) {
+			    DBTestUtils.statistics_start(jdbcTemplate, "TRIGGERSCHEMA");
+            }
 			
             if (aChanged) {
                 a(con, a, a2, i, d);
@@ -275,7 +285,9 @@ public class Triggers {
                 smallestB(con, d, d2);
             }
             clear0(con);
-            DBTestUtils.statistics_end(jdbcTemplate);
+            if (dblog) {
+                DBTestUtils.statistics_end(jdbcTemplate);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ package onassis.db.functions;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -46,8 +47,11 @@ public class DBTestUtils {
                 + "          rs.scan_rs_id = sp.scan_rs_id "; /*and "
                 + "          rs.op_identifier = 'TABLESCAN'";*/
 
-        jdbcTemplate.query(sql, rs -> {
-            System.err.println(String.format("Caused tablescan: (%s) |%-10s|%-30s|", schema, rs.getString(2), rs.getString(1)));});
+
+        List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, new MapSqlParameterSource());
+        for(Map map : result) {
+            System.err.println(String.format("Caused tablescan: (%s) |%-10s|%-30s|", schema, map.get("SCAN_OBJECT_NAME"), map.get("STMT_TEXT")));
+        }
 
         final String [] dropsqls ={
                 "DROP TABLE "+schema+".SYSXPLAIN_STATEMENTS",

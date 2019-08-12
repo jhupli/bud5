@@ -55,12 +55,13 @@ public class Balance {
 	
     public static BigDecimal balanceBefore(Date d, int a) throws SQLException {
     	try (Connection conn = ds.getConnection()) {
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
     		return _balanceBefore(conn, d, a);
 		}
     }
 
     public static BigDecimal _balanceBefore(Connection conn, Date d, int a) throws SQLException {
-        conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+
         try (PreparedStatement pstmnt = conn.prepareStatement("select b from b where d<? and a=? order by d desc fetch first 1 rows only")) {
             if (pstmnt == null) {
                 throw new RuntimeException("prepareStatement failed");

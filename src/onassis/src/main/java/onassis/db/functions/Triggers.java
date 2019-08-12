@@ -266,7 +266,7 @@ public class Triggers {
 			
 			jdbcTemplate = new NamedParameterJdbcTemplate(ds);
 			if (dblog) {
-			    DBTestUtils.statistics_start(jdbcTemplate, "TRIGGERSCHEMA");
+			    DBTestUtils.statistics_start(con, "TRIGGERSCHEMA");
             }
 			
             if (aChanged) {
@@ -286,7 +286,7 @@ public class Triggers {
             }
             clear0(con);
             if (dblog) {
-                DBTestUtils.statistics_end(jdbcTemplate);
+                DBTestUtils.statistics_end(con, "TRIGGERSCHEMA");
             }
         }
     }

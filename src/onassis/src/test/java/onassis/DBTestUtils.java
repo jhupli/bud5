@@ -59,14 +59,6 @@ public class DBTestUtils {
         jdbcTemplate.update( sql, new MapSqlParameterSource() );
     }
 
-    public void statistics_start() throws SQLException {
-        onassis.db.functions.DBTestUtils.statistics_start(jdbcTemplate, "MYSCHEMA");
-    }
-
-    public void statistics_end() throws SQLException {
-        onassis.db.functions.DBTestUtils.statistics_end(jdbcTemplate);
-    }
-
     public void empty_db() throws Exception {
 
         sql = "delete from p";
@@ -169,30 +161,6 @@ public class DBTestUtils {
             return null;
         }
     }
-
-    /*private class ReplayLog {
-
-        private class ReplayEntry {
-            String op;
-            P p;
-
-            public ReplayEntry(String op, int id) {
-                this.op = op;
-                p = select_p(id);
-            }
-        }
-
-        List<ReplayEntry> logEntries = new ArrayList<>();
-
-        void logInsert(int id) {
-            logEntries.add(new ReplayEntry("I", id));
-        }
-        void logUpdate(int id) {
-            logEntries.add(new ReplayEntry("I", id));
-        }
-
-    }*/
-
 
     public int insert_p(Date d, BigDecimal i, int c, int a) throws Exception {
         assertNotNull(d);

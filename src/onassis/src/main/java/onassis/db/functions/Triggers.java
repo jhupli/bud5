@@ -20,10 +20,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDate;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
@@ -31,6 +34,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  * 
  * @author jhupli
  */
+
+@Component
 public class Triggers {
 
 	static public DataSource ds;
@@ -210,8 +215,81 @@ public class Triggers {
 			pstmnt.executeUpdate();
 		}
 	}
-	
+
+    private static void smallestB(Connection con, Date d) throws SQLException, ParseException {
+        String sql = " select d from b where a = 0 and d >= ? ";
+        try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
+              pstmnt.setDate(1, d);
+              pstmnt.execute();
+              try(ResultSet rset = pstmnt.getResultSet()) {
+                  updateB(con, rset);
+              }
+        }
+    }
+
+    private static void smallestB(Connection con, Date d, Date d2) throws SQLException, ParseException {
+        Date startDate =  d.after(d2) ? d2 : d;
+        Date endDate =  d.after(d2) ? d : d2;
+        String sql = " select d from b where a = 0 and d between ? and ? ";
+        try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
+            pstmnt.setDate(1, startDate);
+            pstmnt.setDate(2, endDate);
+            pstmnt.execute();
+            try(ResultSet rset = pstmnt.getResultSet()) {
+                updateB(con, rset);
+            }
+        }
+    }
+
+    private static void updateB(Connection con, ResultSet rset) throws SQLException, ParseException {
+        String sql = "update b set smallestb = ? " + " where a = 0 and d = ? ";
+        try (PreparedStatement updateStmt = con.prepareStatement(sql)) {
+            while (rset.next()) {
+                Date dx = rset.getDate("d");
+                BigDecimal smallestBalance = Balance._smallestBalanceAt(con, dx);
+                updateStmt.setBigDecimal(1, smallestBalance);
+                updateStmt.setDate(2, dx);
+                updateStmt.executeUpdate();
+
+            }
+        }
+    }
+
+    /*
+        String sql = " update b set smallestb = ? " + " where a = 0 ";
+
+        LocalDate startDate =  d.after(d2) ? d2.toLocalDate() : d.toLocalDate();
+        LocalDate endDate =  d.after(d2) ? d.toLocalDate() : d2.toLocalDate();
+        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1))
+        {
+            Date currentD = Date.valueOf(date);
+            BigDecimal smallestBalanceAt = Balance._smallestBalanceAt(con, currentD);
+            try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
+                pstmnt.setDate(1, currentD);
+                pstmnt.executeUpdate();
+            }
+        }
+    }
+
 	public static void smallestB(Connection con, Date d, Date d2) throws SQLException, ParseException {
+        String sql = " update b set smallestb = ? " + " where a = 0 ";
+
+        LocalDate startDate =  d.after(d2) ? d2.toLocalDate() : d.toLocalDate();
+        LocalDate endDate =  d.after(d2) ? d.toLocalDate() : d2.toLocalDate();
+        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1))
+        {
+            Date currentD = Date.valueOf(date);
+            BigDecimal smallestBalanceAt = Balance._smallestBalanceAt(con, currentD);
+            try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
+                pstmnt.setDate(1, currentD);
+                pstmnt.executeUpdate();
+            }
+        }
+    }
+
+	    /*
+
+
 		String sql = " update b set smallestb = smallestBalanceAt(d) " + " where a = 0 and "
 				+ (null == d2 ? " d >= ? " : " d between ? and ? ");
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
@@ -221,8 +299,8 @@ public class Triggers {
 				pstmnt.setDate(2, d.after(d2) ? d : d2);
 			}
 			pstmnt.executeUpdate();
-		}
-	}
+		}*/
+
 
 	private static void createIfNotExists(Connection con, Date d, int a) throws SQLException {
 		String sql = "select a from b where d = ? and a = ?";
@@ -260,7 +338,7 @@ public class Triggers {
 		
 		boolean aChanged =  (a != a2);
 		boolean iChanged =  (i != i2);
-		boolean dChanged =  (d != d2);
+		boolean dChanged =  (d.compareTo(d2) != 0);
 		
 		try( Connection con = ds.getConnection(); ) {
 			
@@ -278,7 +356,7 @@ public class Triggers {
                 i = i2;
             }
             if ( aChanged || iChanged)  {
-                smallestB(con, d, null);
+                smallestB(con, d);
             }
             if(dChanged) {
                 d(con, a, i, d, d2);

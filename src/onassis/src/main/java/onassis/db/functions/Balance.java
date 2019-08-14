@@ -10,34 +10,35 @@ import java.util.Calendar;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Balance {
-	@Autowired
 	static public DataSource ds;
 
     public static BigDecimal smallestBalanceAt(Date d) throws SQLException {
-
-        BigDecimal res = null;
         try (Connection conn = ds.getConnection()) {
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            try (PreparedStatement pstmnt = conn.prepareStatement("select id from a")) {
-                if (!pstmnt.execute()) {
-                    throw new RuntimeException("execute failed");
-                }
-                try (ResultSet set = pstmnt.getResultSet()) {
-                    if (set == null) {
-                        return BigDecimal.ZERO;
-                    }
+            return _smallestBalanceAt(conn, d);
+        }
+     }
 
-                    while (set.next()) {
-                        int id = set.getInt(1);
-                        BigDecimal b = balanceAfter(d, id);
-                        if (res == null || b.compareTo(res) < 0) {
-                            res = b;
-                        }
+    public static BigDecimal _smallestBalanceAt(Connection conn, Date d) throws SQLException {
+        BigDecimal res = null;
+        try (PreparedStatement pstmnt = conn.prepareStatement("select id from a")) {
+            if (!pstmnt.execute()) {
+                throw new RuntimeException("execute failed");
+            }
+            try (ResultSet set = pstmnt.getResultSet()) {
+                if (set == null) {
+                    return BigDecimal.ZERO;
+                }
+
+                while (set.next()) {
+                    int id = set.getInt(1);
+                    BigDecimal b = balanceAfter(d, id);
+                    if (res == null || b.compareTo(res) < 0) {
+                        res = b;
                     }
                 }
             }
@@ -52,7 +53,15 @@ public class Balance {
 			c.add(Calendar.DATE, 1);
 			return balanceBefore(new Date(c.getTimeInMillis()), a);
 	}
-	
+
+    public static BigDecimal balanceAfter(Connection con, Date d, int a)
+            throws SQLException {
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.add(Calendar.DATE, 1);
+        return _balanceBefore(con, new Date(c.getTimeInMillis()), a);
+    }
+
     public static BigDecimal balanceBefore(Date d, int a) throws SQLException {
     	try (Connection conn = ds.getConnection()) {
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
@@ -86,24 +95,29 @@ public class Balance {
     public static Boolean hasUnlockedPayments(Date d) throws SQLException {
         try (Connection conn = ds.getConnection()) {
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            try (PreparedStatement pstmnt = conn.prepareStatement("select id from p where d=? and l=false fetch first 1 rows only")) {
-                if (pstmnt == null) {
-                    throw new RuntimeException("prepareStatement failed");
+            return _hasUnlockedPayments(conn, d);
+        }
+    }
+
+    public static Boolean _hasUnlockedPayments(Connection conn, Date d) throws SQLException {
+        try (PreparedStatement pstmnt = conn.prepareStatement("select id from p where d=? and l=false fetch first 1 rows only")) {
+            if (pstmnt == null) {
+                throw new RuntimeException("prepareStatement failed");
+            }
+            pstmnt.setDate(1, d);
+            if (!pstmnt.execute()) {
+                throw new RuntimeException("execute failed");
+            }
+            try (ResultSet set = pstmnt.getResultSet()) {
+                if (set == null) {
+                    return false;
                 }
-                pstmnt.setDate(1, d);
-                if (!pstmnt.execute()) {
-                    throw new RuntimeException("execute failed");
+                if (!set.next()) {
+                    return false;
                 }
-                try (ResultSet set = pstmnt.getResultSet()) {
-                    if (set == null) {
-                        return false;
-                    }
-                    if (!set.next()) {
-                        return false;
-                    }
-                    return true;
-                }
+                return true;
             }
         }
+
     }
 }

@@ -17,13 +17,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Component;
 
 import onassis.dto.A;
@@ -44,11 +48,12 @@ import onassis.dto.mappers.MapP;
 public class DBTestUtils {
 
     @Autowired
-    public static DataSource ds = null;
+    public DataSource ds;
 
-    @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
     String sql = null;
+    Connection con = null;
+
 
     public BigDecimal bd(double val) {
         return BigDecimal.valueOf(val).setScale(2, RoundingMode.UP);
@@ -60,6 +65,7 @@ public class DBTestUtils {
     }
 
     public void empty_db() throws Exception {
+
 
         sql = "delete from p";
         jdbcTemplate.update( sql, new MapSqlParameterSource() );

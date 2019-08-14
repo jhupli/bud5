@@ -2,6 +2,7 @@ package onassis;
 
 import static org.junit.Assert.assertTrue;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -53,17 +55,22 @@ public class DBFunctionsTest extends DBTestUtils{
     
     @Before
     public void before() throws Exception {
+        con = ds.getConnection();
+        jdbcTemplate = new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, true));
+
         d1 = new Date(df.parse("2.1.2016").getTime());
         d2 = new Date(df.parse("4.1.2016").getTime());
         d3 = new Date(df.parse("6.1.2016").getTime());
         d4 = new Date(df.parse("8.1.2016").getTime());
         insert_basedata();
+        onassis.db.functions.DBTestUtils.statistics_start(con, "FUNCTIONSCHEMA");
         //statistics_start();
     }
 
-    
+
     @After
     public void after() throws Exception {
+        onassis.db.functions.DBTestUtils.statistics_end(con, "FUNCTIONSCHEMA");
         //statistics_end();
     	xcheck_b0_b();
         empty_db();

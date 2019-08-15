@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.response.Response;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,6 +24,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import onassis.db.functions.DBTestUtilsDB;
 import onassis.db.functions.DataProvider;
+import onassis.services.AccountService;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -33,10 +36,13 @@ import static org.hamcrest.CoreMatchers.is;
 				//jdbc:derby:BudDB.v5;create=true;
 				  "spring.datasource.url:jdbc:derby:memory:onassis;create=true;"})
         	//	"spring.datasource.url:jdbc:h2:mem:onassis;DB_CLOSE_ON_EXIT=FALSE"})
-public class HelloControllerTest {
+public class OnassisControllerTest {
 
     @Autowired
-    OnassisController oc;
+    OnassisController onassisController;
+
+    @Autowired
+    AccountService accountService;
     Connection con = null;
 
     @Autowired
@@ -54,9 +60,10 @@ public class HelloControllerTest {
                 12, 1,
                 6, 1);
         RestAssured.port = port;
-        con = oc.ds.getConnection();
-        oc.jdbcTemplate = new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, false));
+        con = onassisController.ds.getConnection();
         DBTestUtilsDB.statistics_start(con, "ONASSISSCHEMA");
+        NamedParameterJdbcTemplate jcbcTemplate =  new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, false));
+        accountService.jdbcTemplate = jcbcTemplate;
     }
 
     @After
@@ -67,11 +74,21 @@ public class HelloControllerTest {
     }
 
     @Test
-    public void testHello() throws Exception {
-        given().auth().basic("user","kakkakikkare").	
-        when().get("/hello").then()
-                .body(is("Hello World, This is Onassis 5.0.0 (Keitele) ! Can you here me?"));
+    public void hello() throws Exception {
+        given().auth().basic("user","kakkakikkare").
+                when().get("/hello").then()
+               .body(is("Hello World, This is Onassis 5.0.0 (Keitele) ! Can you here me?"));
     }
+
+    @Test
+    public void accList() throws Exception {
+        Response response =
+        given().auth().basic("user","kakkakikkare").	
+        when().get("/acc/list");
+        System.out.println(response.asString());
+    }
+
+
 
     @Test
     public void testCalc() throws Exception {

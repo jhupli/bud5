@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import onassis.dto.mappers.MapA;
 import onassis.dto.mappers.MapC;
 
 @Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class AccountService extends ServicesBase {
 
     MapA rmA = new MapA();

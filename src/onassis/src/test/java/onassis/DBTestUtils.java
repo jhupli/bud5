@@ -50,6 +50,7 @@ public class DBTestUtils {
     @Autowired
     public DataSource ds;
 
+    @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
     String sql = null;
     Connection con = null;

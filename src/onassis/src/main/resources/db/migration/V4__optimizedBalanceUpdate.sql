@@ -48,7 +48,7 @@ drop index b_d_a_index;
 create index p_d_index on p(d ASC);
 create index p_d_a_index on p(d ASC, a ASC);
 create index p_d_c_index on p(d ASC, c ASC);
-create index h_hd_index on h(hd ASC);
+create index h_id_hd_index on h(id ASC, hd ASC);
 --create index b_d_index on b(d ASC);
 create index b_a_d_index on b(a ASC, d ASC);
 

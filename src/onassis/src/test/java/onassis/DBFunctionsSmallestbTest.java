@@ -48,18 +48,16 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     public void before() throws Exception {
         con = ds.getConnection();
         jdbcTemplate = new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, true));
-    	empty_db();
+        empty_db();
         d1 = new Date(df.parse("2.1.2016").getTime());
         d2 = new Date(df.parse("4.1.2016").getTime());
         d3 = new Date(df.parse("6.1.2016").getTime());
         d4 = new Date(df.parse("8.1.2016").getTime());
         //statistics_start();
-        onassis.db.functions.DBTestUtils.statistics_start(con, "SMALLESTBSCHEMA");
     }
 
     @After
     public void after() throws Exception {
-        onassis.db.functions.DBTestUtils.statistics_end(con, "SMALLESTBSCHEMA");
         //statistics_end();
     	//xcheck_b0_b();
         empty_db();

@@ -37,8 +37,8 @@ public class DBTestUtils {
                 + "         "+schema+".sysxplain_resultsets rs, "
                 + "         "+schema+".sysxplain_statements st "
                 + "    where st.stmt_id = rs.stmt_id and "
-                + "          rs.scan_rs_id = sp.scan_rs_id "; /*and "
-                + "          rs.op_identifier = 'TABLESCAN'";*/
+                + "          rs.scan_rs_id = sp.scan_rs_id ";/*and "
+                + "          rs.op_identifier = 'TABLESCAN'"; */
 
 
         try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
@@ -46,12 +46,15 @@ public class DBTestUtils {
 
             try (ResultSet rset = pstmnt.getResultSet()) {
                 while (rset.next()) {
-                    System.err.println(String.format("Caused tablescan: (%s) |%-10s|%-30s|%s",
+                    System.out.println(String.format("%s|%-18s|%-16s|%s",
                             schema,
                             rset.getString("SCAN_OBJECT_NAME"),
-                            rset.getString("STMT_TEXT"),
-                            rset.getString("OP_IDENTIFIER")));
-                   // throw new RuntimeException("Tablescan occurred: see error log.");
+                            rset.getString("OP_IDENTIFIER"),
+                            rset.getString("STMT_TEXT")
+                            ));
+                    if(rset.getString("OP_IDENTIFIER").equals("TABLESCAN")) {
+                        throw new RuntimeException("Tablescan occurred: see log.");
+                    }
                 }
             }
         }

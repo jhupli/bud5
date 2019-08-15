@@ -74,6 +74,7 @@ public class DBFunctionsTest extends DBTestUtils{
         //statistics_end();
     	xcheck_b0_b();
         empty_db();
+        con.close();
     }
     
     public void xcheck_b0_b() throws Exception {

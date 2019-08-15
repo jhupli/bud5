@@ -22,10 +22,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 abstract public class ServicesBase {
     @Autowired
-    DataSource ds = null;
+    public DataSource ds = null;
 
     @Autowired
-    NamedParameterJdbcTemplate jdbcTemplate;
+    public NamedParameterJdbcTemplate jdbcTemplate;
 
     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
 

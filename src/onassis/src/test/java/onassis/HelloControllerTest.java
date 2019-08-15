@@ -1,17 +1,29 @@
 package onassis;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import com.jayway.restassured.RestAssured;
+
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import onassis.db.functions.DBTestUtilsDB;
+import onassis.db.functions.DataProvider;
+
 import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,17 +34,40 @@ import static org.hamcrest.CoreMatchers.is;
 				  "spring.datasource.url:jdbc:derby:memory:onassis;create=true;"})
         	//	"spring.datasource.url:jdbc:h2:mem:onassis;DB_CLOSE_ON_EXIT=FALSE"})
 public class HelloControllerTest {
+
+    @Autowired
+    OnassisController oc;
+    Connection con = null;
+
+    @Autowired
+    DBFunctionsTest dbTestUtils;
+
     @Value("${local.server.port}")
     int port;
 
     @Before
-    public void setUp() throws Exception {
+    public void before() throws Exception {
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        DataProvider.random_data(50,
+                1120, -1100,
+                new Date(df.parse("8.3.2019").getTime()),new Date(df.parse("9.3.2020").getTime()),
+                12, 1,
+                6, 1);
         RestAssured.port = port;
+        con = oc.ds.getConnection();
+        oc.jdbcTemplate = new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, false));
+        DBTestUtilsDB.statistics_start(con, "ONASSISSCHEMA");
+    }
+
+    @After
+    public void after() throws Exception {
+        DBTestUtilsDB.statistics_end(con, "ONASSISSCHEMA");
+        dbTestUtils.empty_db();
+        con.close();
     }
 
     @Test
     public void testHello() throws Exception {
-    	       
         given().auth().basic("user","kakkakikkare").	
         when().get("/hello").then()
                 .body(is("Hello World, This is Onassis 5.0.0 (Keitele) ! Can you here me?"));

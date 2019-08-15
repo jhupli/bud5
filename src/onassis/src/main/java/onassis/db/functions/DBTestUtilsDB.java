@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * @version 1.0 Aug 2017
  */
 
-public class DBTestUtils {
+public class DBTestUtilsDB {
 
 
     public static void  statistics_start(Connection con, String schema) throws SQLException {

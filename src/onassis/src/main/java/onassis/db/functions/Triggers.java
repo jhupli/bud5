@@ -20,7 +20,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.time.LocalDate;
 
 import javax.sql.DataSource;
 
@@ -344,7 +343,7 @@ public class Triggers {
 			
 			jdbcTemplate = new NamedParameterJdbcTemplate(ds);
 			if (dblog) {
-			    DBTestUtils.statistics_start(con, "TRIGGERSCHEMA");
+			    DBTestUtilsDB.statistics_start(con, "TRIGGERSCHEMA");
             }
 			
             if (aChanged) {
@@ -364,7 +363,7 @@ public class Triggers {
             }
             clear0(con);
             if (dblog) {
-                DBTestUtils.statistics_end(con, "TRIGGERSCHEMA");
+                DBTestUtilsDB.statistics_end(con, "TRIGGERSCHEMA");
             }
         }
     }

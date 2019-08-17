@@ -43,7 +43,6 @@ public class OnassisControllerTest {
 
     @Autowired
     AccountService accountService;
-    Connection con = null;
 
     @Autowired
     DBFunctionsTest dbTestUtils;
@@ -60,17 +59,19 @@ public class OnassisControllerTest {
                 12, 1,
                 6, 1);
         RestAssured.port = port;
-        con = onassisController.ds.getConnection();
+        
+        /*con = onassisController.ds.getConnection();
         DBTestUtilsDB.statistics_start(con, "ONASSISSCHEMA");
-        NamedParameterJdbcTemplate jcbcTemplate =  new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, false));
-        accountService.jdbcTemplate = jcbcTemplate;
+        NamedParameterJdbcTemplate jdbcTemplate =  new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, false));
+        accountService.jdbcTemplate = jdbcTemplate;
+        System.err.print(jdbcTemplate);*/
     }
 
     @After
     public void after() throws Exception {
-        DBTestUtilsDB.statistics_end(con, "ONASSISSCHEMA");
+       //DBTestUtilsDB.statistics_end(con, "ONASSISSCHEMA");
         dbTestUtils.empty_db();
-        con.close();
+        //con.close();
     }
 
     @Test
@@ -82,9 +83,11 @@ public class OnassisControllerTest {
 
     @Test
     public void accList() throws Exception {
+    	accountService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
         when().get("/acc/list");
+        accountService.endStatistics();
         System.out.println(response.asString());
     }
 

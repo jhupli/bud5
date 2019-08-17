@@ -1,6 +1,7 @@
 package onassis;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import onassis.db.functions.Balance;
-
+import onassis.db.functions.DBTestUtilsDB;
 import onassis.db.functions.History;
 import onassis.db.functions.Triggers;
 import onassis.dto.A;
@@ -58,8 +60,8 @@ public class OnassisController {
     @Autowired
     DataSource ds;
 
-    @Autowired
-    NamedParameterJdbcTemplate jdbcTemplate;
+    /*@Autowired
+    NamedParameterJdbcTemplate jdbcTemplate = null;*/
 
     @Autowired
     HelloService helloService;
@@ -244,26 +246,7 @@ public class OnassisController {
     void generate() throws SQLException, ParseException {
         utilService.generateRandomData();
     }
+    
+    public static boolean debugMode = false;
 
-    /*DateTimeFormatter dfs = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-    @RequestMapping(value = "test") 
-    void test() throws SQLException, ParseException {
-    	LocalDateTime now = LocalDateTime.now();
-    	
-    	String st = (now).format(dfs);
-    	System.out.println("Test starts at : " + st);
-    	long startTime = System.currentTimeMillis();
-    	//Your test starts here:
-    		this.minibars(0);
-    		this.minibars(1);
-    		this.minibars(2);
-    		this.minibars(3);
-    		this.minibars(4);
-    		this.minibars(5);
-    		this.minibars(6);
-    	//Your test ends here:
-    	long stopTime = System.currentTimeMillis();
-    	long elapsedTime = stopTime - startTime;
-    	System.out.println("Elapsed time (ms): "+elapsedTime);
-    }*/
 }

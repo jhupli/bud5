@@ -45,7 +45,9 @@ public class DBTestUtilsDB {
             pstmnt.execute();
 
             try (ResultSet rset = pstmnt.getResultSet()) {
+            	boolean containsResults = false;
                 while (rset.next()) {
+                	containsResults = true;
                     System.out.println(String.format("%s|%-18s|%-16s|%s",
                             schema,
                             rset.getString("SCAN_OBJECT_NAME"),
@@ -56,6 +58,9 @@ public class DBTestUtilsDB {
                         throw new RuntimeException("Tablescan occurred: see log.");
                     }
                 }
+                if (!containsResults) {    
+            		throw new RuntimeException("No statistics result: are you sure you executed some SQL?");
+            	}
             }
         }
         final String [] dropsqls ={

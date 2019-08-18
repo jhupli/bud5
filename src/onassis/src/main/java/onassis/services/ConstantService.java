@@ -6,14 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import onassis.dto.A;
 import onassis.dto.C;
 import onassis.dto.Constant;
-import onassis.dto.mappers.MapA;
 
 @Component
 public class ConstantService extends ServicesBase {

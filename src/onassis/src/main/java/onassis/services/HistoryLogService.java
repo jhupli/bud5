@@ -22,10 +22,8 @@ import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import onassis.dto.B;
 import onassis.dto.H;
 import onassis.dto.LogEntry;
-import onassis.dto.mappers.MapB;
 import onassis.dto.mappers.MapH;
 
 @Component

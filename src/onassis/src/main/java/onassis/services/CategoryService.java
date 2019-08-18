@@ -17,8 +17,13 @@ public class CategoryService extends ServicesBase {
     MapC rmC = new MapC();
 
     public List<C> catList() throws SQLException, ParseException {
-        final String query = "SELECT id, i, descr, active, color FROM C ORDER BY id ASC";
-        List<C> catList = jdbcTemplate.query(query, new RowMapperResultSetExtractor<C>(rmC));
+        final String query = "SELECT id, i, descr, active, color FROM C WHERE id > :id ORDER BY id ASC";
+        
+        //obsolete WHERE -clause was added to force DB to use index, see https://docs.oracle.com/javadb/10.8.3.0/tuning/ctundepth36205.html
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", -1);
+
+        List<C> catList = jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<C>(rmC));
+        
         return catList;
     }
 

@@ -49,8 +49,6 @@ create index p_d_index on p(d ASC);
 create index p_d_a_index on p(d ASC, a ASC);
 create index p_d_c_index on p(d ASC, c ASC);
 create index h_id_hd_index on h(id ASC, hd ASC);
---create index b_d_index on b(d ASC);
 create index b_a_d_index on b(a ASC, d ASC);
-
 create index b_i_e_index on b(i DESC, e DESC);
---create index b_e_index on b(e DESC);
+--create index c_descr on c(descr ASC);

@@ -32,9 +32,12 @@ public class AccountService extends ServicesBase {
     MapA rmA = new MapA();
 
     public List<A> accList() throws SQLException, ParseException {
-    	System.err.print(jdbcTemplate);
-        final String query = "SELECT id, descr, active, color, credit FROM A ORDER BY id ASC";
-        List<A> accList = jdbcTemplate.query(query, new RowMapperResultSetExtractor<A>(rmA));
+        final String query = "SELECT id, descr, active, color, credit FROM A WHERE id > :id ORDER BY id ASC";
+        
+        //obsolete WHERE -clause was added to force DB to use index, see https://docs.oracle.com/javadb/10.8.3.0/tuning/ctundepth36205.html
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", -1);
+        
+        List<A> accList = jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<A>(rmA));
         return accList;
     }
 

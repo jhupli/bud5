@@ -1,7 +1,6 @@
 package onassis;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import onassis.db.functions.Balance;
-import onassis.db.functions.DBTestUtilsDB;
 import onassis.db.functions.History;
 import onassis.db.functions.Triggers;
 import onassis.dto.A;
@@ -59,9 +55,6 @@ public class OnassisController {
 
     @Autowired
     DataSource ds;
-
-    /*@Autowired
-    NamedParameterJdbcTemplate jdbcTemplate = null;*/
 
     @Autowired
     HelloService helloService;
@@ -100,26 +93,32 @@ public class OnassisController {
 
         List<T> modified;
 
-        public List<T> getCreated() {
+        @SuppressWarnings("unused")
+		public List<T> getCreated() {
             return created;
         }
 
+        @SuppressWarnings("unused")
         public void setCreated(List<T> created) {
             this.created = created;
         }
 
+        @SuppressWarnings("unused")
         public List<Integer> getDeleted() {
             return deleted;
         }
 
+        @SuppressWarnings("unused")
         public void setDeleted(List<Integer> deleted) {
             this.deleted = deleted;
         }
 
+        @SuppressWarnings("unused")
         public List<T> getModified() {
             return modified;
         }
 
+        @SuppressWarnings("unused")
         public void setModified(List<T> modified) {
             this.modified = modified;
         }
@@ -145,7 +144,8 @@ public class OnassisController {
         historyLogService.uploadLogZip(response.getOutputStream());
     }
 
-    @RequestMapping("minibars")
+    @SuppressWarnings("rawtypes")
+	@RequestMapping("minibars")
     List minibars(@RequestParam int cat) {
         return minibarsService.minibars(cat);
     }

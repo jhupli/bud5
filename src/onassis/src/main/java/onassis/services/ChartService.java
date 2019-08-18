@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -47,7 +46,6 @@ public class ChartService extends ServicesBase {
         localDates.add("x");
         LocalDate localDate = s;
         while (localDate.isBefore(e.plusDays(1))) {
-            String fd = localDate.format(df);
             localDates.add(localDate.format(df) + "T00");
             localDate = localDate.plusDays(1);
         }

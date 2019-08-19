@@ -13,6 +13,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import onassis.db.functions.Balance;
@@ -31,8 +32,12 @@ public class ChartService extends ServicesBase {
         accounts.add(incomes(true, start, end));
         accounts.add(incomes(false, start, end));
 
-        String accountQuery = "SELECT id FROM a WHERE active ORDER BY id ASC";
-        List<Integer> accList = jdbcTemplate.queryForList(accountQuery, new EmptySqlParameterSource(), Integer.class);
+        String accountQuery = "SELECT id FROM a WHERE active = :active ORDER BY id ASC";
+
+        //obsolete WHERE -clause was added to force DB to use index, see https://docs.oracle.com/javadb/10.8.3.0/tuning/ctundepth36205.html
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("active", true);
+
+        List<Integer> accList = jdbcTemplate.queryForList(accountQuery, namedParameters, Integer.class);
 
         for (Integer id : accList) {
             accounts.add(balancesWithA(id, start, end));

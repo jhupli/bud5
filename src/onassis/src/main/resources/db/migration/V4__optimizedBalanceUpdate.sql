@@ -40,15 +40,16 @@ external name
 	update b set l = hasUnlockedPayments(d)
 	where a=0 and (d = new.d or d = old.d);
 	
-	--indexes------------------------------
+--drop indexes------------------------------
 drop index p_d_index;
 drop index b_d_a_index;
 
---indexes------------------------------
+--re-create indexes------------------------------
 create index p_d_index on p(d ASC);
 create index p_d_a_index on p(d ASC, a ASC);
 create index p_d_c_index on p(d ASC, c ASC);
 create index h_id_hd_index on h(id ASC, hd ASC);
 create index b_a_d_index on b(a ASC, d ASC);
 create index b_i_e_index on b(i DESC, e DESC);
+create index a_active_index on a(active ASC, id ASC);
 --create index c_descr on c(descr ASC);

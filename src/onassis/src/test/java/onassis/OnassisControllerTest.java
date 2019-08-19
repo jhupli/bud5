@@ -62,9 +62,6 @@ public class OnassisControllerTest {
     AccountService accountService;
 
     @Autowired
-    ConstantService constantService;
-
-    @Autowired
     UtilService utilService;
 
     @Autowired
@@ -169,14 +166,14 @@ public class OnassisControllerTest {
     
     @Test
     public void historyLogService_s_e() throws Exception {
-    	historyLogService.startStatistics();
+    	//historyLogService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
-        when().get("/history?s=9999999999999&e=1111111111111");
-        historyLogService.endStatistics();
+        when().get("/history?s=1111111111111&e=9999999999999");
+        //historyLogService.endStatistics();
         System.out.println(response.asString());
     }
-    
+
     @Test
     public void historyLogService_id() throws Exception {
     	historyLogService.startStatistics();
@@ -290,34 +287,34 @@ public class OnassisControllerTest {
     
     @Test
     public void constantService_cat() throws Exception {
-    	minibarsService.startStatistics();
+        categoryService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
         when().get("/constants?id=cat");
-        minibarsService.endStatistics();
+        categoryService.endStatistics();
         System.out.println(response.asString());
     }
     
     @Test
     public void constantService_acc() throws Exception {
-    	minibarsService.startStatistics();
+        accountService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
         when().get("/constants?id=acc");
-        minibarsService.endStatistics();
+        accountService.endStatistics();
         System.out.println(response.asString());
     }
 
     @Test
     public void constantService_foo() throws Exception {
-    	minibarsService.startStatistics();
+        //constantService.startStatistics();
         Response response =
-        given().auth().basic("user","kakkakikkare").	
+        given().auth().basic("user","kakkakikkare").
         when().get("/constants?id=acc");
-        minibarsService.endStatistics();
+        //constantService.endStatistics();
         System.out.println(response.asString());
     }
-    
+
     @Test
     public void utilService_foo() throws Exception {
     	utilService.startStatistics();

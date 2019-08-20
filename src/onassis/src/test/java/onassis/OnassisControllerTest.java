@@ -324,8 +324,4 @@ public class OnassisControllerTest {
         utilService.endStatistics();
         System.out.println(response.asString());
     }
-   
-
-
-
 }

@@ -17,6 +17,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import onassis.db.functions.DBTestUtilsDB;
 import onassis.dto.A;
 import onassis.dto.B;
 
@@ -53,12 +54,12 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
         d2 = new Date(df.parse("4.1.2016").getTime());
         d3 = new Date(df.parse("6.1.2016").getTime());
         d4 = new Date(df.parse("8.1.2016").getTime());
-        //statistics_start();
+        DBTestUtilsDB.statistics_start(con, "SMALLESTBALANCESCHEMA");
     }
 
     @After
     public void after() throws Exception {
-        //statistics_end();
+        DBTestUtilsDB.statistics_end(con, "SMALLESTBALANCESCHEMA");
     	//xcheck_b0_b();
         empty_db();
         con.close();

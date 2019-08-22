@@ -196,11 +196,11 @@ public class OnassisControllerTest {
 
     @Test
     public void pieService_null() throws Exception {
-    	pieService.startStatistics();
+    	//pieService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
         when().get("/pie");
-        pieService.endStatistics();
+        //pieService.endStatistics();
         System.out.println(response.asString());
     }
     
@@ -229,7 +229,7 @@ public class OnassisControllerTest {
     	paymentService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
-        when().get("/payments?e=a&a=1&d1=2019-03-08&d1=2020-03-09");
+        when().get("/payments?e=a&a=1&d1=2019-03-08&d2=2020-03-09");
         paymentService.endStatistics();
         System.out.println(response.asString());
     }
@@ -239,7 +239,7 @@ public class OnassisControllerTest {
     	paymentService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
-        when().get("/payments?e=c&c=1&d1=2019-03-08&d1=2020-03-09");
+        when().get("/payments?e=c&c=1&d1=2019-03-08&d2=2020-03-09");
         paymentService.endStatistics();
         System.out.println(response.asString());
     }
@@ -256,11 +256,11 @@ public class OnassisControllerTest {
     
     @Test
     public void paymentService_foo() throws Exception {
-    	paymentService.startStatistics();
+    	//paymentService.startStatistics();
         Response response =
         given().auth().basic("user","kakkakikkare").	
         when().get("/payments");
-        paymentService.endStatistics();
+        //paymentService.endStatistics();
         System.out.println(response.asString());
     }
     

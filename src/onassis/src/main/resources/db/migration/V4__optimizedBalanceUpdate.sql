@@ -45,11 +45,12 @@ drop index p_d_index;
 drop index b_d_a_index;
 
 --re-create indexes------------------------------
-create index p_d_index on p(d ASC);
-create index p_d_a_index on p(d ASC, a ASC);
+--create index p_d_index on p(d ASC);
+--create index p_d_a_index on p(d ASC, a ASC);
 create index p_d_c_index on p(d ASC, c ASC);
+create index p_g_index on p(g ASC);
 create index h_id_hd_index on h(id ASC, hd ASC);
 create index b_a_d_index on b(a ASC, d ASC);
 create index b_i_e_index on b(i DESC, e DESC);
 create index a_active_index on a(active ASC, id ASC);
---create index c_descr on c(descr ASC);
+

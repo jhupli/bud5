@@ -122,7 +122,7 @@ public class Triggers {
 				pstmnt.executeUpdate();
 			}
 		} else if (s1.signum() != 1 && s2.signum() != 1) {
-			sql = " update b " + " set e = e + ? " + " where (a = ? or a = 0) and d = ? ";
+			sql = " update b " + " set e = e - ? " + " where (a = ? or a = 0) and d = ? ";
 
 			try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 				pstmnt.setBigDecimal(1, delta);

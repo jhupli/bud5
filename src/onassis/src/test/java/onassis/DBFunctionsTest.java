@@ -1290,5 +1290,118 @@ public class DBFunctionsTest extends DBTestUtils{
             assertTrue(compareBs(b, bExp));
         }
     }
+
+    @Test
+    public void  p_u_150() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), 0);
+            bExp.setSmallestb(bd(-1));
+            assertTrue(compareBs(b, bExp));
+        }
+
+        update_p(null, bd(-2), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-2), bd(0), bd(-2), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-2), bd(0), bd(-2), 0);
+            bExp.setSmallestb(bd(-2));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_155() throws Exception {
+        int id = insert_p(d1, bd(-2), c, a);
+        update_p(null, bd(-1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), 0);
+            bExp.setSmallestb(bd(-1));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+    @Test
+    public void  p_u_160() throws Exception {
+        int id = insert_p(d1, bd(1), c, a);
+        update_p(null, bd(2), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(2), bd(2), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(2), bd(2), bd(0), 0);
+            bExp.setSmallestb(bd(0));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_165() throws Exception {
+        int id = insert_p(d1, bd(2), c, a);
+        update_p(null, bd(1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+            bExp.setSmallestb(bd(0));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_170() throws Exception {
+        int id = insert_p(d1, bd(1), c, a);
+        update_p(null, bd(-1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), 0);
+            bExp.setSmallestb(bd(-1));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_175() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        update_p(null, bd(1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+            bExp.setSmallestb(bd(0));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
     
 }

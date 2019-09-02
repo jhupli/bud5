@@ -1,7 +1,7 @@
 import React from 'react' // ← Main React library
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux'
-import { chart_next_day } from '../../../actions/chart'
+import { next_day } from '../../actions/day'
 var FontAwesome = require('react-fontawesome');
 
 class ButtonR extends React.Component{
@@ -28,7 +28,7 @@ class ButtonR extends React.Component{
 function mapDispatchToProps(dispatch) {
     return ({
         chartNextDay: () => {
-            dispatch(chart_next_day())
+            dispatch(next_day())
         }
     })
 }

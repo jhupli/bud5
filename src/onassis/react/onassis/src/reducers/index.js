@@ -15,6 +15,7 @@ import auditlog from './auditlog'
 import errorMessage from './errorMessage'
 import group from './group'
 import calculator from './calculator'
+import day from './day'
 
 const rootReducer = combineReducers({
   ping,
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
   auditlog,
   errorMessage ,
   group,
-  calculator
+  calculator,
+  day
 })
 
 export default rootReducer

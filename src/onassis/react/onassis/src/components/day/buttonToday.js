@@ -1,7 +1,7 @@
 import React from 'react' // ← Main React library
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux'
-import { chart_today } from '../../../actions/chart'
+import { today } from '../../actions/day'
 
 class ButtonToday extends React.Component{
 	constructor(props) {
@@ -27,7 +27,7 @@ class ButtonToday extends React.Component{
 function mapDispatchToProps(dispatch) {
     return ({
         chartToday: () => {
-            dispatch(chart_today())
+            dispatch(today())
         }
     })
 }

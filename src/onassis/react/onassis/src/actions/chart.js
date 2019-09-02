@@ -22,39 +22,6 @@ const chartResponseAction = (response) => (
   }
 )
 
-const CHART_NEXTDAY = 'CHART_NEXTDAY'
-const chartNextDayAction = () => (
-  { 
-	type: CHART_NEXTDAY,
-    payload: 
-    	{
-    		nextday : (new Date()).getTime() //only signal
-    	} 
-  }
-)
-
-const CHART_PREVDAY = 'CHART_PREVDAY'
-const chartPrevDayAction = () => (
-  { 
-	type: CHART_PREVDAY,
-    payload: 
-    	{
-    		prevday : (new Date()).getTime() //only signal
-    	} 
-  }
-)
-
-const CHART_TODAY = 'CHART_TODAY'
-const chartTodayAction = () => (
-  { 
-	type: CHART_TODAY,
-    payload: 
-    	{
-    		today : (new Date()).getTime() //only signal
-    	} 
-  }
-)
-
 const CHART_REDRAW = 'CHART_REDRAW'
 const chartRedrawAction = () => (
   { 
@@ -98,24 +65,6 @@ const chart_refresh = () => (
     }
 )
 
-const chart_next_day = () => (
-    (dispatch) => {
-    	dispatch(chartNextDayAction())
-    }
-)
-
-const chart_prev_day = () => (
-    (dispatch) => {
-    	dispatch(chartPrevDayAction())
-    }
-)
-
-const chart_today = () => (
-    (dispatch) => {
-    	dispatch(chartTodayAction())
-    }
-)
-
 const chart_redraw = () => (
     (dispatch) => {
     	dispatch(chartRedrawAction())
@@ -126,8 +75,5 @@ const chart_redraw = () => (
 export {
 	chart_load,
 	chart_refresh,
-	chart_next_day,
-	chart_prev_day,
-	chart_today,
 	chart_redraw
 }

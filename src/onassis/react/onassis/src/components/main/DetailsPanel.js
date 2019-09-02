@@ -11,6 +11,7 @@ import ButtonL from '../day/buttonL'
 import ButtonR from '../day/buttonR'
 import ButtonToday from '../day/buttonToday'
 
+import { day_load } from '../../actions/payments'
 import { category_load } from '../../actions/payments'
 import { account_load } from '../../actions/payments'
 
@@ -57,18 +58,24 @@ class DetailsPanel extends React.Component{
 		    		end : nextProps.end		
 		    })
 	  	} else if (
-        	// eslint-disable-next-line	
-        		!(this.state.start == nextProps.start) //note 'undefined == null' yields true but 'undefined !== null' as well
-        	|| 
-        	// eslint-disable-next-line
-        		!(this.state.end == nextProps.end)) { 
+        this.state.start != null && nextProps.start != null
+        &&
+        (
+          this.state.start.getMilliseconds() != nextProps.start.getMilliseconds()
+          ||
+          this.state.end.getMilliseconds() != nextProps.end.getMilliseconds()
+        )
+      )
+	  	{
     		this.setState({
 		    		start : nextProps.start,
 		    		end : nextProps.end		
 		    })
+
     		switch(this.props.queryType) {
-    					case 'd' : break;
-    					case 'a' : debugger
+    					case 'd' : this.props.dayLoad(this.props.params.d)
+                     break;
+    					case 'a' :
     							   this.props.accountLoad(this.props.params.a, nextProps.start, nextProps.end)
     							   break;
     					case 'c' : this.props.categoryLoad(this.props.params.c, nextProps.start, nextProps.end)
@@ -245,6 +252,9 @@ function mapDispatchToProps(dispatch) {
         },
         nextInHistory: () => {
           dispatch(next_in_history())
+        },
+        dayLoad: (d) => {
+          dispatch(day_load(d))
         },
         accountLoad: (a, d1, d2) => {
             dispatch(account_load(a, d1, d2))

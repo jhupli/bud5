@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +57,8 @@ public class OnassisController {
         History.ds = this.ds;
         Triggers.ds = this.ds;
     }
+
+    @Value("${app.version:unknown}") String version;
 
     @Autowired
     DataSource ds;
@@ -122,6 +129,11 @@ public class OnassisController {
         public void setModified(List<T> modified) {
             this.modified = modified;
         }
+    }
+
+    @RequestMapping("/version")
+    String version() {
+        return version;
     }
 
     @RequestMapping("/hello")

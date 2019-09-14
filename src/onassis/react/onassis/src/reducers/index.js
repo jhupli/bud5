@@ -16,6 +16,7 @@ import errorMessage from './errorMessage'
 import group from './group'
 import calculator from './calculator'
 import day from './day'
+import versionInfo from './versionInfo'
 
 const rootReducer = combineReducers({
   ping,
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
   errorMessage ,
   group,
   calculator,
-  day
+  day,
+  versionInfo
 })
 
 export default rootReducer

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, /*NavItem,*/ Nav, NavDropdown, MenuItem} from 'react-bootstrap';
 import { connect } from 'react-redux'
+import VersionInfo from '../versionInfo/versionInfo'
 
 import AlertContainer from 'react-alert'
 import alertOptions from '../../util/alertoptions'
@@ -43,7 +44,11 @@ class MenuBar extends React.Component{
 				<AlertContainer ref={a => this.msg = a} {...alertOptions} />
 				<Navbar style={{marginBottom: '0px'}}>
 				    <Navbar.Header>
-				        <Navbar.Brand> Onassis 5.6</Navbar.Brand>
+				        <Navbar.Brand>
+				        	<span style = {{"display": "inline-flex", "whiteSpace": "nowrap"}}>
+				        		Onassis&nbsp;<VersionInfo />
+				        	</span>
+				        </Navbar.Brand>
 				        <Navbar.Toggle /> 
 				    </Navbar.Header>
 				    <Navbar.Collapse>

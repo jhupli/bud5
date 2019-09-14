@@ -91,7 +91,7 @@ public class OnassisControllerTest {
     public void hello() throws Exception {
         given().auth().basic("user","kakkakikkare").
                 when().get("/hello").then()
-               .body(is("Hello World, This is Onassis 5.0.0 (Keitele) ! Can you here me?"));
+               .body(is("Hello World, This is Onassis! Can you here me?"));
     }
 
     @Test
@@ -322,6 +322,16 @@ public class OnassisControllerTest {
         given().auth().basic("user","kakkakikkare").	
         when().get("/group/newid");
         utilService.endStatistics();
+        System.out.println(response.asString());
+    }
+    
+        @Test
+    public void vesionService() throws Exception {
+        //constantService.startStatistics();
+        Response response =
+        given().auth().basic("user","kakkakikkare").
+        when().get("/version");
+        //constantService.endStatistics();
         System.out.println(response.asString());
     }
 }

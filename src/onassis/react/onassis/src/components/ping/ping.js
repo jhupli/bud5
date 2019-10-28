@@ -13,14 +13,14 @@ class Ping extends React.Component {
         var f = () => {
         	this.props.ping()
         }
-        //this.timer = setInterval(f, 5000)
+        this.timer = setInterval(f, 5000)
     }
   
     render() {
     // Render nothing if the "show" prop is false
-    //if(!this.props.show) {
+    if(!this.props.show) {
       return null;
-    //}
+    }
 
     // The gray background
     const backdropStyle = {

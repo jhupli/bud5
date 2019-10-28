@@ -74,10 +74,10 @@ input[type="text"]:disabled {
     background-color: lightyellow !important;
 }
 
-.resizable-input
+/*.resizable-input
 {
 	display: none;
-}
+}*/
 
 .newRow
 {
@@ -115,7 +115,7 @@ input[type="text"]:disabled {
     border: none  !important;
 }
 
-.simpledropdown_ro .react-selectize-toggle-button-container 
+/*.simpledropdown_ro .react-selectize-toggle-button-container
 {
     display: none  !important;
 }

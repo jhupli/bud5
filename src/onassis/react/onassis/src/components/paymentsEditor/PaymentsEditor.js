@@ -139,7 +139,7 @@ class PaymentsEditor extends React.Component {
         this.renderPaymentsT = this.renderPaymentsT.bind(this)
         
         this.renderNormalT = this.renderNormalT.bind(this)
-        this.renderNarrowT = this.renderNarrowT.bind(this)
+        /*this.renderNarrowT = this.renderNarrowT.bind(this)*/
         
         //save, new and rest aso
         this.renderControls = this.renderControls.bind(this)
@@ -886,7 +886,7 @@ class PaymentsEditor extends React.Component {
 	  	)
 	}
 	  	
-	renderNarrowT  = () => {
+	/*renderNarrowT  = () => {
 		return(
 			this.sortedValues.map(p => {
 				return(
@@ -939,7 +939,7 @@ class PaymentsEditor extends React.Component {
 		            )}
 				)
 		)
-	}
+	}*/
 	                      
 	renderNormalT  = () => {
 		return(
@@ -959,7 +959,8 @@ class PaymentsEditor extends React.Component {
 		return (
 		<div>
 			{this.renderControls()}
-			{width === 'narrow' ? this.renderNarrowT() : this.renderNormalT()}
+			{/*{width === 'narrow' ? this.renderNarrowT() : this.renderNormalT()}*/}
+			{this.renderNormalT()}
 		</div>
 		)
 	}

@@ -1,5 +1,5 @@
 const reducer = (state = [], action) => {
-  console.log("payments reducer: "+action.type)
+  //console.log("payments reducer: "+action.type)
   switch (action.type) {
     case "PAYMENTS_REQUEST":
     case "PAYMENTS_UPDATE_REQUEST":

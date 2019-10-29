@@ -29,7 +29,7 @@
     "react-transition-group": "^1.1.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "sync-request": "^6.0.0"
+    "then-request": "^6.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

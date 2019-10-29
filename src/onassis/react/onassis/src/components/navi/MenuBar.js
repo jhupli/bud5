@@ -72,11 +72,13 @@ class MenuBar extends React.Component{
 				                <MenuItem divider />
 				                <MenuItem eventKey={3.5}> Settings </MenuItem>*/}
 				            </NavDropdown>
+				            {/*
 				            <NavDropdown eventKey={4} title="Util" id="basic-nav-dropdown">
 				                <MenuItem eventKey={4.1} onSelect={(e) => {this.generateGroup()}}>
 				                	 Generate unused groupid
 				                </MenuItem>
 				            </NavDropdown>
+				            */}
 				        </Nav>
 				        {/*
 				        <Nav pullRight>

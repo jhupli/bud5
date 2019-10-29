@@ -59,7 +59,7 @@ class MenuBar extends React.Component{
 				                	{this.props.view === 'main' ? 'X' : '' } Main
 				                </MenuItem>
 				                <MenuItem eventKey={3.2} onSelect={(e) => {this.props.showView('c')}}>
-				                	{this.props.view === 'c' ? 'X' : '' } Categories
+				                	{this.props.view === 'c' ? 'X' : '' } Issues
 				                </MenuItem>
 				                <MenuItem eventKey={3.3} onSelect={(e) => {this.props.showView('a')}}>
 				                	{this.props.view === 'a' ? 'X' : '' } Accounts

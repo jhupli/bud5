@@ -121,8 +121,7 @@ class DetailsPanel extends React.Component{
 						Account : <FontAwesome name = 'square' style = {{'color': acc.color}} />
 					</span>
 	    			<span>
-	    				{acc.label + ' (' + dateFormat(this.props.params.d1, "dd.mm.yyyy ddd")
-	    					+ ' - '+  dateFormat(this.props.params.d2, "dd.mm.yyyy ddd") + ')'}
+	    				{acc.label}
 	    			</span>
 	    		</span>
 				
@@ -135,8 +134,7 @@ class DetailsPanel extends React.Component{
 						Issue : <FontAwesome name = 'square' style = {{'color': cat.color}} />
 					</span>
 	    			<span>
-	    				{cat.label + ' (' + dateFormat(this.props.params.d1, "dd.mm.yyyy ddd")
-	    					+ ' - '+  dateFormat(this.props.params.d2, "dd.mm.yyyy ddd") + ')'}
+	    				{cat.label}
 	    			</span>
 	    		</span>
 	    		
@@ -148,7 +146,10 @@ class DetailsPanel extends React.Component{
 					</span>
 				break
 			case 'l' : 
-				info = 'Checked'
+				info =
+				    <span>
+                       	&nbsp;<FontAwesome name='check-square' size='lg' />  {this.props.params.g}
+                    </span>
 				break
 			default: info = '';
 				break
@@ -173,7 +174,7 @@ class DetailsPanel extends React.Component{
     var headerNormal =
     				<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "45px"}}>
     				  	<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
-				  			<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+				  			<FontAwesome name='th-list' />&nbsp;<PaymentSelection /><span style={{fontSize: "15px"}}>{info}</span><Spinner fetching={this.props.fetching} />
 				  		</div>
 				  		<span className="pull-right" style={{display: "inline-flex"}}>
 					  		<ButtonToday />
@@ -185,7 +186,7 @@ class DetailsPanel extends React.Component{
 	var headerNarrow =
 				<Panel.Heading style={{paddingTop: "5px", paddingBottom: "3px", height: "80px"}}>
 				  	<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center", fontSize: "23px"}}>
-			  			<FontAwesome name='th-list' /> <span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
+			  			<FontAwesome name='th-list' />&nbsp;<PaymentSelection /><span style={{fontSize: "15px"}}>{info}</span><PaymentSelection /><Spinner fetching={this.props.fetching} />
 			  		</div>
 			  		<span style={{display: "inline-flex"}}>
 				  		<ButtonToday />

@@ -127,9 +127,11 @@ function copyPayment(payment, checkedList, index = null) {
 
 function  deepCopy(payments, checkedList) {
 	var copy = []
-	payments.forEach(
-		(p) => {copy.push(copyPayment(p, checkedList))}
-	)
+	if(payments) {
+        payments.forEach(
+            (p) => {copy.push(copyPayment(p, checkedList))}
+        )
+	}
 	return copy
 }
 

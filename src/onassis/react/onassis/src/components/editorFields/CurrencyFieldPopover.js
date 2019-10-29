@@ -36,9 +36,9 @@ const normalizeCurrency = value => {
         value = "0"
     }
     value = "" + parseInt(value, 10);
-    /*if (value.length < 3) {
+    if (value.length < 3) {
         value = "00".slice(-3 + value.length) + value
-    }*/
+    }
 
     var res = (plus >= minus ? '+' : '-') + value.slice(0, -2) + "." + value.slice(-2)
     return res;
@@ -58,7 +58,7 @@ class CurrencyField extends React.Component {
     }
 	
 	handleFocus(event) {
-		 // event.target.select();
+		 event.target.select();
 	}
 
 	onChange(e) {

@@ -155,7 +155,10 @@ class PaymentsEditor extends React.Component {
         this.showHistory = this.showHistory.bind(this)
         
         this.init()
-        this.state = {...initState(this.preInitT(props.initPayments), checkedSet), historyShow: false}
+        var state = {...initState(this.preInitT(props.initPayments), checkedSet)}
+
+        this.state = {...state, historyShow: false}
+        this.state.maskValues.d = dateFormat(this.props.defaultDate)
     }
 	
 	showAlert() {
@@ -258,7 +261,7 @@ class PaymentsEditor extends React.Component {
 	    var copy = {...this.state.masked}
 		copy[field] = set
 		this.setState({masked : copy})
-		
+
 		//clear/set errors of existing maskValues
 		copy = {...this.state.maskErrors}
 		copy[field] = !set ? null : validators[field](this.state.maskValues[field])
@@ -699,6 +702,8 @@ class PaymentsEditor extends React.Component {
     
 	resetT() {
 		var state = initState(this.state.initial, checkedSet, this.state.recurring)
+
+		state.maskValues.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		this.setState({...state})
 		this.init()
 	}
@@ -1040,9 +1045,14 @@ class PaymentsEditor extends React.Component {
 	
 	componentWillReceiveProps(nextprops) {
 		this.init()
-		this.setState(
+		/*this.setState(
 				{...initState(this.preInitT(nextprops.initPayments), checkedSet)}
-		)
+		)*/
+
+
+		var state = {...initState(this.preInitT(nextprops.initPayments), checkedSet)}
+        this.state.maskValues.d = dateFormat(nextprops.defaultDate, "dd.mm.yyyy")
+		this.setState({...state})
 	}
 
 	updateCheckedSet(value, index, values = null) {

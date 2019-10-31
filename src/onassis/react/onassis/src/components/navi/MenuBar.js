@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, /*NavItem,*/ Nav, NavDropdown, MenuItem} from 'react-bootstrap';
 import { connect } from 'react-redux'
 import VersionInfo from '../versionInfo/versionInfo'
-
+import GroupId from '../groupid/GroupId';
 import AlertContainer from 'react-alert'
 import alertOptions from '../../util/alertoptions'
 
@@ -15,17 +15,19 @@ const copy = require('clipboard-copy')
 class MenuBar extends React.Component{
 	constructor(props) {
         super(props)
-        this.generatedOk = this.generatedOk.bind(this)
+        //this.generatedOk = this.generatedOk.bind(this)
         this.generateGroup = this.generateGroup.bind(this)
+        this.showGropId = this.showGropId.bind(this)
+        this.state = {groupIdShow: false}
 	}
 	
-	generatedOk(g) {
+	/*generatedOk(g) {
 		this.msg.show('NEW GROUPID ON CLIPBOARD', {
 	      time: 2000,
 	      type: 'success',
 	      icon: <img src="yes.png" alt="save ok" />
 	    })
-	 }
+	 }*/
 	
 	generateGroup(){
 		this.props.newGroup()
@@ -33,12 +35,18 @@ class MenuBar extends React.Component{
 	
 	componentWillReceiveProps(nextprops) {
 		if( nextprops.g !== this.props.g) {
-			copy(nextprops.g)
-			this.generatedOk(nextprops.g)
+			//copy(nextprops.g)
+			this.showGropId()
+			//this.generatedOk(nextprops.g)
 		}
 	}
-	
-	render(){	
+
+	showGropId() {
+    		this.setState({ groupIdShow: true })
+    }
+
+	render(){
+		let close = () => this.setState({ groupIdShow: false });
 		return(
 			<div>
 				<AlertContainer ref={a => this.msg = a} {...alertOptions} />
@@ -72,13 +80,13 @@ class MenuBar extends React.Component{
 				                <MenuItem divider />
 				                <MenuItem eventKey={3.5}> Settings </MenuItem>*/}
 				            </NavDropdown>
-				            {/*
+
 				            <NavDropdown eventKey={4} title="Util" id="basic-nav-dropdown">
 				                <MenuItem eventKey={4.1} onSelect={(e) => {this.generateGroup()}}>
 				                	 Generate unused groupid
 				                </MenuItem>
 				            </NavDropdown>
-				            */}
+
 				        </Nav>
 				        {/*
 				        <Nav pullRight>
@@ -86,7 +94,13 @@ class MenuBar extends React.Component{
 				        </Nav>*/}
 				    </Navbar.Collapse>
 				</Navbar>
+                <GroupId
+                    g={this.props.g}
+                    show={this.state.groupIdShow}
+                    onHide={close}
+                />
 			</div>
+
 		)
 	}
 }

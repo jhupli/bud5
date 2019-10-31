@@ -39,7 +39,7 @@ class GroupId extends React.Component {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered="true"
-        dialogClassName="modal-90w"
+        dialogClassName="modal-20w"
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">

@@ -73,7 +73,8 @@ function chunk_rawdata(daydata) {
             "e": 0,
             "d": new Date(y, m, z),
             "b": b,
-            "smallestb": smallestb
+            "smallestb": smallestb,
+            "l": false
           }
         )
       }
@@ -93,6 +94,7 @@ function chunk_rawdata(daydata) {
     console.assert(data_i.i >= 0, "i must be positive")
     console.assert(null != data_i.e, "e is mandatory")
     console.assert(data_i.e <= 0, "i must be negative")
+    console.assert(null != data_i.l, "l is mandatory")
     
     //calculate balance
     if( !balances_given ) {
@@ -113,6 +115,7 @@ function chunk_rawdata(daydata) {
     dayArray[data_i.d.getDate()-1].e = data_i.e
     dayArray[data_i.d.getDate()-1].b = b 
     dayArray[data_i.d.getDate()-1].smallestb = smallestb
+    dayArray[data_i.d.getDate()-1].l = data_i.l
   }
   
   //(IV) add to each day balances of previous and next days
@@ -150,7 +153,8 @@ function chunk_rawdata(daydata) {
             "e": 0,
             "d": new Date(y, m, z1),
             "b": 0,
-            "smallestb": 0
+            "smallestb": 0,
+            "l": false
           }
         )
   }
@@ -178,7 +182,8 @@ function chunk_rawdata(daydata) {
             "b": last.b,
             "smallestb": last.smallestb,
             "prev_b": last.b,
-            "next_b": last.b          
+            "next_b": last.b,
+            "l": false
           }
         )
   }

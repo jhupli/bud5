@@ -3,16 +3,8 @@ package onassis.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Pb {
-	public Long id;
-	public Date d;
-	public BigDecimal i;
-	public Integer c;
-	public Integer a;
-	public Boolean s;
-	public String g;
-	public String descr;
-	public Boolean l;
+public class Pb extends P {
+
 	public BigDecimal b;
 	
 	public Pb() {
@@ -33,69 +25,9 @@ public class Pb {
 		this.b = b;
 	}
 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Date getD() {
-		return d;
-	}
-	public void setD(Date d) {
-		this.d = d;
-	}
-	public BigDecimal getI() {
-		return i;
-	}
-	public void setI(BigDecimal i) {
-		this.i = i;
-	}
-	public Integer getC() {
-        return c;
-    }
-    public void setC(Integer c) {
-        this.c = c;
-    }
-	public Integer getA() {
-		return a;
-	}
-	public void setA(Integer a) {
-		this.a = a;
-	}
-	
-	public Boolean getS() {
-		return s;
-	}
-
-	public void setS(Boolean s) {
-		this.s = s;
-	}
-	public String getG() {
-		return g;
-	}
-
-	public void setG(String g) {
-		this.g = g;
-	}
-
-	public String getDescr() {
-		return descr;
-	}
-	public void setDescr(String descr) {
-		this.descr = descr;
-	}
-	public Boolean getL() {
-		return l;
-	}
-	public void setL(Boolean l) {
-		this.l = l;
-	}
-
 	public BigDecimal getB() {
 		return b;
 	}
-
 	public void setB(BigDecimal b) {
 		this.b = b;
 	}

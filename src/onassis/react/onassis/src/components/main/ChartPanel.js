@@ -14,7 +14,7 @@ class ChartPanel extends React.Component{
 //		var dates = " " + dateFormat(this.props.start, "dd.mm.yyyy ddd") + " - " + dateFormat(this.props.end, "dd.mm.yyyy ddd")
 		return(
 		<div>
-			<Panel>
+			<Panel style={{ opacity: this.props.fetching ? 0.3 : 1 }}>
 			{/*
 			  	<Panel.Heading style={{paddingTop: "6px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
 			  		<FontAwesome name='bar-chart' /> <span style={{fontSize: "15px"}}>{dates}</span><Spinner fetching={this.props.fetching} />

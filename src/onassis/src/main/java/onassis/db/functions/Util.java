@@ -1,17 +1,10 @@
 package onassis.db.functions;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.sql.Date;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Util {
-	/*public static BigDecimal bd(double val) {
-        return BigDecimal.valueOf(val).setScale(2, RoundingMode.UP);
-    }*/
 
 	public static BigDecimal positive(BigDecimal x)
 	        throws SQLException {
@@ -44,7 +37,4 @@ public class Util {
 		 }
 		 return elseDecimal;
 	}
-	
-		
-
 }

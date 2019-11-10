@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import PaymentsEditor from '../paymentsEditor/PaymentsEditor'
-import { day_load } from '../../actions/payments'
 
 class Payments extends React.Component {
 	constructor(props) {
@@ -14,9 +13,16 @@ class Payments extends React.Component {
 	
 	render() {
 		return(
-			<PaymentsEditor initPayments={this.props.payments} queryType={this.props.queryType} />
+			<PaymentsEditor 
+				initPayments={this.props.payments} 
+				queryType={this.props.queryType} 
+				defaultDate={this.props.defaultDate}/>
 		)
 	}
+}
+
+Payments.defaultProps = {
+		defaultDate: new Date()
 }
 
 const mapStateToProps = (store) => {
@@ -27,11 +33,4 @@ const mapStateToProps = (store) => {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return ({
-        dayLoad: (d) => {
-            dispatch(day_load(d))
-        }       
-    })
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Payments)
+export default connect(mapStateToProps)(Payments)

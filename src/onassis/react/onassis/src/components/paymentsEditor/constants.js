@@ -127,9 +127,11 @@ function copyPayment(payment, checkedList, index = null) {
 
 function  deepCopy(payments, checkedList) {
 	var copy = []
-	payments.forEach(
-		(p) => {copy.push(copyPayment(p, checkedList))}
-	)
+	if(payments) {
+        payments.forEach(
+            (p) => {copy.push(copyPayment(p, checkedList))}
+        )
+	}
 	return copy
 }
 
@@ -146,7 +148,7 @@ const recurSpans = [
 	{label: "yearly", value: "YEARLY"},
 	];
 
-function initState(payments, checkedList, recurring = { recur: false, times: 1, span: recurSpans[3]} ) {
+function initState(payments, checkedList, recurring = { recur: false, times: 1, span: recurSpans[4]} ) {
 	var copy = {
 		values : [],
 		initial : [],

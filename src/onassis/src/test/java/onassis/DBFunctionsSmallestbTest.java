@@ -9,10 +9,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+import onassis.db.functions.DBTestUtilsDB;
 import onassis.dto.A;
 import onassis.dto.B;
 
@@ -24,8 +29,13 @@ import onassis.dto.B;
  *  -without JPA (Hibernate) -layer.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
 @IntegrationTest({"spring.datasource.url:jdbc:derby:memory:onassisTest;create=true;"})
+@WebAppConfiguration
+@SpringBootApplication
+@SpringApplicationConfiguration( classes = {
+        SecurityConfig.class,
+        App.class
+} )
 public class DBFunctionsSmallestbTest extends DBTestUtils{
     
     SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
@@ -37,17 +47,22 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     
     @Before
     public void before() throws Exception {
-    	empty_db();
+        con = ds.getConnection();
+        jdbcTemplate = new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, true));
+        empty_db();
         d1 = new Date(df.parse("2.1.2016").getTime());
         d2 = new Date(df.parse("4.1.2016").getTime());
         d3 = new Date(df.parse("6.1.2016").getTime());
         d4 = new Date(df.parse("8.1.2016").getTime());
+        DBTestUtilsDB.statistics_start(con, "SMALLESTBALANCESCHEMA");
     }
 
     @After
     public void after() throws Exception {
+        DBTestUtilsDB.statistics_end(con, "SMALLESTBALANCESCHEMA");
     	//xcheck_b0_b();
         empty_db();
+        con.close();
     }
     
     public void xcheck_b0_smallestb() throws Exception {
@@ -61,6 +76,7 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     			 assertTrue(null != select_b(b.getD(), 0));
     		 }
     	 }
+    	 assertTrue(0 == get0BalancesCount());
     }
     
     @Test    
@@ -405,16 +421,19 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     
     @Test    
     public void  p_u_sb_30() throws Exception {
-    	insert_basedata(2);
-    	int id1 = insert_p(d2, bd(1), c, a);
-    	int id2 = insert_p(d2, bd(3), c, a);
+    	insert_basedata(2);                                     //     d  b0,sbs b(a1) b(a2)
+    	int id1 = insert_p(d2, bd(1), c, a);                    //     d2 1, 0   1     0 
+    	
+    	                                                        //     d  b0,sbs b(a1) b(a2)
+    	int id2 = insert_p(d2, bd(3), c, a);                    //     d2 4, 0   3     0
     	{
     		B b = select_b(d2, 0);
     		B bExp = new B(d2, bd(4), bd(4), bd(0), 0);
     		bExp.setSmallestb(bd(0)); //b(a2)=0 
     		assertTrue(compareBs(b, bExp));
-    	}
-    	update_p(d3, bd(-1), null, a2, id2);
+    	}                                                       //     d  b0,sbs b(a1) b(a2)
+    	update_p(d3, bd(-1), null, a2, id2);                    //     d2 1, 0   1     0
+    	                                                        //     d3 0, -1  1     -1
     	{
     		B b = select_b(d3, 0);
     		B bExp = new B(d3, bd(0), bd(0), bd(-1), 0);
@@ -422,6 +441,12 @@ public class DBFunctionsSmallestbTest extends DBTestUtils{
     		assertTrue(compareBs(b, bExp));
     	}
     	update_p(d1, bd(-2), null, a2, id2);
+    	                                                        //     d  b0,sbs b(a1) b(a2)
+    	                                                        //     d1 -2,-2  0     -2
+    	                                                        //     d2 -1,-2  1     -2
+    	                                                        //     d3  0,-2  1     -2
+    	
+    	
     	{
     		B b = select_b(d2, 0);
     		B bExp = new B(d2, bd(-1), bd(1), bd(0), 0);

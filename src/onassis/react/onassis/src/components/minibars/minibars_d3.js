@@ -30,7 +30,8 @@ var minibars = (function() {
   var COLOR_MONTH_BACKGROUND_NORMAL_ODD = "lightblue"
   var COLOR_MONTH_BACKGROUND_NORMAL_EVEN = "lightblue"
   var COLOR_MONTH_TEXT = "black"
-
+  var COLOR_UNLOCKED = "lightgray"
+	  
   var COLOR_MONTH_SEPARATOR_LINE = "lightblue"
 
   //name of the element to bind to
@@ -139,6 +140,7 @@ var minibars = (function() {
   var _I = "_i_minibar"
   var _E = "_e_minibar"
   var _B = "_b_minibar"
+  var _UNLOCKED = "_b_unlocked"
   var _LINE_B_PREV = "_b_prev_minibar"
   var _LINE_B_NEXT = "_b_next_minibar"
   var _LINE_ZERO = "_zero_minibar"
@@ -277,20 +279,6 @@ function roundNumberText(number) {
 function withinSelection(d) {
   return (start && end && d.d && dates.inRange(d.d, start, end))
 }
-
-/*function colorRange(s_date, e_date, colorfunction) {
-  console.log("colorRange: months=");
->>>>>>> branch 'master' of https://github.com/jhupli/bud5.git
-  console.log(months);
-  if (!s_date || !e_date || !colorfunction || !months) return
-  var ixd = new Date(s_date)
-  
-  do {
-	console.log(colorfunction(ixd))
-    d3.select('#'+dateId(ixd)+_BG).attr("fill", colorfunction(ixd))
-    ixd.setDate(ixd.getDate() + 1);
-  } while(dates.compare(ixd, e_date) < 1)
-}*/
 
 function show_tip(data) {
   var mid = monthId(data.d)
@@ -696,10 +684,24 @@ function create(month) {
         "cy": function(d) { return center_margin_y - scale(d.b) + top_margin + line_width },
         "r": 1.5, //slot_width / 6,
         "fill": COLOR_BALANCE,
-      })/*.style("cursor", "pointer") */
+      })
       .on(clicks)
     }
 
+   minibar_svg
+      .selectAll()
+      .data(month.columns)
+      .enter()    
+      .append("circle")
+      .style("shape-rendering","auto")
+      .attr({
+        "id": function(d) { return dateId(d.d) + _UNLOCKED},
+        "cx" : function(d, ix){ return ((ix + 0.5) * slot_width)},
+        "cy": function(d) { return top_margin - 4},
+        "r": 1.5, //slot_width / 6,
+        "fill": function(d) { return d.l ? COLOR_UNLOCKED : 'white' }
+      }).on(clicks)
+  
     minibar_svg
     .append("line")
     .attr({
@@ -728,13 +730,13 @@ function leadin(month) {
   var mid = monthId(month.columns[0].d)
   var e = document.getElementById(mid +_DIV)
   var x = e.getBoundingClientRect().left
-  var first = false
+  //var first = false
   
   var width = month.columns.length * slot_width +  line_width
   if( !leadin_x ) { //init lead_in x
 	  //console.log("first!")  
     leadin_x = x
-    first = true
+    //first = true
   }
   //console.log("x:"+x+" leadin:"+leadin_x+" add:"+ (leadin_x === x ? leadin_width : 0))
   /*d3.select('#' + mid +_DIV)
@@ -756,13 +758,13 @@ function leadin(month) {
     "width": (x <= leadin_x ? leadin_width : 0) + "px",
   })
   
-  if (first) {
+ // if (first) {
 	  d3.select('#' + mid + _MAX_TEXT)
 	  .text(roundNumberText(maxy))
 	
 	  d3.select('#' + mid + _MIN_TEXT)
 	  .text(roundNumberText(miny)) 
-  }
+  //}
 }
 
 function updateMonth(month) {
@@ -792,6 +794,7 @@ function updateMonth(month) {
         d.smallestb =  m.smallestb
         d.prev_b =  m.prev_b
         d.next_b =  m.next_b
+        d.l =  m.l
         return d
       })
       .transition()
@@ -816,8 +819,7 @@ function updateMonth(month) {
       .transition()
       .attr({
         "y": center_margin_y - scale(0) + top_margin + line_width,
-        "height":  function(d) { 
-        	return scale(0) - scale(d.e)  
+        "height":  function(d) { return scale(0) - scale(d.e)  
         }
       }
     )
@@ -830,6 +832,13 @@ function updateMonth(month) {
         }  
       })
 
+     d3.select('#' + date_id + _UNLOCKED)
+      .transition()
+      .attr({
+    	  "fill": function(d) {
+    		  return d.l ? COLOR_UNLOCKED : 'white' } 
+      })
+      
     d3.select('#' + date_id + _LINE_ZERO)
       .transition()
       .attr({
@@ -898,7 +907,8 @@ const nullData =
 			b:0, 
 			e:0, 
 			i:0,
-			smallestb: 0
+			smallestb: 0,
+			l: false,
 		}
 	]
 }

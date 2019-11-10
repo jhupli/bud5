@@ -208,6 +208,7 @@ class AccountsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'name'
+				  			maxLength = {30}
 					  	/>
 				    </div>)
     	case 'color' :
@@ -365,7 +366,8 @@ class AccountsEditor extends React.Component {
     renderAccountR(index) {
     	return(
     	<tr key={index}>
-	 		{[...fields].map( (f) => { 
+        {/*{[...fields].map( (f) => {*/}
+      {['color','descr','active'].map( (f) => { //CHG-75
 	 			return this.td(index, f) 
 	 		})}
 	 		
@@ -489,11 +491,11 @@ class AccountsEditor extends React.Component {
 			  		<tr>
 			  			<th className={this.thClassName('color')} />
 			  			{this.th('descr', 'Name')}
-			  			{this.th('credit', 'Credit')}
+			  			{/*this.th('credit', 'Credit')*/}
 			  			{this.th('active', 'Active')}
 			  			{
 			  			<th className={this.thClassName('deleted')}>
-			  				<FontAwesome name='remove' style={{'color': 'red'}}/>
+			  				<FontAwesome name='trash'  size='lg' />
 			  			</th>
 			  			}
 					</tr>				  			

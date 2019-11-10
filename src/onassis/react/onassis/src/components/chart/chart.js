@@ -49,6 +49,7 @@ class Chart extends React.Component {
         this.hahlo = null
         this.draw = this.draw.bind(this)
         this.dateselect = this.dateselect.bind(this)
+        this.paint_dayselection = this.paint_dayselection.bind(this)
         this.nextday = this.nextday.bind(this)
         this.prevday = this.prevday.bind(this)
         this.today = this.today.bind(this)
@@ -257,7 +258,6 @@ class Chart extends React.Component {
     }
     
     dateselect(d) {
-    			console.log("DATESEL")
     			this.selectedDate = d
     			//CHG-13this.legendnames(this.props.curves, this.props.constants)
             	//vähän vois kyl kauniimmaks laittaa:
@@ -275,16 +275,22 @@ class Chart extends React.Component {
     			}
 
                 this.props.dayLoad(d, ix)
-                if(this.hahlo_ix != null) {
-	    			//dayselection:
-	    			var alku = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
-	    			var loppu = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
-	    			this.chart_config.regions[this.hahlo_ix].start = alku
-	    			this.chart_config.regions[this.hahlo_ix].end = loppu
-	    			c3.generate(this.chart_config)
-    			}
+                this.paint_dayselection()
+
     }
    
+    paint_dayselection() {
+	        if(this.hahlo_ix != null) {
+	          //console.log("gray repaint:"+dateFormat(this.selectedDate, "yyyymmdd"))
+    			//dayselection : changing the initial
+    			var alku = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
+    			var loppu = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
+    			this.chart_config.regions[this.hahlo_ix].start = alku
+    			this.chart_config.regions[this.hahlo_ix].end = loppu
+    			c3.generate(this.chart_config)
+			}
+    }
+    
     render() {
     	//var width = document.getElementById('chart').getBoundingClientRect().width
     	//console.log("render()")
@@ -317,7 +323,8 @@ class Chart extends React.Component {
     		   }
     	   }
     	   if(this.selectedDate) {
-    	   //dayselection as last in array:
+    	   //initial dayselection as last in array:
+    		   //console.log("gray:"+dateFormat(this.selectedDate, "yyyymmdd"))
 	    	   this.hahlo_ix = this.chart_config.regions.length
 	    	   var alku1 = dateFormat(addDays(this.selectedDate,-1), "yyyymmdd") + "T20"
 	    	   var loppu1 = dateFormat(this.selectedDate, "yyyymmdd") + "T4"
@@ -366,6 +373,14 @@ class Chart extends React.Component {
     		//console.log('TY')
     		selectedDayOrAccount = -1 //reset
     	}
+    	
+    	if(nextProps.selectedType === 'd') {
+    		this.selectedDate = nextProps.params.d
+    		this.paint_dayselection()
+    	}
+    		
+    	
+    	
     	if( nextProps.constants && nextProps.constants[this.props.constants_id]) {
     		//console.log('C')
     		var constants = nextProps.constants[this.props.constants_id]
@@ -439,13 +454,14 @@ const mapStateToProps = (store) => {
         start: store.daterange.s,
         end: store.daterange.e,
         curves: store.chart.curves,
-        nextday: store.chart.nextday,
-        prevday: store.chart.prevday,
-        today: store.chart.today,
+        nextday: store.day.nextday,
+        prevday: store.day.prevday,
+        today: store.day.today,
         redraw: store.chart.redraw,
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
-        selectedType: store.payments.queryType
+        selectedType: store.payments.queryType,
+        params: store.payments.params,
     }
 }
 

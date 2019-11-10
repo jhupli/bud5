@@ -54,8 +54,13 @@
  #payments_table tbody td,
  #payments_table thead th {
             float: left;
+            border-left-width: 1px;
+            border-left-style: dotted;
+            border-left-color: #ddd;
+
         }
         
+  
         
 
 input[type="text"]:disabled {
@@ -68,6 +73,11 @@ input[type="text"]:disabled {
 {
     background-color: lightyellow !important;
 }
+
+/*.resizable-input
+{
+	display: none;
+}*/
 
 .newRow
 {
@@ -105,7 +115,7 @@ input[type="text"]:disabled {
     border: none  !important;
 }
 
-.simpledropdown_ro .react-selectize-toggle-button-container 
+/*.simpledropdown_ro .react-selectize-toggle-button-container
 {
     display: none  !important;
 }
@@ -184,26 +194,36 @@ input[type="text"]:disabled {
 		display: none; 
 	}
 
-#payments_table .check_header,
-#payments_table .s_header 
+#payments_table .check_header 
 	{ 
 		width: 42px;
 	}
 
-#payments_table .check_cell,
-#payments_table .s_cell 
+#payments_table .check_cell
 	{ 
 		width: 42px;
+	}
+
+#payments_table .s_header 
+	{ 
+		width: 31px;
+		padding-left: 8px;
+		
+	}
+
+#payments_table .s_cell 
+	{ 
+		width: 31px;
 	}
 		
 #payments_table .g_header 
 	{ 
-		width: 84px;
+		width: 69px;
 	}
 
 #payments_table .g_cell 
 	{ 
-		width: 84px;
+		width: 69px;
 		padding-top: 7px;
 	}
 
@@ -233,18 +253,18 @@ input[type="text"]:disabled {
 		padding-top: 13px;
 		padding-bottom: 0;
 		text-align: center;
-		width: 42px;
+		width: 31px;
 	}
 	
 #payments_table .deleted_cell
 	{ 
-		width: 42px;
+		width: 31px;
 		padding-top: 7px;
 	}
 
 #payments_table .deleted_cell .form-control
 	{ 
-		padding-left: 9px;
+		padding-left: 4px;
 	}
 
 #payments_table .header_tall
@@ -258,6 +278,23 @@ input[type="text"]:disabled {
 	}
 
 
+#payments_table_s 
+	{
+		width: 200px;
+	}
+#payments_table_s .field_name 
+	{ 
+		padding-top: 10px;
+		padding-left: 1px;
+		background-color: lightgray;
+		/*float:right;*/
+	}
+
+#payments_table_s .field_value 
+	{ 
+		width: 160px;
+		background-color: white;
+	}
 #recurringTimes
 {
 		height: 38px;

@@ -115,10 +115,9 @@ class DatePicker extends React.Component {
   render() {
     return (
     		<div>
-    			<input disabled = {this.props.disabled}
-    				onMouseDown={function(e) { 
-       						e.preventDefault(); return false;
-    				}}
+    			<input readOnly
+    				disabled = {this.props.disabled}
+    				autoComplete='off'
     				onKeyDown={function(e) { 
     					var char = e.which || e.keyCode;
     					if( char !== 9) {
@@ -131,7 +130,7 @@ class DatePicker extends React.Component {
     				style={{
     						display: 'inline', 
     						width: this.props.pickerType === 'range' ? '185px' : '100px',
-    						'backgroundColor' : (this.props.touched ? 'lightyellow' : '')
+    						'backgroundColor' : (this.props.touched ? 'lightyellow' : this.props.disabled ? 'transparent' : 'white')
     				}}/>
     		</div>
     );

@@ -48,7 +48,8 @@ const update = (updates) => (
  const load = () => (
     (dispatch) => {
         dispatch(accountsRequestAction())
-        axios_get('acc/list?ts='+Date.now(),
+        axios_get('acc/list',
+          null,
             response => {
                dispatch(accountsResponseAction(response.data))
             },

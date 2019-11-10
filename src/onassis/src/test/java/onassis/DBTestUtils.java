@@ -8,14 +8,26 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Component;
 
 import onassis.dto.A;
@@ -34,10 +46,15 @@ import onassis.dto.mappers.MapP;
 
 @Component
 public class DBTestUtils {
-    
+
+    @Autowired
+    public DataSource ds;
+
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
     String sql = null;
+    Connection con = null;
+
 
     public BigDecimal bd(double val) {
         return BigDecimal.valueOf(val).setScale(2, RoundingMode.UP);
@@ -47,8 +64,10 @@ public class DBTestUtils {
         sql = "alter table "+tableName+" alter column id restart with 1";
         jdbcTemplate.update( sql, new MapSqlParameterSource() );
     }
-    
+
     public void empty_db() throws Exception {
+
+
         sql = "delete from p";
         jdbcTemplate.update( sql, new MapSqlParameterSource() );
         reset_sequencer("p");
@@ -112,6 +131,12 @@ public class DBTestUtils {
     	return jdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
     }
     
+    public int get0BalancesCount() {
+    	sql = "select count(*) from b where i=0 and e=0 " ;
+    	MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+    	return jdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
+    }
+    
     public List<A> getAccounts() {
         sql = "select * from a" ;
         MapA rm = new MapA();
@@ -143,7 +168,7 @@ public class DBTestUtils {
             return null;
         }
     }
-    
+
     public int insert_p(Date d, BigDecimal i, int c, int a) throws Exception {
         assertNotNull(d);
         assertNotNull(i);
@@ -165,6 +190,7 @@ public class DBTestUtils {
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id) throws Exception {
     	update_p(d, i, c, a, id, null);
     }
+
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id, Boolean l) throws Exception {
         assertTrue(null != d || null !=i || null!= c || null != a || null != l);
         String set = "";

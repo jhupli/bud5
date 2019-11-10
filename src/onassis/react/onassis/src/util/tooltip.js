@@ -8,6 +8,9 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 	if(curves) {
 		var d = dateFormat(dt, 'yyyymmdd') + 'T00'
 		var ix = findIndexInArray( curves[0], n => { return d === n})
+    if (ix < 0) {
+      return null
+    }
 		var trs = []
 		
 		curves.forEach( (c, i) => {

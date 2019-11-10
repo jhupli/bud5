@@ -1,4 +1,5 @@
 import {axios_get_params} from './axios';
+import { balances_refresh } from '../actions/minibars'
 
 const LOCK_PAYMENT_REQUEST = 'LOCK_PAYMENT_REQUEST'
 const lockPaymentRequestAction = (lock_payment_request, locked) => {
@@ -24,7 +25,7 @@ const lockPaymentResponseAction = (payment, locked) => {
 const lock_payment = (payment, locked) => (
     (dispatch) => {
         dispatch(lockPaymentRequestAction(payment, locked))
-        axios_get_params('lock?ts='+Date.now(), 
+        axios_get_params('lock',
         		{
                 	params: {
                 		"id": payment,
@@ -33,6 +34,8 @@ const lock_payment = (payment, locked) => (
         		},
         		response => {
         			dispatch(lockPaymentResponseAction(payment, locked))
+        			console.log('ref')
+        			dispatch(balances_refresh())
                 //DO NOT dispatch(payments_refresh()) : it will refresh possibly unsubmitted payments, 
                 
         		},

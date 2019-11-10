@@ -5,17 +5,20 @@ import { update } from '../../actions/payments'
 import { payment_selection } from '../../actions/payment'
 import { CATEGORY } from '../../actions/categories'
 import { ACCOUNT } from '../../actions/accounts'
+import { load as history_load } from '../../actions/auditlog'
+import { calc_add } from '../../actions/calculator'
 
+import { Table, Panel, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 
-import { Table, Panel, Button } from 'react-bootstrap';
+import HistoryModal from '../history/HistoryModal'
 
 import LockField from '../editorFields/LockField'
-import CurrencyField from '../editorFields/CurrencyField'
+import CurrencyField from '../editorFields/CurrencyFieldPopover'
 import CheckboxField from '../editorFields/CheckboxField'
 import DropdownField from '../editorFields/DropdownField'
 import TextField from '../editorFields/TextField'
-import DateField from '../editorFields/DateField'
-//import Recur from '../recur/recur' 
+import TextFieldPopover from '../editorFields/TextFieldPopover'
+import DateFieldPopover from '../editorFields/DateFieldPopover'
 
 import NumericInput from 'react-numeric-input';
 import alertOptions from '../../util/alertoptions'
@@ -24,6 +27,7 @@ import './PaymentsEditor.css'
 import '../../customMultiSelect.css'
 
 import { group_load } from '../../actions/payments'
+import { day_load } from '../../actions/payments'
 
 import {SimpleSelect} from 'react-selectize'
 
@@ -33,8 +37,7 @@ import recurrent from './recurrent'
 
 import AlertContainer from 'react-alert'
 
-//import { withMedia } from 'react-media-query-hoc';
-
+import Media from 'react-media';
 
 import {
 		fields,
@@ -50,6 +53,7 @@ import {
 } from './constants'
 
 var FontAwesome = require('react-fontawesome')
+var dateFormat = require('dateformat');
 
 var tempId = -1
 var checkedSet = []
@@ -133,7 +137,13 @@ class PaymentsEditor extends React.Component {
         //render
         this.renderPaymentsHeaderT = this.renderPaymentsHeaderT.bind(this)
         this.renderPaymentsT = this.renderPaymentsT.bind(this)
-
+        
+        this.renderNormalT = this.renderNormalT.bind(this)
+        /*this.renderNarrowT = this.renderNarrowT.bind(this)*/
+        
+        //save, new and rest aso
+        this.renderControls = this.renderControls.bind(this)
+        
         //css and stuff
         this.tdClassName = this.tdClassName.bind(this)
         this.td = this.td.bind(this)
@@ -141,9 +151,14 @@ class PaymentsEditor extends React.Component {
         this.th = this.th.bind(this)
         
         this.groupLoad = this.groupLoad.bind(this)
+        this.dayLoad = this.dayLoad.bind(this)
+        this.showHistory = this.showHistory.bind(this)
         
         this.init()
-        this.state = {...initState(this.preInitT(props.initPayments), checkedSet)}
+        var state = {...initState(this.preInitT(props.initPayments), checkedSet)}
+
+        this.state = {...state, historyShow: false}
+        this.state.maskValues.d = dateFormat(this.props.defaultDate)
     }
 	
 	showAlert() {
@@ -246,7 +261,7 @@ class PaymentsEditor extends React.Component {
 	    var copy = {...this.state.masked}
 		copy[field] = set
 		this.setState({masked : copy})
-		
+
 		//clear/set errors of existing maskValues
 		copy = {...this.state.maskErrors}
 		copy[field] = !set ? null : validators[field](this.state.maskValues[field])
@@ -359,7 +374,7 @@ class PaymentsEditor extends React.Component {
     	case 'd' :
 					return(		
 					<div>
-				    	<DateField 
+				    	<DateFieldPopover 
 				    		id = {'d_'+index}
 					  		onValueChanged = {this.changePropertyF}
 					  		value = {value}
@@ -367,6 +382,8 @@ class PaymentsEditor extends React.Component {
 				  			field = 'd'
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'd')}
+				    		linkCb = {this.props.queryType === 'd' || index === -2 || !this.isPristineT() ? null : this.dayLoad}
+				  			popoverText = {'Show day ' + value }
 				    	 />
 				    </div>)
     	case 'b' :  return(
@@ -376,6 +393,7 @@ class PaymentsEditor extends React.Component {
 					  			field = 'b'
 						  		readOnly = {true}
 					  			touched = {false}
+				  				linkCb = {index === -2 ? null : this.props.calculatorAdd}
 						 />	
      				</div>)
     	case 'i' :
@@ -390,6 +408,8 @@ class PaymentsEditor extends React.Component {
 				  			field = 'i'
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'i')}
+				  			linkCb = {index === -2 ? null : this.props.calculatorAdd}
+				  			popoverText = 'Add to calculator'
 					  	/>
 				    </div>)
     	case 's' :
@@ -408,7 +428,7 @@ class PaymentsEditor extends React.Component {
     	case 'g' :
 					return(
 				  	<div>
-				  		<TextField 
+				  		<TextFieldPopover 
 					  		id = {'g_'+index}
 					  		onValueChanged = {this.changePropertyF}
 					  		value = {value}
@@ -417,7 +437,9 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'g')}
 				  			placeholder = 'gId'
-				  			linkCb = {this.groupLoad}
+				  			linkCb = {this.props.queryType === 'g' || index === -2 || !this.isPristineT() ? null : this.groupLoad}
+				  			popoverText = {'Show all in group "' + value + '"'}
+				  			maxLength = {15}
 					  	/>
 				    </div>)
      	case 'c' :
@@ -460,6 +482,7 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'description'
+				  			maxLength = {50}
 					  	/>
 				  		{ /* CHG-
 				  		<TextareaField 
@@ -553,8 +576,8 @@ class PaymentsEditor extends React.Component {
 		}
 	}
 		
-	addR() {
-		var defaults = this.getDefaultR()
+	addR(copyLast = true) {
+		var defaults = this.getDefaultR(copyLast)
     	var valuesCopy = copyArray(this.state.values)
     	var errorsCopy = copyArray(this.state.errors)
     	var count = 1
@@ -579,6 +602,7 @@ class PaymentsEditor extends React.Component {
 			errorsCopy.push(this.validateR(defaults)) 
 		}
 		this.setState({
+					recurring : { ...this.state.recurring, recur: false },
     		    	values : valuesCopy,
     		    	errors : errorsCopy,
     	})
@@ -602,10 +626,12 @@ class PaymentsEditor extends React.Component {
     	})
 	}
 	
-	getDefaultR() {
+	getDefaultR(copyLast) {
 		var last = defaultValues
-		if (this.sortedValues.length){
+		if (copyLast && this.sortedValues.length){
 			last = this.sortedValues[this.sortedValues.length - 1]
+		} else {
+			last.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		}
 
 		var res = {...last}
@@ -662,11 +688,22 @@ class PaymentsEditor extends React.Component {
 	      	<td className={this.tdClassName(index, 'deleted')}>
 	      		{this.renderDeletedContentF(index)}
 	      	</td>
+	      	<td>
+	      	{	this.isPersistedR(index) ?
+	            <Button variant="primary" onClick={() => this.showHistory(this.chooseValueF(index, 'id'))} >
+	            	<FontAwesome name='history' />
+	            </Button>
+	            :
+	            null
+	      	}
+	      	</td>
 		</tr>)
     }
     
 	resetT() {
 		var state = initState(this.state.initial, checkedSet, this.state.recurring)
+
+		state.maskValues.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		this.setState({...state})
 		this.init()
 	}
@@ -774,50 +811,55 @@ class PaymentsEditor extends React.Component {
 	  			{this.th('d', 'Date')}
 		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
 	  			{this.th('i', 'Pay')}
-	  			<th className={this.thClassName('s')} />
+	  			{this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
 	  			{this.th('g', <FontAwesome name='paperclip' size='lg' />)}
 	  			{this.th('c', 'Issue')}
 	  			{this.th('a', 'Account')}
 	  			{this.th('descr', 'Description')}		  			
 	  			<th className={this.thClassName('deleted')}>
-	  				<FontAwesome name='remove' style={{'color': 'red'}}/>
+	  				<FontAwesome name='trash'  size='lg' />
+	  			</th>
+	  			<th>
 	  			</th>
 			</tr>				  			
 		</thead>)
     }
     
-	renderPaymentsT = () => {
-		this.sortedValues = this.state.values.slice(0)
-		if (this.state.sort) this.sortedValues.sort(this.sortersF())
-		
-		return (
-		<div>
-			<div>
+	  				
+	renderControls = () => {
+	  	return (
 		<Panel id="ctrls-panel" expanded={this.state.recurring.recur} onToggle={() => {}}  >
           <Panel.Heading >
             <Panel.Title >
 
 					<Button onClick={() => this.resetT()} disabled={this.pristine} bsStyle={this.pristine ? "default":"primary"}>Reset</Button>
 					<Button onClick={() => this.preSubmitT()} disabled={this.pristine  || (this.errors != null)} bsStyle={this.pristine ? "default":"primary"}>Save</Button>
-					<Button onClick={() => this.addR()}>Add</Button>
+					<Button onClick={() => this.addR(false)}><FontAwesome name='plus' /></Button> 
+					{ this.state.values.length > 0 ?
+							<Button onClick={() => this.addR()}>Duplicate last</Button>
+							:
+							null
+					}
 
-
-						{/*this.pristine ? 'pristine' : 'not pristine'*/}
-						{/*this.errors ? ' errors' : ' no errors'*/}
-						<span className="pull-right" style={{marginTop: "6px"}}>
-							<Panel.Toggle componentClass="button" className="link-button" onClick={this.setRecurring} >
-							{   (!this.state.values || this.state.values.length === 0) ?
-								''
-								:
-		            			(this.state.recurring.recur ? 'No recur' : 'Recurring...') }
-		            		</Panel.Toggle>
-	            		</span>
+					{/*this.pristine ? 'pristine' : 'not pristine'*/}
+					{/*this.errors ? ' errors' : ' no errors'*/}
+					<span style={{marginTop: "6px"}}>
+						<Panel.Toggle componentClass="button" className="link-button" onClick={this.setRecurring} >
+						{   (!this.state.values || this.state.values.length === 0) ?
+							''
+							:
+	            			' ' + (this.state.recurring.recur ? 'No recur' : 'Recurring...') }
+	            		</Panel.Toggle>
+            		</span>
 
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
             <Panel.Body >
             <span style={{display: "inline-flex"}}>
+            	<span style={{marginTop: "6px"}}>
+            Repeat last row &nbsp;
+            	</span>
 				<SimpleSelect
 					style={{
 				    	width: '170px'
@@ -838,30 +880,97 @@ class PaymentsEditor extends React.Component {
 					onChange={this.setRecurringTimes} 
 				/> 
 				<span style={{marginTop: "6px"}}>
-				times.
+				&nbsp;times.&nbsp;
 				</span>
+				<Button onClick={() => this.addR()}>Ok</Button>
 			</span>
 
             </Panel.Body>
           </Panel.Collapse>
         </Panel>
-			
-
-
-					  
-			</div>
-			
-
-			
-			<Table id="payments_table" striped bordered hover condensed>
+	  	)
+	}
+	  	
+	/*renderNarrowT  = () => {
+		return(
+			this.sortedValues.map(p => {
+				return(
+				<Table id="payments_table_s" bordered condensed>
+					<tbody>
+		       			<tr  >
+       					  <td className="field_value">{this.renderContentF('l', p.index)}</td>
+	                      <td className="field_value">
+	                      	<span style={{float: 'right'}}>
+	                      		<div style={{"display": "inline-flex", "whiteSpace": "nowrap", "alignItems": "center"}}>
+	                      		mark {this.renderContentF('check', p.index)}
+	                      		<FontAwesome name='remove' style={{'color': 'red'}}/>
+	                      		{this.renderDeletedContentF(p.index)} 
+	                      		
+	                      		</div>
+	                      	</span>
+	                      </td>
+			            </tr>
+						<tr  >
+	                      <td className="field_name"><span style={{float: 'right'}}>Date</span></td>
+	                      <td className={this.tdClassName(p.index, 'd')}>{this.renderContentF('d', p.index)}</td>
+			            </tr>
+			           	<tr  >
+	                      <td className="field_name"><span style={{float: 'right'}}>Sum</span></td>
+	                      <td className={this.tdClassName(p.index, 'i')}>{this.renderContentF('i', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>In <FontAwesome name='pie-chart' size='lg' /></span></td>
+	                      <td className={this.tdClassName(p.index, 's')}>{this.renderContentF('s', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>Issue</span></td>
+	                      <td className={this.tdClassName(p.index, 'c')}>{this.renderContentF('c', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}><FontAwesome name='paperclip' size='lg' /></span></td>
+	                      <td className={this.tdClassName(p.index, 'g')}>{this.renderContentF('g', p.index)}</td>
+			            </tr >			            
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>Account</span></td>
+	                      <td className={this.tdClassName(p.index, 'd')}>{this.renderContentF('a', p.index)}</td>
+			            </tr>
+			            <tr>
+	                      <td className="field_name"><span style={{float: 'right'}}>Descr</span></td>
+	                      <td className={this.tdClassName(p.index, 'descr')}>{this.renderContentF('descr', p.index)}</td>
+			            </tr >
+			            
+			          </tbody>
+		            </Table>
+		            )}
+				)
+		)
+	}*/
+	                      
+	renderNormalT  = () => {
+		return(
+		<Table id="payments_table" striped bordered hover condensed>
 				{this.renderPaymentsHeaderT()}
 				<tbody>
 				  	{this.sortedValues.map((p) => this.renderPaymentR(p.index))}
 				</tbody>
-			</Table>
-		</div>)
+		</Table>
+		)
+	}
+	
+	renderPaymentsT = (width) => {
+		this.sortedValues = this.state.values.slice(0)
+		if (this.state.sort) this.sortedValues.sort(this.sortersF())
+		
+		return (
+		<div>
+			{this.renderControls()}
+			{/*{width === 'narrow' ? this.renderNarrowT() : this.renderNormalT()}*/}
+			{this.renderNormalT()}
+		</div>
+		)
 	}
 		
+	
 	tdClassName(index, field) {
 		return field + '_cell' + 
 			   (!this.isPersistedR(index) ? ' newRow' : '') +
@@ -917,11 +1026,11 @@ class PaymentsEditor extends React.Component {
 		<th className={this.thClassName(field)}>
   			<div>
 	  			<span style={{display: "flex"}}>			  						
-	  				{this.renderContentF(field, -1)}
 	  				<div style={{marginTop: 8, paddingRight: 3}}>
 	  					{sortField}
 	  				</div>
 	  				{label !== null ? labelField : ''}
+	  				&nbsp;{this.renderContentF(field, -1)}
 	  			</span>
 	  		</div>
 	  		{this.renderContentF(field, -2)}
@@ -936,9 +1045,14 @@ class PaymentsEditor extends React.Component {
 	
 	componentWillReceiveProps(nextprops) {
 		this.init()
-		this.setState(
+		/*this.setState(
 				{...initState(this.preInitT(nextprops.initPayments), checkedSet)}
-		)
+		)*/
+
+
+		var state = {...initState(this.preInitT(nextprops.initPayments), checkedSet)}
+        this.state.maskValues.d = dateFormat(nextprops.defaultDate, "dd.mm.yyyy")
+		this.setState({...state})
 	}
 
 	updateCheckedSet(value, index, values = null) {
@@ -955,14 +1069,45 @@ class PaymentsEditor extends React.Component {
 	groupLoad(grp) {
 		if(this.pristine && grp && grp.length > 0) this.props.groupLoad(grp)
 	}
+	dayLoad(d) {
+		if(this.pristine && d && d.length > 0) this.props.dayLoad(toDateFi(d))
+	}
+	showHistory(id) {
+		this.props.historyLoad(id)
+		this.setState({ historyShow: true })
+	}
 	
 	render() {
+		let historyClose = () => this.setState({ historyShow: false });
+		
 		this.pristine = this.isPristineT()
 		this.errors = this.hasErrorsT()
 		return(
 			<div>
 		        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
-				{this.renderPaymentsT()}
+			    <Media query="(max-width: 734px)">
+			          {matches =>
+			            matches ? (
+			              this.renderPaymentsT('narrow')
+			            ) : (
+			              this.renderPaymentsT('wide')
+			            )
+			          }
+    			</Media>
+
+				<HistoryModal
+					show={this.state.historyShow}
+					onHide={historyClose}
+				/>
+
+    <FormGroup>
+      <ControlLabel>Copyright</ControlLabel>
+      <FormControl.Static>jhupli@gmail.com</FormControl.Static>
+    </FormGroup>
+				
+				
+				
+				
 		   </div>
 		)
 	}
@@ -983,11 +1128,19 @@ function mapDispatchToProps(dispatch) {
         },
         groupLoad: (g) => {
             dispatch(group_load(g))
+        },
+        dayLoad: (d) => {
+            dispatch(day_load(d))
+        },
+        historyLoad: (id) => {
+            dispatch(history_load(id))
+        },
+        calculatorAdd: (p) => {
+            dispatch(calc_add(p))
         }
     })
 }
 
-//export default connect(null, mapDispatchToProps)(withMedia(PaymentsEditor))
 export default connect(null, mapDispatchToProps)(PaymentsEditor)
 
 

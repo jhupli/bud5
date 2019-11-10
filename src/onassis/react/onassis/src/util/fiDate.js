@@ -50,6 +50,14 @@ function toDBFormatFi(fiDate) {
 		return dateFormat(new Date(year, month, day), "yyyy-mm-dd")
 }
 
+function toDateDB(DBDate) {
+		var parts = DBDate.split("-");
+		var day = parts[2]
+		var month = parts[1] - 1
+		var year = parts[0]
+		return new Date(year, month, day)
+}
+
 function toFiDBFormat(DBDate) {
 		var parts = DBDate.split("-");
 		var day = parts[2]
@@ -58,4 +66,4 @@ function toFiDBFormat(DBDate) {
 		return dateFormat(new Date(year, month, day), "dd.mm.yyyy")
 }
 
-export {toDateFi, toDBFormatFi, fiDateTimeMillis, toFiDBFormat}
+export {toDateFi, toDBFormatFi, fiDateTimeMillis, toFiDBFormat, toDateDB}

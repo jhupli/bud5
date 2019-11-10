@@ -3,7 +3,6 @@ package onassis;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -11,11 +10,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+import onassis.db.functions.DBTestUtilsDB;
 import onassis.dto.A;
 import onassis.dto.B;
 import onassis.dto.H;
@@ -28,8 +32,15 @@ import onassis.dto.P;
  *  -without JPA (Hibernate) -layer.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
 @IntegrationTest({"spring.datasource.url:jdbc:derby:memory:onassisTest;create=true;"})
+
+@WebAppConfiguration
+@SpringBootApplication
+@SpringApplicationConfiguration( classes = {
+        SecurityConfig.class,
+        App.class
+} )
+
 public class DBFunctionsTest extends DBTestUtils{
     
     SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
@@ -42,18 +53,26 @@ public class DBFunctionsTest extends DBTestUtils{
     
     @Before
     public void before() throws Exception {
+        con = ds.getConnection();
+        jdbcTemplate = new NamedParameterJdbcTemplate(new SingleConnectionDataSource(con, true));
+
         d1 = new Date(df.parse("2.1.2016").getTime());
         d2 = new Date(df.parse("4.1.2016").getTime());
         d3 = new Date(df.parse("6.1.2016").getTime());
         d4 = new Date(df.parse("8.1.2016").getTime());
         insert_basedata();
+        DBTestUtilsDB.statistics_start(con, "FUNCTIONSCHEMA");
+        //statistics_start();
     }
 
-    
+
     @After
     public void after() throws Exception {
+        DBTestUtilsDB.statistics_end(con, "FUNCTIONSCHEMA");
+        //statistics_end();
     	xcheck_b0_b();
         empty_db();
+        con.close();
     }
     
     public void xcheck_b0_b() throws Exception {
@@ -67,6 +86,7 @@ public class DBFunctionsTest extends DBTestUtils{
     			 assertTrue(null != select_b(b.getD(), 0));
     		 }
     	 }
+    	 assertTrue(0 == get0BalancesCount());
     }
     
     public void xcheck_b0_smallestb() throws Exception {
@@ -1267,6 +1287,119 @@ public class DBFunctionsTest extends DBTestUtils{
         {
             B b = select_b(d4, 0);
             B bExp = new B(d4, bd(7), bd(2), bd(0), 0);
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_150() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), 0);
+            bExp.setSmallestb(bd(-1));
+            assertTrue(compareBs(b, bExp));
+        }
+
+        update_p(null, bd(-2), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-2), bd(0), bd(-2), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-2), bd(0), bd(-2), 0);
+            bExp.setSmallestb(bd(-2));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_155() throws Exception {
+        int id = insert_p(d1, bd(-2), c, a);
+        update_p(null, bd(-1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), 0);
+            bExp.setSmallestb(bd(-1));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+    @Test
+    public void  p_u_160() throws Exception {
+        int id = insert_p(d1, bd(1), c, a);
+        update_p(null, bd(2), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(2), bd(2), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(2), bd(2), bd(0), 0);
+            bExp.setSmallestb(bd(0));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_165() throws Exception {
+        int id = insert_p(d1, bd(2), c, a);
+        update_p(null, bd(1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+            bExp.setSmallestb(bd(0));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_170() throws Exception {
+        int id = insert_p(d1, bd(1), c, a);
+        update_p(null, bd(-1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(-1), bd(0), bd(-1), 0);
+            bExp.setSmallestb(bd(-1));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  p_u_175() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        update_p(null, bd(1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+            bExp.setSmallestb(bd(0));
             assertTrue(compareBs(b, bExp));
         }
     }

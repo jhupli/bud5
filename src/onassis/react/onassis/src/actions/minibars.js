@@ -31,7 +31,7 @@ const balances_load = (cat) => (
     (dispatch) => {
     	prev_cat = cat
         dispatch(balancesRequestAction())
-        axios_get_params('minibars?ts='+Date.now(), 
+        axios_get_params('minibars',
         		{ 
         			params: {"cat": cat}
         		},

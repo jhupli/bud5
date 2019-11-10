@@ -10,7 +10,7 @@ class Categories extends React.Component {
 			  <Panel >
 			  	<Panel.Heading style={{paddingTop: "4px", paddingBottom: "3px", height: "45px", fontSize: "23px"}}>
 				  	<span style={{display: "flow-root", alignItems: "center"}}>
-				  		Categories 
+				  		Issues
 				  	</span>
 			  	</Panel.Heading>
 			  	<Panel.Body>					

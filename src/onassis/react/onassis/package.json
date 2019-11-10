@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "c3": "^0.4.15",
+    "clipboard-copy": "^2.0.1",
     "d3": "^3.5.17",
     "dateformat": "^3.0.3",
     "daterangepicker": "^2.1.25",
@@ -19,6 +20,8 @@
     "react-dom-factories": "^1.0.2",
     "react-dropdown": "^1.6.3",
     "react-fontawesome": "^1.6.1",
+    "react-keyboard-event-handler": "^1.5.1",
+    "react-media": "^1.9.2",
     "react-numeric-input": "^2.2.3",
     "react-redux": "^6.0.0",
     "react-scripts": "2.1.2",
@@ -27,7 +30,7 @@
     "react-transition-group": "^1.1.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "sync-request": "^6.0.0"
+    "then-request": "^6.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,5 +47,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
+  }
 }

@@ -3,6 +3,7 @@ var FontAwesome = require('react-fontawesome');
 
 class Spinner extends React.Component{
 	render(){
+		return null
 		var spin = <FontAwesome name='spinner' spin />
 		//console.log("fetch:"+this.props.fetching)
 		return(this.props.fetching ? spin : '')					

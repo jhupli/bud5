@@ -98,6 +98,21 @@
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.woff</exclude>
+                    <exclude>**/*.woff2</exclude>
+                </excludes>
+                <!--<includes>
+                    <include>**/application*.properties</include>
+                </includes>-->
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.woff</include>
+                    <include>**/*.woff2</include>
+                </includes>
                 <!--<includes>
                     <include>**/application*.properties</include>
                 </includes>-->

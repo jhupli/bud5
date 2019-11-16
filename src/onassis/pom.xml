@@ -101,6 +101,7 @@
                 <excludes>
                     <exclude>**/*.woff</exclude>
                     <exclude>**/*.woff2</exclude>
+                    <exclude>**/*.ico</exclude>
                 </excludes>
                 <!--<includes>
                     <include>**/application*.properties</include>
@@ -112,6 +113,7 @@
                 <includes>
                     <include>**/*.woff</include>
                     <include>**/*.woff2</include>
+                    <include>**/*.ico</include>
                 </includes>
                 <!--<includes>
                     <include>**/application*.properties</include>

@@ -4,7 +4,7 @@
 
     <groupId>hupli</groupId>
     <artifactId>onassis</artifactId>
-    <version>5.7</version>
+    <version>5.8</version>
     <packaging>jar</packaging>
 
     <name>Spring Boot Blank Project (from https://github.com/making/spring-boot-blank)</name>
@@ -101,6 +101,7 @@
                 <excludes>
                     <exclude>**/*.woff</exclude>
                     <exclude>**/*.woff2</exclude>
+                    <exclude>**/*.ico</exclude>
                 </excludes>
                 <!--<includes>
                     <include>**/application*.properties</include>
@@ -112,6 +113,7 @@
                 <includes>
                     <include>**/*.woff</include>
                     <include>**/*.woff2</include>
+                    <include>**/*.ico</include>
                 </includes>
                 <!--<includes>
                     <include>**/application*.properties</include>
@@ -143,10 +145,8 @@
                 <groupId>com.amashchenko.maven.plugin</groupId>
                 <artifactId>gitflow-maven-plugin</artifactId>
                 <version>1.13.0</version>
-                <configuration>
-                    <pushReleases>true</pushReleases>
-                    <allowUntracked>true</allowUntracked>
-                </configuration>
+                <configuration />
+
             </plugin>
         </plugins>
     </build>

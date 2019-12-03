@@ -40,6 +40,7 @@ class DetailsPanel extends React.Component{
        this.nextHistory = this.nextHistory.bind(this)
 	}
     componentWillReceiveProps(nextProps){
+
     	if( nextProps.constants && nextProps.constants['acc']) {
     		this.setState({
 		    		accs : nextProps.constants['acc']
@@ -61,9 +62,9 @@ class DetailsPanel extends React.Component{
         this.state.start != null && nextProps.start != null
         &&
         (
-          this.state.start.getMilliseconds() != nextProps.start.getMilliseconds()
+          this.state.start.getTime() != nextProps.start.getTime()
           ||
-          this.state.end.getMilliseconds() != nextProps.end.getMilliseconds()
+          this.state.end.getTime() != nextProps.end.getTime()
         )
       )
 	  	{
@@ -71,7 +72,6 @@ class DetailsPanel extends React.Component{
 		    		start : nextProps.start,
 		    		end : nextProps.end		
 		    })
-
     		switch(this.props.queryType) {
     					case 'd' : this.props.dayLoad(this.props.params.d)
                      break;

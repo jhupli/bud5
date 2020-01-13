@@ -140,12 +140,23 @@ input[type="text"]:disabled {
 	{ 
 		width: 112px;
 	}
-			
+
+ #payments_table .dc_header
+ {
+     width: 112px;
+ }
+
 #payments_table .d_cell 
 	{ 
 		width: 112px;
 		padding-top: 7px;
 	}
+
+ #payments_table .dc_cell
+ {
+     width: 112px;
+     padding-top: 7px;
+ }
 
 #payments_table .b_header 
 	{ 

@@ -3,12 +3,13 @@ import currencyFormat  from '../../util/currency'
 
 var dateFormat = require('dateformat')
 
-const fields = ['d','b','i','s','g','c','a','descr']
+const fields = ['d','dc','b','i','s','g','c','a','descr']
 
 const defaultValues = {
 	id: null,
 	l: false ,
 	d: dateFormat(new Date(), "dd.mm.yyyy"),
+  dc: dateFormat(new Date(), "dd.mm.yyyy"),
 	i: "+0.00",
 	c: null,
 	a: null,
@@ -22,6 +23,7 @@ const initialMaskValues = {
 	id: null,
 	l: false,
 	d: dateFormat(new Date(), 'dd.mm.yyyy'),
+  dc: dateFormat(new Date(), 'dd.mm.yyyy'),
 	i: '+0.00',
 	c: null,
 	a: null,
@@ -41,6 +43,10 @@ const 	validators = {
 	'd': (value) => {
 			return (value != null && value !== '') ? null : 'required'
 		  },
+  'dc': (value) => {
+	  debugger;
+    return (value != null && value !== '') ? null : 'required'
+      },
 	'i':  (value) => {
 			return (value !== '') ? null : 'required'
 		  },
@@ -87,6 +93,11 @@ function preSubmitFormat(payments) {
 			p.d = toDBFormatFi(p.d)
 			//p.d_initial = toDBFormatFi(p.d_initial)
 		 }
+    if(p.dc) {
+      // "1.12.2001" -> "2001-12-01"
+      p.dc = toDBFormatFi(p.dc)
+      //p.d_initial = toDBFormatFi(p.d_initial)
+    }
 	})
 	return payments
 }
@@ -98,6 +109,7 @@ function copyObject(b) {
 		id: b,
 		l: b,
 		d: b,
+    dc: b,
 		i: b,
 		c: b,
 		a: b,
@@ -115,6 +127,7 @@ function copyPayment(payment, checkedList, index = null) {
 		id: payment.id,
 		l: payment.l,
 		d: payment.d,
+    dc: payment.dc,
 		i: payment.i,
 		c: payment.c,
 		a: payment.a,
@@ -177,7 +190,8 @@ function initState(payments, checkedList, recurring = { recur: false, times: 1, 
 
 function oneIsTrue(row) {
 	var ret =
-		row.d ||			
+		row.d ||
+    row.dc ||
 		row.i ||
 		row.c ||
 		row.a ||

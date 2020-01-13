@@ -6,6 +6,7 @@ import java.util.Date;
 public class P {
 	public Long id;
 	public Date d;
+    public Date dc;
 	public BigDecimal i;
 	public Integer c;
 	public Integer a;
@@ -29,6 +30,8 @@ public class P {
 		this.g = g;
 		this.descr = descr;
 		this.l = l;
+		//FIXME:
+		this.dc = d;
 	}
 
 	public Long getId() {

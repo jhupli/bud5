@@ -8,13 +8,16 @@ class DateField extends React.Component {
 	render() {
 
 		const {id, onValueChanged, value, readOnly, field, index, touched, linkCb, popoverText} = this.props
+    console.log("id:"+id)
+    console.log("value:"+value)
+    debugger
 		var datePickerField =
 		<div>
 	    	<DatePicker 
 	    	    disabled={readOnly}
 	    		value={value}
 	    		id={id}
-	    		pickerName={'picker_d_' + id + index} 
+	    		pickerName={'picker_d_' + id + index}
 	    	 	pickerCallback={(d) => onValueChanged(dateFormat(d, "dd.mm.yyyy"), field, index)}
 	    	 	pickerType="single"
 	    	 	touched = {touched}

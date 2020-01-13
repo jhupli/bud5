@@ -386,6 +386,21 @@ class PaymentsEditor extends React.Component {
 				  			popoverText = {'Show day ' + value }
 				    	 />
 				    </div>)
+        case 'dc' :
+          return(
+            <div>
+              <DateFieldPopover
+                id = {'dc_'+index}
+                onValueChanged = {this.changePropertyF}
+                value = {value}
+                readOnly = {this.readOnlyR(index, 'dc')}
+                field = 'dc'
+                index = {index}
+                touched = {this.touchedF(index, 'dc')}
+                linkCb = {this.props.queryType === 'dc' || index === -2 || !this.isPristineT() ? null : this.dayLoad}
+                popoverText = {'Show day ' + value }
+              />
+            </div>)
     	case 'b' :  return(
     				<div>
      					<CurrencyField 
@@ -565,6 +580,11 @@ class PaymentsEditor extends React.Component {
 				return inv * 
 				(toDateFi(this.chooseValueF(b.index,'d')).getTime() - toDateFi(this.chooseValueF(a.index,'d')).getTime())
 			}
+    case 'dc':
+      return (a, b) => {
+        return inv *
+          (toDateFi(this.chooseValueF(b.index,'dc')).getTime() - toDateFi(this.chooseValueF(a.index,'dc')).getTime())
+      }
 		case 'g':
 			return (a, b) => {
 				 var textA = this.chooseValueF(a.index,'g').toUpperCase()
@@ -632,6 +652,7 @@ class PaymentsEditor extends React.Component {
 			last = this.sortedValues[this.sortedValues.length - 1]
 		} else {
 			last.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
+      last.dc = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		}
 
 		var res = {...last}
@@ -682,7 +703,9 @@ class PaymentsEditor extends React.Component {
     renderPaymentR(index) {
     	return(
     	<tr key={index}>
-	 		{['check', 'l', ...fields].map( (f) => { 
+        {//const fields = ['d','b','i','s','g','c','a','descr']
+        }
+	 		{['check','l','i','s','c','dc','a','d','b','g','descr'].map( (f) => {
 	 			return this.td(index, f) 
 	 		})}
 	      	<td className={this.tdClassName(index, 'deleted')}>
@@ -808,13 +831,18 @@ class PaymentsEditor extends React.Component {
 				  	/>
 	  			</th>
 		  		<th className={this.thClassName('l')} />
-	  			{this.th('d', 'Date')}
+          {this.th('i', 'Pay')}
+
+          {this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
+          {this.th('c', 'Issue')}
+          {this.th('dc', 'Issue Date')}
+
+          {this.th('a', 'Account')}
+          {this.th('d', 'Account Date')}
 		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
-	  			{this.th('i', 'Pay')}
-	  			{this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
-	  			{this.th('g', <FontAwesome name='paperclip' size='lg' />)}
-	  			{this.th('c', 'Issue')}
-	  			{this.th('a', 'Account')}
+
+
+          {this.th('g', <FontAwesome name='paperclip' size='lg' />)}
 	  			{this.th('descr', 'Description')}		  			
 	  			<th className={this.thClassName('deleted')}>
 	  				<FontAwesome name='trash'  size='lg' />
@@ -957,7 +985,7 @@ class PaymentsEditor extends React.Component {
 		)
 	}
 	
-	renderPaymentsT = (width) => {
+	 renderPaymentsT = (width) => {
 		this.sortedValues = this.state.values.slice(0)
 		if (this.state.sort) this.sortedValues.sort(this.sortersF())
 		
@@ -1052,6 +1080,7 @@ class PaymentsEditor extends React.Component {
 
 		var state = {...initState(this.preInitT(nextprops.initPayments), checkedSet)}
         this.state.maskValues.d = dateFormat(nextprops.defaultDate, "dd.mm.yyyy")
+        this.state.maskValues.dc = dateFormat(nextprops.defaultDate, "dd.mm.yyyy")
 		this.setState({...state})
 	}
 

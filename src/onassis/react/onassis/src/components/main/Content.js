@@ -82,11 +82,11 @@ class Content extends React.Component {
 				</div>
 				<div style={{width: '100%'}}>
 					<div style={{width: '100%', "display": "inline-flex", "whiteSpace": "nowrap"}}>
+            <div style={{width: '25%', paddingLeft: '2px'}}>
+              <PiePanel />
+            </div>
 						<div style={{width: '75%', paddingRight: '2px'}}>
 							<ChartPanel />
-						</div>
-						<div style={{width: '25%', paddingLeft: '2px'}}>
-							<PiePanel />
 						</div>
 					</div>
 				</div>

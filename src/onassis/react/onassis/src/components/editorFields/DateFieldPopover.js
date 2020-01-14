@@ -8,9 +8,6 @@ class DateField extends React.Component {
 	render() {
 
 		const {id, onValueChanged, value, readOnly, field, index, touched, linkCb, popoverText} = this.props
-    console.log("id:"+id)
-    console.log("value:"+value)
-    debugger
 		var datePickerField =
 		<div>
 	    	<DatePicker 

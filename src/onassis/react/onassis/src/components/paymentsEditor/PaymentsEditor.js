@@ -189,18 +189,26 @@ class PaymentsEditor extends React.Component {
     		return
     	}
     	
-    	//touch
-		if (this.isPersistedR(index)) { //new rows do not get 'touched' (unless masked)
-			var copy = copyArray(this.state.touched)
-			copy[index][field] = this.isDifferentFromInitialF(value, field, index)
-			this.setState({touched : copy})
-		}
-		
-		//validate
-		if(!this.state.masked[field]) { //do not validate masked fields
-			this.validateF(field, value, index)
-		}
-    	this.setValueF(value, field, index)
+        //touch
+      if (this.isPersistedR(index)) { //new rows do not get 'touched' (unless masked)
+        var copy = copyArray(this.state.touched)
+        copy[index][field] = this.isDifferentFromInitialF(value, field, index)
+        //when dc changes will change d to the same value
+        if(field === 'dc') {
+          copy[index]['d'] = this.isDifferentFromInitialF(value, 'd', index)
+        }
+        this.setState({touched : copy})
+      }
+
+      //validate
+      if(!this.state.masked[field]) { //do not validate masked fields
+        this.validateF(field, value, index)
+      }
+      this.setValueF(value, field, index)
+      //when dc changes will change d to the same value
+      if(field === 'dc') {
+            this.setValueF(value, 'd', index)
+      }
     }
     
     changePropertyDeletedF(value, field, index) {
@@ -276,16 +284,20 @@ class PaymentsEditor extends React.Component {
 	}
 	
 	validateF(field, value, index) {
+    console.log("validate: field=" + field + " value=" + value + " index="+index)
+
 		var original = this.state.errors[index][field]
-		var result = validators[field](value) 
+		var result = validators[field](value, this.state.values[index])
 		if( result !== original ) {
 			var copy = copyArray(this.state.errors)
-			copy[index][field] = validators[field](value) 
+			copy[index][field] = validators[field](value, this.state.values[index])
 			this.setState({errors : copy})
 		}
 	}
 	
 	validateMaskF(field, value) {
+    console.log("validate mask: field=" + field + " value=" + value)
+    debugger
 		var copy = {...this.state.maskErrors}
 		copy[field] = !this.state.masked[field] ? null : validators[field](value)
 		this.setState({maskErrors : copy})

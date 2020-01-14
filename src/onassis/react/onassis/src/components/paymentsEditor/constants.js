@@ -1,5 +1,6 @@
-import {toDBFormatFi} from '../../util/fiDate'
+import {toDBFormatFi, toDateFi} from '../../util/fiDate'
 import currencyFormat  from '../../util/currency'
+import {daydiff} from  '../../util/addDays'
 
 var dateFormat = require('dateformat')
 
@@ -40,12 +41,12 @@ const 	validators = {
 	'l': (value) => {
 			return null
 		  },
-	'd': (value) => {
-			return (value != null && value !== '') ? null : 'required'
+	'd': (value, values) => {
+      let diff = daydiff(toDateFi(value), toDateFi(values.d));
+			return (value != null && value !== '' && diff < 0) ? null : 'required'
 		  },
   'dc': (value) => {
-	  debugger;
-    return (value != null && value !== '') ? null : 'required'
+      return (value != null && value !== '') ? null : 'required'
       },
 	'i':  (value) => {
 			return (value !== '') ? null : 'required'
@@ -75,6 +76,7 @@ function preInitFormat(payments, checkedList) {
 	copy.forEach((p) => {
 		// 2006-12-31 -> 31.12.2005
 		p.d = dateFormat(p.d, "dd.mm.yyyy")
+    p.dc = dateFormat(p.dc, "dd.mm.yyyy")
 		// 2 -> +2.00
 		p.i =  (p.i >=0 ? '+' : '') + currencyFormat(p.i)
 	})

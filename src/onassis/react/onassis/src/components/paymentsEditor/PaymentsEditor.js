@@ -82,7 +82,8 @@ class PaymentsEditor extends React.Component {
         
         //validate:
         this.validateF = this.validateF.bind(this)
-        this.validateMaskF = this.validateMaskF.bind(this) 
+        //this.validateF = this.validateF.bind(this) //validates the whole row
+        //this.validateMaskF = this.validateMaskF.bind(this)
         
         //some field related util;
         this.maskedF = this.maskedF.bind(this) //is field masked 
@@ -118,12 +119,14 @@ class PaymentsEditor extends React.Component {
         //utils
         this.isPersistedR = this.isPersistedR.bind(this)
         this.disabledCheckR = this.disabledCheckR.bind(this) //row selection disabled
+        this.maskedCopy = this.maskedCopy.bind(this) //row selection disabled
 
         //render
         this.renderPaymentR = this.renderPaymentR.bind(this)
 
         //Table related:
         this.resetT =  this.resetT.bind(this)
+        this.validateT =  this.validateT.bind(this)
         //util
         this.isPristineT = this.isPristineT.bind(this)
         this.hasErrorsT = this.hasErrorsT.bind(this)
@@ -184,7 +187,7 @@ class PaymentsEditor extends React.Component {
     	}
     	
     	if(index === -2){ //mask value
-    		this.validateMaskF(field, value)
+    		//this.validateMaskF(field, value)
     		this.setValueMaskF(field, value)
     		return
     	}
@@ -194,21 +197,22 @@ class PaymentsEditor extends React.Component {
         var copy = copyArray(this.state.touched)
         copy[index][field] = this.isDifferentFromInitialF(value, field, index)
         //when dc changes will change d to the same value
-        if(field === 'dc') {
+        /*if(field === 'dc') {
           copy[index]['d'] = this.isDifferentFromInitialF(value, 'd', index)
-        }
+        }*/
         this.setState({touched : copy})
       }
 
       //validate
       if(!this.state.masked[field]) { //do not validate masked fields
         this.validateF(field, value, index)
+        //this.validateT(field, value)
       }
       this.setValueF(value, field, index)
       //when dc changes will change d to the same value
-      if(field === 'dc') {
+      /*if(field === 'dc') {
             this.setValueF(value, 'd', index)
-      }
+      }*/
     }
     
     changePropertyDeletedF(value, field, index) {
@@ -263,27 +267,71 @@ class PaymentsEditor extends React.Component {
 		var copy = {...this.state.maskValues}
 		copy[field] = value
 		this.setState({maskValues : copy})
+    this.validateT(field, true, value)
 	}
 	
 	setValueMaskCheckF(field, set) {
-	    var copy = {...this.state.masked}
+		  debugger
+    this.validateT(field, set, this.state.maskValues[field])
+	  var copy = {...this.state.masked}
 		copy[field] = set
 		this.setState({masked : copy})
 
 		//clear/set errors of existing maskValues
-		copy = {...this.state.maskErrors}
-		copy[field] = !set ? null : validators[field](this.state.maskValues[field])
-		this.setState({maskErrors : copy})
+		/*copy = {...this.state.maskErrors}
+		copy[field] = !set ? null : validators[field](this.state.maskValues[field], this.state.maskValues)
+		this.setState({maskErrors : copy}) */
 
+    debugger
 		//clear/set errors of existing values masked
-		var copy2 = copyArray(this.state.errors)
+		/*var copy2 = copyArray(this.state.errors)
 		this.state.values.forEach( (v, index) => {
-			copy2[index][field] = set ? null : validators[field](v[field])
+		  var value = set ? this.state.maskValues[field] : v[field]
+			copy2[index][field] = validators[field](value, this.state.values[index])
 		})
-		this.setState({errors : copy2})
+		this.setState({errors : copy2})*/
 	}
-	
-	validateF(field, value, index) {
+
+  validateF(field, value, index) {
+		  debugger
+    var copy = this.maskedCopy(index, field)
+    //copy[field] = this.chooseValueF(index, field);
+    copy[field] = value;
+    var errorR = this.validateR(copy)
+    var copy = copyArray(this.state.errors)
+    copy[index] = errorR;
+    this.setState({errors : copy})
+  }
+
+  maskedCopy(index, excludeField) {
+    var copy = copyPayment(this.state.values[index], [])
+    fields.map(f => {
+      if(this.maskedF(index, f) && f !== excludeField) {
+        console.log("maskattu"+index+" "+f)
+        copy[f] = this.state.maskValues[f]
+      }
+    })
+    console.log("maskedCopy")
+    console.log(copy)
+    return copy
+  }
+
+  validateT(field, isNewValue = false, newValue = null ) {
+		  console.log( "validateT: field="+field);
+      var copy = copyArray(this.state.errors)
+		  this.state.values.forEach( (r, index) =>  {
+        var rcopy = this.maskedCopy(index, field)
+        if(isNewValue &&  !this.readOnlyR(index, field)) {
+          rcopy[field] = newValue;
+        }
+        debugger
+        var errorR = this.validateR(rcopy)
+        copy[index] = errorR
+		  })
+      this.setState({errors : copy})
+  }
+
+	/*validateF(field, value, index) {
     console.log("validate: field=" + field + " value=" + value + " index="+index)
 
 		var original = this.state.errors[index][field]
@@ -293,15 +341,15 @@ class PaymentsEditor extends React.Component {
 			copy[index][field] = validators[field](value, this.state.values[index])
 			this.setState({errors : copy})
 		}
-	}
-	
+	}*/
+	/*
 	validateMaskF(field, value) {
     console.log("validate mask: field=" + field + " value=" + value)
     debugger
 		var copy = {...this.state.maskErrors}
-		copy[field] = !this.state.masked[field] ? null : validators[field](value)
+		copy[field] = !this.state.masked[field] ? null : validators[field](value, this.state.maskValues)
 		this.setState({maskErrors : copy})
-	}
+	}*/
 	
 	maskedF(index, field) {
 		if(index<0 || this.state.deleted[index]) return false
@@ -631,7 +679,7 @@ class PaymentsEditor extends React.Component {
 			
 			valuesCopy.push(defaults)
 			this.sortedValues.push(defaults)
-			errorsCopy.push(this.validateR(defaults)) 
+			errorsCopy.push(this.validateR(defaults))
 		}
 		this.setState({
 					recurring : { ...this.state.recurring, recur: false },
@@ -691,7 +739,7 @@ class PaymentsEditor extends React.Component {
     validateR(v) {
 	   var res = {}
 	   fields.forEach( (field) => {
-		   	res[field] = validators[field](v[field])
+		   	res[field] = validators[field](v[field], v)
     	})
     	return res
     }

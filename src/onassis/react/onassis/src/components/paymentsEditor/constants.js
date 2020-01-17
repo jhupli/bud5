@@ -42,12 +42,21 @@ const 	validators = {
 			return null
 		  },
 	'd': (value, values) => {
-      let diff = daydiff(toDateFi(value), toDateFi(values.d));
-			return (value != null && value !== '' && diff < 0) ? null : 'required'
+	    console.log("value"+value);
+	    console.log("values=");
+	    console.log(values);
+      let diff = daydiff(toDateFi(value), toDateFi(values.dc));
+      console.log("diff="+diff);
+			return (value != null && value !== '' && diff <= 0) ? null : 'required'
 		  },
-  'dc': (value) => {
-      return (value != null && value !== '') ? null : 'required'
-      },
+  'dc': (value, values) => {
+      console.log("value"+value);
+      console.log("values=");
+      console.log(values);
+      let diff = daydiff(toDateFi(value), toDateFi(values.d));
+      console.log("diff="+diff);
+      return (value != null && value !== '' && diff >= 0) ? null : 'required'
+    },
 	'i':  (value) => {
 			return (value !== '') ? null : 'required'
 		  },
@@ -55,6 +64,7 @@ const 	validators = {
 			return null
 		  },
 	'c': (value) => {
+	    console.log("cvalue='"+value+"'");
 			return (value != null && value !== '') ? null : 'required'
 		  },
 	'a': (value) => {

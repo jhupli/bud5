@@ -267,16 +267,16 @@ class PaymentsEditor extends React.Component {
 		var copy = {...this.state.maskValues}
 		copy[field] = value
 		this.setState({maskValues : copy})
-    this.validateT(field, true, value)
+        this.validateT(field, null, copy)
 	}
 	
 	setValueMaskCheckF(field, set) {
-		  debugger
-    this.validateT(field, set, this.state.maskValues[field])
-	  var copy = {...this.state.masked}
+        debugger
+	    var copy = {...this.state.masked}
 		copy[field] = set
 		this.setState({masked : copy})
 
+        this.validateT(field, copy)
 		//clear/set errors of existing maskValues
 		/*copy = {...this.state.maskErrors}
 		copy[field] = !set ? null : validators[field](this.state.maskValues[field], this.state.maskValues)
@@ -294,7 +294,7 @@ class PaymentsEditor extends React.Component {
 
   validateF(field, value, index) {
 		  debugger
-    var copy = this.maskedCopy(index, field)
+    var copy = this.maskedCopy(field, index)
     //copy[field] = this.chooseValueF(index, field);
     copy[field] = value;
     var errorR = this.validateR(copy)
@@ -303,32 +303,33 @@ class PaymentsEditor extends React.Component {
     this.setState({errors : copy})
   }
 
-  maskedCopy(index, excludeField) {
+  maskedCopy(field, index, masked = null, maskValues = null) {
+    if(null == masked) {
+      masked= this.state.masked;
+    }
+    if(null == maskValues) {
+      maskValues= this.state.maskValues;
+    }
+    debugger
     var copy = copyPayment(this.state.values[index], [])
     fields.map(f => {
-      if(this.maskedF(index, f) && f !== excludeField) {
-        console.log("maskattu"+index+" "+f)
-        copy[f] = this.state.maskValues[f]
+      if(masked[f]) {
+        copy[f] = maskValues[f]
       }
     })
-    console.log("maskedCopy")
-    console.log(copy)
     return copy
   }
 
-  validateT(field, isNewValue = false, newValue = null ) {
-		  console.log( "validateT: field="+field);
-      var copy = copyArray(this.state.errors)
-		  this.state.values.forEach( (r, index) =>  {
-        var rcopy = this.maskedCopy(index, field)
-        if(isNewValue &&  !this.readOnlyR(index, field)) {
-          rcopy[field] = newValue;
-        }
-        debugger
+  validateT(field, masked = null, maskValues = null) {
+	console.log( "validateT: field="+field+ " masked:");
+	console.log(masked);
+    var copy = copyArray(this.state.errors)
+        this.state.values.map( (r, index) =>  {
+        var rcopy = this.maskedCopy(field, index, masked, maskValues)
         var errorR = this.validateR(rcopy)
         copy[index] = errorR
-		  })
-      this.setState({errors : copy})
+    })
+    this.setState({errors : copy})
   }
 
 	/*validateF(field, value, index) {

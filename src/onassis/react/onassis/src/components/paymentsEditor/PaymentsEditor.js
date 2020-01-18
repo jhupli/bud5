@@ -313,7 +313,7 @@ class PaymentsEditor extends React.Component {
     debugger
     var copy = copyPayment(this.state.values[index], [])
     fields.map(f => {
-      if(masked[f]) {
+      if(masked[f]  && !this.state.values[index].l && !this.state.deleted[index]) {
         copy[f] = maskValues[f]
       }
     })

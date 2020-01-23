@@ -896,10 +896,10 @@ class PaymentsEditor extends React.Component {
 
           {this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
           {this.th('c', 'Issue')}
-          {this.th('dc', 'Issue Date')}
+          {this.th('dc', 'Date')}
 
           {this.th('a', 'Account')}
-          {this.th('d', 'Account Date')}
+          {this.th('d', 'Date')}
 		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
 
 
@@ -1114,12 +1114,12 @@ class PaymentsEditor extends React.Component {
 		return(
 		<th className={this.thClassName(field)}>
   			<div>
-	  			<span style={{display: "flex"}}>			  						
-	  				<div style={{marginTop: 8, paddingRight: 3}}>
+	  			<span style={{display: "flex"}}>
+            {this.renderContentF(field, -1)}
+	  				 <div style={{marginTop: 8, paddingRight: 3}}>
 	  					{sortField}
-	  				</div>
-	  				{label !== null ? labelField : ''}
-	  				&nbsp;{this.renderContentF(field, -1)}
+	  				 </div>
+	  				 {label !== null ? labelField : ''}
 	  			</span>
 	  		</div>
 	  		{this.renderContentF(field, -2)}

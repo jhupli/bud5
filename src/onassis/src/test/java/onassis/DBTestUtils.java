@@ -170,16 +170,22 @@ public class DBTestUtils {
     }
 
     public int insert_p(Date d, BigDecimal i, int c, int a) throws Exception {
+        return insert_p(d, d, i ,c , a);
+    }
+
+    public int insert_p(Date dc, Date d, BigDecimal i, int c, int a) throws Exception {
+        assertNotNull(dc);
         assertNotNull(d);
         assertNotNull(i);
         assertNotNull(a);
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("dc", dc)
                 .addValue("d", d)
                 .addValue("i", i)
                 .addValue("c", c)
                 .addValue("a", a);
         
-        sql = "insert into p( d, i, c, a) values( :d, :i, :c, :a)";
+        sql = "insert into p( dc, d, i, c, a) values(:dc, :d, :i, :c, :a)";
         jdbcTemplate.update( sql, namedParameters );
         
         sql = "select max(id) from p";
@@ -188,15 +194,22 @@ public class DBTestUtils {
     }
     
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id) throws Exception {
-    	update_p(d, i, c, a, id, null);
+    	update_p(d, d, i, c, a, id, null);
     }
 
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id, Boolean l) throws Exception {
-        assertTrue(null != d || null !=i || null!= c || null != a || null != l);
+        update_p(d, d, i, c, a, id, l);
+    }
+
+    public void update_p(Date dc, Date d, BigDecimal i, Integer c, Integer a, int id, Boolean l) throws Exception {
+        assertTrue(null != dc || null != d || null !=i || null!= c || null != a || null != l);
         String set = "";
-        
+
+        if (null != dc) {
+            set = " dc = :dc";
+        }
         if (null != d) {
-            set = " d = :d";
+            set += (set.length()>0 ? "," : "") + " d = :d";
         }
         if (null != i) {
             set += (set.length()>0 ? "," : "") + " i = :i";
@@ -213,6 +226,7 @@ public class DBTestUtils {
         sql = "update p set "+set+" where id = :id";
         
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("dc", dc)
                 .addValue("d", d)
                 .addValue("i", i)
                 .addValue("c", c)

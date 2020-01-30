@@ -1403,5 +1403,4 @@ public class DBFunctionsTest extends DBTestUtils{
             assertTrue(compareBs(b, bExp));
         }
     }
-    
 }

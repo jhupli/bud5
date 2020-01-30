@@ -24,10 +24,10 @@ public class History {
     /*
      * locking of p must not be historified, it is checked here
      * input: old & new values values
-     * 
+     *
      * a try to lock and update another filed, must yield exception
      */
-	public static void history(
+	public static void historify(
         boolean old_l, Boolean  new_l,
         int old_id, Date old_dc, Date old_d, BigDecimal old_i, int old_c, int old_a, boolean old_s, String old_g, String old_descr,
         int new_id, Date new_dc, Date new_d, BigDecimal new_i, int new_c, int new_a, boolean new_s, String new_g, String new_descr
@@ -47,7 +47,7 @@ public class History {
             return; //no change
         }
 
-        String insertSQL = "insert into h(id, dc, d, c, i, c, c_descr, a, a_descr, s, g, descr, op, hd, rownr) values " +
+        String insertSQL = "insert into h(id, dc, d, i, c, c_descr, a, a_descr, s, g, descr, op, hd, rownr) values " +
                 "(?, " + //new.id 1
                 "?, " + //new.dc  2
                 "?, " + //new.d  3
@@ -81,5 +81,13 @@ public class History {
                 pstmnt.executeUpdate();
             }
         }
-	} 
+	}
+
+    public static void history(
+            boolean old_l, Boolean  new_l,
+            int old_id, Date old_d, BigDecimal old_i, int old_c, int old_a, boolean old_s, String old_g, String old_descr,
+            int new_id, Date new_d, BigDecimal new_i, int new_c, int new_a, boolean new_s, String new_g, String new_descr
+    ) throws SQLException {
+        throw new SQLException("binary backward compatibility");
+    }
 }

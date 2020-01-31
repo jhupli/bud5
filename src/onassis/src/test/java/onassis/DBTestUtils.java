@@ -248,6 +248,7 @@ public class DBTestUtils {
         h.getOp().equals(op) &&
         h.getRownr() == rownr &&
         h.getI().compareTo(p.getI()) == 0 &&
+        h.getDc().compareTo(p.getDc()) == 0 &&
         h.getD().compareTo(p.getD()) == 0 &&
         h.getC() == p.getC() &&
         h.getA() == p.getA();

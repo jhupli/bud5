@@ -78,9 +78,10 @@ public class PaymentService extends ServicesBase {
 
     public void create(List<P> payments) {
         String insertSQL =
-                "INSERT INTO P(d, i, c, a, s, g, descr, l) VALUES(:d, :i, :c, :a, :s, :g, :descr, false)";
+                "INSERT INTO P(dc, d, i, c, a, s, g, descr, l) VALUES(:dc, :d, :i, :c, :a, :s, :g, :descr, false)";
         for(P p : payments) {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                    .addValue("dc", p.dc)
                     .addValue("d", p.d)
                     .addValue("i", p.i)
                     .addValue("c", p.c)
@@ -103,7 +104,7 @@ public class PaymentService extends ServicesBase {
     public void modify(List<P> payments) {
         for(P p : payments) {
             String setterSQL = "";
-
+            if(null != p.dc) setterSQL += ", dc = :dc";
             if(null != p.d) setterSQL += ", d = :d";
             if(null != p.i) setterSQL += ", i = :i";
             if(null != p.c) setterSQL += ", c = :c";
@@ -115,6 +116,7 @@ public class PaymentService extends ServicesBase {
             setterSQL = "UPDATE P SET "+setterSQL.substring(1) + " WHERE id=:id";
             MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("id", p.id)
+                    .addValue("dc", p.dc)
                     .addValue("d", p.d)
                     .addValue("i", p.i)
                     .addValue("c", p.c)

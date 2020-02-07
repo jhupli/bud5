@@ -88,6 +88,6 @@ public class History {
             int old_id, Date old_d, BigDecimal old_i, int old_c, int old_a, boolean old_s, String old_g, String old_descr,
             int new_id, Date new_d, BigDecimal new_i, int new_c, int new_a, boolean new_s, String new_g, String new_descr
     ) throws SQLException {
-        throw new SQLException("binary backward compatibility");
+        //throw new SQLException("binary backward compatibility");
     }
 }

@@ -43,7 +43,7 @@ public class HistoryLogService extends ServicesBase {
         helper.setDateFormat("dd.MM.yyyy");
         csvWriter.setResultService(helper);
 
-        String query = "SELECT hd, op, id, rownr, d, i, c, c_descr, a, a_descr, s, g, descr FROM h ORDER BY hd ASC, rownr ASC ";
+        String query = "SELECT hd, op, id, rownr, dc, d, i, c, c_descr, a, a_descr, s, g, descr FROM h ORDER BY hd ASC, rownr ASC ";
         try (Connection conn = ds.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet result = pstmt.executeQuery()) {
@@ -109,7 +109,7 @@ public class HistoryLogService extends ServicesBase {
     }
 
     private List<H> getHistoryRows(Long id) {
-        String paymetsQuery = "SELECT hd, op, rownr, id, d, i, c, c_descr, a, a_descr, s, g, descr FROM h where id=:id ORDER BY rownr ASC ";
+        String paymetsQuery = "SELECT hd, op, rownr, id, dc, d, i, c, c_descr, a, a_descr, s, g, descr FROM h where id=:id ORDER BY rownr ASC ";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
         List<H> history = jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<H>(rmH));
         return history;

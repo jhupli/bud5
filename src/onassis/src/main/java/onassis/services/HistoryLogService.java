@@ -43,7 +43,7 @@ public class HistoryLogService extends ServicesBase {
         helper.setDateFormat("dd.MM.yyyy");
         csvWriter.setResultService(helper);
 
-        String query = "SELECT hd, op, id, rownr, dc, d, i, c, c_descr, a, a_descr, s, g, descr FROM h ORDER BY hd ASC, rownr ASC ";
+        String query = "SELECT hd, op, id, rownr, i, s, c, c_descr, dc, d, a, a_descr, g,descr FROM h ORDER BY hd ASC, rownr ASC ";
         try (Connection conn = ds.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet result = pstmt.executeQuery()) {

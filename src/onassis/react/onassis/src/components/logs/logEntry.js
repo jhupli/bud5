@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import {chooseValueF} from './logCommons'
 
-const fields = ['d','i','s','g','c','a','descr']
+const fields = ['i', 's', 'c', 'dc', 'a', 'd', 'g', 'descr']
 
 class LogEntry extends React.Component {
 		
@@ -88,15 +88,17 @@ class LogEntry extends React.Component {
     	return (
 		<thead>
 	  		<tr>
+
 	  			{this.th('w', 'When')}
 	  			{this.th('op','What')}
+          {this.th('i', 'Pay')}
+          {this.th('s', 's')}
+          {this.th('c', 'Issue')}
+          {this.th('dc', 'Date')}
+          {this.th('a', 'Account')}
 	  			{this.th('d', 'Date')}
-	  			{this.th('i', 'Pay')}
-	  			{this.th('s', 's')}
 	  			{this.th('g', 'Ref')}
-	  			{this.th('c', 'Issue')}
-	  			{this.th('a', 'Account')}
-	  			{this.th('descr', 'Desc.')}		  			
+	  			{this.th('descr', 'Desc.')}
 			</tr>				  			
 		</thead>)
     }

@@ -412,8 +412,10 @@ class Chart extends React.Component {
         	this.chart_config.data.types = {}
         	this.chart_config.data.colors = {}
         	this.chart_config.data.columns = nextProps.curves //curves updated
-        	this.chart_config.regions = null 
-        	this.legendnames(nextProps.curves, nextProps.constants)
+        	this.chart_config.regions = null
+        	if(null !== nextProps.curves && null !== nextProps.constants) {
+        	    this.legendnames(nextProps.curves, nextProps.constants)
+        	}
         	//this.chart_config.data.names['I'] ='Income'
         	this.chart_config.data.colors['I'] ='green'
         	//this.chart_config.data.names['E'] ='Exp'

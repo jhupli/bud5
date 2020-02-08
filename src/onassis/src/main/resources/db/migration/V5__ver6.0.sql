@@ -1,8 +1,3 @@
-alter table p
-add column dc date not null default current_date;
-
-update p set dc = d;
-
 alter table h
 add column dc date not null default current_date;
 
@@ -11,8 +6,12 @@ update h set dc = d;
 drop trigger p_audit_insert;
 drop trigger p_audit_update;
 drop trigger p_audit_delete;
-
 drop procedure history;
+
+alter table p
+add column dc date not null default current_date;
+
+update p set dc = d;
 
 create procedure historify(
 	old_l boolean, new_l boolean,

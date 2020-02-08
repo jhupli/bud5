@@ -36,6 +36,12 @@ public class Util {
 		}
 	}
 
+	public static void checkCredit(boolean newCredit, boolean oldCredit) throws SQLException {
+		if(newCredit != oldCredit) {
+			throw new SQLException("credit may not be updated.");
+		}
+	}
+
 	public static BigDecimal ifThenElseDecimal(Boolean ifClause, BigDecimal thenDecimal, BigDecimal elseDecimal)
 	        throws SQLException {
 		 if(ifClause) {

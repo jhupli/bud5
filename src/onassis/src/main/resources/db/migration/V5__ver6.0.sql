@@ -53,6 +53,19 @@ external name
 		(old.id, old.dc, old.d, old.i, old.c, (select descr from c where id = old.c), old.a, (select descr from a where id = old.a), old.s, old.g, old.descr,'D', current_timestamp,
 		(select max(rownr) + 1 from h where id = old.id));
 
+	--update account (credit may not be updated)
+create procedure checkCredit(old_credit boolean, new_credit boolean)
+parameter style java
+language java
+external name
+'onassis.db.functions.Util.checkCredit';
+
+	create trigger a_update
+	after update on a
+	referencing old as old new as new
+	for each row mode db2sql
+	call checkCredit(old.credit, new.credit);
+
 create index p_dc_a_index on p(dc ASC, d ASC, a ASC);
 -- new function:
 create procedure checkDc_D(dc date, d date)

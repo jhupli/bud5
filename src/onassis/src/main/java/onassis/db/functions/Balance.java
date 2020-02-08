@@ -25,7 +25,7 @@ public class Balance {
 
     public static BigDecimal _smallestBalanceAt(Connection conn, Date d) throws SQLException {
         BigDecimal res = null;
-        try (PreparedStatement pstmnt = conn.prepareStatement("select id from a")) {
+        try (PreparedStatement pstmnt = conn.prepareStatement("select id from a where not credit")) {
             if (!pstmnt.execute()) {
                 throw new RuntimeException("execute failed");
             }

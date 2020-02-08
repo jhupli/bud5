@@ -115,4 +115,4 @@ p_u_220: insert 2
  =========== version 6.0 added dc
  p_i_310: dc > d
  p_u_310: dc > d
- 
+ a_u_100: credit may not be changed

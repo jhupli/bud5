@@ -427,7 +427,9 @@ class Chart extends React.Component {
 	        	for(var i=3; i<nextProps.curves.length; i++) {
 	        		var key = nextProps.curves[i][0]
 	        		var acc = findInArray(nextProps.constants['acc'], f)
-	        		this.chart_config.data.colors[key] = acc.color
+	        		if(null !== acc) {
+	        		    this.chart_config.data.colors[key] = acc.color
+	        		}
 	        		this.chart_config.data.types[key] = 'spline'
 	        	}
 	            this.draw()
@@ -445,7 +447,9 @@ class Chart extends React.Component {
 	        	for(var i=3; i<curves.length; i++) {
 	        		var key = curves[i][0]
 	        		var acc = findInArray(constants['acc'], f)
-	        		this.chart_config.data.names[key] = acc.label
+	        		if(null !== acc) {
+	        		    this.chart_config.data.names[key] = acc.label
+	        		}
 	        	}
         }
     } 

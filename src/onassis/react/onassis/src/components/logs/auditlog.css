@@ -106,7 +106,17 @@
 		font-style: normal !important;
 		font-size: 8px;*/
 	}
-	
+
+ #auditlog_table .dc_header
+ {
+     width: 60px;
+ }
+
+ #auditlog_table .dc_cell
+ {
+     width: 60px;
+ }
+
 #auditlog_table .d_header 
 	{ 
 		width: 60px;

@@ -53,7 +53,7 @@ external name
 		(old.id, old.dc, old.d, old.i, old.c, (select descr from c where id = old.c), old.a, (select descr from a where id = old.a), old.s, old.g, old.descr,'D', current_timestamp,
 		(select max(rownr) + 1 from h where id = old.id));
 
-
+create index p_dc_a_index on p(dc ASC, d ASC, a ASC);
 -- new function:
 create procedure checkDc_D(dc date, d date)
 parameter style java

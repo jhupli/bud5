@@ -31,8 +31,6 @@ public class P {
 		this.g = g;
 		this.descr = descr;
 		this.l = l;
-		//FIXME:
-		this.dc = d;
 	}
 
 	public Long getId() {

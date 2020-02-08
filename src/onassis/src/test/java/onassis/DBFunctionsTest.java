@@ -13,7 +13,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -1403,4 +1405,17 @@ public class DBFunctionsTest extends DBTestUtils{
             assertTrue(compareBs(b, bExp));
         }
     }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void a_d_100() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        jdbcTemplate.update("delete from a where id=1", new MapSqlParameterSource());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void a_c_100() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        jdbcTemplate.update("delete from c where id=1", new MapSqlParameterSource());
+    }
+
 }

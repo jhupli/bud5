@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -84,5 +85,14 @@ public class DBProcedureTest extends DBTestUtils{
     public void p_u_311() throws Exception {
         int id = insert_p(d2, d3, bd(1), c, a);
         update_p(null, d1, bd(1), null, null, id, null);
+    }
+
+    @Test(expected = UncategorizedSQLException.class)
+    public void p_a_100() throws Exception {
+        jdbcTemplate.update("update a set credit = true", new MapSqlParameterSource());
+    }
+
+    public void p_a_101() throws Exception {
+        jdbcTemplate.update("update a set credit = false", new MapSqlParameterSource());
     }
 }

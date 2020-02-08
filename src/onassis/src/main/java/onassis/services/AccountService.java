@@ -55,24 +55,24 @@ public class AccountService extends ServicesBase {
     }
 
     public void remove(List<Integer> ids) {
-        String insertSQL = "DELETE FROM A WHERE id = :id";
+        /*String insertSQL = "DELETE FROM A WHERE id = :id";
         for(Integer id : ids) {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
             jdbcTemplate.update(insertSQL, namedParameters);
-        }
+        }*/
     }
 
     public void modify(List<A> accounts) {
         for(A a : accounts) {
             String setterSQL = "";
-            if(null != a.credit) setterSQL += ", credit = :credit";
+            //if(null != a.credit) setterSQL += ", credit = :credit";
             if(null != a.descr) setterSQL += ", descr = :descr";
             if(null != a.active) setterSQL += ", active = :active";
             if(null != a.color) setterSQL += ", color = :color";
 
             setterSQL = "UPDATE A SET "+setterSQL.substring(1) + " WHERE id=:id";
             MapSqlParameterSource namedParameters = new MapSqlParameterSource()
-                    .addValue("credit", a.credit)
+                    //.addValue("credit", a.credit)
                     .addValue("descr", a.descr)
                     .addValue("active", a.active)
                     .addValue("color", a.color)

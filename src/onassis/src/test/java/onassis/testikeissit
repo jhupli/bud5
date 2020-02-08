@@ -107,7 +107,9 @@ p_u_140: insert 3a + 3b (same dates) X
  ===========0 -account
 p_u_210: insert 1  (same dates)
  
-p_u_220: insert 2 
+p_u_220: insert 2
+
+
 
 p_u_220: insert 2 
 		 change a
@@ -116,3 +118,5 @@ p_u_220: insert 2
  p_i_310: dc > d
  p_u_310: dc > d
  a_u_100: credit may not be changed
+ a_d_100: a may not be deleted
+ c_d_100: c may not be deleted

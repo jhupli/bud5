@@ -30,7 +30,7 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 			            </tr>
 			     )	
 			}
-			if(i>=3) {
+			if(i>=3 && constants && constants['acc']) {
 				var acc2 = findInArray(constants['acc'], n => { return c[0] === '' + n.value})
 
 				trs.push(

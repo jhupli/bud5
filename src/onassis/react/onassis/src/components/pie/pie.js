@@ -249,7 +249,7 @@ class Pie extends React.Component {
 
         	
         	
-        	if (nextProps.slices) {
+        	if (nextProps.slices && nextProps.constants && nextProps.constants['cat']) {
 	        	nextProps.slices.forEach(
 	        		(s) => {
 	        			var cat = findInArray(nextProps.constants['cat'], n => { return s.c === n.value})

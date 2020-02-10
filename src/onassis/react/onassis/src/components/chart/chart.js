@@ -318,7 +318,7 @@ class Chart extends React.Component {
 
     				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
     				this.chart_config.regions.push(
-	                    {"start": alku, "end": loppu, class: this.chart_config.data.columns[y][x] < 0  && !credit ? "red" : "white"}
+	                    {"start": alku, "end": loppu, class: this.chart_config.data.columns[y][x] < 0 ? "red" : "white"}
 	                 )		
     		   }
     	   }
@@ -421,11 +421,10 @@ class Chart extends React.Component {
         	//this.chart_config.data.names['E'] ='Exp'
         	this.chart_config.data.colors['E'] ='red'
 //        	var max = 0, min = 0
-        	if (nextProps.curves) {
+        	if (nextProps.curves && nextProps.constants) {
         		//console.log("curves 1")
         		var f = n =>  { return key === '' + n.value}
 	        	for(var i=3; i<nextProps.curves.length; i++) {
-	        	    debugger
 	        		var key = nextProps.curves[i][0]
 	        		var acc = findInArray(nextProps.constants['acc'], f)
 	        		if(null !== acc) {
@@ -443,7 +442,7 @@ class Chart extends React.Component {
     	//heihei ihan karmeen näköstä koodia
     	this.chart_config.data.names['I'] ='Income'
     	this.chart_config.data.names['E'] ='Exp'
-        if (curves) {
+        if (curves && constants) {
         		var f = n => { return key === ''+n.value}
 	        	for(var i=3; i<curves.length; i++) {
 	        		var key = curves[i][0]

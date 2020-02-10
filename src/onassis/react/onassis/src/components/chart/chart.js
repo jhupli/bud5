@@ -315,10 +315,10 @@ class Chart extends React.Component {
     		   
     		   for(var y=3; y<this.chart_config.data.columns.length; y++) { //y accounts start with 3 
     				var alku = dateFormat(addDays(this.chartDatetoDate(this.chart_config.data.columns[0][x]),-1), "yyyymmdd") + "T12"
-    				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
 
-    				this.chart_config.regions.push( 
-	                    {"start": alku, "end": loppu, class: this.chart_config.data.columns[y][x] < 0 ? "red" : "white"}
+    				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
+    				this.chart_config.regions.push(
+	                    {"start": alku, "end": loppu, class: this.chart_config.data.columns[y][x] < 0  && !credit ? "red" : "white"}
 	                 )		
     		   }
     	   }
@@ -425,6 +425,7 @@ class Chart extends React.Component {
         		//console.log("curves 1")
         		var f = n =>  { return key === '' + n.value}
 	        	for(var i=3; i<nextProps.curves.length; i++) {
+	        	    debugger
 	        		var key = nextProps.curves[i][0]
 	        		var acc = findInArray(nextProps.constants['acc'], f)
 	        		if(null !== acc) {

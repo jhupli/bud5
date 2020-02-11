@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
@@ -163,7 +160,7 @@ public class OnassisController {
     }
 
     @RequestMapping("chart")
-    List<List<Object>> details(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {
+    Map details(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {
         return chartService.chartRows(s, e);
     }
 

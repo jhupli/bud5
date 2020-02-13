@@ -54,7 +54,7 @@ public class PaymentService extends ServicesBase {
         LocalDate day1 = LocalDate.parse(d1);
         LocalDate day2 = LocalDate.parse(d2);
 
-        final String paymetsQuery = "SELECT id, dc, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d BETWEEN :d1 and :d2 AND c=:c ORDER BY dc ASC";
+        final String paymetsQuery = "SELECT id, dc, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE dc BETWEEN :d1 and :d2 AND c=:c ORDER BY dc ASC";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("d1", day1.format(sqldf))
                 .addValue("d2", day2.format(sqldf))

@@ -18,6 +18,7 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 				trs.push(
 						<tr className='c3-tooltip-name--data2' key={-1}>
 			                      <td className="name"><span style={{backgroundColor: 'green'}}></span></td>
+                            <td className="name">Income</td>
 			                      <td className="value" >{currencyFormat(c[ix])}</td>
 			            </tr>
 			     )					
@@ -26,6 +27,7 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 				trs.push(
 						<tr className='c3-tooltip-name--data2' key={-2}>
 			                      <td className="name"><span style={{backgroundColor: 'red'}}></span></td>
+                            <td className="name">Exp</td>
 			                      <td className="value" >{currencyFormat(c[ix])}</td>
 			            </tr>
 			     )	
@@ -35,7 +37,15 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 
 				trs.push(
 						<tr className='c3-tooltip-name--data2' key={acc2.value}>
-			                      <td className="name"><span style={{backgroundColor: acc2.color}}></span></td>
+                            <td className="name"><span style={{backgroundColor: acc2.color}}></span></td>
+                            <td className="name" style={{
+                              display: 'block',
+                              textOverflow: 'ellipsis',
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              maxWidth: '80px'
+                            }}>
+                            {acc2.label}</td>
 			                      <td className="value" >{currencyFormat(c[ix])}</td>
 			            </tr>
 			     )
@@ -45,7 +55,7 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 		a_table = 
 			        <table className='c3-tooltip'>
 		              <tbody>
-		              	  {showdate ? <th colSpan = '2'>{dateFormat(dt, "dd.mm.yyyy ddd")}</th>: null}
+		              	  {showdate ? <th colSpan = '3'>{dateFormat(dt, "dd.mm.yyyy ddd")}</th>: null}
 		              	  {trs}
 		              </tbody>
 		            </table>

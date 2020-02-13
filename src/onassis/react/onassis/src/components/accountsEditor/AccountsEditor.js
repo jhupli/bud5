@@ -218,7 +218,7 @@ class AccountsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'name'
-				  			maxLength = {30}
+				  			maxLength = {20}
 					  	/>
 				    </div>)
     	case 'color' :

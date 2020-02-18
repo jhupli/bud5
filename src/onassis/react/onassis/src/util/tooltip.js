@@ -2,6 +2,8 @@ import React from 'react'
 import currencyFormat from './currency'
 import {findInArray, findIndexInArray} from './findInArray'
 var dateFormat = require('dateformat');
+var FontAwesome = require('react-fontawesome');
+
 function accountsTooltipTable(dt, curves, constants, showdate = false) {
 	var a_table = {};
 	
@@ -34,7 +36,10 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 			}
 			if(i>=3 && constants && constants['acc']) {
 				var acc2 = findInArray(constants['acc'], n => { return c[0] === '' + n.value})
-
+        var icon = null
+        if(acc2.icon) {
+          icon = 	(<span  style = {{'color': 'black', 'marginRight':'15px'}}><FontAwesome name = {acc2.icon} style = {{'color': 'black', 'marginRight':'15px', 'marginLeft':'5px'}} /></span>)
+        }
 				trs.push(
 						<tr className='c3-tooltip-name--data2' key={acc2.value}>
                             <td className="name"><span style={{backgroundColor: acc2.color}}></span></td>
@@ -45,6 +50,7 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
                               whiteSpace: 'nowrap',
                               maxWidth: '80px'
                             }}>
+                              {icon}
                             {acc2.label}</td>
 			                      <td className="value" >{currencyFormat(c[ix])}</td>
 			            </tr>

@@ -271,8 +271,7 @@ class PaymentsEditor extends React.Component {
 	}
 	
 	setValueMaskCheckF(field, set) {
-        debugger
-	    var copy = {...this.state.masked}
+		  var copy = {...this.state.masked}
 		copy[field] = set
 		this.setState({masked : copy})
 
@@ -282,7 +281,7 @@ class PaymentsEditor extends React.Component {
 		copy[field] = !set ? null : validators[field](this.state.maskValues[field], this.state.maskValues)
 		this.setState({maskErrors : copy}) */
 
-    debugger
+
 		//clear/set errors of existing values masked
 		/*var copy2 = copyArray(this.state.errors)
 		this.state.values.forEach( (v, index) => {
@@ -293,9 +292,8 @@ class PaymentsEditor extends React.Component {
 	}
 
   validateF(field, value, index) {
-		  debugger
     var copy = this.maskedCopy(field, index)
-    //copy[field] = this.chooseValueF(index, field);
+
     copy[field] = value;
     var errorR = this.validateR(copy)
     var copy = copyArray(this.state.errors)
@@ -310,7 +308,6 @@ class PaymentsEditor extends React.Component {
     if(null == maskValues) {
       maskValues= this.state.maskValues;
     }
-    debugger
     var copy = copyPayment(this.state.values[index], [])
     fields.map(f => {
       if(masked[f]  && !this.state.values[index].l && !this.state.deleted[index]) {
@@ -321,8 +318,6 @@ class PaymentsEditor extends React.Component {
   }
 
   validateT(field, masked = null, maskValues = null) {
-	console.log( "validateT: field="+field+ " masked:");
-	console.log(masked);
     var copy = copyArray(this.state.errors)
         this.state.values.map( (r, index) =>  {
         var rcopy = this.maskedCopy(field, index, masked, maskValues)
@@ -332,26 +327,6 @@ class PaymentsEditor extends React.Component {
     this.setState({errors : copy})
   }
 
-	/*validateF(field, value, index) {
-    console.log("validate: field=" + field + " value=" + value + " index="+index)
-
-		var original = this.state.errors[index][field]
-		var result = validators[field](value, this.state.values[index])
-		if( result !== original ) {
-			var copy = copyArray(this.state.errors)
-			copy[index][field] = validators[field](value, this.state.values[index])
-			this.setState({errors : copy})
-		}
-	}*/
-	/*
-	validateMaskF(field, value) {
-    console.log("validate mask: field=" + field + " value=" + value)
-    debugger
-		var copy = {...this.state.maskErrors}
-		copy[field] = !this.state.masked[field] ? null : validators[field](value, this.state.maskValues)
-		this.setState({maskErrors : copy})
-	}*/
-	
 	maskedF(index, field) {
 		if(index<0 || this.state.deleted[index]) return false
 		return this.state.masked[field] && !this.state.values[index].l

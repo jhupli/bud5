@@ -318,7 +318,6 @@ class Chart extends React.Component {
     				var alku = dateFormat(addDays(this.chartDatetoDate(this.chart_config.data.columns[0][x]),-1), "yyyymmdd") + "T12"
 
     				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
-                    debugger
     				this.chart_config.regions.push(
 	                    {"start": alku, "end": loppu, class: (!this.chart_config.data.accs[y-3].credit && this.chart_config.data.columns[y][x] < 0) ? "red" : "white"}
 	                 )		

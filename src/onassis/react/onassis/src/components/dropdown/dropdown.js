@@ -51,7 +51,7 @@ class Dropdown extends React.Component {
 
 		var icon = null;
 		if(item.icon) {
-		  icon = 	(<span><FontAwesome name = {item.icon} style = {{'color': 'black', 'marginRight':'5px', 'marginLeft':'5px'}} /></span>)
+		  icon = 	(<span><FontAwesome name = {item.icon} style = {{'color': 'black', 'marginRight':'3px'}} /></span>)
     }
     	return (
 			<span style={{
@@ -65,12 +65,12 @@ class Dropdown extends React.Component {
 					 whiteSpace: 'nowrap',
 					 maxWidth: (width-50)+'px'
 	    		}}>
-					<span style = {{'marginLeft':'5px'}}>
+					<span >
 
-						<FontAwesome name = 'square' style = {{'color': item.color}} />
+						<FontAwesome name = 'square' style = {{'color': item.color, 'marginRight':'5px'}} />
             {icon}
 					</span>
-	    			<span>
+	    			<span >
 	    				{item.label}
 	    			</span>
 	    		</span>

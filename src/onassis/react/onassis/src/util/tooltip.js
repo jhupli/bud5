@@ -19,17 +19,24 @@ function accountsTooltipTable(dt, curves, constants, showdate = false) {
 			if( i===1 ) {
 				trs.push(
 						<tr className='c3-tooltip-name--data2' key={-1}>
-			                      <td className="name"><span style={{backgroundColor: 'green'}}></span></td>
-                            <td className="name">Income</td>
+
+			                      <td className="name" ><span style={{backgroundColor: 'green'}}></span></td>
+                            <td className="name">
+                              <span  style = {{'color': 'black', 'marginRight':'15px'}}><FontAwesome name = 'sign-in'  style = {{'color': 'black', 'marginRight':'15px', 'marginLeft':'5px'}} /></span>
+                              Inc
+                            </td>
 			                      <td className="value" >{currencyFormat(c[ix])}</td>
-			            </tr>
+						</tr>
 			     )					
 			}
 			if( i===2 ) {
 				trs.push(
 						<tr className='c3-tooltip-name--data2' key={-2}>
 			                      <td className="name"><span style={{backgroundColor: 'red'}}></span></td>
-                            <td className="name">Exp</td>
+                            <td className="name">
+                              <span  style = {{'color': 'black', 'marginRight':'15px'}}><FontAwesome name = 'sign-out'  style = {{'color': 'black', 'marginRight':'15px', 'marginLeft':'5px'}} /></span>
+                              Exp
+                            </td>
 			                      <td className="value" >{currencyFormat(c[ix])}</td>
 			            </tr>
 			     )	

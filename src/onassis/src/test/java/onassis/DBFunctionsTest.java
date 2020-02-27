@@ -72,7 +72,9 @@ public class DBFunctionsTest extends DBTestUtils{
     public void after() throws Exception {
         DBTestUtilsDB.statistics_end(con, "FUNCTIONSCHEMA");
         //statistics_end();
-    	xcheck_b0_b();
+        if(!this.CB_MODE) {
+            xcheck_b0_b();
+        }
         empty_db();
         con.close();
     }
@@ -1418,4 +1420,263 @@ public class DBFunctionsTest extends DBTestUtils{
         jdbcTemplate.update("delete from c where id=1", new MapSqlParameterSource());
     }
 
+    //CB-tests:
+    @Test
+    public void  cb_p_i_010() throws Exception {
+        this.CB_MODE=true;
+        p_i_010();
+    }
+
+    @Test
+    public void  cb_p_i_020() throws Exception {
+        this.CB_MODE=true;
+        p_i_020();
+    }
+
+    @Test
+    public void  cb_p_i_030() throws Exception {
+        this.CB_MODE=true;
+        p_i_030();
+    }
+
+    @Test
+    public void  cb_p_i_040() throws Exception {
+        this.CB_MODE=true;
+        p_i_040();
+    }
+
+    @Test
+    public void  cb_p_i_050() throws Exception {
+        this.CB_MODE=true;
+        p_i_050();
+    }
+
+    @Test
+    public void  cb_p_i_060() throws Exception {
+        this.CB_MODE=true;
+        p_i_060();
+    }
+
+    @Test
+    public void  cb_p_i_070() throws Exception {
+        this.CB_MODE=true;
+        p_i_070();
+    }
+
+    @Test
+    public void  cb_p_i_080() throws Exception {
+        this.CB_MODE=true;
+        p_i_080();
+    }
+
+    @Test
+    public void  cb_p_i_090() throws Exception {
+        this.CB_MODE=true;
+        p_i_090();
+    }
+
+    @Test
+    public void  cb_p_i_100() throws Exception {
+        this.CB_MODE=true;
+        p_i_100();
+    }
+
+    @Test
+    public void  cb_p_i_110() throws Exception {
+        this.CB_MODE=true;
+        p_i_110();
+    }
+
+    @Test
+    public void  cb_p_i_111() throws Exception {
+        this.CB_MODE=true;
+        p_i_111();
+    }
+
+    @Test
+    public void  cb_p_i_120() throws Exception {
+        this.CB_MODE=true;
+        p_i_120();
+    }
+
+    @Test
+    public void  cb_p_i_121() throws Exception {
+        this.CB_MODE=true;
+        p_i_121();
+    }
+
+    @Test
+    public void  cb_p_i_130() throws Exception {
+        this.CB_MODE=true;
+        p_i_130();
+    }
+
+    @Test
+    public void  cb_p_i_140() throws Exception {
+        this.CB_MODE=true;
+        p_i_140();
+    }
+
+    @Test
+    public void  cb_p_i_150() throws Exception {
+        this.CB_MODE=true;
+        p_i_150();
+    }
+
+    @Test
+    public void  cb_p_i_160() throws Exception {
+        this.CB_MODE=true;
+        p_i_160();
+    }
+
+    @Test
+    public void  cb_p_i_170() throws Exception {
+        this.CB_MODE=true;
+        p_i_170();
+    }
+
+    @Test
+    public void  cb_p_d_010() throws Exception {
+        this.CB_MODE=true;
+        p_d_010();
+    }
+
+    @Test
+    public void  cb_p_d_020() throws Exception {
+        this.CB_MODE=true;
+        p_d_020();
+    }
+
+    @Test
+    public void  cb_p_d_030() throws Exception {
+        this.CB_MODE=true;
+        p_d_030();
+    }
+/*
+    @Test
+    public void  cb_p_u_010() throws Exception {
+        this.CB_MODE=true;
+        p_u_010();
+    }
+
+    @Test
+    public void  cb_p_u_011() throws Exception {
+        this.CB_MODE=true;
+        p_u_011();
+    }
+
+    @Test
+    public void  cb_p_u_020() throws Exception {
+        this.CB_MODE=true;
+        p_u_020();
+    }
+
+    @Test
+    public void  cb_p_u_030() throws Exception {
+        this.CB_MODE=true;
+        p_u_030();
+    }
+
+    @Test
+    public void  cb_p_u_040() throws Exception {
+        this.CB_MODE=true;
+        p_u_040();
+    }
+
+    @Test
+    public void  cb_p_u_050() throws Exception {
+        this.CB_MODE=true;
+        p_u_050();
+    }
+
+    @Test
+    public void  cb_p_u_060() throws Exception {
+        this.CB_MODE=true;
+        p_u_060();
+    }
+
+    @Test
+    public void  cb_p_u_070() throws Exception {
+        this.CB_MODE=true;
+        p_u_070();
+    }
+
+    @Test
+    public void  cb_p_u_080() throws Exception {
+        this.CB_MODE=true;
+        p_u_080();
+    }
+
+    @Test
+    public void  cb_p_u_090() throws Exception {
+        this.CB_MODE=true;
+        p_u_090();
+    }
+
+    @Test
+    public void  cb_p_u_100() throws Exception {
+        this.CB_MODE=true;
+        p_u_100();
+    }
+
+    @Test
+    public void  cb_p_u_110() throws Exception {
+        this.CB_MODE=true;
+        p_u_110();
+    }
+
+    @Test
+    public void  cb_p_u_120() throws Exception {
+        this.CB_MODE=true;
+        p_u_120();
+    }
+
+    @Test
+    public void  cb_p_u_130() throws Exception {
+        this.CB_MODE=true;
+        p_u_130();
+    }
+
+    @Test
+    public void  cb_p_u_140() throws Exception {
+        this.CB_MODE=true;
+        p_u_140();
+    }
+
+    @Test
+    public void  cb_p_u_150() throws Exception {
+        this.CB_MODE=true;
+        p_u_150();
+    }
+
+    @Test
+    public void  cb_p_u_155() throws Exception {
+        this.CB_MODE=true;
+        p_u_155();
+    }
+
+    @Test
+    public void  cb_p_u_160() throws Exception {
+        this.CB_MODE=true;
+        p_u_160();
+    }
+
+    @Test
+    public void  cb_p_u_165() throws Exception {
+        this.CB_MODE=true;
+        p_u_165();
+    }
+
+    @Test
+    public void  cb_p_u_170() throws Exception {
+        this.CB_MODE=true;
+        p_u_170();
+    }
+
+    @Test
+    public void  cb_p_u_175() throws Exception {
+        this.CB_MODE=true;
+        p_u_175();
+    }
+ */
 }

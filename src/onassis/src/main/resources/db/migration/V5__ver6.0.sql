@@ -90,3 +90,85 @@ external name
 
 create index a_credit_index on a(credit ASC, id ASC);
 
+--balances table for categories
+--balances
+--date, balance, income, expence, account
+create table cb(
+	d date not null,
+	b decimal(10,2) not null,
+	i decimal(10,2) not null,
+	c int not null);
+
+alter table cb
+add constraint cb_u_dc unique (d, c);
+
+--categroy balances
+create function cBalanceBefore(d date, c integer)
+returns decimal(10,2)
+parameter style java
+language java
+external name 'onassis.db.functions.Balance.cBalanceBefore';
+
+--payments: cbalances insert:
+	--create entry to cbalances if not already exists
+
+	create trigger p_cb_insert_1
+	after insert on p
+	referencing new as new
+	for each row mode db2sql
+	insert into cb (
+	  select new.d, cBalanceBefore(new.d, new.c), 0, new.c
+	  from cb
+	  where
+	    d = new.d and c = new.c
+	  	having count(*)=0
+	);
+
+	--update income and expence to inserted value
+	create trigger p_cb_insert_2
+	after insert on p
+	referencing new as new
+	for each row mode db2sql
+	update cb set i = i + new.i
+	where d = new.d and c = new.c;
+
+	--update balances to inserted value
+	create trigger p_cb_insert_3
+	after insert on p
+	referencing new as new
+	for each row mode db2sql
+	update cb set b = b + new.i
+	where d >= new.d and c = new.c;
+
+	--clean up if zero balance (i = 0)
+	create trigger p_cb_insert_4
+	after insert on p
+	referencing new as new
+	for each row mode db2sql
+	delete from cb
+	where d = new.d and i = 0 and c = new.c;
+
+--payments: balances delete:
+	--update income and expence to deleted value
+	create trigger p_cb_delete_1
+	after delete on p
+	referencing old as old
+	for each row mode db2sql
+	update cb set i = i - old.i
+	where d = old.d and c = old.c;
+
+	--update balances to deleted value
+	create trigger p_cb_delete_2
+	after delete on p
+	referencing old as old
+	for each row mode db2sql
+	update cb set b = b - old.i
+	where d >= old.d and c = old.c;
+
+	--clean up if zero balance (i = 0)
+	create trigger p_cb_delete_3
+	after delete on p
+	referencing old as old
+	for each row mode db2sql
+	delete from cb
+	where d = old.d and i = 0 and c = old.c;

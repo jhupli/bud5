@@ -70,12 +70,30 @@ public class Balance {
     }
 
     public static BigDecimal _balanceBefore(Connection conn, Date d, int a) throws SQLException {
-        try (PreparedStatement pstmnt = conn.prepareStatement("select b from b where d<? and a=? order by d desc fetch first 1 rows only")) {
+        final String stmnt = "select b from b where d<? and a=? order by d desc fetch first 1 rows only";
+        return _xbalanceBefore(conn, d, a, stmnt);
+    }
+
+     public static BigDecimal cBalanceBefore(Date d, int c) throws SQLException {
+        try (Connection conn = ds.getConnection()) {
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            return _cBalanceBefore(conn, d, c);
+        }
+    }
+
+    public static BigDecimal _cBalanceBefore(Connection conn, Date d, int c) throws SQLException {
+        final String stmnt = "select b from cb where d<? and c=? order by d desc fetch first 1 rows only";
+        return _xbalanceBefore(conn, d, c, stmnt);
+    }
+
+    private static BigDecimal _xbalanceBefore(Connection conn, Date d, int x, final String stmnt) throws SQLException {
+
+        try (PreparedStatement pstmnt = conn.prepareStatement(stmnt)) {
             if (pstmnt == null) {
                 throw new RuntimeException("prepareStatement failed");
             }
             pstmnt.setDate(1, d);
-            pstmnt.setInt(2, a);
+            pstmnt.setInt(2, x);
             if (!pstmnt.execute()) {
                 throw new RuntimeException("execute failed");
             }

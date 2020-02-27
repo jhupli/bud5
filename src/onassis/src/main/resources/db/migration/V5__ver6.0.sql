@@ -87,3 +87,6 @@ external name
 	referencing new as new
 	for each row mode db2sql
 	call checkDc_D(new.dc, new.d);
+
+create index a_credit_index on a(credit ASC, id ASC);
+

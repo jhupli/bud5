@@ -172,3 +172,24 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	for each row mode db2sql
 	delete from cb
 	where d = old.d and i = 0 and c = old.c;
+
+	-- new function:
+create procedure cBalancesUpdateTrigger(
+  old_d date, new_d date,
+  old_i decimal(10,2),  new_i decimal(10,2),
+  old_c int, new_c int)
+parameter style java
+language java
+modifies sql data
+external name
+'onassis.db.functions.CbTriggers.cBalancesUpdateTrigger';
+
+--payments: balances update : this is optimized
+	create trigger p_cb_update_1
+	after update on p
+	referencing new as new old as old
+	for each row mode db2sql
+	call cBalancesUpdateTrigger(
+	old.d, new.d,
+	old.i, new.i,
+	old.c, new.c);

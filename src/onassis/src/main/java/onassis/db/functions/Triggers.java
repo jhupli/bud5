@@ -199,16 +199,9 @@ public class Triggers {
 			pstmnt.setDate(3, d2);
 			pstmnt.executeUpdate();
 		}
-		/*
-		sql = " delete from b where a = ? and d = ?";
-		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
-			pstmnt.setLong(1, a);
-			pstmnt.setDate(2, d);
-			pstmnt.executeUpdate();
-		}*/
 	}
 
-	public static void clear0(Connection con) throws SQLException, ParseException {
+	public static void clear0(Connection con) throws SQLException {
 		String sql = " delete from b where i = 0 and e = 0";
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.executeUpdate();
@@ -253,53 +246,6 @@ public class Triggers {
             }
         }
     }
-
-    /*
-        String sql = " update b set smallestb = ? " + " where a = 0 ";
-
-        LocalDate startDate =  d.after(d2) ? d2.toLocalDate() : d.toLocalDate();
-        LocalDate endDate =  d.after(d2) ? d.toLocalDate() : d2.toLocalDate();
-        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1))
-        {
-            Date currentD = Date.valueOf(date);
-            BigDecimal smallestBalanceAt = Balance._smallestBalanceAt(con, currentD);
-            try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
-                pstmnt.setDate(1, currentD);
-                pstmnt.executeUpdate();
-            }
-        }
-    }
-
-	public static void smallestB(Connection con, Date d, Date d2) throws SQLException, ParseException {
-        String sql = " update b set smallestb = ? " + " where a = 0 ";
-
-        LocalDate startDate =  d.after(d2) ? d2.toLocalDate() : d.toLocalDate();
-        LocalDate endDate =  d.after(d2) ? d.toLocalDate() : d2.toLocalDate();
-        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1))
-        {
-            Date currentD = Date.valueOf(date);
-            BigDecimal smallestBalanceAt = Balance._smallestBalanceAt(con, currentD);
-            try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
-                pstmnt.setDate(1, currentD);
-                pstmnt.executeUpdate();
-            }
-        }
-    }
-
-	    /*
-
-
-		String sql = " update b set smallestb = smallestBalanceAt(d) " + " where a = 0 and "
-				+ (null == d2 ? " d >= ? " : " d between ? and ? ");
-		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
-			pstmnt.setDate(1, d);
-			if (null != d2) {
-				pstmnt.setDate(1, d.after(d2) ? d2 : d);
-				pstmnt.setDate(2, d.after(d2) ? d : d2);
-			}
-			pstmnt.executeUpdate();
-		}*/
-
 
 	private static void createIfNotExists(Connection con, Date d, int a) throws SQLException {
 		String sql = "select a from b where d = ? and a = ?";

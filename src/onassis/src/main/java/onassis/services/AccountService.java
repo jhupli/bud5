@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import onassis.db.functions.Balance;
+import onassis.db.functions.CbTriggers;
 import onassis.db.functions.History;
 import onassis.db.functions.Triggers;
 import onassis.dto.A;
@@ -27,6 +28,7 @@ public class AccountService extends ServicesBase {
         Balance.ds = this.ds;
         History.ds = this.ds;
         Triggers.ds = this.ds;
+        CbTriggers.ds = this.ds;
     }
 
     MapA rmA = new MapA();

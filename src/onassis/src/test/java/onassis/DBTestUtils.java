@@ -283,7 +283,6 @@ public class DBTestUtils {
             b1.getD().equals(b2.getD()) &&
             b1.getB().equals(b2.getB()) &&
             sumB1.equals(sumB2) &&
-            b1.getE().equals(b2.getE()) &&
             b1.getA() == b2.getA();
         }
 

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import onassis.db.functions.Balance;
+import onassis.db.functions.CbTriggers;
 import onassis.db.functions.History;
 import onassis.db.functions.Triggers;
 import onassis.dto.A;
@@ -53,6 +54,7 @@ public class OnassisController {
         Balance.ds = this.ds;
         History.ds = this.ds;
         Triggers.ds = this.ds;
+        CbTriggers.ds = this.ds;
     }
 
     @Value("${app.version:unknown}") String version;

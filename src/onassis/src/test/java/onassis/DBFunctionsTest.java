@@ -267,16 +267,24 @@ public class DBFunctionsTest extends DBTestUtils{
         assertTrue(null == select_b(d3, a));
         {
             B b = select_b(d2, a);
-            B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), a);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), a);
+                assertTrue(compareBs(b, bExp));
+            }
         }
         
         assertTrue(null == select_b(d1, 0));
         assertTrue(null == select_b(d3, 0));
         {
             B b = select_b(d2, 0);
-            B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), 0);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), 0);
+                assertTrue(compareBs(b, bExp));
+            }
         }
     }
     
@@ -289,8 +297,12 @@ public class DBFunctionsTest extends DBTestUtils{
 
         {
             B b = select_b(d2, a);
-            B bExp = new B(d2, bd(-1.99), bd(0), bd(-1.99), a);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(-1.99), bd(0), bd(-1.99), a);
+                assertTrue(compareBs(b, bExp));
+            }
         }
         
         {
@@ -310,8 +322,12 @@ public class DBFunctionsTest extends DBTestUtils{
 
         {
             B b = select_b(d2, a);
-            B bExp = new B(d2, bd(1.99), bd(1.99), bd(0), a);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(1.99), bd(1.99), bd(0), a);
+                assertTrue(compareBs(b, bExp));
+            }
         }
         
         {

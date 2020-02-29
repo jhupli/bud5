@@ -120,3 +120,8 @@ p_u_220: insert 2
  a_u_100: credit may not be changed
  a_d_100: a may not be deleted
  c_d_100: c may not be deleted
+
+ huomattu virhe:
+ jos lisää 0 summasen kantaan ja sitten updateaa sitä muuksi kuin 0,
+ ni ei tu balansseihin. syy: triggerit poistaa 0-arvoiset lisäyksessä, joten arvo ei päivity
+ ERR-FATAL

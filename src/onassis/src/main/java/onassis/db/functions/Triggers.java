@@ -95,6 +95,10 @@ public class Triggers {
 	 */
 	public static void i(Connection con, int a, BigDecimal s1, BigDecimal s2, Date d)
 			throws SQLException, ParseException {
+
+		createIfNotExists(con, d, a);
+		createIfNotExists(con, d, 0);
+
 		BigDecimal delta = s1.subtract(s2);
 		String sql = " update b " + " set b = b - ? " + " where (a = ? or a = 0) and d >= ? ";
 

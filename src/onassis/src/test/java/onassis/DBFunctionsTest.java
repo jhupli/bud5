@@ -1424,6 +1424,23 @@ public class DBFunctionsTest extends DBTestUtils{
         }
     }
 
+    @Test
+    public void  p_u_180() throws Exception {
+        int id = insert_p(d1, bd(0), c, a);
+        update_p(null, bd(1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+            bExp.setSmallestb(bd(0));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
     @Test(expected = DataIntegrityViolationException.class)
     public void a_d_100() throws Exception {
         int id = insert_p(d1, bd(-1), c, a);
@@ -1568,7 +1585,7 @@ public class DBFunctionsTest extends DBTestUtils{
         this.CB_MODE=true;
         p_d_030();
     }
-/*
+
     @Test
     public void  cb_p_u_010() throws Exception {
         this.CB_MODE=true;
@@ -1694,5 +1711,10 @@ public class DBFunctionsTest extends DBTestUtils{
         this.CB_MODE=true;
         p_u_175();
     }
- */
+
+    @Test
+    public void  cb_p_u_180() throws Exception {
+        this.CB_MODE=true;
+        p_u_180();
+    }
 }

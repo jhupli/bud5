@@ -737,11 +737,17 @@ class PaymentsEditor extends React.Component {
     }
 
     renderPaymentR(index) {
+      var fields  =  ['check','l','i','s','c','dc','a','d','g','descr'];
+      if(this.props.queryType === 'c') {
+        fields  =  ['check','l','i','s','c','dc','b','a','d','g','descr'];
+      }else if (this.props.queryType === 'a'){
+        fields  =  ['check','l','i','s','c','dc','a','d','b','g','descr'];
+      }
     	return(
     	<tr key={index}>
         {//const fields = ['d','b','i','s','g','c','a','descr']
         }
-	 		{['check','l','i','s','c','dc','a','d','b','g','descr'].map( (f) => {
+	 		{fields.map( (f) => {
 	 			return this.td(index, f) 
 	 		})}
 	      	<td className={this.tdClassName(index, 'deleted')}>
@@ -872,10 +878,10 @@ class PaymentsEditor extends React.Component {
           {this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
           {this.th('c', 'Issue')}
           {this.th('dc', 'Date')}
-
+          {this.drawBalanceF() && this.props.queryType === 'c' ?  this.th('b', 'Balance', false) : null}
           {this.th('a', 'Account')}
           {this.th('d', 'Date')}
-		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
+		  		{this.drawBalanceF() && this.props.queryType === 'a' ?  this.th('b', 'Balance', false) : null}
 
 
           {this.th('g', <FontAwesome name='paperclip' size='lg' />)}

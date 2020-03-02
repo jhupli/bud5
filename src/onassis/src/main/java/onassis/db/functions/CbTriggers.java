@@ -37,96 +37,96 @@ public class CbTriggers {
 
 	static public DataSource ds;
 
-	private static void c(Connection con, int c, int c2, BigDecimal i, Date d) throws SQLException, ParseException {
+	private static void c(Connection con, int c, int c2, BigDecimal i, Date dc) throws SQLException, ParseException {
 		
-		createIfNotExists(con, d, c2);
+		createIfNotExists(con, dc, c2);
 		
-		String sql = " update cb set b = b - ?  where c = ? and d >= ? ";
+		String sql = " update cb set b = b - ?  where c = ? and dc >= ? ";
 
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setBigDecimal(1, i);
 			pstmnt.setLong(2, c);
-			pstmnt.setDate(3, d);
+			pstmnt.setDate(3, dc);
 			pstmnt.executeUpdate();
 
 			pstmnt.setBigDecimal(1, i.negate());
 			pstmnt.setLong(2, c2);
-			pstmnt.setDate(3, d);
+			pstmnt.setDate(3, dc);
 			pstmnt.executeUpdate();
 		}
 
-		sql = " update cb set i = i - ?  where c = ? and d = ? ";
+		sql = " update cb set i = i - ?  where c = ? and dc = ? ";
 
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setBigDecimal(1, i);
 			pstmnt.setLong(2, c);
-			pstmnt.setDate(3, d);
+			pstmnt.setDate(3, dc);
 			pstmnt.executeUpdate();
 
 			pstmnt.setBigDecimal(1, i.negate());
 			pstmnt.setLong(2, c2);
-			pstmnt.setDate(3, d);
+			pstmnt.setDate(3, dc);
 			pstmnt.executeUpdate();
 		}
 	}
 
-	public static void i(Connection con, int c, BigDecimal s1, BigDecimal s2, Date d)
+	public static void i(Connection con, int c, BigDecimal s1, BigDecimal s2, Date dc)
 			throws SQLException, ParseException {
 
-	    createIfNotExists(con, d, c);
-        createIfNotExists(con, d, 0);
+	    createIfNotExists(con, dc, c);
+        createIfNotExists(con, dc, 0);
 
 		BigDecimal delta = s1.subtract(s2);
 
-		String sql = " update cb set b = b - ? where c = ? and d >= ? ";
+		String sql = " update cb set b = b - ? where c = ? and dc >= ? ";
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setBigDecimal(1, delta);
 			pstmnt.setLong(2, c);
-			pstmnt.setDate(3, d);
+			pstmnt.setDate(3, dc);
 			pstmnt.executeUpdate();
 		}
 
-        sql = " update cb set i = i - ? where c = ? and d = ? ";
+        sql = " update cb set i = i - ? where c = ? and dc = ? ";
         try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
             pstmnt.setBigDecimal(1, delta);
             pstmnt.setLong(2, c);
-            pstmnt.setDate(3, d);
+            pstmnt.setDate(3, dc);
             pstmnt.executeUpdate();
         }
 	}
 
-	private static void d(Connection con, int c, BigDecimal i, Date d, Date d2) throws SQLException, ParseException {
+	private static void d(Connection con, int c, BigDecimal i, Date dc, Date dc2) throws SQLException, ParseException {
 		
-		createIfNotExists(con, d2, c);
+		createIfNotExists(con, dc2, c);
 
 		String sql = null;
 		
-		if( d2.after(d) ) {
-			sql = " update cb set b = b - ? where c = ? and d >= ? and d < ? ";
+		if( dc2.after(dc) ) {
+			sql = " update cb set b = b - ? where c = ? and dc >= ? and dc < ? ";
 		} else {
-			sql = " update cb set b = b + ? where c = ? and d < ? and d >= ? ";
+			sql = " update cb set b = b + ? where c = ? and dc < ? and dc >= ? ";
 		}
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setBigDecimal(1, i);
 			pstmnt.setLong(2, c);
-			pstmnt.setDate(3, d);
-			pstmnt.setDate(4, d2);
+			pstmnt.setDate(3, dc);
+			pstmnt.setDate(4, dc2);
 			pstmnt.executeUpdate();
 		}
 		
-		sql = " update cb set i = i - ? where c = ? and d = ? ";
+		sql = " update cb set i = i - ? where c = ? and dc = ? ";
 
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setBigDecimal(1, i);
 			pstmnt.setLong(2, c);
-			pstmnt.setDate(3, d);
+			pstmnt.setDate(3, dc);
 			pstmnt.executeUpdate();
 		}
 		
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
 			pstmnt.setBigDecimal(1, i.negate());
 			pstmnt.setLong(2, c);
-			pstmnt.setDate(3, d2);
+			pstmnt.setDate(3, dc2);
 			pstmnt.executeUpdate();
 		}
 	}
@@ -138,19 +138,19 @@ public class CbTriggers {
 		}
 	}
 
-	private static void createIfNotExists(Connection con, Date d, int c) throws SQLException {
-		String sql = "select c from cb where d = ? and c = ? ";
+	private static void createIfNotExists(Connection con, Date dc, int c) throws SQLException {
+		String sql = "select c from cb where dc = ? and c = ? ";
 		try (PreparedStatement pstmnt = con.prepareStatement(sql)) {
-			pstmnt.setDate(1, d);
+			pstmnt.setDate(1, dc);
 			pstmnt.setLong(2, c);
 			pstmnt.execute();
 
 			try (ResultSet set = pstmnt.getResultSet()) {
 				if (set == null || !set.next()) {
-					BigDecimal balance = Balance._cBalanceBefore(con, d, c);
-					sql = " insert into cb(d, b, i, c) values ( ?, ?, 0, ?) ";
+					BigDecimal balance = Balance._cBalanceBefore(con, dc, c);
+					sql = " insert into cb(dc, b, i, c) values ( ?, ?, 0, ?) ";
 					try (PreparedStatement ipstmnt = con.prepareStatement(sql)) {
-						ipstmnt.setDate(1, d);
+						ipstmnt.setDate(1, dc);
 						ipstmnt.setBigDecimal(2, balance);
 						ipstmnt.setLong(3, c);
 						ipstmnt.executeUpdate();
@@ -161,19 +161,19 @@ public class CbTriggers {
 	}
 		
     static NamedParameterJdbcTemplate jdbcTemplate;
-    public static void cBalancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int c, int c2) throws SQLException, ParseException {
-        _cBalancesUpdateTrigger( d, d2, i, i2, c, c2, false);
+    public static void cBalancesUpdateTrigger( Date dc, Date dc2, BigDecimal i, BigDecimal i2, int c, int c2) throws SQLException, ParseException {
+        _cBalancesUpdateTrigger( dc, dc2, i, i2, c, c2, false);
     }
 
-    public static void cBalancesUpdateTriggerDebug( Date d, Date d2, BigDecimal i, BigDecimal i2, int c, int c2) throws SQLException, ParseException {
-        _cBalancesUpdateTrigger( d, d2, i, i2, c, c2, true);
+    public static void cBalancesUpdateTriggerDebug( Date dc, Date dc2, BigDecimal i, BigDecimal i2, int c, int c2) throws SQLException, ParseException {
+        _cBalancesUpdateTrigger( dc, dc2, i, i2, c, c2, true);
     }
 
-    private static void _cBalancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int c, int c2, boolean dblog) throws SQLException, ParseException {
+    private static void _cBalancesUpdateTrigger( Date dc, Date dc2, BigDecimal i, BigDecimal i2, int c, int c2, boolean dblog) throws SQLException, ParseException {
 		
 		boolean cChanged =  (c != c2);
 		boolean iChanged =  (i != i2);
-		boolean dChanged =  (d.compareTo(d2) != 0);
+		boolean dChanged =  (dc.compareTo(dc2) != 0);
 		
 		try( Connection con = ds.getConnection(); ) {
 			
@@ -183,16 +183,16 @@ public class CbTriggers {
             }
 			
             if (cChanged) {
-                c(con, c, c2, i, d);
+                c(con, c, c2, i, dc);
                 c = c2;
             }
             if (iChanged) {
-                i(con, c, i, i2, d);
+                i(con, c, i, i2, dc);
                 i = i2;
             }
 
             if(dChanged) {
-                d(con, c, i, d, d2);
+                d(con, c, i, dc, dc2);
             }
             clear0(con);
             if (dblog) {

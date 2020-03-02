@@ -62,10 +62,10 @@ public class Balance {
         return _balanceBefore(con, new Date(c.getTimeInMillis()), a);
     }
 
-    public static BigDecimal cBalanceAfter(Date d, int a)
+    public static BigDecimal cBalanceAfter(Date dc, int a)
             throws SQLException {
         Calendar c = Calendar.getInstance();
-        c.setTime(d);
+        c.setTime(dc);
         c.add(Calendar.DATE, 1);
         return cBalanceBefore(new Date(c.getTimeInMillis()), a);
     }
@@ -82,16 +82,16 @@ public class Balance {
         return _xbalanceBefore(conn, d, a, stmnt);
     }
 
-    public static BigDecimal cBalanceBefore(Date d, int c) throws SQLException {
+    public static BigDecimal cBalanceBefore(Date dc, int c) throws SQLException {
         try (Connection conn = ds.getConnection()) {
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            return _cBalanceBefore(conn, d, c);
+            return _cBalanceBefore(conn, dc, c);
         }
     }
 
-    public static BigDecimal _cBalanceBefore(Connection conn, Date d, int c) throws SQLException {
-        final String stmnt = "select b from cb where d<? and c=? order by d desc fetch first 1 rows only";
-        return _xbalanceBefore(conn, d, c, stmnt);
+    public static BigDecimal _cBalanceBefore(Connection conn, Date dc, int c) throws SQLException {
+        final String stmnt = "select b from cb where dc<? and c=? order by dc desc fetch first 1 rows only";
+        return _xbalanceBefore(conn, dc, c, stmnt);
     }
 
     private static BigDecimal _xbalanceBefore(Connection conn, Date d, int x, final String stmnt) throws SQLException {

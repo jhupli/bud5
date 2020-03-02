@@ -94,22 +94,22 @@ create index a_credit_index on a(credit ASC, id ASC);
 --balances
 --date, balance, income, expence, account
 create table cb(
-	d date not null,
+	dc date not null,
 	b decimal(10,2) not null,
 	i decimal(10,2) not null,
 	c int not null);
 
 alter table cb
-add constraint cb_u_dc unique (d, c);
+add constraint cb_u_dcc unique (dc, c);
 
 --categroy balances
-create function cBalanceAfter(d date, c integer)
+create function cBalanceAfter(dc date, c integer)
 returns decimal(10,2)
 parameter style java
 language java
 external name 'onassis.db.functions.Balance.cBalanceAfter';
 
-create function cBalanceBefore(d date, c integer)
+create function cBalanceBefore(dc date, c integer)
 returns decimal(10,2)
 parameter style java
 language java
@@ -123,10 +123,10 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	referencing new as new
 	for each row mode db2sql
 	insert into cb (
-	  select new.d, cBalanceBefore(new.d, new.c), 0, new.c
+	  select new.dc, cBalanceBefore(new.dc, new.c), 0, new.c
 	  from cb
 	  where
-	    d = new.d and c = new.c
+	    dc = new.dc and c = new.c
 	  	having count(*)=0
 	);
 
@@ -136,7 +136,7 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	referencing new as new
 	for each row mode db2sql
 	update cb set i = i + new.i
-	where d = new.d and c = new.c;
+	where dc = new.dc and c = new.c;
 
 	--update balances to inserted value
 	create trigger p_cb_insert_3
@@ -144,7 +144,7 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	referencing new as new
 	for each row mode db2sql
 	update cb set b = b + new.i
-	where d >= new.d and c = new.c;
+	where dc >= new.dc and c = new.c;
 
 	--clean up if zero balance (i = 0)
 	create trigger p_cb_insert_4
@@ -152,7 +152,7 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	referencing new as new
 	for each row mode db2sql
 	delete from cb
-	where d = new.d and i = 0 and c = new.c;
+	where dc = new.dc and i = 0 and c = new.c;
 
 --payments: balances delete:
 	--update income and expence to deleted value
@@ -161,7 +161,7 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	referencing old as old
 	for each row mode db2sql
 	update cb set i = i - old.i
-	where d = old.d and c = old.c;
+	where dc = old.dc and c = old.c;
 
 	--update balances to deleted value
 	create trigger p_cb_delete_2
@@ -169,7 +169,7 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	referencing old as old
 	for each row mode db2sql
 	update cb set b = b - old.i
-	where d >= old.d and c = old.c;
+	where dc >= old.dc and c = old.c;
 
 	--clean up if zero balance (i = 0)
 	create trigger p_cb_delete_3
@@ -177,11 +177,11 @@ external name 'onassis.db.functions.Balance.cBalanceBefore';
 	referencing old as old
 	for each row mode db2sql
 	delete from cb
-	where d = old.d and i = 0 and c = old.c;
+	where dc = old.dc and i = 0 and c = old.c;
 
 	-- new function:
 create procedure cBalancesUpdateTrigger(
-  old_d date, new_d date,
+  old_dc date, new_dc date,
   old_i decimal(10,2),  new_i decimal(10,2),
   old_c int, new_c int)
 parameter style java
@@ -196,6 +196,6 @@ external name
 	referencing new as new old as old
 	for each row mode db2sql
 	call cBalancesUpdateTrigger(
-	old.d, new.d,
+	old.dc, new.dc,
 	old.i, new.i,
 	old.c, new.c);

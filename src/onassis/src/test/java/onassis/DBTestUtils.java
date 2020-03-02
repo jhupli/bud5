@@ -130,7 +130,7 @@ public class DBTestUtils {
         }
     }
 
-    private B select_cb(Date d, int c) {
+    public B select_cb(Date d, int c) {
         if(c==0) return null; //0-accout case
         sql = "select * from cb where d=:d and c=:c";
         MapCb rm = new MapCb();
@@ -275,8 +275,8 @@ public class DBTestUtils {
     
     public boolean compareBs(B b1, B b2) {
         if(this.CB_MODE) {
-            if(null != b1 && b1.getA() == 0) return true; //0-account case: always true (not really tested)
-            if(null != b2 && b2.getA() == 0) return true; //0-account case: always true (not really tested)
+            if(null == b1 || b1.getA() == 0) return true; //0-account case: always true (not really tested)
+            if(null == b2 || b2.getA() == 0) return true; //0-account case: always true (not really tested)
             BigDecimal sumB1 = b1.getE().add(b1.getI());
             BigDecimal sumB2 = b2.getE().add(b2.getI());
             return

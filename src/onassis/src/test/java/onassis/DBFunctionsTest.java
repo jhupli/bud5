@@ -1646,35 +1646,234 @@ public class DBFunctionsTest extends DBTestUtils{
         p_u_090();
     }
 
+
     @Test
     public void  cb_p_u_100() throws Exception {
         this.CB_MODE=true;
-        p_u_100();
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(null, bd(2), c2, null, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), c);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d2, c));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), c);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), c2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(4), bd(3), bd(0), c2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, a2);
+            B bExp = new B(d3, bd(5), bd(1), bd(0), c2);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c2));
     }
 
     @Test
     public void  cb_p_u_110() throws Exception {
         this.CB_MODE=true;
-        p_u_110();
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(d1, bd(2), c2, a, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d2, c));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(3), bd(3), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(4), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(5), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c2));
     }
 
     @Test
     public void  cb_p_u_120() throws Exception {
         this.CB_MODE=true;
-        p_u_120();
+        insert_p(d2, bd(1), c, a);
+        int id = insert_p(d3, bd(1), c, a);
+        insert_p(d4, bd(1), c, a);
+
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+        insert_p(d4, bd(1), c2, a);
+
+        update_p(d1, bd(2), c2, null, id);
+
+        assertTrue(null == select_cb(d1, c));
+        {
+            B b = select_cb(d2, c);
+            B bExp = new B(d2, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d3, c));
+        {
+            B b = select_cb(d4, c);
+            B bExp = new B(d4, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(2), bd(2), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(3), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(4), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d4, c2);
+            B bExp = new B(d4, bd(5), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
     }
 
     @Test
     public void  cb_p_u_130() throws Exception {
         this.CB_MODE=true;
-        p_u_130();
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(d3, bd(2), c2, null, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d2, c));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d2, a2);
+            B bExp = new B(d2, bd(2), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(5), bd(3), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c2));
     }
 
     @Test
     public void  cb_p_u_140() throws Exception {
         this.CB_MODE=true;
-        p_u_140();
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(d4, bd(2), c2, null, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_b(d2, a));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(2), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(3), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d4, c2);
+            B bExp = new B(d4, bd(5), bd(2), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
     }
+
 
     @Test
     public void  cb_p_u_150() throws Exception {

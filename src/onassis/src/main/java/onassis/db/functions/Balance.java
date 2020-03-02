@@ -62,6 +62,14 @@ public class Balance {
         return _balanceBefore(con, new Date(c.getTimeInMillis()), a);
     }
 
+    public static BigDecimal cBalanceAfter(Date d, int a)
+            throws SQLException {
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.add(Calendar.DATE, 1);
+        return cBalanceBefore(new Date(c.getTimeInMillis()), a);
+    }
+
     public static BigDecimal balanceBefore(Date d, int a) throws SQLException {
     	try (Connection conn = ds.getConnection()) {
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
@@ -74,7 +82,7 @@ public class Balance {
         return _xbalanceBefore(conn, d, a, stmnt);
     }
 
-     public static BigDecimal cBalanceBefore(Date d, int c) throws SQLException {
+    public static BigDecimal cBalanceBefore(Date d, int c) throws SQLException {
         try (Connection conn = ds.getConnection()) {
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             return _cBalanceBefore(conn, d, c);

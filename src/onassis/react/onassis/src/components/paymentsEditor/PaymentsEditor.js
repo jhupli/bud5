@@ -1044,7 +1044,7 @@ class PaymentsEditor extends React.Component {
 	}
 	
 	drawBalanceF() {
-		return( this.props.queryType === 'a' && this.pristine )
+		return( (this.props.queryType === 'a' || this.props.queryType === 'c') && this.pristine )
 	}
 	
 	td(index, field) {

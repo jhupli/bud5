@@ -103,6 +103,12 @@ alter table cb
 add constraint cb_u_dc unique (d, c);
 
 --categroy balances
+create function cBalanceAfter(d date, c integer)
+returns decimal(10,2)
+parameter style java
+language java
+external name 'onassis.db.functions.Balance.cBalanceAfter';
+
 create function cBalanceBefore(d date, c integer)
 returns decimal(10,2)
 parameter style java

@@ -286,9 +286,12 @@ public class Triggers {
     private static void _balancesUpdateTrigger( Date d, Date d2, BigDecimal i, BigDecimal i2, int a, int a2, boolean dblog) throws SQLException, ParseException {
 		
 		boolean aChanged =  (a != a2);
-		boolean iChanged =  (i != i2);
+		boolean iChanged =  (i.compareTo(i2) != 0);
 		boolean dChanged =  (d.compareTo(d2) != 0);
-		
+		if(!aChanged && !iChanged && !dChanged) {
+		    return;
+        }
+
 		try( Connection con = ds.getConnection(); ) {
 			
 			jdbcTemplate = new NamedParameterJdbcTemplate(ds);

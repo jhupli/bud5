@@ -172,9 +172,13 @@ public class CbTriggers {
     private static void _cBalancesUpdateTrigger( Date dc, Date dc2, BigDecimal i, BigDecimal i2, int c, int c2, boolean dblog) throws SQLException, ParseException {
 		
 		boolean cChanged =  (c != c2);
-		boolean iChanged =  (i != i2);
+        boolean iChanged =  (i.compareTo(i2) != 0);
 		boolean dChanged =  (dc.compareTo(dc2) != 0);
-		
+
+        if(!cChanged && !iChanged && !dChanged) {
+            return;
+        }
+
 		try( Connection con = ds.getConnection(); ) {
 			
 			jdbcTemplate = new NamedParameterJdbcTemplate(ds);

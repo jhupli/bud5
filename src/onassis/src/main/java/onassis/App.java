@@ -19,10 +19,13 @@ public class App {
         String pattern = "dd_MMMM_yyyy_hh_mm_ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
-
         Path path = Paths.get("./bak/"+date+".zip");
         Files.createDirectories(path.getParent());
-        ZipUtil.pack(new File(".\\BudDB.v5\\"), path.toFile());
+        try {
+            ZipUtil.pack(new File(".\\BudDB.v5\\"), path.toFile());
+        } catch (org.zeroturnaround.zip.ZipException e) {
+            System.out.println("Skipping backup (first run this program?).");
+        }
         SpringApplication.run(App.class, args);
     }
 }

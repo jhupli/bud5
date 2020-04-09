@@ -132,12 +132,13 @@ public class DBTestUtils {
 
     public B select_cb(Date d, int c) {
         if(c==0) return null; //0-accout case
-        sql = "select * from cb where d=:d and c=:c";
+        sql = "select * from cb where dc=:d and c=:c";
         MapCb rm = new MapCb();
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("d", d)
                 .addValue("c", c);
         try{
+            System.out.println("SQL="+ sql);
             return (B) jdbcTemplate.queryForObject(sql, namedParameters, rm);
         } catch (EmptyResultDataAccessException e) {
             return null;

@@ -13,7 +13,7 @@ public class MapCb implements RowMapper<B> { //only used in tests!!!
 	@Override
 	public B mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Cb cb =
-		new Cb(rs.getDate("d"),
+		new Cb(rs.getDate("dc"),
 				rs.getBigDecimal("b"),
 				rs.getBigDecimal("i"),
 				rs.getInt("c"));

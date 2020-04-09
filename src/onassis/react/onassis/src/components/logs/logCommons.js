@@ -15,7 +15,7 @@ function chooseValueF(p, field) {
 	    				  return null
 	    		}
 	    	}
-	    		
+        case 'dc' : return toFiDBFormat(p.dc)
 	    	case 'd' : return toFiDBFormat(p.d)
 	    	case 'i' : return currencyFormat(p.i)
 	    	case 's' : return p.s ? 'X' : '-'

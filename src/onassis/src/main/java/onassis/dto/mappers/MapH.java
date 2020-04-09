@@ -16,6 +16,7 @@ public class MapH implements RowMapper<H> {
 				rs.getString("op"),
 				rs.getInt("rownr"),
                 rs.getInt("id"),
+				rs.getDate("dc"),
                 rs.getDate("d"),				
                 rs.getBigDecimal("i"),
 				rs.getInt("c"),

@@ -107,10 +107,39 @@ p_u_140: insert 3a + 3b (same dates) X
  ===========0 -account
 p_u_210: insert 1  (same dates)
  
-p_u_220: insert 2 
+p_u_220: insert 2
+
+
 
 p_u_220: insert 2 
 		 change a
 		
- 
- 
+ =========== version 6.0 added dc
+ p_i_310: dc > d
+ p_u_310: dc > d
+ a_u_100: credit may not be changed
+ a_d_100: a may not be deleted
+ c_d_100: c may not be deleted
+
+ huomattu virhe:
+ jos lisää 0 summasen kantaan ja sitten updateaa sitä muuksi kuin 0,
+ ni ei tu balansseihin. syy: triggerit poistaa 0-arvoiset lisäyksessä, joten arvo ei päivity
+ ERR-FATAL
+
+
+ ---categroy changes:
+
+ cb_p_u_100: insert 3c + 3c (same dates) X
+  		 update 2. sum + c -> b
+
+ cb_p_u_110: insert 3a + 3b (same dates) X
+  		 move 2. to same as first + update sum + a -> b
+
+ cb_p_u_120: insert 3a + 3b (same dates) X
+  		 move 2. first + update sum + a -> b
+
+ cb_p_u_130: insert 3a + 3b (same dates) X
+  		 move 2. to same as last  + update sum + a -> b
+
+ cb_p_u_140: insert 3a + 3b (same dates) X
+  		 move 2. last  + update sum + a -> b

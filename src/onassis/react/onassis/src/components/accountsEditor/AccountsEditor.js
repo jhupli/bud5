@@ -171,9 +171,19 @@ class AccountsEditor extends React.Component {
     	
     	switch(field) {
     	case 'credit' :
+    	            if(this.isPersistedR(index)) {
+    	                if(!value) {
+    	                    return null;
+    	                }else{
+    	                    return(
+    	                    <FontAwesome name='credit-card' size='lg' />
+    	                    )
+    	                }
+    	            }
+
 					return(
-				  	<div>
-				  		<CheckboxField 
+					<div>
+				  		<CheckboxField
 					  		id = {'creditacc_' + index}
 					  		onValueChanged = {this.changePropertyF}
 					  		checked = {value}
@@ -208,7 +218,7 @@ class AccountsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, 'descr')}
 				  			placeholder = 'name'
-				  			maxLength = {30}
+				  			maxLength = {20}
 					  	/>
 				    </div>)
     	case 'color' :
@@ -366,8 +376,7 @@ class AccountsEditor extends React.Component {
     renderAccountR(index) {
     	return(
     	<tr key={index}>
-        {/*{[...fields].map( (f) => {*/}
-      {['color','descr','active'].map( (f) => { //CHG-75
+        {[...fields].map( (f) => {
 	 			return this.td(index, f) 
 	 		})}
 	 		
@@ -491,7 +500,7 @@ class AccountsEditor extends React.Component {
 			  		<tr>
 			  			<th className={this.thClassName('color')} />
 			  			{this.th('descr', 'Name')}
-			  			{/*this.th('credit', 'Credit')*/}
+			  			{this.th('credit', 'Credit')}
 			  			{this.th('active', 'Active')}
 			  			{
 			  			<th className={this.thClassName('deleted')}>

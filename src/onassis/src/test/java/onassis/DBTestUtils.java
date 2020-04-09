@@ -36,6 +36,7 @@ import onassis.dto.H;
 import onassis.dto.P;
 import onassis.dto.mappers.MapA;
 import onassis.dto.mappers.MapB;
+import onassis.dto.mappers.MapCb;
 import onassis.dto.mappers.MapH;
 import onassis.dto.mappers.MapP;
 
@@ -55,6 +56,7 @@ public class DBTestUtils {
     String sql = null;
     Connection con = null;
 
+    public boolean CB_MODE = false;
 
     public BigDecimal bd(double val) {
         return BigDecimal.valueOf(val).setScale(2, RoundingMode.UP);
@@ -112,7 +114,10 @@ public class DBTestUtils {
         }
     }
     
-    public B select_b(Date d, int a) {     
+    public B select_b(Date d, int a) {
+        if(this.CB_MODE) {
+            return select_cb(d, a);
+        }
         sql = "select * from b where d=:d and a=:a";
         MapB rm = new MapB();
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -124,7 +129,21 @@ public class DBTestUtils {
             return null;
         }
     }
-    
+
+    public B select_cb(Date d, int c) {
+        if(c==0) return null; //0-accout case
+        sql = "select * from cb where d=:d and c=:c";
+        MapCb rm = new MapCb();
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("d", d)
+                .addValue("c", c);
+        try{
+            return (B) jdbcTemplate.queryForObject(sql, namedParameters, rm);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public int getBalancesCount(Date d) {
     	sql = "select count(*) from b where not a=0 and d=:d " ;
     	MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("d", d);
@@ -170,16 +189,22 @@ public class DBTestUtils {
     }
 
     public int insert_p(Date d, BigDecimal i, int c, int a) throws Exception {
+        return insert_p(d, d, i ,c , a);
+    }
+
+    public int insert_p(Date dc, Date d, BigDecimal i, int c, int a) throws Exception {
+        assertNotNull(dc);
         assertNotNull(d);
         assertNotNull(i);
         assertNotNull(a);
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("dc", dc)
                 .addValue("d", d)
                 .addValue("i", i)
                 .addValue("c", c)
                 .addValue("a", a);
         
-        sql = "insert into p( d, i, c, a) values( :d, :i, :c, :a)";
+        sql = "insert into p( dc, d, i, c, a) values(:dc, :d, :i, :c, :a)";
         jdbcTemplate.update( sql, namedParameters );
         
         sql = "select max(id) from p";
@@ -188,15 +213,22 @@ public class DBTestUtils {
     }
     
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id) throws Exception {
-    	update_p(d, i, c, a, id, null);
+    	update_p(d, d, i, c, a, id, null);
     }
 
     public void update_p(Date d, BigDecimal i, Integer c, Integer a, int id, Boolean l) throws Exception {
-        assertTrue(null != d || null !=i || null!= c || null != a || null != l);
+        update_p(d, d, i, c, a, id, l);
+    }
+
+    public void update_p(Date dc, Date d, BigDecimal i, Integer c, Integer a, int id, Boolean l) throws Exception {
+        assertTrue(null != dc || null != d || null !=i || null!= c || null != a || null != l);
         String set = "";
-        
+
+        if (null != dc) {
+            set = " dc = :dc";
+        }
         if (null != d) {
-            set = " d = :d";
+            set += (set.length()>0 ? "," : "") + " d = :d";
         }
         if (null != i) {
             set += (set.length()>0 ? "," : "") + " i = :i";
@@ -213,6 +245,7 @@ public class DBTestUtils {
         sql = "update p set "+set+" where id = :id";
         
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("dc", dc)
                 .addValue("d", d)
                 .addValue("i", i)
                 .addValue("c", c)
@@ -234,12 +267,25 @@ public class DBTestUtils {
         h.getOp().equals(op) &&
         h.getRownr() == rownr &&
         h.getI().compareTo(p.getI()) == 0 &&
+        h.getDc().compareTo(p.getDc()) == 0 &&
         h.getD().compareTo(p.getD()) == 0 &&
         h.getC() == p.getC() &&
         h.getA() == p.getA();
     }
     
     public boolean compareBs(B b1, B b2) {
+        if(this.CB_MODE) {
+            if(null == b1 || b1.getA() == 0) return true; //0-account case: always true (not really tested)
+            if(null == b2 || b2.getA() == 0) return true; //0-account case: always true (not really tested)
+            BigDecimal sumB1 = b1.getE().add(b1.getI());
+            BigDecimal sumB2 = b2.getE().add(b2.getI());
+            return
+            b1.getD().equals(b2.getD()) &&
+            b1.getB().equals(b2.getB()) &&
+            sumB1.equals(sumB2) &&
+            b1.getA() == b2.getA();
+        }
+
         return
         b1.getD().equals(b2.getD()) &&
         b1.getB().equals(b2.getB()) &&

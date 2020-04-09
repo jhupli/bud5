@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class P {
 	public Long id;
+	public Date dc;
 	public Date d;
 	public BigDecimal i;
 	public Integer c;
@@ -18,9 +19,10 @@ public class P {
 		super();
 	}
 	
-	public P(Long id, Date d, BigDecimal i, Integer c, Integer a, Boolean s, String g, String descr, Boolean l) {
+	public P(Long id, Date dc, Date d, BigDecimal i, Integer c, Integer a, Boolean s, String g, String descr, Boolean l) {
 		super();
 		this.id = id;
+		this.dc = dc;
 		this.d = d;
 		this.i = i;
 		this.c = c;
@@ -36,6 +38,12 @@ public class P {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Date getDc() {
+		return dc;
+	}
+	public void setDc(Date dc) {
+		this.dc = dc;
 	}
 	public Date getD() {
 		return d;

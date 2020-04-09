@@ -14,6 +14,7 @@ public class MapPb implements RowMapper<P> {
 	public P mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return (P) new Pb(
 				rs.getLong("id"),
+				rs.getDate("dc"),
 				rs.getDate("d"),
 				rs.getBigDecimal("i"),
 				rs.getInt("c"),

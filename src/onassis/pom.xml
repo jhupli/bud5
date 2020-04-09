@@ -4,7 +4,7 @@
 
     <groupId>hupli</groupId>
     <artifactId>onassis</artifactId>
-    <version>5.8</version>
+    <version>6.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Spring Boot Blank Project (from https://github.com/making/spring-boot-blank)</name>
@@ -91,6 +91,13 @@
 		    <version>4.2</version>
 		</dependency>
 
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-zip</artifactId>
+            <version>1.14</version>
+            <type>jar</type>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>Onassis</finalName>
@@ -121,18 +128,13 @@
             </resource>
         </resources>
         <plugins>
-
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-
             <plugin>
                 <configuration>
                     <executable>true</executable>
                 </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.3.7.RELEASE</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.springframework</groupId>
@@ -146,7 +148,6 @@
                 <artifactId>gitflow-maven-plugin</artifactId>
                 <version>1.13.0</version>
                 <configuration />
-
             </plugin>
         </plugins>
     </build>

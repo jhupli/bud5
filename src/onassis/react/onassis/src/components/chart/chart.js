@@ -160,7 +160,7 @@ class Chart extends React.Component {
     }
     
     tooltip(dt) {
-		var a_table = accountsTooltipTable(dt[0].x, this.props.curves, this.props.constants, true)
+		var a_table = accountsTooltipTable(dt[0].x, this.props.curves['curves'], this.props.constants, true)
 		return ReactDOMServer.renderToStaticMarkup(a_table)
     }
     
@@ -309,16 +309,17 @@ class Chart extends React.Component {
     	}
     	/* red / white backgrounds here*/
        if(!this.chart_config.regions) {
+
     	   //init with white
     	   this.chart_config.regions = []
     	   for(var x=1; x<(this.chart_config.data.columns[0].length); x++) { //x date 
     		   
     		   for(var y=3; y<this.chart_config.data.columns.length; y++) { //y accounts start with 3 
     				var alku = dateFormat(addDays(this.chartDatetoDate(this.chart_config.data.columns[0][x]),-1), "yyyymmdd") + "T12"
-    				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
 
-    				this.chart_config.regions.push( 
-	                    {"start": alku, "end": loppu, class: this.chart_config.data.columns[y][x] < 0 ? "red" : "white"}
+    				var loppu = dateFormat(this.chartDatetoDate(this.chart_config.data.columns[0][x]), "yyyymmdd") + "T12"
+    				this.chart_config.regions.push(
+	                    {"start": alku, "end": loppu, class: (!this.chart_config.data.accs[y-3].credit && this.chart_config.data.columns[y][x] < 0) ? "red" : "white"}
 	                 )		
     		   }
     	   }
@@ -411,41 +412,50 @@ class Chart extends React.Component {
         	this.chart_config.data.names = {}
         	this.chart_config.data.types = {}
         	this.chart_config.data.colors = {}
-        	this.chart_config.data.columns = nextProps.curves //curves updated
-        	this.chart_config.regions = null 
-        	this.legendnames(nextProps.curves, nextProps.constants)
+        	if(nextProps.curves) {
+        	    this.chart_config.data.columns = nextProps.curves['curves'] //curves updated
+        	    this.chart_config.data.accs = nextProps.curves['accs']
+        	    this.chart_config.regions = null
+        	    this.legendnames(nextProps.curves)
+        	}
         	//this.chart_config.data.names['I'] ='Income'
-        	this.chart_config.data.colors['I'] ='green'
+        	//this.chart_config.data.colors['I'] ='green'
         	//this.chart_config.data.names['E'] ='Exp'
-        	this.chart_config.data.colors['E'] ='red'
+        	//this.chart_config.data.colors['E'] ='red'
 //        	var max = 0, min = 0
-        	if (nextProps.curves) {
+        	/*if (nextProps.curves && nextProps.constants) {
         		//console.log("curves 1")
         		var f = n =>  { return key === '' + n.value}
 	        	for(var i=3; i<nextProps.curves.length; i++) {
 	        		var key = nextProps.curves[i][0]
 	        		var acc = findInArray(nextProps.constants['acc'], f)
-	        		this.chart_config.data.colors[key] = acc.color
+	        		if(null !== acc) {
+	        		    this.chart_config.data.colors[key] = acc.color
+	        		}
 	        		this.chart_config.data.types[key] = 'spline'
 	        	}
 	            this.draw()
-        	}
+        	}*/
         } 
     }
     
     
-    legendnames(curves, constants) {
+    legendnames() {
     	//heihei ihan karmeen näköstä koodia
+
     	this.chart_config.data.names['I'] ='Income'
     	this.chart_config.data.names['E'] ='Exp'
-        if (curves) {
-        		var f = n => { return key === ''+n.value}
-	        	for(var i=3; i<curves.length; i++) {
-	        		var key = curves[i][0]
-	        		var acc = findInArray(constants['acc'], f)
-	        		this.chart_config.data.names[key] = acc.label
-	        	}
+        this.chart_config.data.colors['I'] ='green'
+        this.chart_config.data.colors['E'] ='red'
+
+        for(var i=0; i<this.chart_config.data.accs.length; i++) {
+            var a = this.chart_config.data.accs[i]
+            this.chart_config.data.names[a.id] = a.descr
+            this.chart_config.data.colors[a.id] = a.color
+            this.chart_config.data.types[a.id] = 'spline'
         }
+        this.draw()
+
     } 
 }
 

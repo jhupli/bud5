@@ -57,7 +57,6 @@
             border-left-width: 1px;
             border-left-style: dotted;
             border-left-color: #ddd;
-
         }
         
   
@@ -140,12 +139,23 @@ input[type="text"]:disabled {
 	{ 
 		width: 112px;
 	}
-			
+
+ #payments_table .dc_header
+ {
+     width: 112px;
+ }
+
 #payments_table .d_cell 
 	{ 
 		width: 112px;
 		padding-top: 7px;
 	}
+
+ #payments_table .dc_cell
+ {
+     width: 112px;
+     padding-top: 7px;
+ }
 
 #payments_table .b_header 
 	{ 
@@ -178,8 +188,32 @@ input[type="text"]:disabled {
 	{ 
 		width: 162px;
 	}
-	
-#payments_table .c_cell 
+
+ #payments_table th.c_header {
+     border-left-width: 0px;
+ }
+
+ #payments_table td.c_cell {
+     border-left-width: 0px;
+ }
+
+ #payments_table th.d_header {
+     border-left-width: 0px;
+ }
+
+ #payments_table td.d_cell {
+     border-left-width: 0px;
+ }
+
+ #payments_table th.dc_header {
+     border-left-width: 0px;
+ }
+
+ #payments_table td.dc_cell {
+     border-left-width: 0px;
+ }
+
+ #payments_table .c_cell
 	{ 
 		width: 162px;
 	}

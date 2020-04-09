@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {HOST} from './axios'
 
 const PING_REQUEST = 'PING_REQUEST'
 const PingRequestAction = () => {
@@ -20,7 +21,7 @@ const PingResponseAction = (status) => {
 const ping = () => (
     (dispatch) => {
         dispatch(PingRequestAction())
-        axios.get('http://localhost:8080/ping?ts='+Date.now(), {
+        axios.get(HOST+'ping?ts='+Date.now(), {
                 port: 8080
             })
             .then(function(response) {

@@ -98,7 +98,7 @@ public class DataProvider {
 			if(ix % 100 == 0) System.out.println();
 			try(Connection conn = ds.getConnection()) {
                 conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-                String insertSQL = "INSERT INTO P(D,I,C,A,L,S,G,DESCR) VALUES(?,?,?,?,?,?,?,?)";
+                String insertSQL = "INSERT INTO P(DC,D,I,C,A,L,S,G,DESCR) VALUES(?,?,?,?,?,?,?,?,?)";
 
                 String sumSQL = "select sum(i) from p where d<=? and a=?";
 
@@ -112,18 +112,20 @@ public class DataProvider {
                     BigDecimal i = new BigDecimal(MIN_I + I_DIFF * Math.random()).setScale(2, RoundingMode.HALF_UP);
                     //Date d = addDays(MIN_D, (int) Math.round(D_DIFF * Math.random()));
                     Date d = addDays(MIN_D, ix);
+                    Date dc = addDays(d, (int) -Math.round(7 * Math.random()));
                     int c = (int) Math.round(MIN_C + C_DIFF * Math.random());
                     int a = (int) Math.round(MIN_A + A_DIFF * Math.random());
                     boolean l = Math.random() >= 0.5;
 
-                    pstmnt.setDate(1, d);
-                    pstmnt.setBigDecimal(2, i);
-                    pstmnt.setInt(3, c);
-                    pstmnt.setInt(4, a);
-                    pstmnt.setBoolean(5, l);
-                    pstmnt.setBoolean(6, true);
-                    pstmnt.setString(7, "" + ix);
-                    pstmnt.setString(8, "description of " + ix);
+                    pstmnt.setDate(1, dc);
+                    pstmnt.setDate(2, d);
+                    pstmnt.setBigDecimal(3, i);
+                    pstmnt.setInt(4, c);
+                    pstmnt.setInt(5, a);
+                    pstmnt.setBoolean(6, l);
+                    pstmnt.setBoolean(7, true);
+                    pstmnt.setString(8, "" + ix);
+                    pstmnt.setString(9, "description of " + ix);
 
                     pstmnt.executeUpdate();
                     //System.out.println("isolation_1="+conn.getTransactionIsolation());

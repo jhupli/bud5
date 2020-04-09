@@ -32,7 +32,11 @@ public class ConstantService extends ServicesBase {
             case "acc" :
                 List<A> accs = accountService.accList();
                 for (A a : accs) {
-                    constants.add(new Constant(a.id, a.descr, a.color, a.active));
+                    if(a.credit) {
+                        constants.add(new Constant(a.id, a.descr , a.color, a.active, "credit-card"));
+                    } else {
+                        constants.add(new Constant(a.id, a.descr, a.color, a.active));
+                    }
                 }
                 return constants;
         }

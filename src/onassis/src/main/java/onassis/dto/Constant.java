@@ -34,6 +34,15 @@ public class Constant implements Serializable {
     public void setColor(String color) {
         this.color = color;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     public boolean isValid() {
         return valid;
     }
@@ -48,6 +57,7 @@ public class Constant implements Serializable {
     long value;
     String label;
     String color;
+    String icon;
     boolean valid;
     public Constant(long value, String label, String color, boolean valid) {
         super();
@@ -55,5 +65,14 @@ public class Constant implements Serializable {
         this.label = label;
         this.color = color;
         this.valid = valid;
+    }
+
+    public Constant(long value, String label, String color, boolean valid, String icon) {
+        super();
+        this.value = value;
+        this.label = label;
+        this.color = color;
+        this.valid = valid;
+        this.icon = icon;
     }
 }

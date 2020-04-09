@@ -29,7 +29,19 @@ public class Util {
 		 }
 		 return d2;
 	}
-	
+
+	public static void checkDc_D(Date dc, Date d) throws SQLException {
+		if(d.before(dc)) {
+			throw new SQLException("dc must be equal or prior to d.");
+		}
+	}
+
+	public static void checkCredit(boolean newCredit, boolean oldCredit) throws SQLException {
+		if(newCredit != oldCredit) {
+			throw new SQLException("credit may not be updated.");
+		}
+	}
+
 	public static BigDecimal ifThenElseDecimal(Boolean ifClause, BigDecimal thenDecimal, BigDecimal elseDecimal)
 	        throws SQLException {
 		 if(ifClause) {

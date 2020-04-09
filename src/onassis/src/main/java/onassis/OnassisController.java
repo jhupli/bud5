@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import onassis.db.functions.Balance;
+import onassis.db.functions.CbTriggers;
 import onassis.db.functions.History;
 import onassis.db.functions.Triggers;
 import onassis.dto.A;
@@ -56,6 +54,7 @@ public class OnassisController {
         Balance.ds = this.ds;
         History.ds = this.ds;
         Triggers.ds = this.ds;
+        CbTriggers.ds = this.ds;
     }
 
     @Value("${app.version:unknown}") String version;
@@ -163,7 +162,7 @@ public class OnassisController {
     }
 
     @RequestMapping("chart")
-    List<List<Object>> details(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {
+    Map details(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {
         return chartService.chartRows(s, e);
     }
 

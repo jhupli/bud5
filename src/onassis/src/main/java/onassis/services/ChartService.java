@@ -8,10 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
+import onassis.dto.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
@@ -21,16 +21,20 @@ import onassis.db.functions.Balance;
 @Component
 public class ChartService extends ServicesBase {
 
-    public List<List<Object>> chartRows(String s, String e) throws SQLException, ParseException {
+    @Autowired
+    AccountService accountService;
+
+    public Map chartRows(String s, String e) throws SQLException, ParseException {
 
         LocalDate start = LocalDate.parse(s);
         LocalDate end = LocalDate.parse(e);
 
-        List<List<Object>> accounts = new ArrayList<List<Object>>();
+        List<List<Object>> curves = new ArrayList<>();
+        List<A> accs = new ArrayList<>();
 
-        accounts.add(dates(start, end));
-        accounts.add(incomes(true, start, end));
-        accounts.add(incomes(false, start, end));
+        curves.add(dates(start, end));
+        curves.add(incomes(true, start, end));
+        curves.add(incomes(false, start, end));
 
         String accountQuery = "SELECT id FROM a WHERE active = :active ORDER BY id ASC";
 
@@ -38,12 +42,17 @@ public class ChartService extends ServicesBase {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("active", true);
 
         List<Integer> accList = jdbcTemplate.queryForList(accountQuery, namedParameters, Integer.class);
+        List<A> aList = accountService.accList();
 
         for (Integer id : accList) {
-            accounts.add(balancesWithA(id, start, end));
+            curves.add(balancesWithA(id, start, end));
+            Optional<A> a = aList.stream().filter(x -> x.id == id.intValue()).findFirst();
+            accs.add(a.get());
         }
-
-        return accounts;
+        Map<String, Object> result = new HashMap<>();
+        result.put("curves", curves);
+        result.put("accs", accs);
+        return result;
     }
 
     private List<Object> dates(LocalDate s, LocalDate e) {

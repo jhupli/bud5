@@ -13,6 +13,7 @@ public class MapP implements RowMapper<P> {
 	public P mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return new P(
 				rs.getLong("id"),
+				rs.getDate("dc"),
 				rs.getDate("d"),
 				rs.getBigDecimal("i"),
 				rs.getInt("c"),

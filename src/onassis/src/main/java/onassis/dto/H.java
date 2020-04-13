@@ -9,6 +9,7 @@ public class H {
     String op;
     Integer rownr;
     Integer id;
+	Date dc;
     Date d;
     BigDecimal i;
     Integer c;
@@ -19,13 +20,14 @@ public class H {
 	String g;
 	String descr;
        
-    public H(Timestamp hd, String op, Integer rownr, Integer id, Date d, BigDecimal i, Integer c, String c_descr, Integer a, String a_descr, Boolean s,
+    public H(Timestamp hd, String op, Integer rownr, Integer id, Date dc, Date d, BigDecimal i, Integer c, String c_descr, Integer a, String a_descr, Boolean s,
 			String g, String descr) {
 		super();
 		this.hd = hd;
 		this.op = op;
 		this.rownr = rownr;
 		this.id = id;
+		this.dc = dc;
 		this.d = d;
 		this.i = i;
 		this.c = c;
@@ -67,6 +69,14 @@ public class H {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Date getDc() {
+		return dc;
+	}
+
+	public void setDc(Date dc) {
+		this.dc = dc;
 	}
 
 	public Date getD() {

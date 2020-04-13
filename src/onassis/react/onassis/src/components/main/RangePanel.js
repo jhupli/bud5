@@ -98,7 +98,7 @@ class RangePanel extends React.Component{
 									{ (this.state.showMinibars ? <FontAwesome name='caret-up' size='2x' /> : <FontAwesome name='caret-down' size='2x' />) }&nbsp;
 			            		</Panel.Toggle>
 			            </span><Spinner fetching={this.props.fetching} />
-		           {ctrls}
+		           {/*ctrls*/}
 		         </div>
 			
 		return(

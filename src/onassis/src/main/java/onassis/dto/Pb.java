@@ -11,9 +11,10 @@ public class Pb extends P {
 		super();
 	}
 	
-	public Pb(Long id, Date d, BigDecimal i, Integer c, Integer a, Boolean s, String g, String descr, Boolean l, BigDecimal b) {
+	public Pb(Long id, Date dc, Date d, BigDecimal i, Integer c, Integer a, Boolean s, String g, String descr, Boolean l, BigDecimal b) {
 		super();
 		this.id = id;
+		this.dc = dc;
 		this.d = d;
 		this.i = i;
 		this.c = c;

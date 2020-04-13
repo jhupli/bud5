@@ -158,7 +158,7 @@ class DetailsPanel extends React.Component{
 		
 		if(this.props.queryType === 'd' && this.props.curves) {
 
-			a_table = accountsTooltipTable(this.props.params.d, this.props.curves, this.props.constants)
+			a_table = accountsTooltipTable(this.props.params.d, this.props.curves['curves'], this.props.constants)
 			if(a_table !== null) {
 				a_table =
 				<div style={{paddingBottom: "4px"}}>

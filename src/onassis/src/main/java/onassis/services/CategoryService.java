@@ -41,11 +41,11 @@ public class CategoryService extends ServicesBase {
     }
 
     public void remove(List<Integer> ids) {
-        String deleteSQL = "DELETE FROM C WHERE id = :id";
+        /*String deleteSQL = "DELETE FROM C WHERE id = :id";
         for(Integer id : ids) {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
             jdbcTemplate.update(deleteSQL, namedParameters);
-        }
+        }*/
     }
 
     public void modify(List<C> categories) {

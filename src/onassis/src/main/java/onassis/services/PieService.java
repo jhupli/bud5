@@ -26,12 +26,12 @@ public class PieService extends ServicesBase {
                 .addValue("d1", day1.format(sqldf))
                 .addValue("d2", day2.format(sqldf));
 
-        String paymetsQuery = "SELECT sum(i) as sl, c FROM P WHERE i<=0 AND d BETWEEN :d1 and :d2 AND s GROUP BY c ORDER BY sl ASC";
+        String paymetsQuery = "SELECT sum(i) as sl, c FROM P WHERE i<=0 AND dc BETWEEN :d1 and :d2 AND s GROUP BY c ORDER BY sl ASC";
         List<Slice> slices = jdbcTemplate.query(paymetsQuery,
                 namedParameters,
                 new RowMapperResultSetExtractor<Slice>(rmSlice));
 
-        paymetsQuery = "SELECT sum(i) as sl, c FROM P WHERE i>0 AND d BETWEEN :d1 and :d2 AND s GROUP BY c ORDER BY sl ASC";
+        paymetsQuery = "SELECT sum(i) as sl, c FROM P WHERE i>0 AND dc BETWEEN :d1 and :d2 AND s GROUP BY c ORDER BY sl ASC";
         slices.addAll(jdbcTemplate.query(paymetsQuery,
                 namedParameters,
                 new RowMapperResultSetExtractor<Slice>(rmSlice)));

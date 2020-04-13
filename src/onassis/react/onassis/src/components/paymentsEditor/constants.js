@@ -1,14 +1,16 @@
-import {toDBFormatFi} from '../../util/fiDate'
+import {toDBFormatFi, toDateFi} from '../../util/fiDate'
 import currencyFormat  from '../../util/currency'
+import {daydiff} from  '../../util/addDays'
 
 var dateFormat = require('dateformat')
 
-const fields = ['d','b','i','s','g','c','a','descr']
+const fields = ['d','dc','b','i','s','g','c','a','descr']
 
 const defaultValues = {
 	id: null,
 	l: false ,
 	d: dateFormat(new Date(), "dd.mm.yyyy"),
+  dc: dateFormat(new Date(), "dd.mm.yyyy"),
 	i: "+0.00",
 	c: null,
 	a: null,
@@ -22,6 +24,7 @@ const initialMaskValues = {
 	id: null,
 	l: false,
 	d: dateFormat(new Date(), 'dd.mm.yyyy'),
+  dc: dateFormat(new Date(), 'dd.mm.yyyy'),
 	i: '+0.00',
 	c: null,
 	a: null,
@@ -38,9 +41,22 @@ const 	validators = {
 	'l': (value) => {
 			return null
 		  },
-	'd': (value) => {
-			return (value != null && value !== '') ? null : 'required'
+	'd': (value, values) => {
+	    console.log("value"+value);
+	    console.log("values=");
+	    console.log(values);
+      let diff = daydiff(toDateFi(value), toDateFi(values.dc));
+      console.log("diff="+diff);
+			return (value != null && value !== '' && diff <= 0) ? null : 'required'
 		  },
+  'dc': (value, values) => {
+      console.log("value"+value);
+      console.log("values=");
+      console.log(values);
+      let diff = daydiff(toDateFi(value), toDateFi(values.d));
+      console.log("diff="+diff);
+      return (value != null && value !== '' && diff >= 0) ? null : 'required'
+    },
 	'i':  (value) => {
 			return (value !== '') ? null : 'required'
 		  },
@@ -48,6 +64,7 @@ const 	validators = {
 			return null
 		  },
 	'c': (value) => {
+	    console.log("cvalue='"+value+"'");
 			return (value != null && value !== '') ? null : 'required'
 		  },
 	'a': (value) => {
@@ -69,6 +86,7 @@ function preInitFormat(payments, checkedList) {
 	copy.forEach((p) => {
 		// 2006-12-31 -> 31.12.2005
 		p.d = dateFormat(p.d, "dd.mm.yyyy")
+    p.dc = dateFormat(p.dc, "dd.mm.yyyy")
 		// 2 -> +2.00
 		p.i =  (p.i >=0 ? '+' : '') + currencyFormat(p.i)
 	})
@@ -87,6 +105,11 @@ function preSubmitFormat(payments) {
 			p.d = toDBFormatFi(p.d)
 			//p.d_initial = toDBFormatFi(p.d_initial)
 		 }
+    if(p.dc) {
+      // "1.12.2001" -> "2001-12-01"
+      p.dc = toDBFormatFi(p.dc)
+      //p.d_initial = toDBFormatFi(p.d_initial)
+    }
 	})
 	return payments
 }
@@ -98,6 +121,7 @@ function copyObject(b) {
 		id: b,
 		l: b,
 		d: b,
+    dc: b,
 		i: b,
 		c: b,
 		a: b,
@@ -115,6 +139,7 @@ function copyPayment(payment, checkedList, index = null) {
 		id: payment.id,
 		l: payment.l,
 		d: payment.d,
+    dc: payment.dc,
 		i: payment.i,
 		c: payment.c,
 		a: payment.a,
@@ -177,7 +202,8 @@ function initState(payments, checkedList, recurring = { recur: false, times: 1, 
 
 function oneIsTrue(row) {
 	var ret =
-		row.d ||			
+		row.d ||
+    row.dc ||
 		row.i ||
 		row.c ||
 		row.a ||

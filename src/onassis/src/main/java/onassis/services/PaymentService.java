@@ -19,14 +19,21 @@ public class PaymentService extends ServicesBase {
     MapPb rmPb = new MapPb();
 
     public List<P> list(Set<Integer> ids) {
-        final String query = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b  FROM P WHERE id in (:ids) ORDER BY a ASC";
+        final String query = "SELECT id, dc, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b  FROM P WHERE id in (:ids) ORDER BY a ASC";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("ids", ids);
         return jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
     }
 
     public List<P> day(String d) {
         LocalDate day = LocalDate.parse(d);
-        final String query = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d=:day ORDER BY a ASC";
+        final String query = "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE d=:day " +
+                             " UNION " +
+                             "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE dc=:day " +
+                             " ORDER BY a ASC";
+
+
+
+
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("day", day.format(sqldf));
         return jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
     }
@@ -35,7 +42,7 @@ public class PaymentService extends ServicesBase {
         LocalDate day1 = LocalDate.parse(d1);
         LocalDate day2 = LocalDate.parse(d2);
 
-        final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
+        final String paymetsQuery = "SELECT id, dc, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d BETWEEN :d1 and :d2 AND a=:a ORDER BY d ASC";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("d1", day1.format(sqldf))
                 .addValue("d2", day2.format(sqldf))
@@ -47,16 +54,16 @@ public class PaymentService extends ServicesBase {
         LocalDate day1 = LocalDate.parse(d1);
         LocalDate day2 = LocalDate.parse(d2);
 
-        final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE d BETWEEN :d1 and :d2 AND c=:c ORDER BY d ASC";
+        final String paymetsQuery = "SELECT id, dc, d, i, a, c, l, s, g, descr, cBalanceAfter(dc, c) as b FROM P WHERE dc BETWEEN :d1 and :d2 AND c=:c ORDER BY dc ASC";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("d1", day1.format(sqldf))
                 .addValue("d2", day2.format(sqldf))
                 .addValue("c", c);
-        return jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
+        return jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<P>(rmPb));
     }
 
     public List<P> group(String g) {
-        final String paymetsQuery = "SELECT id, d, i, a, c, l, s, g, descr, balanceAfter(d, a) as b FROM P WHERE g=:g ORDER BY d ASC";
+        final String paymetsQuery = "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE g=:g ORDER BY d ASC";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("g", g);
         return jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
     }
@@ -71,9 +78,10 @@ public class PaymentService extends ServicesBase {
 
     public void create(List<P> payments) {
         String insertSQL =
-                "INSERT INTO P(d, i, c, a, s, g, descr, l) VALUES(:d, :i, :c, :a, :s, :g, :descr, false)";
+                "INSERT INTO P(dc, d, i, c, a, s, g, descr, l) VALUES(:dc, :d, :i, :c, :a, :s, :g, :descr, false)";
         for(P p : payments) {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                    .addValue("dc", p.dc)
                     .addValue("d", p.d)
                     .addValue("i", p.i)
                     .addValue("c", p.c)
@@ -96,7 +104,7 @@ public class PaymentService extends ServicesBase {
     public void modify(List<P> payments) {
         for(P p : payments) {
             String setterSQL = "";
-
+            if(null != p.dc) setterSQL += ", dc = :dc";
             if(null != p.d) setterSQL += ", d = :d";
             if(null != p.i) setterSQL += ", i = :i";
             if(null != p.c) setterSQL += ", c = :c";
@@ -108,6 +116,7 @@ public class PaymentService extends ServicesBase {
             setterSQL = "UPDATE P SET "+setterSQL.substring(1) + " WHERE id=:id";
             MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("id", p.id)
+                    .addValue("dc", p.dc)
                     .addValue("d", p.d)
                     .addValue("i", p.i)
                     .addValue("c", p.c)

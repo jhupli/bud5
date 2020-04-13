@@ -14,7 +14,7 @@ class DateField extends React.Component {
 	    	    disabled={readOnly}
 	    		value={value}
 	    		id={id}
-	    		pickerName={'picker_d_' + id + index} 
+	    		pickerName={'picker_d_' + id + index}
 	    	 	pickerCallback={(d) => onValueChanged(dateFormat(d, "dd.mm.yyyy"), field, index)}
 	    	 	pickerType="single"
 	    	 	touched = {touched}

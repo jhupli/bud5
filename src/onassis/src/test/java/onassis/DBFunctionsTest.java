@@ -13,7 +13,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -70,7 +72,9 @@ public class DBFunctionsTest extends DBTestUtils{
     public void after() throws Exception {
         DBTestUtilsDB.statistics_end(con, "FUNCTIONSCHEMA");
         //statistics_end();
-    	xcheck_b0_b();
+        if(!this.CB_MODE) {
+            xcheck_b0_b();
+        }
         empty_db();
         con.close();
     }
@@ -263,16 +267,24 @@ public class DBFunctionsTest extends DBTestUtils{
         assertTrue(null == select_b(d3, a));
         {
             B b = select_b(d2, a);
-            B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), a);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), a);
+                assertTrue(compareBs(b, bExp));
+            }
         }
         
         assertTrue(null == select_b(d1, 0));
         assertTrue(null == select_b(d3, 0));
         {
             B b = select_b(d2, 0);
-            B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), 0);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(0), bd(1.99), bd(-1.99), 0);
+                assertTrue(compareBs(b, bExp));
+            }
         }
     }
     
@@ -285,8 +297,12 @@ public class DBFunctionsTest extends DBTestUtils{
 
         {
             B b = select_b(d2, a);
-            B bExp = new B(d2, bd(-1.99), bd(0), bd(-1.99), a);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(-1.99), bd(0), bd(-1.99), a);
+                assertTrue(compareBs(b, bExp));
+            }
         }
         
         {
@@ -306,8 +322,12 @@ public class DBFunctionsTest extends DBTestUtils{
 
         {
             B b = select_b(d2, a);
-            B bExp = new B(d2, bd(1.99), bd(1.99), bd(0), a);
-            assertTrue(compareBs(b, bExp));
+            if(this.CB_MODE) {
+                assertTrue(null == b);
+            } else {
+                B bExp = new B(d2, bd(1.99), bd(1.99), bd(0), a);
+                assertTrue(compareBs(b, bExp));
+            }
         }
         
         {
@@ -1403,5 +1423,497 @@ public class DBFunctionsTest extends DBTestUtils{
             assertTrue(compareBs(b, bExp));
         }
     }
-    
+
+    @Test
+    public void  p_u_180() throws Exception {
+        int id = insert_p(d1, bd(0), c, a);
+        update_p(null, bd(1), null, null, id);
+        {
+            B b = select_b(d1, a);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d1, 0);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), 0);
+            bExp.setSmallestb(bd(0));
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void a_d_100() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        jdbcTemplate.update("delete from a where id=1", new MapSqlParameterSource());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void a_c_100() throws Exception {
+        int id = insert_p(d1, bd(-1), c, a);
+        jdbcTemplate.update("delete from c where id=1", new MapSqlParameterSource());
+    }
+
+    //CB-tests:
+    @Test
+    public void  cb_p_i_010() throws Exception {
+        this.CB_MODE=true;
+        p_i_010();
+    }
+
+    @Test
+    public void  cb_p_i_020() throws Exception {
+        this.CB_MODE=true;
+        p_i_020();
+    }
+
+    @Test
+    public void  cb_p_i_030() throws Exception {
+        this.CB_MODE=true;
+        p_i_030();
+    }
+
+    @Test
+    public void  cb_p_i_040() throws Exception {
+        this.CB_MODE=true;
+        p_i_040();
+    }
+
+    @Test
+    public void  cb_p_i_050() throws Exception {
+        this.CB_MODE=true;
+        p_i_050();
+    }
+
+    @Test
+    public void  cb_p_i_060() throws Exception {
+        this.CB_MODE=true;
+        p_i_060();
+    }
+
+    @Test
+    public void  cb_p_i_070() throws Exception {
+        this.CB_MODE=true;
+        p_i_070();
+    }
+
+    @Test
+    public void  cb_p_i_080() throws Exception {
+        this.CB_MODE=true;
+        p_i_080();
+    }
+
+    @Test
+    public void  cb_p_i_090() throws Exception {
+        this.CB_MODE=true;
+        p_i_090();
+    }
+
+    @Test
+    public void  cb_p_i_100() throws Exception {
+        this.CB_MODE=true;
+        p_i_100();
+    }
+
+    @Test
+    public void  cb_p_i_110() throws Exception {
+        this.CB_MODE=true;
+        p_i_110();
+    }
+
+    @Test
+    public void  cb_p_i_111() throws Exception {
+        this.CB_MODE=true;
+        p_i_111();
+    }
+
+    @Test
+    public void  cb_p_i_120() throws Exception {
+        this.CB_MODE=true;
+        p_i_120();
+    }
+
+    @Test
+    public void  cb_p_i_121() throws Exception {
+        this.CB_MODE=true;
+        p_i_121();
+    }
+
+    @Test
+    public void  cb_p_i_130() throws Exception {
+        this.CB_MODE=true;
+        p_i_130();
+    }
+
+    @Test
+    public void  cb_p_i_140() throws Exception {
+        this.CB_MODE=true;
+        p_i_140();
+    }
+
+    @Test
+    public void  cb_p_i_150() throws Exception {
+        this.CB_MODE=true;
+        p_i_150();
+    }
+
+    @Test
+    public void  cb_p_i_160() throws Exception {
+        this.CB_MODE=true;
+        p_i_160();
+    }
+
+    @Test
+    public void  cb_p_i_170() throws Exception {
+        this.CB_MODE=true;
+        p_i_170();
+    }
+
+    @Test
+    public void  cb_p_d_010() throws Exception {
+        this.CB_MODE=true;
+        p_d_010();
+    }
+
+    @Test
+    public void  cb_p_d_020() throws Exception {
+        this.CB_MODE=true;
+        p_d_020();
+    }
+
+    @Test
+    public void  cb_p_d_030() throws Exception {
+        this.CB_MODE=true;
+        p_d_030();
+    }
+
+    @Test
+    public void  cb_p_u_010() throws Exception {
+        this.CB_MODE=true;
+        p_u_010();
+    }
+
+    @Test
+    public void  cb_p_u_011() throws Exception {
+        this.CB_MODE=true;
+        p_u_011();
+    }
+
+    @Test
+    public void  cb_p_u_020() throws Exception {
+        this.CB_MODE=true;
+        p_u_020();
+    }
+
+    @Test
+    public void  cb_p_u_030() throws Exception {
+        this.CB_MODE=true;
+        p_u_030();
+    }
+
+    @Test
+    public void  cb_p_u_040() throws Exception {
+        this.CB_MODE=true;
+        p_u_040();
+    }
+
+    @Test
+    public void  cb_p_u_050() throws Exception {
+        this.CB_MODE=true;
+        p_u_050();
+    }
+
+    @Test
+    public void  cb_p_u_060() throws Exception {
+        this.CB_MODE=true;
+        p_u_060();
+    }
+
+    @Test
+    public void  cb_p_u_070() throws Exception {
+        this.CB_MODE=true;
+        p_u_070();
+    }
+
+    @Test
+    public void  cb_p_u_080() throws Exception {
+        this.CB_MODE=true;
+        p_u_080();
+    }
+
+    @Test
+    public void  cb_p_u_090() throws Exception {
+        this.CB_MODE=true;
+        p_u_090();
+    }
+
+
+    @Test
+    public void  cb_p_u_100() throws Exception {
+        this.CB_MODE=true;
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(null, bd(2), c2, null, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), c);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d2, c));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), c);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), c2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(4), bd(3), bd(0), c2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, a2);
+            B bExp = new B(d3, bd(5), bd(1), bd(0), c2);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c2));
+    }
+
+    @Test
+    public void  cb_p_u_110() throws Exception {
+        this.CB_MODE=true;
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(d1, bd(2), c2, a, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d2, c));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(3), bd(3), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(4), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(5), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c2));
+    }
+
+    @Test
+    public void  cb_p_u_120() throws Exception {
+        this.CB_MODE=true;
+        insert_p(d2, bd(1), c, a);
+        int id = insert_p(d3, bd(1), c, a);
+        insert_p(d4, bd(1), c, a);
+
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+        insert_p(d4, bd(1), c2, a);
+
+        update_p(d1, bd(2), c2, null, id);
+
+        assertTrue(null == select_cb(d1, c));
+        {
+            B b = select_cb(d2, c);
+            B bExp = new B(d2, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d3, c));
+        {
+            B b = select_cb(d4, c);
+            B bExp = new B(d4, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(2), bd(2), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(3), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(4), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d4, c2);
+            B bExp = new B(d4, bd(5), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+    @Test
+    public void  cb_p_u_130() throws Exception {
+        this.CB_MODE=true;
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(d3, bd(2), c2, null, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d2, c));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_b(d2, a2);
+            B bExp = new B(d2, bd(2), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(5), bd(3), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c2));
+    }
+
+    @Test
+    public void  cb_p_u_140() throws Exception {
+        this.CB_MODE=true;
+        insert_p(d1, bd(1), c, a);
+        int id = insert_p(d2, bd(1), c, a);
+        insert_p(d3, bd(1), c, a);
+
+        insert_p(d1, bd(1), c2, a);
+        insert_p(d2, bd(1), c2, a);
+        insert_p(d3, bd(1), c2, a);
+
+        update_p(d4, bd(2), c2, null, id);
+
+        {
+            B b = select_cb(d1, c);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_b(d2, a));
+        {
+            B b = select_cb(d3, c);
+            B bExp = new B(d3, bd(2), bd(1), bd(0), a);
+            assertTrue(compareBs(b, bExp));
+        }
+        assertTrue(null == select_cb(d4, c));
+
+        {
+            B b = select_cb(d1, c2);
+            B bExp = new B(d1, bd(1), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d2, c2);
+            B bExp = new B(d2, bd(2), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d3, c2);
+            B bExp = new B(d3, bd(3), bd(1), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+        {
+            B b = select_cb(d4, c2);
+            B bExp = new B(d4, bd(5), bd(2), bd(0), a2);
+            assertTrue(compareBs(b, bExp));
+        }
+    }
+
+
+    @Test
+    public void  cb_p_u_150() throws Exception {
+        this.CB_MODE=true;
+        p_u_150();
+    }
+
+    @Test
+    public void  cb_p_u_155() throws Exception {
+        this.CB_MODE=true;
+        p_u_155();
+    }
+
+    @Test
+    public void  cb_p_u_160() throws Exception {
+        this.CB_MODE=true;
+        p_u_160();
+    }
+
+    @Test
+    public void  cb_p_u_165() throws Exception {
+        this.CB_MODE=true;
+        p_u_165();
+    }
+
+    @Test
+    public void  cb_p_u_170() throws Exception {
+        this.CB_MODE=true;
+        p_u_170();
+    }
+
+    @Test
+    public void  cb_p_u_175() throws Exception {
+        this.CB_MODE=true;
+        p_u_175();
+    }
+
+    @Test
+    public void  cb_p_u_180() throws Exception {
+        this.CB_MODE=true;
+        p_u_180();
+    }
 }

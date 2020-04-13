@@ -82,7 +82,8 @@ class PaymentsEditor extends React.Component {
         
         //validate:
         this.validateF = this.validateF.bind(this)
-        this.validateMaskF = this.validateMaskF.bind(this) 
+        //this.validateF = this.validateF.bind(this) //validates the whole row
+        //this.validateMaskF = this.validateMaskF.bind(this)
         
         //some field related util;
         this.maskedF = this.maskedF.bind(this) //is field masked 
@@ -118,12 +119,14 @@ class PaymentsEditor extends React.Component {
         //utils
         this.isPersistedR = this.isPersistedR.bind(this)
         this.disabledCheckR = this.disabledCheckR.bind(this) //row selection disabled
+        this.maskedCopy = this.maskedCopy.bind(this) //row selection disabled
 
         //render
         this.renderPaymentR = this.renderPaymentR.bind(this)
 
         //Table related:
         this.resetT =  this.resetT.bind(this)
+        this.validateT =  this.validateT.bind(this)
         //util
         this.isPristineT = this.isPristineT.bind(this)
         this.hasErrorsT = this.hasErrorsT.bind(this)
@@ -184,23 +187,32 @@ class PaymentsEditor extends React.Component {
     	}
     	
     	if(index === -2){ //mask value
-    		this.validateMaskF(field, value)
+    		//this.validateMaskF(field, value)
     		this.setValueMaskF(field, value)
     		return
     	}
     	
-    	//touch
-		if (this.isPersistedR(index)) { //new rows do not get 'touched' (unless masked)
-			var copy = copyArray(this.state.touched)
-			copy[index][field] = this.isDifferentFromInitialF(value, field, index)
-			this.setState({touched : copy})
-		}
-		
-		//validate
-		if(!this.state.masked[field]) { //do not validate masked fields
-			this.validateF(field, value, index)
-		}
-    	this.setValueF(value, field, index)
+        //touch
+      if (this.isPersistedR(index)) { //new rows do not get 'touched' (unless masked)
+        var copy = copyArray(this.state.touched)
+        copy[index][field] = this.isDifferentFromInitialF(value, field, index)
+        //when dc changes will change d to the same value
+        /*if(field === 'dc') {
+          copy[index]['d'] = this.isDifferentFromInitialF(value, 'd', index)
+        }*/
+        this.setState({touched : copy})
+      }
+
+      //validate
+      if(!this.state.masked[field]) { //do not validate masked fields
+        this.validateF(field, value, index)
+        //this.validateT(field, value)
+      }
+      this.setValueF(value, field, index)
+      //when dc changes will change d to the same value
+      /*if(field === 'dc') {
+            this.setValueF(value, 'd', index)
+      }*/
     }
     
     changePropertyDeletedF(value, field, index) {
@@ -255,42 +267,66 @@ class PaymentsEditor extends React.Component {
 		var copy = {...this.state.maskValues}
 		copy[field] = value
 		this.setState({maskValues : copy})
+        this.validateT(field, null, copy)
 	}
 	
 	setValueMaskCheckF(field, set) {
-	    var copy = {...this.state.masked}
+		  var copy = {...this.state.masked}
 		copy[field] = set
 		this.setState({masked : copy})
 
+        this.validateT(field, copy)
 		//clear/set errors of existing maskValues
-		copy = {...this.state.maskErrors}
-		copy[field] = !set ? null : validators[field](this.state.maskValues[field])
-		this.setState({maskErrors : copy})
+		/*copy = {...this.state.maskErrors}
+		copy[field] = !set ? null : validators[field](this.state.maskValues[field], this.state.maskValues)
+		this.setState({maskErrors : copy}) */
+
 
 		//clear/set errors of existing values masked
-		var copy2 = copyArray(this.state.errors)
+		/*var copy2 = copyArray(this.state.errors)
 		this.state.values.forEach( (v, index) => {
-			copy2[index][field] = set ? null : validators[field](v[field])
+		  var value = set ? this.state.maskValues[field] : v[field]
+			copy2[index][field] = validators[field](value, this.state.values[index])
 		})
-		this.setState({errors : copy2})
+		this.setState({errors : copy2})*/
 	}
-	
-	validateF(field, value, index) {
-		var original = this.state.errors[index][field]
-		var result = validators[field](value) 
-		if( result !== original ) {
-			var copy = copyArray(this.state.errors)
-			copy[index][field] = validators[field](value) 
-			this.setState({errors : copy})
-		}
-	}
-	
-	validateMaskF(field, value) {
-		var copy = {...this.state.maskErrors}
-		copy[field] = !this.state.masked[field] ? null : validators[field](value)
-		this.setState({maskErrors : copy})
-	}
-	
+
+  validateF(field, value, index) {
+    var copy = this.maskedCopy(field, index)
+
+    copy[field] = value;
+    var errorR = this.validateR(copy)
+    var copy = copyArray(this.state.errors)
+    copy[index] = errorR;
+    this.setState({errors : copy})
+  }
+
+  maskedCopy(field, index, masked = null, maskValues = null) {
+    if(null == masked) {
+      masked= this.state.masked;
+    }
+    if(null == maskValues) {
+      maskValues= this.state.maskValues;
+    }
+    var copy = copyPayment(this.state.values[index], [])
+    fields.map(f => {
+      if(masked[f]  && !this.state.values[index].l && !this.state.deleted[index]) {
+        copy[f] = maskValues[f]
+      }
+    })
+    return copy
+  }
+
+  validateT(field, masked = null, maskValues = null) {
+    var copy = copyArray(this.state.errors)
+        this.state.values.map( (r, index) =>  {
+        var rcopy = this.maskedCopy(field, index, masked, maskValues)
+        var errorR = this.validateR(rcopy)
+        copy[index] = errorR
+    })
+    this.setState({errors : copy})
+  }
+
 	maskedF(index, field) {
 		if(index<0 || this.state.deleted[index]) return false
 		return this.state.masked[field] && !this.state.values[index].l
@@ -386,6 +422,21 @@ class PaymentsEditor extends React.Component {
 				  			popoverText = {'Show day ' + value }
 				    	 />
 				    </div>)
+        case 'dc' :
+          return(
+            <div>
+              <DateFieldPopover
+                id = {'dc_'+index}
+                onValueChanged = {this.changePropertyF}
+                value = {value}
+                readOnly = {this.readOnlyR(index, 'dc')}
+                field = 'dc'
+                index = {index}
+                touched = {this.touchedF(index, 'dc')}
+                linkCb = {this.props.queryType === 'dc' || index === -2 || !this.isPristineT() ? null : this.dayLoad}
+                popoverText = {'Show day ' + value }
+              />
+            </div>)
     	case 'b' :  return(
     				<div>
      					<CurrencyField 
@@ -565,6 +616,11 @@ class PaymentsEditor extends React.Component {
 				return inv * 
 				(toDateFi(this.chooseValueF(b.index,'d')).getTime() - toDateFi(this.chooseValueF(a.index,'d')).getTime())
 			}
+    case 'dc':
+      return (a, b) => {
+        return inv *
+          (toDateFi(this.chooseValueF(b.index,'dc')).getTime() - toDateFi(this.chooseValueF(a.index,'dc')).getTime())
+      }
 		case 'g':
 			return (a, b) => {
 				 var textA = this.chooseValueF(a.index,'g').toUpperCase()
@@ -599,7 +655,7 @@ class PaymentsEditor extends React.Component {
 			
 			valuesCopy.push(defaults)
 			this.sortedValues.push(defaults)
-			errorsCopy.push(this.validateR(defaults)) 
+			errorsCopy.push(this.validateR(defaults))
 		}
 		this.setState({
 					recurring : { ...this.state.recurring, recur: false },
@@ -632,6 +688,7 @@ class PaymentsEditor extends React.Component {
 			last = this.sortedValues[this.sortedValues.length - 1]
 		} else {
 			last.d = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
+      last.dc = dateFormat(this.props.defaultDate, "dd.mm.yyyy")
 		}
 
 		var res = {...last}
@@ -658,7 +715,7 @@ class PaymentsEditor extends React.Component {
     validateR(v) {
 	   var res = {}
 	   fields.forEach( (field) => {
-		   	res[field] = validators[field](v[field])
+		   	res[field] = validators[field](v[field], v)
     	})
     	return res
     }
@@ -680,9 +737,17 @@ class PaymentsEditor extends React.Component {
     }
 
     renderPaymentR(index) {
+      var fields  =  ['check','l','i','s','c','dc','a','d','g','descr'];
+      if(this.props.queryType === 'c') {
+        fields  =  ['check','l','i','s','c','dc','b','a','d','g','descr'];
+      }else if (this.props.queryType === 'a'){
+        fields  =  ['check','l','i','s','c','dc','a','d','b','g','descr'];
+      }
     	return(
     	<tr key={index}>
-	 		{['check', 'l', ...fields].map( (f) => { 
+        {//const fields = ['d','b','i','s','g','c','a','descr']
+        }
+	 		{fields.map( (f) => {
 	 			return this.td(index, f) 
 	 		})}
 	      	<td className={this.tdClassName(index, 'deleted')}>
@@ -808,13 +873,18 @@ class PaymentsEditor extends React.Component {
 				  	/>
 	  			</th>
 		  		<th className={this.thClassName('l')} />
-	  			{this.th('d', 'Date')}
-		  		{this.drawBalanceF() ?  this.th('b', 'Balance', false) : null}
-	  			{this.th('i', 'Pay')}
-	  			{this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
-	  			{this.th('g', <FontAwesome name='paperclip' size='lg' />)}
-	  			{this.th('c', 'Issue')}
-	  			{this.th('a', 'Account')}
+          {this.th('i', 'Pay')}
+
+          {this.th('s', <FontAwesome name='pie-chart' size='lg' />, false)}
+          {this.th('c', 'Issue')}
+          {this.th('dc', 'Date')}
+          {this.drawBalanceF() && this.props.queryType === 'c' ?  this.th('b', 'Balance', false) : null}
+          {this.th('a', 'Account')}
+          {this.th('d', 'Date')}
+		  		{this.drawBalanceF() && this.props.queryType === 'a' ?  this.th('b', 'Balance', false) : null}
+
+
+          {this.th('g', <FontAwesome name='paperclip' size='lg' />)}
 	  			{this.th('descr', 'Description')}		  			
 	  			<th className={this.thClassName('deleted')}>
 	  				<FontAwesome name='trash'  size='lg' />
@@ -957,7 +1027,7 @@ class PaymentsEditor extends React.Component {
 		)
 	}
 	
-	renderPaymentsT = (width) => {
+	 renderPaymentsT = (width) => {
 		this.sortedValues = this.state.values.slice(0)
 		if (this.state.sort) this.sortedValues.sort(this.sortersF())
 		
@@ -980,7 +1050,7 @@ class PaymentsEditor extends React.Component {
 	}
 	
 	drawBalanceF() {
-		return( this.props.queryType === 'a' && this.pristine )
+		return( (this.props.queryType === 'a' || this.props.queryType === 'c') && this.pristine )
 	}
 	
 	td(index, field) {
@@ -1025,12 +1095,12 @@ class PaymentsEditor extends React.Component {
 		return(
 		<th className={this.thClassName(field)}>
   			<div>
-	  			<span style={{display: "flex"}}>			  						
-	  				<div style={{marginTop: 8, paddingRight: 3}}>
+	  			<span style={{display: "flex"}}>
+            {this.renderContentF(field, -1)}
+	  				 <div style={{marginTop: 8, paddingRight: 3}}>
 	  					{sortField}
-	  				</div>
-	  				{label !== null ? labelField : ''}
-	  				&nbsp;{this.renderContentF(field, -1)}
+	  				 </div>
+	  				 {label !== null ? labelField : ''}
 	  			</span>
 	  		</div>
 	  		{this.renderContentF(field, -2)}
@@ -1052,6 +1122,7 @@ class PaymentsEditor extends React.Component {
 
 		var state = {...initState(this.preInitT(nextprops.initPayments), checkedSet)}
         this.state.maskValues.d = dateFormat(nextprops.defaultDate, "dd.mm.yyyy")
+        this.state.maskValues.dc = dateFormat(nextprops.defaultDate, "dd.mm.yyyy")
 		this.setState({...state})
 	}
 

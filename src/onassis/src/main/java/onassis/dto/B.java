@@ -13,6 +13,15 @@ public class B {
 	BigDecimal smallestb = BigDecimal.valueOf(0).setScale(2, RoundingMode.UP);
 	Boolean l;
 
+    public B(Date d, BigDecimal b, BigDecimal i, Integer a) { //used only by tests
+        super();
+        this.d = d;
+        this.b = b;
+        this.i = i;
+        this.e = BigDecimal.valueOf(0).setScale(2, RoundingMode.UP);
+        this.a = a;
+        this.l = null;
+    }
 	public B(Date d, BigDecimal b, BigDecimal i, BigDecimal e, Integer a) {
 		super();
 		this.d = d;

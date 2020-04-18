@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { update } from '../../actions/payments'
+import { update, category_load } from '../../actions/payments'
 import { payment_selection } from '../../actions/payment'
 import { CATEGORY } from '../../actions/categories'
 import { ACCOUNT } from '../../actions/accounts'
@@ -27,7 +27,7 @@ import './PaymentsEditor.css'
 import '../../customMultiSelect.css'
 
 import { group_load } from '../../actions/payments'
-import { day_load } from '../../actions/payments'
+import { day_load, account_load } from '../../actions/payments'
 
 import {SimpleSelect} from 'react-selectize'
 
@@ -162,6 +162,10 @@ class PaymentsEditor extends React.Component {
 
         this.state = {...state, historyShow: false}
         this.state.maskValues.d = dateFormat(this.props.defaultDate)
+
+        //Gui gimmicks:
+        this.c_cbDblClick = this.c_cbDblClick.bind(this)
+        this.a_cbDblClick = this.a_cbDblClick.bind(this)
     }
 	
 	showAlert() {
@@ -351,7 +355,19 @@ class PaymentsEditor extends React.Component {
 		if(this.state.deleted[index]) return this.state.initial[index][field] //show initial values if to be deleted
 		return this.maskedF(index, field) ? this.state.maskValues[field] : this.state.values[index][field] 
 	}
-	
+
+	c_cbDblClick(c) {
+        if(this.isPristineT()) {
+            this.props.categoryLoad('' + c.value, this.props.start, this.props.end)
+        }
+	}
+
+    a_cbDblClick(a) {
+        if(this.isPristineT()) {
+            this.props.accountLoad('' + a.value, this.props.start, this.props.end)
+        }
+    }
+
 	renderContentF(field, index) {
     	if(index === -1) {//mask -checkbox
     		return(
@@ -505,6 +521,7 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, field)}
 				  			constants_id = {CATEGORY}
+				  			cbDblClick = { this.isPristineT() ? this.c_cbDblClick : null }
 					  	/>
 				    </div>)
      	case 'a' :
@@ -519,6 +536,7 @@ class PaymentsEditor extends React.Component {
 					  			index = {index}
 					  			touched = {this.touchedF(index, field)}
 					  			constants_id = {ACCOUNT}
+					  			cbDblClick = { this.isPristineT() ? this.a_cbDblClick : null }
 						  	/>
 					    </div>)
      	case 'descr' :
@@ -1189,6 +1207,15 @@ PaymentsEditor.defaultProps = {
 		queryType: null
 }
 
+
+
+const mapStateToProps = (store) => {
+    return {
+        start: store.daterange.s,
+        end: store.daterange.e
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return({
         update: (updates) => {
@@ -1208,10 +1235,17 @@ function mapDispatchToProps(dispatch) {
         },
         calculatorAdd: (p) => {
             dispatch(calc_add(p))
-        }
+        },
+        categoryLoad: (c, d1, d2) => {
+            dispatch(category_load(c, d1, d2))
+        },
+        accountLoad: (a, d1, d2) => {
+            dispatch(account_load(a, d1, d2))
+        },
+
     })
 }
 
-export default connect(null, mapDispatchToProps)(PaymentsEditor)
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentsEditor)
 
 

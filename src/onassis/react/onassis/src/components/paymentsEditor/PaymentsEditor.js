@@ -766,7 +766,7 @@ class PaymentsEditor extends React.Component {
         {//const fields = ['d','b','i','s','g','c','a','descr']
         }
 	 		{fields.map( (f) => {
-	 			return this.td(index, f) 
+	 			return this.td(index, f)
 	 		})}
 	      	<td className={this.tdClassName(index, 'deleted')}>
 	      		{this.renderDeletedContentF(index)}
@@ -1146,9 +1146,14 @@ class PaymentsEditor extends React.Component {
 
 	updateCheckedSet(value, index, values = null) {
 		if(index<0 || this.disabledCheckR(index)) return
-		var pos = checkedSet.indexOf(this.state.values[index].id)
+		var pos = checkedSet.map(function(e) { return e.id; }).indexOf(this.state.values[index].id);
 		if(value && pos < 0) {
-			checkedSet.push(this.state.values[index].id)
+			checkedSet.push(
+                {
+                    id : this.state.values[index].id,
+                    i : this.state.values[index].i
+                }
+			)
 		} if(!value && pos > -1) {
 			checkedSet.splice( pos, 1 )
 		}

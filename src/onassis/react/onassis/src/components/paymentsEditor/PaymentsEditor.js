@@ -521,7 +521,7 @@ class PaymentsEditor extends React.Component {
 				  			index = {index}
 				  			touched = {this.touchedF(index, field)}
 				  			constants_id = {CATEGORY}
-				  			cbDblClick = { this.isPristineT() ? this.c_cbDblClick : null }
+				  			cbDblClick = { this.isPristineT() && this.readOnlyR(index, field) ? this.c_cbDblClick : null }
 					  	/>
 				    </div>)
      	case 'a' :
@@ -536,7 +536,7 @@ class PaymentsEditor extends React.Component {
 					  			index = {index}
 					  			touched = {this.touchedF(index, field)}
 					  			constants_id = {ACCOUNT}
-					  			cbDblClick = { this.isPristineT() ? this.a_cbDblClick : null }
+					  			cbDblClick = { this.isPristineT() && this.readOnlyR(index, field) ? this.a_cbDblClick : null }
 						  	/>
 					    </div>)
      	case 'descr' :

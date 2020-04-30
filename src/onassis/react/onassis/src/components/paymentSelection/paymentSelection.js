@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { list_load } from '../../actions/payments'
+import currencyFormat  from '../../util/currency'
 //import update from 'react-addons-update';
 
 import { Badge, Button } from 'react-bootstrap';
@@ -62,13 +63,14 @@ class PaymentSelection extends React.Component {
 	}*/
 	
 	list() {
-		this.props.listLoad(this.props.payments)
+		this.props.listLoad(this.props.payments.map( x => {return x.id}))
 	}
 	
 	render() {
-		//if( this.props.payments.length === 0 ) return null
+	    var sum = 0;
+	    this.props.payments.forEach( x => {sum += parseFloat(x.i)})
 	    return (
-	     <Button onClick={this.list}><Badge>{this.props.payments.length}</Badge></Button>
+	     <Button onClick={this.list}><Badge>{currencyFormat(sum)}</Badge></Button>
 	    );
 	  }
 }

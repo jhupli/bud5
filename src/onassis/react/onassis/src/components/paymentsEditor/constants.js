@@ -42,19 +42,11 @@ const 	validators = {
 			return null
 		  },
 	'd': (value, values) => {
-	    console.log("value"+value);
-	    console.log("values=");
-	    console.log(values);
       let diff = daydiff(toDateFi(value), toDateFi(values.dc));
-      console.log("diff="+diff);
 			return (value != null && value !== '' && diff <= 0) ? null : 'required'
 		  },
   'dc': (value, values) => {
-      console.log("value"+value);
-      console.log("values=");
-      console.log(values);
       let diff = daydiff(toDateFi(value), toDateFi(values.d));
-      console.log("diff="+diff);
       return (value != null && value !== '' && diff >= 0) ? null : 'required'
     },
 	'i':  (value) => {
@@ -64,7 +56,6 @@ const 	validators = {
 			return null
 		  },
 	'c': (value) => {
-	    console.log("cvalue='"+value+"'");
 			return (value != null && value !== '') ? null : 'required'
 		  },
 	'a': (value) => {
@@ -134,7 +125,7 @@ function copyObject(b) {
 
 function copyPayment(payment, checkedList, index = null) {
 	return {
-		check: checkedList.indexOf(payment.id) > -1,
+		check: checkedList.map( e => {return e.id} ).indexOf(payment.id) > -1,
 		index: index,
 		id: payment.id,
 		l: payment.l,

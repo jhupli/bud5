@@ -37,7 +37,8 @@ class ConstantFilter extends React.Component {
 	
 	
 	render() {	
-		var dd = 	<Dropdown 
+		var dd = 	<Dropdown
+		                onlyValid = {false}
 			    		readOnly = {this.state.checked}
 			    		onValueChange={ this.onFilterChanged } 
 			    		selectedValue={this.state.filter}

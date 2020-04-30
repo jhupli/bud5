@@ -18,8 +18,10 @@ public class MinibarsService extends ServicesBase {
         String query = null;
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         if (cat > 0) {
-            query = "SELECT d,0 as b,sum(positive(i)) as i, sum(negative(i)) as e, -1 as a, 0 as smallestb, false as l FROM P WHERE C = :cat "
-                    + "GROUP BY D ORDER BY D ASC ";
+            query = "SELECT dc as d, b, positive(i) as i, negative(i) as e, -2 as a, 0 as smallestb, 0 as l FROM CB WHERE c = :cat "
+                    + "ORDER BY dc ASC ";
+            /*query = "SELECT d,0 as b,sum(positive(i)) as i, sum(negative(i)) as e, -1 as a, 0 as smallestb, false as l FROM P WHERE C = :cat "
+                    + "GROUP BY D ORDER BY D ASC ";*/
             namedParameters.addValue("cat", cat);
         } else {
         	//obsolete WHERE -clause was added to force DB to use index, see https://docs.oracle.com/javadb/10.8.3.0/tuning/ctundepth36205.html

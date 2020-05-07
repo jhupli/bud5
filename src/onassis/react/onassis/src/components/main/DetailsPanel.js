@@ -126,8 +126,9 @@ class DetailsPanel extends React.Component{
 	    		</span>
 				
 				break
-			case 'c' : 
-				var cat = findInArray(this.props.constants['cat'], n => { return this.props.params.c === '' + n.value})
+			case 'c' :
+			    debugger
+				var cat = findInArray(this.props.constants['cat'], n => { return this.props.params.c == '' + n.value})
 				info = 
 				<span >
 					<span style = {{'marginRight':'5px', 'marginLeft':'5px'}}>

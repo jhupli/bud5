@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 
 var dateRange_pickeroptions = {
 	    "dateLimit": {
-	        "days": 90
+	        "days": 400
 	    },
 	    "showWeekNumbers": true,
 	    "autoApply": true,

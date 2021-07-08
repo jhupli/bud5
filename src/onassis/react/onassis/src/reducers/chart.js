@@ -24,6 +24,7 @@ const reducer = (state = [], action) => {
         //console.log("handling CHART_TODAY")
         return Object.assign({}, state, {
             today: action.payload.today,
+            queryType: 'd'
           })
     case 'CHART_REDRAW':
         //console.log("handling CHART_REDRAW")

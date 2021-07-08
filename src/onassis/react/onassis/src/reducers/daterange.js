@@ -5,7 +5,8 @@ const reducer = (state = [], action) => {
       //console.log("handling DATE_RANGE_SELECTED")
       return Object.assign({}, state, {
           s: action.payload.s,
-          e: action.payload.e
+          e: action.payload.e,
+          skip: action.payload.skip,
         })
     default:
       return state

@@ -40,7 +40,6 @@ class DetailsPanel extends React.Component{
        this.nextHistory = this.nextHistory.bind(this)
 	}
     componentWillReceiveProps(nextProps){
-
     	if( nextProps.constants && nextProps.constants['acc']) {
     		this.setState({
 		    		accs : nextProps.constants['acc']
@@ -72,14 +71,16 @@ class DetailsPanel extends React.Component{
 		    		start : nextProps.start,
 		    		end : nextProps.end		
 		    })
-    		switch(this.props.queryType) {
-    					case 'd' : this.props.dayLoad(this.props.params.d)
-                     break;
-    					case 'a' :
-    							   this.props.accountLoad(this.props.params.a, nextProps.start, nextProps.end)
-    							   break;
-    					case 'c' : this.props.categoryLoad(this.props.params.c, nextProps.start, nextProps.end)
-    							   break;
+		    if(!nextProps.skip) {
+                switch(this.props.queryType) {
+                            case 'd' : this.props.dayLoad(this.props.params.d)
+                         break;
+                            case 'a' :
+                                       this.props.accountLoad(this.props.params.a, nextProps.start, nextProps.end)
+                                       break;
+                            case 'c' : this.props.categoryLoad(this.props.params.c, nextProps.start, nextProps.end)
+                                       break;
+                }
     		}
     	}
     	
@@ -238,7 +239,7 @@ const mapStateToProps = (store) => {
         refreshTime:  store.constants.refreshTime,
         constants: store.constants.constants,
         curves: store.chart.curves,
-        
+        skip: store.daterange.skip,
         start: store.daterange.s,
         end: store.daterange.e,
     }

@@ -6,6 +6,9 @@
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <script>
     if (!window.console) console = {log: function() {}};
+        window.onbeforeunload = function (e) {
+          return "Are you sure you want to quit?";
+        };
     </script>
     <!-- 
     <link rel="stylesheet" href="%PUBLIC_URL%/react-mdl-master/extra/material.css">

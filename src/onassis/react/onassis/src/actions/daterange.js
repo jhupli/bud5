@@ -63,7 +63,6 @@ const daterange_prev_block = () => (
 
 const set_todayrange = () => (
     (dispatch) => {
-    debugger
     		var s = new Date(0)
     		var today = new Date()
     		s.setFullYear(today.getFullYear())

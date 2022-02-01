@@ -193,6 +193,10 @@ public class OnassisController {
             paymentsList = paymentService.day(d);
         }
 
+        if (e.equals("ul") && null != d) {
+            paymentsList = paymentService.unlockedUntil(d);
+        }
+
         if (e.equals("a") && null != a && null != d1 && null != d2) {
             paymentsList = paymentService.account(a, d1, d2);
         }
@@ -208,8 +212,8 @@ public class OnassisController {
     }
 
     @RequestMapping(value = "lock")
-    void lock(@RequestParam long id, @RequestParam boolean l) throws SQLException, ParseException {
-        paymentService.lock(id, l);
+    void lock(@RequestParam long id, @RequestParam boolean l, String d) throws SQLException, ParseException {
+        paymentService.lock(id, l, d);
     }
 
     @RequestMapping(value = "payments/update", method = RequestMethod.POST)

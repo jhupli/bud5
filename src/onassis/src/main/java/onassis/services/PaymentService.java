@@ -13,7 +13,7 @@ import onassis.dto.mappers.MapP;
 import onassis.dto.mappers.MapPb;
 
 @Component
-public class PaymentService extends ServicesBase {
+public class    PaymentService extends ServicesBase {
 
     MapP rmP = new MapP();
     MapPb rmPb = new MapPb();
@@ -30,13 +30,18 @@ public class PaymentService extends ServicesBase {
                              " UNION " +
                              "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE dc=:day " +
                              " ORDER BY a ASC";
-
-
-
-
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("day", day.format(sqldf));
         return jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
     }
+
+    public List<P> unlockedUntil(String d) {
+        LocalDate day = LocalDate.parse(d);
+        final String query = "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE d<=:day and l = false" +
+                " ORDER BY dc ASC";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("day", day.format(sqldf));
+        return jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
+    }
+
 
     public List<P> account(String a, String d1, String d2) {
         LocalDate day1 = LocalDate.parse(d1);
@@ -68,12 +73,22 @@ public class PaymentService extends ServicesBase {
         return jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
     }
 
-    public void lock(long id, boolean l) {
-        final String query = "update p set l=:l WHERE id=:id ";
+
+
+    public void lock(long id, boolean l, String d) {
+        final String lUpdateSQL = "update p set l=:l WHERE id=:id ";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("id", id)
                 .addValue("l", l);
-        jdbcTemplate.update(query, namedParameters);
+        jdbcTemplate.update(lUpdateSQL, namedParameters);
+        if(null != d && l) {
+            LocalDate day = LocalDate.parse(d);
+            final String dcUpdateSQL = "update p set dc=:dc WHERE id=:id ";
+            namedParameters = new MapSqlParameterSource()
+                    .addValue("id", id)
+                    .addValue("dc", day);
+            jdbcTemplate.update(dcUpdateSQL, namedParameters);
+        }
     }
 
     public void create(List<P> payments) {

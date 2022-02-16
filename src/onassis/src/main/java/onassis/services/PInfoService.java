@@ -19,12 +19,10 @@ import java.util.Set;
 public class PInfoService extends ServicesBase {
 
     MapPInfo rmPInfo = new MapPInfo();
-    public List<PInfo> unlockedUntil(String d, BigDecimal i, int days) {
-        if(days <=0 ) {
-            return Collections.emptyList();
-        }
-        LocalDate end = LocalDate.parse(d);
-        LocalDate start = end.minusDays(days);
+    public List<PInfo> unlockedUntil(String d, BigDecimal i) {
+        LocalDate dd = LocalDate.parse(d);
+        LocalDate end = dd.plusDays(10L);
+        LocalDate start = end.minusDays(-30L);
         final String query = "SELECT p.id, p.d, p.dc, p.i, p.descr as descr, c.descr as c_descr, a.descr as a_descr " +
                 " FROM P,C,A " +
                 " WHERE p.dc >=:start and p.dc <=:end and p.l = false and c.id=p.c and p.i=:i and a.id=p.a" +

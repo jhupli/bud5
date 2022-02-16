@@ -74,11 +74,14 @@ public class    PaymentService extends ServicesBase {
         jdbcTemplate.update(lUpdateSQL, namedParameters);
         if(null != d && l) {
             LocalDate day = LocalDate.parse(d);
-            final String dcUpdateSQL = "update p set d=:d WHERE id=:id ";
+            final String dcUpdateSQL = "update p set d=:d WHERE id=:id AND dc <= :d";
             namedParameters = new MapSqlParameterSource()
                     .addValue("id", id)
                     .addValue("d", d);
-            jdbcTemplate.update(dcUpdateSQL, namedParameters);
+            if(0 == jdbcTemplate.update(dcUpdateSQL, namedParameters)) {
+                final String dcUpdateSQL2 = "update p set d=:d, dc=:d WHERE id=:id ";
+                jdbcTemplate.update(dcUpdateSQL2, namedParameters);
+            };
         }
     }
 

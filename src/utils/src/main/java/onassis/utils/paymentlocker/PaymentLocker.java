@@ -70,7 +70,7 @@ public class PaymentLocker {
             long l = Long.valueOf(whole + decimal);
             BigDecimal bd = BigDecimal.valueOf(l, 2);
 
-            String url = String.format("http://localhost:8080/info?d=%s&i=%s&days=30", dateStr, bd);
+            String url = String.format("http://localhost:8080/info?d=%s&i=%s", dateStr, bd);
             String responseJson =
                     given().auth().basic("user", "kakkakikkare").
                             when().get(url)
@@ -88,7 +88,7 @@ public class PaymentLocker {
                             given().auth().basic("user", "kakkakikkare").
                                     when().get(url)
                                     .asString();
-                    System.out.println("Updted.");
+                    System.out.println("Updated.");
 
 
                 } else {
@@ -99,7 +99,7 @@ public class PaymentLocker {
         }
 
         for (String p : paymentrows) {
-            System.out.println((match ? "*" : "") + p); //tiedostoon!
+           System.out.println((match ? "*" : "") + "                            "+p); //tiedostoon!
         }
         paymentrows.clear();
         day = month = year = whole = decimal = null;
@@ -180,8 +180,8 @@ https://stackoverflow.com/questions/39868792/using-spring-resttemplate-in-jax-rs
         System.out.println("---------------------------------------------------");
         String pHeaderFormatstring = "%10s | %6s | %6s | %s";
         String header = String.format(pHeaderFormatstring, "Date", "Category", "Account", "Description");
-        DateFormat formatter = new SimpleDateFormat("DD.MM.YYYY");
-        String d = new SimpleDateFormat("DD.MM.YYYY").format(pInfo.getD());
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        String d = new SimpleDateFormat("dd.MM.yyyy").format(pInfo.getD());
         String row = String.format(pHeaderFormatstring, d, pInfo.getC_descr(), pInfo.getA_descr(), pInfo.getDescr());
         System.out.println(header);
         System.out.println(row);

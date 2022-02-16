@@ -169,8 +169,8 @@ public class OnassisController {
     }
 
     @RequestMapping("info")
-    List<PInfo> payments(String d, BigDecimal i, int days) throws SQLException, ParseException {
-        return pInfoService.unlockedUntil(d, i, days);
+    List<PInfo> payments(String d, BigDecimal i) throws SQLException, ParseException {
+        return pInfoService.unlockedUntil(d, i);
     };
 
     @RequestMapping("payments")

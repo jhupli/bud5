@@ -27,7 +27,7 @@ public class PInfoService extends ServicesBase {
         LocalDate start = end.minusDays(days);
         final String query = "SELECT p.id, p.d, p.dc, p.i, p.descr as descr, c.descr as c_descr, a.descr as a_descr " +
                 " FROM P,C,A " +
-                " WHERE p.d >=:start and p.d <=:end and p.l = false and c.id=p.c and p.i=:i and a.id=p.a" +
+                " WHERE p.dc >=:start and p.dc <=:end and p.l = false and c.id=p.c and p.i=:i and a.id=p.a" +
                 " ORDER BY p.d ASC ";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("start", start.format(sqldf))

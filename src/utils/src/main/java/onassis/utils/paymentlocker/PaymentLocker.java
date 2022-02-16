@@ -8,6 +8,8 @@ import lombok.SneakyThrows;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -19,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import static com.jayway.restassured.RestAssured.given;
 
 public class PaymentLocker {
-    List paymentrows = new ArrayList();
+    List<String> paymentrows = new ArrayList();
 
     Pattern begin_pattern = null;
     Pattern day_pattern = null;
@@ -59,24 +61,46 @@ public class PaymentLocker {
 
 
     void flushPayment() {
+        boolean match = false;
+        List<PInfo> pInfos = null;
+
         if(null != day && null != month && null != year && null != whole && null != decimal && null != user && null != host) {
-            String dateStr = year +"-" + month + "-" + day;
+            String dateStr = year + "-" + month + "-" + day;
             LocalDate date = LocalDate.parse(dateStr);
             long l = Long.valueOf(whole + decimal);
             BigDecimal bd = BigDecimal.valueOf(l, 2);
 
-            String url = String.format("http://info?d=2022-03-07&i=200&days=30", dateStr, bd);
+            String url = String.format("http://localhost:8080/info?d=%s&i=%s&days=30", dateStr, bd);
             String responseJson =
-                    given().auth().basic("user","kakkakikkare").
-                            when().get("http://localhost:8080/info?d=2022-03-07&i=200&days=30")
+                    given().auth().basic("user", "kakkakikkare").
+                            when().get(url)
                             .asString();
 
             Gson gson = new Gson();
-            List<PInfo> PInfos = gson.fromJson(responseJson, new TypeToken<List<PInfo>>(){}.getType());
-            System.out.println("----------------------"+date+" sum: " + bd + responseJson.toString());
+            pInfos = gson.fromJson(responseJson, new TypeToken<List<PInfo>>() {
+            }.getType());
+
+            for (PInfo p: pInfos ){
+                if (match = askMatch(p)) {
+                    //do the job
+                    url = String.format("http://localhost:8080/lock?id=%s&l=true&d=%s", p.getId(),dateStr);
+                    responseJson =
+                            given().auth().basic("user", "kakkakikkare").
+                                    when().get(url)
+                                    .asString();
+                    System.out.println("Updted.");
+
+
+                } else {
+                    continue;
+                }
+            }
+            //System.out.println("----------------------"+date+" sum: " + bd + responseJson.toString());
         }
 
-        paymentrows.stream().forEach(System.out::println);
+        for (String p : paymentrows) {
+            System.out.println((match ? "*" : "") + p); //tiedostoon!
+        }
         paymentrows.clear();
         day = month = year = whole = decimal = null;
         }
@@ -148,8 +172,20 @@ https://stackoverflow.com/questions/39868792/using-spring-resttemplate-in-jax-rs
     }
 
     @SneakyThrows
-    boolean askMatch() {
+    boolean askMatch(PInfo pInfo) {
         String choice = "foo";
+        System.out.println("__________________________________________________");
+
+        paymentrows.stream().forEach(System.out::println);
+        System.out.println("---------------------------------------------------");
+        String pHeaderFormatstring = "%10s | %6s | %6s | %s";
+        String header = String.format(pHeaderFormatstring, "Date", "Category", "Account", "Description");
+        DateFormat formatter = new SimpleDateFormat("DD.MM.YYYY");
+        String d = new SimpleDateFormat("DD.MM.YYYY").format(pInfo.getD());
+        String row = String.format(pHeaderFormatstring, d, pInfo.getC_descr(), pInfo.getA_descr(), pInfo.getDescr());
+        System.out.println(header);
+        System.out.println(row);
+        System.out.println("---------------------------------------------------");
         while(!"ynq".contains(choice)) {
             System.out.print("Are these a match ? [yNq] ");
             Scanner sc = new Scanner(System.in); //System.in is a standard input stream.

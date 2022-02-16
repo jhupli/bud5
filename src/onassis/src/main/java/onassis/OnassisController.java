@@ -1,6 +1,7 @@
 package onassis;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,8 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import onassis.dto.*;
+import onassis.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -26,23 +29,6 @@ import onassis.db.functions.Balance;
 import onassis.db.functions.CbTriggers;
 import onassis.db.functions.History;
 import onassis.db.functions.Triggers;
-import onassis.dto.A;
-import onassis.dto.B;
-import onassis.dto.C;
-import onassis.dto.Constant;
-import onassis.dto.LogEntry;
-import onassis.dto.P;
-import onassis.dto.Slice;
-import onassis.services.AccountService;
-import onassis.services.CategoryService;
-import onassis.services.ChartService;
-import onassis.services.ConstantService;
-import onassis.services.HelloService;
-import onassis.services.HistoryLogService;
-import onassis.services.MinibarsService;
-import onassis.services.PaymentService;
-import onassis.services.PieService;
-import onassis.services.UtilService;
 
 //@CrossOrigin(origins = "http://localhost:3000") //<-development only
 @CrossOrigin
@@ -91,6 +77,9 @@ public class OnassisController {
 
     @Autowired
     UtilService utilService;
+
+    @Autowired
+    PInfoService pInfoService;
 
     private static class Updates<T> {
         List<T> created;
@@ -174,10 +163,15 @@ public class OnassisController {
         return historyLogService.allHistory(s, e);
     }
 
-    private @RequestMapping(value = "pie")
+    @RequestMapping(value = "pie")
     List<Slice> pie(@RequestParam String s, @RequestParam String e) throws SQLException, ParseException {
         return pieService.pieSlices(s, e);
     }
+
+    @RequestMapping("info")
+    List<PInfo> payments(String d, BigDecimal i, int days) throws SQLException, ParseException {
+        return pInfoService.unlockedUntil(d, i, days);
+    };
 
     @RequestMapping("payments")
     List<List<? extends Object>> payments(@RequestParam String e, @RequestParam(required = false) String d, @RequestParam(required = false) String a, @RequestParam(required = false) String c, @RequestParam(required = false) String g, @RequestParam(required = false) String d1, @RequestParam(required = false) String d2, @RequestParam(required = false, value = "ids[]") Set<Integer> ids) throws SQLException, ParseException {
@@ -191,10 +185,6 @@ public class OnassisController {
 
         if (e.equals("d") && null != d) {
             paymentsList = paymentService.day(d);
-        }
-
-        if (e.equals("ul") && null != d) {
-            paymentsList = paymentService.unlockedUntil(d);
         }
 
         if (e.equals("a") && null != a && null != d1 && null != d2) {

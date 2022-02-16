@@ -34,15 +34,6 @@ public class    PaymentService extends ServicesBase {
         return jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
     }
 
-    public List<P> unlockedUntil(String d) {
-        LocalDate day = LocalDate.parse(d);
-        final String query = "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE d<=:day and l = false" +
-                " ORDER BY dc ASC";
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("day", day.format(sqldf));
-        return jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<P>(rmP));
-    }
-
-
     public List<P> account(String a, String d1, String d2) {
         LocalDate day1 = LocalDate.parse(d1);
         LocalDate day2 = LocalDate.parse(d2);
@@ -83,10 +74,10 @@ public class    PaymentService extends ServicesBase {
         jdbcTemplate.update(lUpdateSQL, namedParameters);
         if(null != d && l) {
             LocalDate day = LocalDate.parse(d);
-            final String dcUpdateSQL = "update p set dc=:dc WHERE id=:id ";
+            final String dcUpdateSQL = "update p set d=:d WHERE id=:id ";
             namedParameters = new MapSqlParameterSource()
                     .addValue("id", id)
-                    .addValue("dc", day);
+                    .addValue("d", d);
             jdbcTemplate.update(dcUpdateSQL, namedParameters);
         }
     }

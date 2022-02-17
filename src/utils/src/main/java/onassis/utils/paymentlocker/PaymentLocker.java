@@ -16,7 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import onassis.dto.PInfo;
+import org.apache.derby.iapi.util.StringUtil;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import static com.jayway.restassured.RestAssured.given;
 
@@ -31,7 +33,8 @@ public class PaymentLocker {
     Pattern whole_pattern = null;
     Pattern decim_pattern = null;
 
-    String day, month, year, whole, decimal, user, host = null;
+    boolean begin = false;
+    String day, month, year, whole, decimal, user, host, pw = null;
 
 
     public static void muteLoggers() {
@@ -70,9 +73,9 @@ public class PaymentLocker {
             long l = Long.valueOf(whole + decimal);
             BigDecimal bd = BigDecimal.valueOf(l, 2);
 
-            String url = String.format("http://localhost:8080/info?d=%s&i=%s", dateStr, bd);
+            String url = String.format("http://" + host + "/info?d=%s&i=%s", dateStr, bd);
             String responseJson =
-                    given().auth().basic("user", "kakkakikkare").
+                    given().auth().basic(user, pw).
                             when().get(url)
                             .asString();
 
@@ -83,9 +86,9 @@ public class PaymentLocker {
             for (PInfo p: pInfos ){
                 if (match = askMatch(p)) {
                     //do the job
-                    url = String.format("http://localhost:8080/lock?id=%s&l=true&d=%s", p.getId(),dateStr);
+                    url = String.format("http://" + host + "/lock?id=%s&l=true&d=%s", p.getId(),dateStr);
                     responseJson =
-                            given().auth().basic("user", "kakkakikkare").
+                            given().auth().basic(user, pw).
                                     when().get(url)
                                     .asString();
                     System.out.println("Updated.");
@@ -103,11 +106,13 @@ public class PaymentLocker {
         }
         paymentrows.clear();
         day = month = year = whole = decimal = null;
+        begin = false;
         }
 
     void begin() {
         Matcher m = begin_pattern.matcher(line);
         if(m.find()) {
+            begin = true;
             //System.out.println("*"+line);
             flushPayment();
         }
@@ -156,8 +161,16 @@ https://howtodoinjava.com/resteasy/restful-webservices-client-using-java-net-pac
 https://stackoverflow.com/questions/39868792/using-spring-resttemplate-in-jax-rs-project
 */
 
-    Properties props = new Properties();
-    String pw = null;
+    Properties props = new Properties(){
+        @Override
+        public String getProperty(String key) {
+            String value = super.getProperty(key);
+            if(StringUtils.isEmpty(value)) {
+                throw new IllegalArgumentException("missing: " + key);
+            }
+            return  value;
+        };
+    };
 
     @SneakyThrows
     void askPassword() {
@@ -165,9 +178,10 @@ https://stackoverflow.com/questions/39868792/using-spring-resttemplate-in-jax-rs
         System.out.print("password: ");
         pw = sc.nextLine();
         String resp =
-        given().auth().basic("user","kakkakikkare").
-                when().get("http://localhost:8080/hello")
+        given().auth().basic(user,pw).
+                when().get("http://" + host + "/hello")
                 .body().asString();
+
         System.out.println(resp);
     }
 
@@ -211,12 +225,18 @@ https://stackoverflow.com/questions/39868792/using-spring-resttemplate-in-jax-rs
         year_pattern = Pattern.compile(props.getProperty("year_rexp"));
         whole_pattern = Pattern.compile(props.getProperty("whole_rexp"));
         decim_pattern = Pattern.compile(props.getProperty("decim_rexp"));
+
     }
 
     String line=null;
     //https://www.baeldung.com/spring-5-webclient
 
     @SneakyThrows
+    public void parser(String [] args) throws FileNotFoundException {
+        loadProps(args[0]);
+
+    }
+        @SneakyThrows
     public void scan(String [] args) throws FileNotFoundException {
         loadProps(args[0]);
         askPassword();

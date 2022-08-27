@@ -81,7 +81,7 @@ public class OnassisController {
     @Autowired
     PInfoService pInfoService;
 
-    private static class Updates<T> {
+    public static class Updates<T> {
         List<T> created;
 
         List<Integer> deleted;

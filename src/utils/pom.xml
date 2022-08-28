@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>onassis.utils.paymentlocker.PaymentLockerOld</start-class>
+        <start-class>onassis.utils.paymentlocker.PaymentLocker</start-class>
         <java.version>1.8</java.version>
         <lombok.version>1.18.2</lombok.version>
         <log4jdbc.log4j2.version>1.16</log4jdbc.log4j2.version>
@@ -139,6 +139,11 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>onassis.utils.paymentlocker.PaymentLocker</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
                 <executions>
                     <execution>

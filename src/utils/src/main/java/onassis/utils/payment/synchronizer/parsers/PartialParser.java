@@ -59,6 +59,9 @@ public class PartialParser {
         });
     }
 
+    protected int length() {
+        return patterns.size();
+    }
     protected boolean matchesOnly(String text) {
         return this.matches(text, true);
     }

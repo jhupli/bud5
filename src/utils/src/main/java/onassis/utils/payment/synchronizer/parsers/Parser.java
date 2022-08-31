@@ -9,22 +9,27 @@ import java.util.stream.Stream;
 
 
 public class Parser {
-   public enum Parsing{
-        BEGIN("begin_rexp"),
-        DAY("day_rexp"),
-        MONTH("month_rexp"),
-        YEAR("year_rexp"),
-        UNARY("unary_rexp"),
-        WHOLE("whole_rexp"),
-        DECIMAL("decimal_rexp");
-       private String regexpName;
+   public enum Target{
+        BEGIN("begin_rexp","Begin", PartialParser.class),
+        DAY("day_rexp","Day", PartialParser.class),
+        MONTH("month_rexp","Month", PartialParser.class),
+        YEAR("year_rexp","Year", PartialParser.class),
+        UNARY("unary_rexp","Unary", PartialParser.class),
+        WHOLE("whole_rexp","Whole", PartialParser.class),
+        DECIMAL("decimal_rexp","Decimal", PartialParser.class);
 
-       Parsing(String regexpName) {
+        private String regexpName;
+        private String name;
+        private Class instance;
+
+       Target(String regexpName, String name, Class instance) {
            this.regexpName = regexpName;
+           this.name = name;
+           this.instance = instance;
        }
 
-       public static Stream<Parsing> stream() {
-           return Stream.of(Parsing.values());
+       public static Stream<Target> stream() {
+           return Stream.of(Target.values());
        }
     }
 
@@ -42,19 +47,19 @@ public class Parser {
     }
 
     public final String SKIP="skip";
-    private final Map<Parsing, PartialParser> parsers = new HashMap<>();
+    private final Map<Target, PartialParser> parsers = new HashMap<>();
 
     @SneakyThrows
     public Parser(InputStream inputStream) {
         PropertiesExt _properties = new PropertiesExt();
         _properties.load(inputStream);
-        Parsing.stream().map( p -> parsers.put(p, new PartialParser(_properties.getStringArray(p.regexpName))) );
-        if(null == parsers.get(Parsing.BEGIN)) {
+        Target.stream().map( p -> parsers.put(p, new PartialParser(_properties.getStringArray(p.regexpName))) );
+        if(null == parsers.get(Target.BEGIN)) {
             throw new IllegalArgumentException("Empty regexps!");
         }
         parsers.values().forEach(v -> {
-            if (v.length() != parsers.get(Parsing.BEGIN).length()) {
-                throw new IllegalArgumentException("All regexps must have same nubmer of indexes!");
+            if (v.length() != parsers.get(Target.BEGIN).length()) {
+                throw new IllegalArgumentException("All regexps must have same number of indexes!");
             }}
         );
     }

@@ -8,18 +8,18 @@ public class Receipt {
     /* represents one line*/
     public static class Line {
 
-        static class DebugLine {
+        static class Debug {
             Parser.Target target;
             String regexp;
             int regexp_index;
-
 
             String matcherLine;
             String value;
         }
 
         String line = null;
-        List<DebugLine> matchingRegexps = null;
+        List<Debug> matchingRegexps = null;
+
     }
 
     List<Line> lines = new ArrayList<>();

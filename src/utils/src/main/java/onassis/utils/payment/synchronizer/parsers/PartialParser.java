@@ -74,6 +74,15 @@ public class PartialParser {
         return this.required;
     }
 
+    /*
+
+        matches(String);
+
+        collect(String) null jos ei match, muuten String, jossa arvo
+
+     */
+
+
     private boolean matches(String text, boolean matchOnly) {
         this.matchedRegexp = null;
         this.value = null;

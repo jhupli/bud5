@@ -10,13 +10,14 @@ import java.util.stream.Stream;
 
 public class Parser {
    public enum Target{
-        BEGIN("begin_rexp","Begin", PartialParser.class),
+        BEGIN("decimal_rexp","Decimal", PartialParser.class),
         DAY("day_rexp","Day", PartialParser.class),
         MONTH("month_rexp","Month", PartialParser.class),
         YEAR("year_rexp","Year", PartialParser.class),
         UNARY("unary_rexp","Unary", PartialParser.class),
         WHOLE("whole_rexp","Whole", PartialParser.class),
-        DECIMAL("decimal_rexp","Decimal", PartialParser.class);
+        DECIMAL("decimal_rexp","Decimal", PartialParser.class),
+        SKIP("decimal_rexp","Decimal", PartialParser.class);
 
         private String regexpName;
         private String name;
@@ -31,19 +32,6 @@ public class Parser {
        public static Stream<Target> stream() {
            return Stream.of(Target.values());
        }
-    }
-
-    public enum Skipping{
-        SKIP("skip_rexp");
-        private String regexpName;
-
-        Skipping(String regexpName) {
-            this.regexpName = regexpName;
-        }
-
-        public static Stream<Skipping> stream() {
-            return Stream.of(Skipping.values());
-        }
     }
 
     public final String SKIP="skip";

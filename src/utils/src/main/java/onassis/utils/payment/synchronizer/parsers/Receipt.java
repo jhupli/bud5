@@ -2,6 +2,8 @@ package onassis.utils.payment.synchronizer.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
+import static onassis.utils.payment.synchronizer.parsers.Parser.Target;
+import static onassis.utils.payment.synchronizer.parsers.Parser.Target.*;
 
 public class Receipt {
 
@@ -9,7 +11,7 @@ public class Receipt {
     public static class Line {
 
         static class Debug {
-            Parser.Target target;
+            Target target;
             String regexp;
             int regexp_index;
 
@@ -25,5 +27,10 @@ public class Receipt {
     List<Line> lines = new ArrayList<>();
 
     public Receipt() {
+    }
+
+    public void collect(Target target, String str) {
+
+
     }
 }

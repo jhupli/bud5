@@ -4,29 +4,30 @@ import lombok.SneakyThrows;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Stream;
 
 
 public class Parser {
    public enum Target{
-        BEGIN("decimal_rexp","Decimal", PartialParser.class),
-        DAY("day_rexp","Day", PartialParser.class),
-        MONTH("month_rexp","Month", PartialParser.class),
-        YEAR("year_rexp","Year", PartialParser.class),
-        UNARY("unary_rexp","Unary", PartialParser.class),
-        WHOLE("whole_rexp","Whole", PartialParser.class),
-        DECIMAL("decimal_rexp","Decimal", PartialParser.class),
-        SKIP("decimal_rexp","Decimal", PartialParser.class);
+        BEGIN("decimal_rexp","Decimal", new PartialParser()),
+        DAY("day_rexp","Day", new PartialParser()),
+        MONTH("month_rexp","Month", new PartialParser()),
+        YEAR("year_rexp","Year", new PartialParser()),
+        UNARY("unary_rexp","Unary", new PartialParser()),
+        WHOLE("whole_rexp","Whole", new PartialParser()),
+        DECIMAL("decimal_rexp","Decimal", new PartialParser()),
+        SKIP("skip_rexp","", new PartialParser());
 
         private String regexpName;
         private String name;
-        private Class instance;
+        private PartialParser partialParser;
 
-       Target(String regexpName, String name, Class instance) {
+       Target(String regexpName, String name, PartialParser partialParser) {
            this.regexpName = regexpName;
            this.name = name;
-           this.instance = instance;
+           this.partialParser = partialParser;
        }
 
        public static Stream<Target> stream() {
@@ -41,7 +42,8 @@ public class Parser {
     public Parser(InputStream inputStream) {
         PropertiesExt _properties = new PropertiesExt();
         _properties.load(inputStream);
-        Target.stream().map( p -> parsers.put(p, new PartialParser(_properties.getStringArray(p.regexpName))) );
+
+        Target.stream().forEach( p -> parsers.put(p, p.partialParser.init(_properties.getStringArray(p.regexpName))));
         if(null == parsers.get(Target.BEGIN)) {
             throw new IllegalArgumentException("Empty regexps!");
         }
@@ -51,4 +53,28 @@ public class Parser {
             }}
         );
     }
+
+    Matchable m = new Matchable();
+    List<Matchable> matchables = new ArrayList<>();
+    {
+        matchables.add(m);
+    }
+
+    public void collect(String str) {
+
+        if(parsers.get(Target.BEGIN).match(str)) {
+            matchables.add(m);
+            m = new Matchable();
+        }
+//tämä ainakin siirretään Receittin
+        for(int i=0; i<Target.BEGIN.partialParser.length(); i++) {
+
+            for(Target target : Target.values()) {
+                if(null != target.partialParser.match(i, str)) {
+                    //pistetään hasttableen arvo;
+                }
+            }
+        }
+    }
+
 }

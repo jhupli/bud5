@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class PartialParser {
 
     private List<Pattern> patterns;
-    private List<String> rexps;
+    public List<String> rexps;
 
     protected PartialParser() {
         super();

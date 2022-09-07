@@ -1,36 +1,30 @@
 package onassis.utils.payment.synchronizer.parsers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import static onassis.utils.payment.synchronizer.parsers.Parser.Target;
-import static onassis.utils.payment.synchronizer.parsers.Parser.Target.*;
+import static onassis.utils.payment.synchronizer.parsers.Parser.Target.BEGIN;
 
 public class Receipt {
 
-    /* represents one line*/
-    public static class Line {
-
-        static class Debug {
-            Target target;
-            String regexp;
-            int regexp_index;
-
-            String matcherLine;
-            String value;
-        }
-
-        String line = null;
-        List<Debug> matchingRegexps = null;
-
-    }
-
     List<Line> lines = new ArrayList<>();
+    Map<Target, String> collectedValues = new HashMap<>();
 
     public Receipt() {
     }
+    public boolean hasItAll() {
+        return collectedValues.size() == Target.nrOfMandatories();
+    }
 
-    public void collect(Target target, String str) {
-
-
+    public void collect(String str) {
+        for (Line line : lines) {
+            for (int i = 0; i < Parser.parsers.get(BEGIN).length(); i++) {
+                line.collect(i, str, collectedValues);
+            }
+        }
     }
 }
+

@@ -12,10 +12,10 @@ public class Matchable {
 
     State state = State.NEW;
     A[] a;
-    Receipt receipt;
+    Receipt receipt = new Receipt();
 
-    public void collect(Parser.Target target, String str) {
-
+    public void collect(String str) {
+        receipt.collect(str);
     }
 
 

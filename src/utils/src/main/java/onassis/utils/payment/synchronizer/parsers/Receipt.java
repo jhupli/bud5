@@ -11,6 +11,15 @@ import static onassis.utils.payment.synchronizer.parsers.Parser.Target.BEGIN;
 public class Receipt {
 
     List<Line> lines = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+                "lines=" + lines +
+                ", collectedValues=" + collectedValues +
+                '}';
+    }
+
     Map<Target, String> collectedValues = new HashMap<>();
 
     public Receipt() {
@@ -26,5 +35,7 @@ public class Receipt {
             }
         }
     }
+
+
 }
 

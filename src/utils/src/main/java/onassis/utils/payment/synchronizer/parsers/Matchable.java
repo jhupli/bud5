@@ -18,5 +18,11 @@ public class Matchable {
         receipt.collect(str);
     }
 
-
+    @Override
+    public String toString() {
+        return "Matchable{" +
+                "state=" + state +
+                ", receipt=" + receipt +
+                '}';
+    }
 }

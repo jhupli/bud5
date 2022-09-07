@@ -18,6 +18,16 @@ public class Line {
             this.regexp_index = regexp_index;
             this.value = value;
         }
+
+        @Override
+        public String toString() {
+            return "Meta{" +
+                    "target=" + target +
+                    ", regexp='" + regexp + '\'' +
+                    ", regexp_index=" + regexp_index +
+                    ", value='" + value + '\'' +
+                    '}';
+        }
     }
 
     String line = null;
@@ -36,5 +46,13 @@ public class Line {
 
     public Line(String line) {
         this.line = line;
+    }
+
+    @Override
+    public String toString() {
+        return "Line{" +
+                "line='" + line + '\'' +
+                ", meta=" + meta +
+                '}';
     }
 }

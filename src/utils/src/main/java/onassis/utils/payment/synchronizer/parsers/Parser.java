@@ -1,6 +1,7 @@
 package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.SneakyThrows;
+import onassis.utils.paymentlocker.PaymentLocker;
 
 import java.io.InputStream;
 import java.util.*;
@@ -73,5 +74,29 @@ public class Parser {
             matchables.add(m);
         }
         m.collect(str);
+    }
+
+    @Override
+    public String toString() {
+        return "Parser{" +
+                "matchables=" + matchables +
+                '}';
+    }
+
+    public static void main(String[] args) {
+        if (args.length < 2 || args.length > 3) {
+            System.err.println("Usage: java -jar OnassisUtils.jar <properties-name> <file of account-statement> [TEST|SIMULATE]");
+            System.exit(2);
+        }
+
+        try {
+            IOUtils.muteLoggers();
+            (new PaymentLocker()).scan(args);
+            System.exit(0);
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
+
+        System.exit(2);
     }
 }

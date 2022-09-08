@@ -24,27 +24,32 @@ public class IOUtils {
         }
     }
 
+    private static boolean debugmode=false;
 
-
-    @SneakyThrows
-    public void scan(String[] args) throws FileNotFoundException {
-
-            boolean testmode = args.length == 3 && args[2].equalsIgnoreCase("test");
-            boolean simumode = args.length == 3 && args[2].equalsIgnoreCase("simulate");
-            if (!testmode && !simumode) {
-                System.out.println("Warning: [INTERACTIVEMODE] - Updates would really take place!");
-            } else {
-                System.out.println(testmode ? "[TESTMODE]" : "[SIMULATION MODE]");
-            }
-            loadProps(args[0], args[1]);
-            Scanner scan = new Scanner(new File(args[1]));
-            while (scan.hasNextLine()) {
-                this.line = scan.nextLine();
-            }
-
+    public static boolean isDebugmode() {
+        return debugmode;
     }
 
-                        // https://www.google.com/search?q=ascii+%E2%95%9F&rlz=1C1GCEU_deDE842DE842&oq=ascii+%E2%95%9F&aqs=chrome..69i57j0i22i30l9.2786j0j7&sourceid=chrome&ie=UTF-8#imgrc=Bw5m0affChzNHM
+    public static class StatementReader{
+        Scanner scan;
+
+        @SneakyThrows
+        public StatementReader(String statementFileName) {
+            scan = new Scanner(new File(statementFileName));
+        }
+
+        String getLine() {
+            if(!scan.hasNext()) {
+                return null;
+            }
+
+            return scan.nextLine();
+        }
+    }
+
+
+
+   // https://www.google.com/search?q=ascii+%E2%95%9F&rlz=1C1GCEU_deDE842DE842&oq=ascii+%E2%95%9F&aqs=chrome..69i57j0i22i30l9.2786j0j7&sourceid=chrome&ie=UTF-8#imgrc=Bw5m0affChzNHM
 
     /*
     Character[] borderStyles = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123".chars().mapToObj(c -> (char)c).toArray(Character[]::new);

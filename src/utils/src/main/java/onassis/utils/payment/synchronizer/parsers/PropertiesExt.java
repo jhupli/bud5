@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Properties;
 
 class PropertiesExt extends Properties {
-    private boolean required;
 
     PropertiesExt() {
-        this.required = true;
+        super();
     }
 
     public String getString(String key) {

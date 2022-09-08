@@ -3,6 +3,7 @@ package onassis.utils.payment.synchronizer.parsers;
 import lombok.SneakyThrows;
 import onassis.utils.paymentlocker.PaymentLocker;
 
+import java.io.FileReader;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Stream;
@@ -15,7 +16,7 @@ public class Parser {
         MONTH("month_rexp","Month", new PartialParser(), true),
         YEAR("year_rexp","Year", new PartialParser(), true),
         WHOLE("whole_rexp","Whole", new PartialParser(), true),
-        DECIMAL("decimal_rexp","Decimal", new PartialParser(), true),
+        DECIMAL("decim_rexp","Decimal", new PartialParser(), true),
 
         SKIP("skip_rexp","", new PartialParser(), false),
         UNARY("unary_rexp","Unary", new PartialParser(), false),;
@@ -32,24 +33,23 @@ public class Parser {
            this.mandatory = mandatory;
        }
        public static int nrOfMandatories() {
-               return 6;
+               return 6; //TODO
        }
        public static Stream<Target> stream() {
            return Stream.of(Target.values());
        }
-
-
     }
 
     public static final Map<Target, PartialParser> parsers = new HashMap<>();
 
 
     @SneakyThrows
-    public Parser(InputStream inputStream) {
+    public Parser(String propertiesFileName) {
         PropertiesExt _properties = new PropertiesExt();
-        _properties.load(inputStream);
+        _properties.load(new FileReader(propertiesFileName));
 
         Target.stream().forEach( p -> parsers.put(p, p.partialParser.init(_properties.getStringArray(p.regexpName))));
+
         if(null == parsers.get(Target.BEGIN)) {
             throw new IllegalArgumentException("Empty regexps!");
         }
@@ -81,22 +81,5 @@ public class Parser {
         return "Parser{" +
                 "matchables=" + matchables +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        if (args.length < 2 || args.length > 3) {
-            System.err.println("Usage: java -jar OnassisUtils.jar <properties-name> <file of account-statement> [TEST|SIMULATE]");
-            System.exit(2);
-        }
-
-        try {
-            IOUtils.muteLoggers();
-            (new PaymentLocker()).scan(args);
-            System.exit(0);
-        } catch (Exception var2) {
-            var2.printStackTrace();
-        }
-
-        System.exit(2);
     }
 }

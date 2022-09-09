@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class Parser {
    public enum Target{
-        BEGIN("decimal_rexp","Decimal", new PartialParser(), true),
+        BEGIN("begin_rexp","", new PartialParser(), true),
         DAY("day_rexp","Day", new PartialParser(), true),
         MONTH("month_rexp","Month", new PartialParser(), true),
         YEAR("year_rexp","Year", new PartialParser(), true),
@@ -40,7 +40,7 @@ public class Parser {
        }
     }
 
-    public static final Map<Target, PartialParser> parsers = new HashMap<>();
+    public static final PartialParserMap parsers = new PartialParserMap();
 
 
     @SneakyThrows
@@ -48,17 +48,17 @@ public class Parser {
         PropertiesExt _properties = new PropertiesExt();
         _properties.load(new FileReader(propertiesFileName));
 
-        Target.stream().forEach( p -> parsers.put(p, p.partialParser.init(_properties.getStringArray(p.regexpName))));
+        Target.stream().forEach( p -> parsers.put(p, p.partialParser.init(_properties.getStringArray(p.regexpName, p.mandatory))));
 
         if(null == parsers.get(Target.BEGIN)) {
             throw new IllegalArgumentException("Empty regexps!");
         }
 
-        parsers.values().forEach(v -> {
+        /*parsers.values().forEach(v -> {
             if (v.length() != parsers.get(Target.BEGIN).length()) {
                 throw new IllegalArgumentException("All regexps must have same number of indexrows!");
             }}
-        );
+        );*/
     }
 
     Matchable m = new Matchable();

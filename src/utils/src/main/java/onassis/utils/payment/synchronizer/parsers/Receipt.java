@@ -29,11 +29,12 @@ public class Receipt {
     }
 
     public void collect(String str) {
-        for (Line line : lines) {
-            for (int i = 0; i < Parser.parsers.get(BEGIN).length(); i++) {
-                line.collect(i, str, collectedValues);
-            }
+        Line newLine = new Line(str);
+
+        for (int i = 0; i < Parser.parsers.getMaxLength(); i++) {
+            newLine.collect(i, str, collectedValues);
         }
+
     }
 
 

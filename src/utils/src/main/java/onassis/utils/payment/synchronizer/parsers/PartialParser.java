@@ -43,6 +43,9 @@ public class PartialParser {
     }
 
     public String match(int row, String text) {
+        if(row >= this.patterns.size()) {
+            return null;
+        }
         Pattern p = this.patterns.get(row);
         Matcher matcher = p.matcher(text);
         if (matcher.find()) {

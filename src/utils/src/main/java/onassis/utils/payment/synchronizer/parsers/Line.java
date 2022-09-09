@@ -21,7 +21,7 @@ public class Line {
 
         @Override
         public String toString() {
-            return "Meta{" +
+            return "Meta{\n" +
                     "target=" + target +
                     ", regexp='" + regexp + '\'' +
                     ", regexp_index=" + regexp_index +
@@ -35,12 +35,16 @@ public class Line {
 
     void collect(int i, String str, Map<Target, String> collectedValues) {
         for(Target target : Target.values()) {
-            String value = target.partialParser.match(i, str);
-            meta.add(new Meta(target, target.partialParser.rexps.get(i),i,value));
             if(collectedValues.containsKey(target)) {
-                throw new RuntimeException("line: " + line + "\nmatches more than one once ("+i+","+target.name+ ")" );
+                continue;
             }
-            collectedValues.put(target, value);
+
+            if(i >= target.partialParser.length()) return;
+            String value = target.partialParser.match(i, str);
+            if(null != value) {
+                meta.add(new Meta(target, target.partialParser.rexps.get(i), i, null == value ? "" : value));
+                collectedValues.put(target, value);
+            }
         }
     };
 
@@ -50,9 +54,9 @@ public class Line {
 
     @Override
     public String toString() {
-        return "Line{" +
-                "line='" + line + '\'' +
-                ", meta=" + meta +
+        return "\nLine{" +
+                "\nline='" + line + "\'," +
+                "\nmeta=" + meta +
                 '}';
     }
 }

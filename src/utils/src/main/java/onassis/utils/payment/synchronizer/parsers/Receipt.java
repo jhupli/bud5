@@ -14,7 +14,7 @@ public class Receipt {
 
     @Override
     public String toString() {
-        return "Receipt{" +
+        return "\nReceipt{" +
                 "lines=" + lines +
                 ", collectedValues=" + collectedValues +
                 '}';
@@ -30,12 +30,13 @@ public class Receipt {
 
     public void collect(String str) {
         Line newLine = new Line(str);
+        lines.add(newLine);
 
         for (int i = 0; i < Parser.parsers.getMaxLength(); i++) {
             newLine.collect(i, str, collectedValues);
         }
-
     }
+
 
 
 }

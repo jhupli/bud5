@@ -78,7 +78,7 @@ public class Parser {
 
     @Override
     public String toString() {
-        return "Parser{" +
+        return "\nParser{" +
                 "matchables=" + matchables +
                 '}';
     }

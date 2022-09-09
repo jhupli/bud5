@@ -20,7 +20,7 @@ public class Matchable {
 
     @Override
     public String toString() {
-        return "Matchable{" +
+        return "\nMatchable{" +
                 "state=" + state +
                 ", receipt=" + receipt +
                 '}';

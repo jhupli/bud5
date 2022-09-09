@@ -21,12 +21,12 @@ public class Line {
 
         @Override
         public String toString() {
-            return "Meta{\n" +
-                    "target=" + target +
-                    ", regexp='" + regexp + '\'' +
-                    ", regexp_index=" + regexp_index +
-                    ", value='" + value + '\'' +
-                    '}';
+            return "\n\t\t\t\tMeta{" +
+                    "\n\t\t\t\ttarget=" + target +
+                    "\n\t\t\t\tregexp='" + regexp + '\'' +
+                    "\n\t\t\t\tregexp_index=" + regexp_index +
+                    "\n\t\t\t\tvalue='" + value + '\'' +
+                    "\n\t\t\t\t}";
         }
     }
 
@@ -54,9 +54,9 @@ public class Line {
 
     @Override
     public String toString() {
-        return "\nLine{" +
-                "\nline='" + line + "\'," +
-                "\nmeta=" + meta +
+        return "\n\t\t\tLine{" +
+                "\n\t\t\tline='" + line + "\'," +
+                "\n\t\t\tmeta=" + meta +
                 '}';
     }
 }

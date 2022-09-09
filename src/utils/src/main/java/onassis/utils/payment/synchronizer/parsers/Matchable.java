@@ -20,9 +20,9 @@ public class Matchable {
 
     @Override
     public String toString() {
-        return "\nMatchable{" +
-                "state=" + state +
-                ", receipt=" + receipt +
-                '}';
+        return "\n\tMatchable{" +
+                "\n\tstate=" + state +
+                "\n\treceipt=" + receipt +
+                "\n\t}";
     }
 }

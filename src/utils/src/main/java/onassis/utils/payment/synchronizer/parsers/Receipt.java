@@ -14,10 +14,10 @@ public class Receipt {
 
     @Override
     public String toString() {
-        return "\nReceipt{" +
-                "lines=" + lines +
-                ", collectedValues=" + collectedValues +
-                '}';
+        return "\n\t\tReceipt{" +
+                "\n\t\tcollectedValues=" + collectedValues +
+                "\n\t\tlines=" + lines +
+                "\n\t\t}";
     }
 
     Map<Target, String> collectedValues = new HashMap<>();

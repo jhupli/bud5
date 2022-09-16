@@ -1,5 +1,7 @@
 package onassis.utils.payment.synchronizer.parsers;
 
+import lombok.Getter;
+
 import java.util.*;
 
 import static onassis.utils.payment.synchronizer.parsers.Parser.Target;
@@ -30,7 +32,8 @@ public class Line {
         }
     }
 
-    String line = null;
+    @Getter
+    private String line = null;
     List<Meta> meta = new ArrayList<>();
 
     void collect(int i, String str, Map<Target, String> collectedValues) {

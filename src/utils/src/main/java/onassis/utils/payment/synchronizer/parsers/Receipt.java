@@ -1,5 +1,7 @@
 package onassis.utils.payment.synchronizer.parsers;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +12,8 @@ import static onassis.utils.payment.synchronizer.parsers.Parser.Target.BEGIN;
 
 public class Receipt {
 
-    List<Line> lines = new ArrayList<>();
+    @Getter
+    private List<Line> lines = new ArrayList<>();
 
     @Override
     public String toString() {

@@ -5,12 +5,15 @@ import ch.qos.logback.classic.Logger;
 import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
 import com.github.freva.asciitable.HorizontalAlign;
+import com.github.freva.asciitable.OverflowBehaviour;
 import lombok.SneakyThrows;
+import onassis.dto.A;
+import onassis.dto.P;
 import onassis.dto.PInfo;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class IOUtils {
@@ -78,16 +81,34 @@ kulmiin?
     private static final Character[] TABLE_ASCII =                    new Character[]{'╭', '─', '┬', '╮', '│', '│', '│', '╞', '═', '╪', '╡', '│', '│', '│',  '├',  '─',  '┼',  '┤', '├', '─', '┤', '┤', '│', '│', '│', '╰', '─', '┴', '┘'};
     private static final Character[] TABLE_ASCII_NO_DATA_SEPARATORS = new Character[]{'╭', '─', '┬', '╮', '│', '│', '│', '╞', '═', '╪', '╡', '│', '│', '│', null, null, null, null, '├', '─', '┤', '┤', '│', '│', '│', '╰', '─', '┴', '╯'};
 
-    private static void showRows(List<String> rows, String header) {
+    public static int LINELENGTH = 60;
+    public static void showRows(List<String> rows, String header) {
         System.out.println(
                 AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, rows,
                         Arrays.asList(
-                                (new Column()).minWidth(60).maxWidth(60).headerAlign(HorizontalAlign.CENTER)
+                                (new Column()).minWidth(LINELENGTH).maxWidth(LINELENGTH).headerAlign(HorizontalAlign.CENTER)
                                               .dataAlign(HorizontalAlign.LEFT)
                                               .header(header).with((r) -> { return r.replaceAll("\t", " "); })))
         );
     };
 
+    public static void showP(List<PInfo> pInfoList) {
+        System.out.println(AsciiTable.getTable(pInfoList, Arrays.asList(
+                new Column().header("Date").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> new SimpleDateFormat("dd.MM.yyyy").format(p.getD())),
+                new Column().header("Descr").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> p.getDescr())
+        )));
+    }
+
+
+
+                /*new Column().header(p.getA_descr()).maxWidth(12, OverflowBehaviour.NEWLINE).with(planet -> planet.atmosphere),
+                new Column().header(p.getC_descr()).maxWidth(12, OverflowBehaviour.NEWLINE).with(planet -> planet.atmosphere),
+                new Column().header(p.getC_descr())).maxWidth(12, OverflowBehaviour.CLIP_LEFT).with(planet -> planet.atmosphere),
+                new Column().header(p.getDescr())"Atmosphere Composition").maxWidth(12, OverflowBehaviour.CLIP_RIGHT).with(planet -> planet.atmosphere),
+                new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_LEFT).with(planet -> planet.atmosphere),
+                new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(planet -> planet.atmosphere))));*/
+
+    
     private static  String ask(List<String> rows, PInfo pInfo, String question, String possibleAnswers, String header) {
         String choice = null;
         if(null != pInfo) {

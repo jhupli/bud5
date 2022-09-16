@@ -6,6 +6,7 @@ import onassis.utils.paymentlocker.PaymentLocker;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -70,8 +71,17 @@ public class Parser {
     public void collect(String str) {
 
         if (parsers.get(Target.BEGIN).match(str)) {
+            Matchable prevMatchable = matchables.get(matchables.size() - 1);
+            List<String> lines = prevMatchable.getReceipt().getLines()
+                    .stream()
+                    .map( line -> { return line.getLine(); } )
+                    .collect(Collectors.toList());
+
             m = new Matchable();
             matchables.add(m);
+
+
+            IOUtils.showRows(lines, prevMatchable.getState().name());
         }
         m.collect(str);
     }

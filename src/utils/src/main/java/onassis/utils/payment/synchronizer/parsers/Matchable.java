@@ -1,5 +1,6 @@
 package onassis.utils.payment.synchronizer.parsers;
 
+import lombok.Getter;
 import onassis.dto.A;
 
 public class Matchable {
@@ -9,13 +10,19 @@ public class Matchable {
         ALL_ATTRS_FOUND,
         ERROR,
     }
-
-    State state = State.NEW;
-    A[] a;
-    Receipt receipt = new Receipt();
+    @Getter
+    private State state = State.NEW;
+    @Getter
+    private A[] a;
+    @Getter
+    private Receipt receipt = new Receipt();
 
     public void collect(String str) {
+        state = State.ATTRS_NOT_FOUND;
         receipt.collect(str);
+        if(receipt.hasItAll()) {
+            state = State.ALL_ATTRS_FOUND;
+        }
     }
 
     @Override

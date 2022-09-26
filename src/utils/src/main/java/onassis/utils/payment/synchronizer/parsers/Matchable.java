@@ -2,6 +2,7 @@ package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.Getter;
 import onassis.dto.A;
+import onassis.dto.PInfo;
 
 public class Matchable {
     public enum State {
@@ -13,7 +14,7 @@ public class Matchable {
     @Getter
     private State state = State.NEW;
     @Getter
-    private A[] a;
+    private PInfo[] pInfo;
     @Getter
     private Receipt receipt = new Receipt();
 

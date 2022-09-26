@@ -53,8 +53,8 @@ public class RestIO {
         return categories != null;
     }
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    void lock(P p)  {
+    static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    void lock(PInfo p)  {
         String dateStr = dateFormat.format(p.getDc());
         String url = String.format("http://%s/lock?id=%s&l=true&d=%s", this.host, p.getId(), dateStr);
         ((Response)RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();

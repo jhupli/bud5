@@ -95,6 +95,7 @@ kulmiin?
     public static void showP(List<PInfo> pInfoList) {
         System.out.println(AsciiTable.getTable(pInfoList, Arrays.asList(
                 new Column().header("Date").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> new SimpleDateFormat("dd.MM.yyyy").format(p.getD())),
+                new Column().header("Category").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> p.getC_descr()),
                 new Column().header("Descr").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> p.getDescr())
         )));
     }
@@ -108,7 +109,7 @@ kulmiin?
                 new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_LEFT).with(planet -> planet.atmosphere),
                 new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(planet -> planet.atmosphere))));*/
 
-    
+
     private static  String ask(List<String> rows, PInfo pInfo, String question, String possibleAnswers, String header) {
         String choice = null;
         if(null != pInfo) {

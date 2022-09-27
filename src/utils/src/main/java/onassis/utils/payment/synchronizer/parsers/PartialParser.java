@@ -49,8 +49,13 @@ public class PartialParser {
         Pattern p = this.patterns.get(row);
         Matcher matcher = p.matcher(text);
         if (matcher.find()) {
-            return matcher.group(1);
+            return format(matcher.group(1));
+
         }
         return null;
+    }
+
+    public String format(String text) {
+        return text;
     }
 }

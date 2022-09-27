@@ -279,9 +279,9 @@ https://stackoverflow.com/questions/39868792/using-spring-resttemplate-in-jax-rs
     void askPassword() {
         pw = ask(null, "password ", null);
         String resp =
-                given().auth().basic(user,pw).
-                        when().get("http://" + host + "/hello")
-                        .body().asString();
+                given().auth().basic(user,pw)
+                    .when().get("http://" + host + "/hello")
+                    .body().asString();
 
         System.out.println(resp);
     }

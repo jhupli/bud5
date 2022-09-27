@@ -16,8 +16,7 @@ public class Main {
         }
 
         IOUtils.muteLoggers();
-        String propFileName = String.format("regexps/%s.properties", args[0]);
-        Parser parser = new Parser(propFileName);
+        Parser parser = new Parser(args[0]);
 
         IOUtils.StatementReader statements = new IOUtils.StatementReader(args[1]);
         String line = null;

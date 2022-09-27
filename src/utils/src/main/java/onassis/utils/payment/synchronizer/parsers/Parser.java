@@ -14,14 +14,16 @@ import java.util.stream.Stream;
 public class Parser {
    public enum Target{
         BEGIN("begin_rexp","", new PartialParser(), true),
-        DAY("day_rexp","Day", new PartialParser(), true),
-        MONTH("month_rexp","Month", new PartialParser(), true),
+        DAY("day_rexp","Day", new PartialParser00Num(), true),
+        MONTH("month_rexp","Month", new PartialParser00Num(), true),
         YEAR("year_rexp","Year", new PartialParser(), true),
-        WHOLE("whole_rexp","Whole", new PartialParser(), true),
-        DECIMAL("decim_rexp","Decimal", new PartialParser(), true),
+        WHOLE("whole_rexp","Whole", new PartialParserWhole(), true),
+        DECIMAL("decim_rexp","Decimal", new PartialParserDecimal(), true),
 
         SKIP("skip_rexp","", new PartialParser(), false),
-        UNARY("unary_rexp","Unary", new PartialParser(), false),;
+        UNARY("unary_rexp","Unary", new PartialParser(), false),
+        DESCR("descr_rexp","Description", new PartialParser(), false),;
+
 
         public String regexpName;
         public String name;
@@ -47,8 +49,9 @@ public class Parser {
 
     @SneakyThrows
     public Parser(String bank) {
+        String propFileName = String.format("regexps/%s.properties", bank);
         PropertiesExt _properties = new PropertiesExt();
-        _properties.load(new FileReader(bank));
+        _properties.load(new FileReader(propFileName));
 
         Target.stream().forEach( p -> parsers.put(p, p.partialParser.init(_properties.getStringArray(p.regexpName, p.mandatory))));
 

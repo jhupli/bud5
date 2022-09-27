@@ -41,8 +41,9 @@ public class Line {
             if(collectedValues.containsKey(target)) {
                 continue;
             }
-
-            if(i >= target.partialParser.length()) return;
+            if(i >= target.partialParser.length()) {
+                continue;
+            }
             String value = target.partialParser.match(i, str);
             if(null != value) {
                 meta.add(new Meta(target, target.partialParser.rexps.get(i), i, null == value ? "" : value));

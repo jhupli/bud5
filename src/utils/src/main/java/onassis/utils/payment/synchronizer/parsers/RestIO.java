@@ -60,17 +60,21 @@ public class RestIO {
         ((Response)RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
     }
 
-    List<PInfo> getPCandidates(String year, String month, String day, Long amount) {
-        String dateStr = String.format("%s-%s-%s", year, month, day);
-        LocalDate date = LocalDate.parse(dateStr);
+    List<PInfo> getPCandidates(Receipt receipt) {
+        LocalDate date = receipt.getDate();
+        BigDecimal bd =  receipt.getAmount();
+        String dateStr = String.format("%s-%s-%s", date.getYear(), date.getMonthValue(),date.getDayOfMonth());
+        //LocalDate date = LocalDate.parse(dateStr);
         /*long l = Long.valueOf((null == this.unary ? "" : this.unary) + this.whole + this.decimal);*/
-        BigDecimal bd = BigDecimal.valueOf(amount, 2);
+        //BigDecimal bd = BigDecimal.valueOf(amount, 2);
         List<PInfo> pInfos = null;
         String url = String.format("http://%s/info?d=%s&i=%s&a=%s", this.host, dateStr, bd, this.account);
-        String responseJson = ((Response) RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
+        receipt.setUrl(dateStr);
+        return null;
+        /*String responseJson = ((Response) RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
         List<PInfo> Infos = (new Gson()).fromJson(responseJson, new TypeToken<List<PInfo>>() {
         }.getType());
-        return Infos;
+        return Infos;*/
     }
 
     List<C> getCategories() {

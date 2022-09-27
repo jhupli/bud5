@@ -1,8 +1,7 @@
 package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.Getter;
-import lombok.Setter;
-import onassis.dto.PInfo;
+import java.util.List;
 
 public class Matchable {
     public enum State {
@@ -14,7 +13,7 @@ public class Matchable {
     @Getter
     private State state = State.NEW;
     @Getter
-    private PInfo[] pInfo;
+    private List pInfo;
     @Getter
     private Receipt receipt = new Receipt();
 
@@ -29,12 +28,13 @@ public class Matchable {
         receipt.collect(str);
         if(receipt.hasItAll()) {
             state = State.ALL_ATTRS_FOUND;
-            //restIO.getPCandidates(Receipt)
+
+            pInfo = restIO.getPCandidates(receipt);
 
         }
-
-
     }
+
+
 
     @Override
     public String toString() {

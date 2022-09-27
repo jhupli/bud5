@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import static onassis.utils.payment.synchronizer.parsers.Parser.Target;
-import static onassis.utils.payment.synchronizer.parsers.Parser.Target.BEGIN;
 
 public class Receipt {
 

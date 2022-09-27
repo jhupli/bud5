@@ -1,7 +1,7 @@
 package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.Getter;
-import onassis.dto.A;
+import lombok.Setter;
 import onassis.dto.PInfo;
 
 public class Matchable {
@@ -18,12 +18,22 @@ public class Matchable {
     @Getter
     private Receipt receipt = new Receipt();
 
+    private final RestIO restIO;
+
+    public Matchable(RestIO restIO) {
+        this.restIO = restIO;
+    }
+
     public void collect(String str) {
         state = State.ATTRS_NOT_FOUND;
         receipt.collect(str);
         if(receipt.hasItAll()) {
             state = State.ALL_ATTRS_FOUND;
+            //restIO.getPCandidates(Receipt)
+
         }
+
+
     }
 
     @Override

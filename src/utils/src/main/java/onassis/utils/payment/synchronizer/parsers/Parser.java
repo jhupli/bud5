@@ -1,5 +1,6 @@
 package onassis.utils.payment.synchronizer.parsers;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 import onassis.utils.paymentlocker.PaymentLocker;
 
@@ -42,27 +43,22 @@ public class Parser {
     }
 
     public static final PartialParserMap parsers = new PartialParserMap();
-
+    private RestIO restIO;
 
     @SneakyThrows
-    public Parser(String propertiesFileName) {
+    public Parser(String bank) {
         PropertiesExt _properties = new PropertiesExt();
-        _properties.load(new FileReader(propertiesFileName));
+        _properties.load(new FileReader(bank));
 
         Target.stream().forEach( p -> parsers.put(p, p.partialParser.init(_properties.getStringArray(p.regexpName, p.mandatory))));
 
         if(null == parsers.get(Target.BEGIN)) {
             throw new IllegalArgumentException("Empty regexps!");
         }
-
-        /*parsers.values().forEach(v -> {
-            if (v.length() != parsers.get(Target.BEGIN).length()) {
-                throw new IllegalArgumentException("All regexps must have same number of indexrows!");
-            }}
-        );*/
+        restIO = new RestIO(bank);
     }
 
-    Matchable m = new Matchable();
+    Matchable m = new Matchable(restIO);
     List<Matchable> matchables = new ArrayList<>();
     {
         matchables.add(m);
@@ -77,9 +73,8 @@ public class Parser {
                     .map( line -> { return line.getLine(); } )
                     .collect(Collectors.toList());
 
-            m = new Matchable();
+            m = new Matchable(restIO);
             matchables.add(m);
-
 
             IOUtils.showRows(lines, prevMatchable.getState().name());
         }

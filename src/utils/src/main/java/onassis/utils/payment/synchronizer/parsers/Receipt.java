@@ -53,11 +53,11 @@ public class Receipt {
         }
     }
 
-    public LocalDate getDate() {
+    public String getDateString() {
         String dateStr = collectedValues.get(Target.YEAR) + "-" +
                 collectedValues.get(Target.MONTH) + "-" +
                 collectedValues.get(Target.DAY);
-        return LocalDate.parse(dateStr);
+        return dateStr;
     }
 
     public BigDecimal getAmount() {

@@ -8,6 +8,7 @@ import com.github.freva.asciitable.HorizontalAlign;
 import com.github.freva.asciitable.OverflowBehaviour;
 import lombok.SneakyThrows;
 import onassis.dto.A;
+import onassis.dto.C;
 import onassis.dto.P;
 import onassis.dto.PInfo;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class IOUtils {
     public static void muteLoggers() {
@@ -82,7 +84,7 @@ kulmiin?
     private static final Character[] TABLE_ASCII_NO_DATA_SEPARATORS = new Character[]{'╭', '─', '┬', '╮', '│', '│', '│', '╞', '═', '╪', '╡', '│', '│', '│', null, null, null, null, '├', '─', '┤', '┤', '│', '│', '│', '╰', '─', '┴', '╯'};
 
     public static int LINELENGTH = 60;
-    public static void showRows(List<String> rows, String header) {
+    public static void showLines(List<String> rows, String header) {
         System.out.println(
                 AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, rows,
                         Arrays.asList(
@@ -99,31 +101,93 @@ kulmiin?
                 new Column().header("Descr").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> p.getDescr())
         )));
     }
+    private static int i;
+    public static C pickCategory(List<C> rows) {
+        i=0;
+        System.out.println(
+                AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, rows,
+                        Arrays.asList(
+                                (new Column()).minWidth(5).maxWidth(5, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
+                                        .dataAlign(HorizontalAlign.CENTER)
+                                        .header("#").with((r) -> { return "" + (++i); }),
+                                (new Column()).minWidth(LINELENGTH/2 - 5).maxWidth(LINELENGTH - 5).headerAlign(HorizontalAlign.CENTER)
+                                        .dataAlign(HorizontalAlign.LEFT)
+                                        .header("Description").with((r) -> { return r.getDescr().replaceAll("\t", " "); }))));
+
+        String answer =  ask(null, null,null, "Pick a Category #", null, 1, rows.size());
+        return null == answer ? null : rows.get(Integer.parseInt(answer) - 1);
+    };
+
+    /*
+    public void printC(List<C> categories) {
+        System.out.println(AsciiTable.getTable(borderStyles, planets, Arrays.asList(
+                new Column().with(planet -> Integer.toString(planet.num)),
+                new Column().header("Name").footer("Average").headerAlign(CENTER).dataAlign(RIGHT).with(planet -> planet.name),
+                new Column().header("Diameter").headerAlign(RIGHT).dataAlign(CENTER).footerAlign(CENTER)
+                        .footer(String.format("%.03f", planets.stream().mapToDouble(planet -> planet.diameter).average().orElse(0)))
+                        .with(planet -> String.format("%.03f", planet.diameter)),
+                new Column().header("Mass").headerAlign(RIGHT).dataAlign(LEFT)
+                        .footer(String.format("%.02f", planets.stream().mapToDouble(planet -> planet.mass).average().orElse(0)))
+                        .with(planet -> String.format("%.02f", planet.mass)),
+                new Column().header("Atmosphere").headerAlign(LEFT).dataAlign(CENTER).with(planet -> planet.atmosphere))));
 
 
-
-                /*new Column().header(p.getA_descr()).maxWidth(12, OverflowBehaviour.NEWLINE).with(planet -> planet.atmosphere),
+                new Column().header(p.getA_descr()).maxWidth(12, OverflowBehaviour.NEWLINE).with(planet -> planet.atmosphere),
                 new Column().header(p.getC_descr()).maxWidth(12, OverflowBehaviour.NEWLINE).with(planet -> planet.atmosphere),
                 new Column().header(p.getC_descr())).maxWidth(12, OverflowBehaviour.CLIP_LEFT).with(planet -> planet.atmosphere),
                 new Column().header(p.getDescr())"Atmosphere Composition").maxWidth(12, OverflowBehaviour.CLIP_RIGHT).with(planet -> planet.atmosphere),
                 new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_LEFT).with(planet -> planet.atmosphere),
-                new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(planet -> planet.atmosphere))));*/
+                new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(planet -> planet.atmosphere))));
+    } */
 
-
-    private static  String ask(List<String> rows, PInfo pInfo, String question, String possibleAnswers, String header) {
+    private static String ask(String header, Matchable matchable,PInfo pInfo, String question, String possibleAnswers, Integer start, Integer end) {
         String choice = null;
         if(null != pInfo) {
-            showRows(rows, header);
-            //TODO showPInfo(pInfo);
+            showLines(matchable.getReceipt().getLines().stream().map(l -> l.getLine()).collect(Collectors.toList()), header);
         }
-        while(choice == null || (null != possibleAnswers && !(possibleAnswers+"q").contains(choice))) {
-            System.out.print(question + (possibleAnswers!=null ? " [q"+possibleAnswers+"] " : "") + " (or q to quit) ");
+        while(choice == null && (null != possibleAnswers && !(possibleAnswers+"q").contains(choice))) {
+            System.out.print(question + (possibleAnswers!=null ? " ["+possibleAnswers+"] " : "") + " (or q to quit, c to cancel) : ");
             Scanner sc = new Scanner(System.in); //System.in is a standard input stream.
             choice = sc.nextLine();
         }
+
+        while(choice == null && (null != start && null != end )) {
+            System.out.print(question + (possibleAnswers != null ? " [" + possibleAnswers + "] " : "") + " (or q to quit, c to cancel) : ");
+            Scanner sc = new Scanner(System.in); //System.in is a standard input stream.
+            choice = sc.nextLine();
+            int ix = -1;
+            if ("cq".contains(choice) && choice.length() == 1) {
+                break;
+            }
+            try {
+                ix = Integer.parseInt(choice);
+                if (ix < start || ix > end) {
+                    choice = null;
+                }
+            } catch (Exception e) {
+                choice = null;
+            }
+        }
+        while(choice == null) {
+            System.out.print(question + (possibleAnswers!=null ? " ["+possibleAnswers+"] " : "") + " (or q to quit, c to cancel) : ");
+            Scanner sc = new Scanner(System.in); //System.in is a standard input stream.
+            choice = sc.nextLine();
+        }
+
+
         switch (choice) {
-            case "q" : System.exit(1);
+            case "c" :  return null;
+            case "q" :  System.exit(1);
             default: return choice;
         }
+    }
+    public static void printOut(String str) {
+        System.out.println(str);
+    }
+    public static String login() {
+        return ask(null, null,null, "Onassis password", null, null, null);
+    }
+    public static void farewell() {
+        System.out.println("Exiting... Goodbye.");
     }
 }

@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.Runtime.getRuntime;
+
 
 public class Parser {
    public enum Target{
@@ -58,7 +60,18 @@ public class Parser {
         if(null == parsers.get(Target.BEGIN)) {
             throw new IllegalArgumentException("Empty regexps!");
         }
+
+        Thread shutdownThread = new Thread() {
+            @Override
+            public void run() {
+                IOUtils.farewell();
+            }
+        };
+
+        getRuntime().addShutdownHook(shutdownThread);
+
         restIO = new RestIO(bank);
+        restIO.login();
     }
 
     Matchable m = new Matchable(restIO);
@@ -79,7 +92,7 @@ public class Parser {
             m = new Matchable(restIO);
             matchables.add(m);
 
-            IOUtils.showRows(lines, prevMatchable.getState().name());
+            IOUtils.showLines(lines, prevMatchable.getState().name());
         }
         m.collect(str);
     }

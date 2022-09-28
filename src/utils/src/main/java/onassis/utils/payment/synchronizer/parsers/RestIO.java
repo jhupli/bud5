@@ -15,8 +15,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,7 +25,7 @@ public class RestIO {
     private String user;
     private String account;
     private String pw;
-    private List<C> categories= new ArrayList<>();
+    private List<C> categories = null;
 
     @SneakyThrows
     public RestIO(String bankName) {
@@ -45,11 +43,18 @@ public class RestIO {
         }
     }
 
-    boolean login(String password) {
-        pw = password;
-        String responseJson =
-                given().auth().basic(user, pw).when().get("http://\" + host + \"/cat/list").asString();
-        categories = (new Gson()).fromJson(responseJson, new TypeToken<List<C>>() {}.getType());
+    boolean login() {
+        pw = IOUtils.login();
+        String url = "http://" + host + "/cat/list";
+        try {
+            String responseJson =
+                    given().auth().basic(user, pw).when().get(url).asString();
+            categories = (new Gson()).fromJson(responseJson, new TypeToken<List<C>>() {
+            }.getType());
+            IOUtils.pickCategory(categories);
+        }catch (Exception e) {
+            IOUtils.printOut("Login failed.");
+        }
         return categories != null;
     }
 
@@ -61,15 +66,9 @@ public class RestIO {
     }
 
     List<PInfo> getPCandidates(Receipt receipt) {
-        LocalDate date = receipt.getDate();
-        BigDecimal bd =  receipt.getAmount();
-        String dateStr = String.format("%s-%s-%s", date.getYear(), date.getMonthValue(),date.getDayOfMonth());
-        //LocalDate date = LocalDate.parse(dateStr);
-        /*long l = Long.valueOf((null == this.unary ? "" : this.unary) + this.whole + this.decimal);*/
-        //BigDecimal bd = BigDecimal.valueOf(amount, 2);
         List<PInfo> pInfos = null;
-        String url = String.format("http://%s/info?d=%s&i=%s&a=%s", this.host, dateStr, bd, this.account);
-        receipt.setUrl(dateStr);
+        String url = String.format("http://%s/info?d=%s&i=%s&a=%s", this.host, receipt.getDateString(), receipt.getAmount(), this.account);
+        receipt.setUrl(url);
         return null;
         /*String responseJson = ((Response) RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
         List<PInfo> Infos = (new Gson()).fromJson(responseJson, new TypeToken<List<PInfo>>() {

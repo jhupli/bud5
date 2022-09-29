@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.Runtime.getRuntime;
+import static onassis.utils.payment.synchronizer.parsers.Matchable.State.ALL_ATTRS_FOUND;
 
 
 public class Parser {
@@ -83,6 +84,9 @@ public class Parser {
     public void collect(String str) {
 
         if (parsers.get(Target.BEGIN).match(str)) {
+            if(matchables.get(matchables.size() - 1).getState().equals(ALL_ATTRS_FOUND)) {
+                IOUtils.pickMatch(matchables.get(matchables.size() - 1));
+            }
             Matchable prevMatchable = matchables.get(matchables.size() - 1);
             List<String> lines = prevMatchable.getReceipt().getLines()
                     .stream()
@@ -92,7 +96,7 @@ public class Parser {
             m = new Matchable(restIO);
             matchables.add(m);
 
-            IOUtils.showLines(lines, prevMatchable.getState().name());
+            //IOUtils.showLines(lines, prevMatchable.getState().name());
         }
         m.collect(str);
     }

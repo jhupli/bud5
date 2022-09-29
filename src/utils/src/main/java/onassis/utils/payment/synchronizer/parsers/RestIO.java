@@ -69,11 +69,11 @@ public class RestIO {
         List<PInfo> pInfos = null;
         String url = String.format("http://%s/info?d=%s&i=%s&a=%s", this.host, receipt.getDateString(), receipt.getAmount(), this.account);
         receipt.setUrl(url);
-        return null;
-        /*String responseJson = ((Response) RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
+        //return null;
+        String responseJson = ((Response) RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
         List<PInfo> Infos = (new Gson()).fromJson(responseJson, new TypeToken<List<PInfo>>() {
         }.getType());
-        return Infos;*/
+        return Infos;
     }
 
     List<C> getCategories() {

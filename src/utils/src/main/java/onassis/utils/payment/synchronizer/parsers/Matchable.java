@@ -28,9 +28,7 @@ public class Matchable {
         receipt.collect(str);
         if(receipt.hasItAll()) {
             state = State.ALL_ATTRS_FOUND;
-
             pInfo = restIO.getPCandidates(receipt);
-
         }
     }
 

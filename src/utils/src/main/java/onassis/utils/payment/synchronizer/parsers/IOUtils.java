@@ -11,6 +11,7 @@ import onassis.dto.A;
 import onassis.dto.C;
 import onassis.dto.P;
 import onassis.dto.PInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 
@@ -84,22 +85,36 @@ kulmiin?
     private static final Character[] TABLE_ASCII =                    new Character[]{'╭', '─', '┬', '╮', '│', '│', '│', '╞', '═', '╪', '╡', '│', '│', '│',  '├',  '─',  '┼',  '┤', '├', '─', '┤', '┤', '│', '│', '│', '╰', '─', '┴', '┘'};
     private static final Character[] TABLE_ASCII_NO_DATA_SEPARATORS = new Character[]{'╭', '─', '┬', '╮', '│', '│', '│', '╞', '═', '╪', '╡', '│', '│', '│', null, null, null, null, '├', '─', '┤', '┤', '│', '│', '│', '╰', '─', '┴', '╯'};
 
-    public static int LINELENGTH = 60;
+    public static int LINELENGTH = 80;
     public static void showLines(List<String> rows, String header) {
         System.out.println(
                 AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, rows,
                         Arrays.asList(
-                                (new Column()).minWidth(LINELENGTH).maxWidth(LINELENGTH).headerAlign(HorizontalAlign.CENTER)
+                                (new Column()).minWidth(LINELENGTH + 3).maxWidth(LINELENGTH + 3).headerAlign(HorizontalAlign.CENTER)
                                               .dataAlign(HorizontalAlign.LEFT)
                                               .header(header).with((r) -> { return r.replaceAll("\t", " "); })))
         );
     };
 
+    private static String CREATE_KEY = "c";
     public static void showP(List<PInfo> pInfoList) {
-        System.out.println(AsciiTable.getTable(pInfoList, Arrays.asList(
-                new Column().header("Date").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> new SimpleDateFormat("dd.MM.yyyy").format(p.getD())),
-                new Column().header("Category").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> p.getC_descr()),
-                new Column().header("Descr").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(p -> p.getDescr())
+        if(null == pInfoList) {
+            return;
+        }
+        i = 0;
+        System.out.println(AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, pInfoList, Arrays.asList(
+                (new Column()).minWidth(5).maxWidth(5).headerAlign(HorizontalAlign.CENTER)
+                        .dataAlign(HorizontalAlign.LEFT)
+                        .header("#").with((p) -> { return i != pInfoList.size() - 1 ? "" + ++i : CREATE_KEY; }),
+                (new Column()).minWidth(12).maxWidth(12).headerAlign(HorizontalAlign.CENTER)
+                        .dataAlign(HorizontalAlign.LEFT)
+                        .header("Date").with((p) -> { return new SimpleDateFormat("dd.MM.yyyy").format(p.getD());}),
+                (new Column()).minWidth(15).maxWidth(15, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
+                        .dataAlign(HorizontalAlign.CENTER)
+                        .header("Category").with((p) -> { return "" + p.getC_descr(); }),
+                (new Column()).minWidth(LINELENGTH - 5 -12 - 15).maxWidth(LINELENGTH - 5 -12 - 15, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
+                        .dataAlign(HorizontalAlign.CENTER)
+                        .header("Description").with((p) -> { return "" + p.getDescr(); })
         )));
     }
     private static int i;
@@ -131,11 +146,19 @@ kulmiin?
                                 (new Column()).minWidth(LINELENGTH/2 - 5).maxWidth(LINELENGTH - 5).headerAlign(HorizontalAlign.CENTER)
                                         .dataAlign(HorizontalAlign.LEFT)
                                         .header("Description").with((r) -> { return "" + r.getRight().getRight();  })
-                        )));
+                        )
+                )
+        );
 
-        String answer =  ask(null, null,null, "Pick a Category #", null, 1, rows.size());
+        String answer =  ask("Pick a Category #", null, 1, rows.size());
         return null == answer ? null : rows.get(Integer.parseInt(answer) - 1);
     };
+
+    public static void pickMatch(Matchable m) {
+        showLines(m.getReceipt().getLines().stream().map(l -> {return l.getLine(); }).collect(Collectors.toList()), "Receipt");
+        showP(m.getPInfo());
+        String answer =  ask("Pick a Payment #, c to create new, s to skip ", "sc", 1, m.getPInfo().size());
+    }
 
     /*
     public void printC(List<C> categories) {
@@ -159,52 +182,49 @@ kulmiin?
                 new Column().header("Atmosphere Composition").maxWidth(12, OverflowBehaviour.ELLIPSIS_RIGHT).with(planet -> planet.atmosphere))));
     } */
 
-    private static String ask(String header, Matchable matchable,PInfo pInfo, String question, String possibleAnswers, Integer start, Integer end) {
-        String choice = null;
-        if(null != pInfo) {
-            showLines(matchable.getReceipt().getLines().stream().map(l -> l.getLine()).collect(Collectors.toList()), header);
-        }
-        while(choice == null && (null != possibleAnswers && !(possibleAnswers+"q").contains(choice))) {
-            System.out.print(question + (possibleAnswers!=null ? " ["+possibleAnswers+"] " : "") + " (or q to quit, c to cancel) : ");
+    private static String ask(String question, String possibleSingleAnswers, Integer start, Integer end) {
+        while(true) {
+            System.out.print(question +
+                    (null != possibleSingleAnswers ?  "[" + possibleSingleAnswers + "]" : "") +
+                    " (or q to quit) : ");
             Scanner sc = new Scanner(System.in); //System.in is a standard input stream.
-            choice = sc.nextLine();
-        }
+            String choice = sc.nextLine();
 
-        while(choice == null && (null != start && null != end )) {
-            System.out.print(question + (possibleAnswers != null ? " [" + possibleAnswers + "] " : "") + " (or q to quit, c to cancel) : ");
-            Scanner sc = new Scanner(System.in); //System.in is a standard input stream.
-            choice = sc.nextLine();
-            int ix = -1;
-            if ("cq".contains(choice) && choice.length() == 1) {
-                break;
+            if(StringUtils.isEmpty(choice)) {
+                continue;
+            }
+
+            switch (choice) {
+                case "q" :  System.exit(1);
+            }
+
+            if(null == possibleSingleAnswers && null == start && null == end) {
+                return choice; //anything goes
             }
             try {
-                ix = Integer.parseInt(choice);
-                if (ix < start || ix > end) {
-                    choice = null;
+                int ix = Integer.parseInt(choice);
+                if( null != start && ix < start) {
+                    continue;
                 }
-            } catch (Exception e) {
-                choice = null;
+                if( null != end && ix > end) {
+                    continue;
+                }
+                return ""+ix;
+            } catch (Exception toIgnore) {
+                //keep on going
+            }
+
+            if(null != possibleSingleAnswers && choice.length() == 1 && possibleSingleAnswers.contains(choice)) {
+                return choice;
             }
         }
-        while(choice == null) {
-            System.out.print(question + (possibleAnswers!=null ? " ["+possibleAnswers+"] " : "") + " (or q to quit, c to cancel) : ");
-            Scanner sc = new Scanner(System.in); //System.in is a standard input stream.
-            choice = sc.nextLine();
-        }
-
-
-        switch (choice) {
-            case "c" :  return null;
-            case "q" :  System.exit(1);
-            default: return choice;
-        }
     }
+
     public static void printOut(String str) {
         System.out.println(str);
     }
     public static String login() {
-        return ask(null, null,null, "Onassis password", null, null, null);
+        return ask("Onassis password", null, null, null);
     }
     public static void farewell() {
         System.out.println("Exiting... Goodbye.");

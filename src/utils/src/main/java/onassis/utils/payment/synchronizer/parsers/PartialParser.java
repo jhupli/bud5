@@ -50,7 +50,6 @@ public class PartialParser {
         Matcher matcher = p.matcher(text);
         if (matcher.find()) {
             return format(matcher.group(1));
-
         }
         return null;
     }

@@ -11,6 +11,7 @@ import onassis.dto.A;
 import onassis.dto.C;
 import onassis.dto.P;
 import onassis.dto.PInfo;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
@@ -104,15 +105,33 @@ kulmiin?
     private static int i;
     public static C pickCategory(List<C> rows) {
         i=0;
+
+        List<Pair<Pair, Pair >> cols = new ArrayList<>();
+        for(int i=1; i <= rows.size(); i+=2) {
+                 cols.add(Pair.of(
+                        Pair.of("" + i, rows.get(i - 1).getDescr()),
+                         (i + 1) > rows.size() ?
+                                 Pair.of("", "") :
+                                 Pair.of("" + (i + 1), rows.get(i).getDescr()))
+                 );
+        }
+
         System.out.println(
-                AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, rows,
+                AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, cols,
                         Arrays.asList(
                                 (new Column()).minWidth(5).maxWidth(5, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
                                         .dataAlign(HorizontalAlign.CENTER)
-                                        .header("#").with((r) -> { return "" + (++i); }),
+                                        .header("#").with((r) -> { return "" + r.getLeft().getLeft(); }),
                                 (new Column()).minWidth(LINELENGTH/2 - 5).maxWidth(LINELENGTH - 5).headerAlign(HorizontalAlign.CENTER)
                                         .dataAlign(HorizontalAlign.LEFT)
-                                        .header("Description").with((r) -> { return r.getDescr().replaceAll("\t", " "); }))));
+                                        .header("Description").with((r) -> { return "" + r.getLeft().getRight();  }),
+                                (new Column()).minWidth(5).maxWidth(5, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
+                                        .dataAlign(HorizontalAlign.CENTER)
+                                        .header("#").with((r) -> { return "" + r.getRight().getLeft(); }),
+                                (new Column()).minWidth(LINELENGTH/2 - 5).maxWidth(LINELENGTH - 5).headerAlign(HorizontalAlign.CENTER)
+                                        .dataAlign(HorizontalAlign.LEFT)
+                                        .header("Description").with((r) -> { return "" + r.getRight().getRight();  })
+                        )));
 
         String answer =  ask(null, null,null, "Pick a Category #", null, 1, rows.size());
         return null == answer ? null : rows.get(Integer.parseInt(answer) - 1);

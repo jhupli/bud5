@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import onassis.dto.A;
 import onassis.dto.C;
@@ -13,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
@@ -24,8 +24,11 @@ public class RestIO {
     private String host;
     private String user;
     private String account;
+    @Getter
+    private Long accountId = null;
     private String pw;
     private List<C> categories = null;
+    private List<A> accounts  = null;
 
     @SneakyThrows
     public RestIO(String bankName) {
@@ -51,6 +54,18 @@ public class RestIO {
                     given().auth().basic(user, pw).when().get(url).asString();
             categories = (new Gson()).fromJson(responseJson, new TypeToken<List<C>>() {
             }.getType());
+
+            responseJson =
+                    given().auth().basic(user, pw).when().get(url).asString();
+            accounts = (new Gson()).fromJson(responseJson, new TypeToken<List<A>>() {
+            }.getType());
+
+            accountId = accounts.stream().filter(a -> {return account.equals(a.descr);} ).findFirst().get().getId();
+
+            if(null == accountId) {
+                throw new RuntimeException("Account "+account+ " does not exist.");
+            }
+
             IOUtils.pickCategory(categories);
         }catch (Exception e) {
             IOUtils.printOut("Login failed.");

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,9 +14,32 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.zeroturnaround.zip.ZipUtil;
 
+import static java.lang.Runtime.getRuntime;
+
 @SpringBootApplication
 public class App {
+
+    static String shutdownJdbcUrl = "";
+
+    private static void cleanUp() {
+         System.out.print("Shutting down DB...");
+        try {
+            DriverManager.getConnection("jdbc:derby:;shutdown=true");
+        } catch (SQLException ignored) {
+        }
+        System.out.println("Done");
+        System.out.println("Goodbye.");
+    }
+
     public static void main(String[] args) throws IOException {
+        Thread shutdownThread = new Thread() {
+            @Override
+            public void run() {
+                cleanUp();
+            }
+        };
+
+        getRuntime().addShutdownHook(shutdownThread);
 
         String pattern = "dd_MMMM_yyyy_hh_mm_ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);

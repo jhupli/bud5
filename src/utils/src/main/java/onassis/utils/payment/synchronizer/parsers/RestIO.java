@@ -23,9 +23,10 @@ import static com.jayway.restassured.RestAssured.given;
 public class RestIO {
     private String host;
     private String user;
+    @Getter
     private String account;
     @Getter
-    private Long accountId = null;
+    private Integer accountId = null;
     private String pw;
     private List<C> categories = null;
     private List<A> accounts  = null;
@@ -60,13 +61,13 @@ public class RestIO {
             accounts = (new Gson()).fromJson(responseJson, new TypeToken<List<A>>() {
             }.getType());
 
-            accountId = accounts.stream().filter(a -> {return account.equals(a.descr);} ).findFirst().get().getId();
+            accountId = accounts.stream().filter(a -> {return account.equals(a.descr);} ).findFirst().get().getId().intValue();
 
             if(null == accountId) {
                 throw new RuntimeException("Account "+account+ " does not exist.");
             }
 
-            IOUtils.pickCategory(categories);
+            //IOUtils.pickCategory(categories);
         }catch (Exception e) {
             IOUtils.printOut("Login failed.");
         }

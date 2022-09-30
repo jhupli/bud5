@@ -78,4 +78,17 @@ public class PInfo {
 	public void setDescr(String descr) {
 		this.descr = descr;
 	}
+
+	@Override
+	public String toString() {
+		return "PInfo{" +
+				"id=" + id +
+				", dc=" + dc +
+				", d=" + d +
+				", i=" + i +
+				", c_descr='" + c_descr + '\'' +
+				", a_descr='" + a_descr + '\'' +
+				", descr='" + descr + '\'' +
+				'}';
+	}
 }

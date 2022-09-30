@@ -14,7 +14,7 @@ import onassis.dto.PInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
-
+import onassis.utils.payment.synchronizer.parsers.Matchable.State;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -154,10 +154,18 @@ kulmiin?
         return null == answer ? null : rows.get(Integer.parseInt(answer) - 1);
     };
 
-    public static void pickMatch(Matchable m) {
+    public static State pickMatch(Matchable m) {
         showLines(m.getReceipt().getLines().stream().map(l -> {return l.getLine(); }).collect(Collectors.toList()), "Receipt");
         showP(m.getPInfo());
         String answer =  ask("Pick a Payment #, c to create new, s to skip ", "sc", 1, m.getPInfo().size());
+        if(null == answer) {
+            return State.SKIP;
+        }
+        m.setTheChosenP(Integer.getInteger(answer) - 1);
+        if(answer.equals("c")) {
+            return State.CREATE;
+        }
+        return State.MATCH_FOUND;
     }
 
     /*

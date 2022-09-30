@@ -80,14 +80,16 @@ public class Parser {
         matchables.add(m);
     }
 
+    private Matchable getLastMatchable() {
+        return matchables.get(matchables.size() - 1);
+    }
     public void collect(String str) {
 
         if (parsers.get(Target.BEGIN).match(str)) {
-            if(matchables.get(matchables.size() - 1).getState().equals(ALL_ATTRS_FOUND)) {
-                IOUtils.pickMatch(matchables.get(matchables.size() - 1));
+            if(getLastMatchable().getState().equals(ALL_ATTRS_FOUND)) {
+                getLastMatchable().pickMatch();
             }
-            Matchable prevMatchable = matchables.get(matchables.size() - 1);
-            List<String> lines = prevMatchable.getReceipt().getLines()
+            List<String> lines = getLastMatchable().getReceipt().getLines()
                     .stream()
                     .map( line -> { return line.getLine(); } )
                     .collect(Collectors.toList());

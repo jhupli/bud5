@@ -3,6 +3,7 @@ package onassis.utils.payment.synchronizer.parsers;
 import lombok.Getter;
 import lombok.Setter;
 import onassis.dto.A;
+import onassis.dto.C;
 import onassis.dto.P;
 import onassis.dto.PInfo;
 
@@ -50,8 +51,16 @@ public class Receipt {
         if(!hasItAll()) {
             return null;
         }
-        return new PInfo(null, getDate(), getDate(), getAmount(), null, restIO.getAccount(),getDescription());
+        return new PInfo(null, getDate(), getDate(), getAmount(), null, restIO.getAccount(), getDescription());
     //PInfo(Integer id, Date dc, Date d,       BigDecimal i, String c_descr, String a_descr, String descr) {
+    }
+
+    public P PgetP(RestIO restIO) {
+        if(!hasItAll()) {
+            return null;
+        }
+        C cat = IOUtils.pickCategory(restIO.getCategories());
+        return new P(null, getDate(), getDate(), getAmount(), cat.id.intValue(), restIO.getAccountId(), true, "TODO", getDescription(), false);
     }
 
     public void collect(String str) {

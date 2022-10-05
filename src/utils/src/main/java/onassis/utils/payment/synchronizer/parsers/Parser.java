@@ -2,6 +2,7 @@ package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import onassis.dto.PInfo;
 import onassis.utils.paymentlocker.PaymentLocker;
 
 import java.io.FileReader;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.Runtime.getRuntime;
-import static onassis.utils.payment.synchronizer.parsers.Matchable.State.ALL_ATTRS_FOUND;
+import static onassis.utils.payment.synchronizer.parsers.Matchable.State.*;
 
 
 public class Parser {
@@ -83,11 +84,13 @@ public class Parser {
     private Matchable getLastMatchable() {
         return matchables.get(matchables.size() - 1);
     }
+
+    private Set<PInfo> blackList = new HashSet<>(); //of p-ids
     public void collect(String str) {
 
         if (parsers.get(Target.BEGIN).match(str)) {
             if(getLastMatchable().getState().equals(ALL_ATTRS_FOUND)) {
-                getLastMatchable().pickMatch();
+                getLastMatchable().pickMatch(blackList);
             }
             List<String> lines = getLastMatchable().getReceipt().getLines()
                     .stream()
@@ -106,6 +109,7 @@ public class Parser {
     public String toString() {
         return "Parser{" +
                 "matchables=" + matchables +
+                "blackList=" + blackList +
                 '}';
     }
 }

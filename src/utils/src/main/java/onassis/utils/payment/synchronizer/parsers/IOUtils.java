@@ -161,9 +161,11 @@ kulmiin?
         if(null == answer) {
             return State.SKIP;
         }
-        m.setTheChosenP(Integer.getInteger(answer) - 1);
+
         if(answer.equals("c")) {
             return State.CREATE;
+        } else {
+            m.setTheChosenP(m.getPInfo().get(Integer.getInteger(answer) - 1));
         }
         return State.MATCH_FOUND;
     }

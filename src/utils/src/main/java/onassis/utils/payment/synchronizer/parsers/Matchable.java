@@ -5,6 +5,8 @@ import lombok.Setter;
 import onassis.dto.PInfo;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Matchable {
     public enum State {
@@ -16,6 +18,7 @@ public class Matchable {
         CREATE,
         ERROR,
     }
+
     @Getter
     private State state = State.NEW;
     @Getter
@@ -24,18 +27,21 @@ public class Matchable {
     private Receipt receipt = new Receipt();
     @Getter
     @Setter
-    public Integer theChosenP = null;
+    public PInfo theChosenP = null;
 
     private final RestIO restIO;
 
     public Matchable(RestIO restIO) {
         this.restIO = restIO;
     }
-    public void pickMatch() {
+
+    public void pickMatch(Set<PInfo> blackList) {
+        pInfo = getPInfo().stream().filter(p -> { return !blackList.contains(p); }).collect(Collectors.toList());
         state = IOUtils.pickMatch(this);
+        if(state.equals(State.MATCH_FOUND)) {
+            blackList.add(theChosenP);
+        }
     }
-
-
 
     public void collect(String str) {
         state = State.ATTRS_NOT_FOUND;
@@ -55,6 +61,7 @@ public class Matchable {
         return "\n\tMatchable{" +
                 "\n\tstate=" + state +
                 "\n\treceipt=" + receipt +
+                "\n\tchosenP=" + theChosenP +
                 "\npInfos=" + pInfo +
                 "\n\t}";
     }

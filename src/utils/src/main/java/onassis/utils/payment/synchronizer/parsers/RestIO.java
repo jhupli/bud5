@@ -66,12 +66,23 @@ public class RestIO {
             if(null == accountId) {
                 throw new RuntimeException("Account "+account+ " does not exist.");
             }
-
-            //IOUtils.pickCategory(categories);
         }catch (Exception e) {
             IOUtils.printOut("Login failed.");
         }
         return categories != null;
+    }
+
+    String newGroupId() {
+        pw = IOUtils.login();
+        String url = "http://" + host + "/group/newid";
+        try {
+            String groupId =
+                    given().auth().basic(user, pw).when().get(url).asString();
+            return groupId;
+        }catch (Exception e) {
+            IOUtils.printOut("Unable to create new group id.");
+            throw new RuntimeException(e);
+        }
     }
 
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

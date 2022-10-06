@@ -23,6 +23,7 @@ public class Main {
         while(null != (line = statements.getLine())){
             parser.collect(line);
         }
+        parser.prepare();
         //System.out.println("result:");
         //System.out.println(parser);
         System.exit(0);

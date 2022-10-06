@@ -2,6 +2,8 @@ package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import onassis.OnassisController;
+import onassis.dto.P;
 import onassis.dto.PInfo;
 import onassis.utils.paymentlocker.PaymentLocker;
 
@@ -99,12 +101,19 @@ public class Parser {
 
             m = new Matchable(restIO);
             matchables.add(m);
-
-            //IOUtils.showLines(lines, prevMatchable.getState().name());
         }
         m.collect(str);
     }
 
+    void prepare(){
+        OnassisController.Updates<P> updates= new OnassisController.Updates();
+        for(Matchable m : matchables) {
+            switch(m.getState()) {
+                case CREATE :
+                    //TODO: continue here
+            }
+        }
+    }
     @Override
     public String toString() {
         return "Parser{" +

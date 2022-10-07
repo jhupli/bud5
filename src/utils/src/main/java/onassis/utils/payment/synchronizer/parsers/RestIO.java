@@ -73,7 +73,6 @@ public class RestIO {
     }
 
     String newGroupId() {
-        pw = IOUtils.login();
         String url = "http://" + host + "/group/newid";
         try {
             String groupId =

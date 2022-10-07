@@ -105,15 +105,25 @@ public class Parser {
         m.collect(str);
     }
 
-    void prepare(){
+    public void prepare(){
         OnassisController.Updates<P> updates= new OnassisController.Updates();
+        List<P> toCreate = new ArrayList<>();
+        List<Integer> toLock = new ArrayList<>();
         for(Matchable m : matchables) {
             switch(m.getState()) {
-                case CREATE :
-                    //TODO: continue here
+                case CREATE:
+                    toCreate.add(m.getReceipt().getP(restIO));
+                    break;
+                case MATCH_FOUND:
+                    toLock.add(m.theChosenP.getId());
+                    break;
+                default:
             }
+
+            //TODO: continue here dumppaa malli ulos, se on tässä kohden valmis
         }
     }
+
     @Override
     public String toString() {
         return "Parser{" +

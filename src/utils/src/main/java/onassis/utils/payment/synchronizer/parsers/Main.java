@@ -24,6 +24,10 @@ public class Main {
             parser.collect(line);
         }
         parser.prepare();
+        IOUtils.dump(args[1], parser);
+
+
+
         //System.out.println("result:");
         //System.out.println(parser);
         System.exit(0);

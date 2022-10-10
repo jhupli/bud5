@@ -42,7 +42,8 @@ public class Receipt {
                 collectedValues.containsKey(Target.MONTH) &&
                 collectedValues.containsKey(Target.YEAR) &&
                 collectedValues.containsKey(Target.WHOLE) &&
-                collectedValues.containsKey(Target.DECIMAL);
+                collectedValues.containsKey(Target.DECIMAL) &&
+                collectedValues.containsKey(Target.DESCR);
     }
 
     public PInfo getPseudoP(RestIO restIO) {
@@ -57,8 +58,7 @@ public class Receipt {
         if(!hasItAll()) {
             return null;
         }
-        C cat = IOUtils.pickCategory(restIO.getCategories());
-        return new P(null, getDate(), getDate(), getAmount(), cat.id.intValue(), restIO.getAccountId(), true, "TODO", getDescription(), true);
+        return new P(null, getDate(), getDate(), getAmount(), null, restIO.getAccountId(), true, "TODO", getDescription(), true);
     }
 
     public void collect(String str) {
@@ -86,7 +86,7 @@ public class Receipt {
 
     public String getDescription() {
         if(collectedValues.containsKey(Target.DESCR)) {
-            return collectedValues.get(Target.DESCR);
+            return collectedValues.get(Target.DESCR).replaceAll("\t", " ").replaceAll("\n", " ");
         }
         return null;
     }

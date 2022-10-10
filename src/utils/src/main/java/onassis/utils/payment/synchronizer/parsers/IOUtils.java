@@ -15,7 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 import onassis.utils.payment.synchronizer.parsers.Matchable.State;
-import java.io.File;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,11 +36,13 @@ public class IOUtils {
         }
     }
 
-    private static boolean debugmode=false;
+    /*private static boolean debugmode=false;
 
     public static boolean isDebugmode() {
         return debugmode;
-    }
+    }*/
+
+
 
     public static class StatementReader{
         Scanner scan;
@@ -49,7 +56,6 @@ public class IOUtils {
             if(!scan.hasNext()) {
                 return null;
             }
-
             return scan.nextLine();
         }
     }
@@ -105,18 +111,22 @@ kulmiin?
         System.out.println(AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, pInfoList, Arrays.asList(
                 (new Column()).minWidth(5).maxWidth(5).headerAlign(HorizontalAlign.CENTER)
                         .dataAlign(HorizontalAlign.LEFT)
-                        .header("#").with((p) -> { return i != pInfoList.size() - 1 ? "" + ++i : CREATE_KEY; }),
+                        .header("#").with((p) -> { return i != pInfoList.size() - 1 ? "" + (i+1) : CREATE_KEY; }),
                 (new Column()).minWidth(12).maxWidth(12).headerAlign(HorizontalAlign.CENTER)
                         .dataAlign(HorizontalAlign.LEFT)
                         .header("Date").with((p) -> { return new SimpleDateFormat("dd.MM.yyyy").format(p.getD());}),
                 (new Column()).minWidth(15).maxWidth(15, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
                         .dataAlign(HorizontalAlign.CENTER)
-                        .header("Category").with((p) -> { return "" + p.getC_descr(); }),
+                        .header("Category").with((p) -> { return i++ != pInfoList.size() - 1 ? p.getC_descr() : "<not set yet>"; }),
                 (new Column()).minWidth(LINELENGTH - 5 -12 - 15).maxWidth(LINELENGTH - 5 -12 - 15, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
                         .dataAlign(HorizontalAlign.CENTER)
                         .header("Description").with((p) -> { return "" + p.getDescr(); })
         )));
     }
+    public static boolean askYesNo() {
+        return ask("Starting update. Continue ?", "yYnN",null, null).equalsIgnoreCase("Y");
+    }
+
     private static int i;
     public static C pickCategory(List<C> rows) {
         i=0;
@@ -154,18 +164,26 @@ kulmiin?
         return null == answer ? null : rows.get(Integer.parseInt(answer) - 1);
     };
 
+    public static void dump(String baseFileName, Parser model) throws IOException {
+        printOut("Dumping model " + baseFileName + ".dump...");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(baseFileName + ".dump"));
+        writer.write(model.toString());
+        writer.close();
+        printOut("Done.");
+    }
+
     public static State pickMatch(Matchable m) {
         showLines(m.getReceipt().getLines().stream().map(l -> {return l.getLine(); }).collect(Collectors.toList()), "Receipt");
         showP(m.getPInfo());
         String answer =  ask("Pick a Payment #, c to create new, s to skip ", "sc", 1, m.getPInfo().size());
-        if(null == answer) {
+        if(answer.equalsIgnoreCase("s")) {
             return State.SKIP;
         }
 
-        if(answer.equals("c")) {
+        if(answer.equals(CREATE_KEY)) {
             return State.CREATE;
         } else {
-            m.setTheChosenP(m.getPInfo().get(Integer.getInteger(answer) - 1));
+            m.setTheChosenP(m.getPInfo().get(Integer.parseInt(answer) - 1));
         }
         return State.MATCH_FOUND;
     }

@@ -27,7 +27,7 @@ public class Parser {
 
         SKIP("skip_rexp","", new PartialParser(), false),
         UNARY("unary_rexp","Unary", new PartialParser(), false),
-        DESCR("descr_rexp","Description", new PartialParser(), false),;
+        DESCR("descr_rexp","Description", new PartialParser(), true),;
 
 
         public String regexpName;
@@ -51,6 +51,7 @@ public class Parser {
 
     public static final PartialParserMap parsers = new PartialParserMap();
     private RestIO restIO;
+
 
     @SneakyThrows
     public Parser(String bank) {
@@ -112,6 +113,8 @@ public class Parser {
         for(Matchable m : matchables) {
             switch(m.getState()) {
                 case CREATE:
+                    P pToCreate = m.getReceipt().getP(restIO);
+                    pToCreate.setC(m.getChosenCategory().getId().intValue());
                     toCreate.add(m.getReceipt().getP(restIO));
                     break;
                 case MATCH_FOUND:
@@ -119,8 +122,16 @@ public class Parser {
                     break;
                 default:
             }
+        }
+        IOUtils.printOut("Fetching new goupid ...");
+        String gId = restIO.newGroupId();
+        IOUtils.printOut("Done. Newly created will have group-id : '" + gId + "'");
+        toCreate.stream().forEach(p -> {p.setG(gId);});
+    }
 
-            //TODO: continue here dumppaa malli ulos, se on tässä kohden valmis
+    public void update(String baseFileName){
+        if(!IOUtils.askYesNo()) {
+            return;
         }
     }
 

@@ -49,15 +49,16 @@ public class RestIO {
 
     boolean login() {
         pw = IOUtils.login();
-        String url = "http://" + host + "/cat/list";
+        String catUrl = "http://" + host + "/cat/list";
+        String accUrl = "http://" + host + "/acc/list";
         try {
             String responseJson =
-                    given().auth().basic(user, pw).when().get(url).asString();
+                    given().auth().basic(user, pw).when().get(catUrl).asString();
             categories = (new Gson()).fromJson(responseJson, new TypeToken<List<C>>() {
             }.getType());
 
             responseJson =
-                    given().auth().basic(user, pw).when().get(url).asString();
+                    given().auth().basic(user, pw).when().get(accUrl).asString();
             accounts = (new Gson()).fromJson(responseJson, new TypeToken<List<A>>() {
             }.getType());
 

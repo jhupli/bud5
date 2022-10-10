@@ -2,6 +2,7 @@ package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.Getter;
 import lombok.Setter;
+import onassis.dto.C;
 import onassis.dto.PInfo;
 
 import java.util.List;
@@ -35,11 +36,16 @@ public class Matchable {
         this.restIO = restIO;
     }
 
+    @Getter
+    C chosenCategory;
+
     public void pickMatch(Set<PInfo> blackList) {
         pInfo = getPInfo().stream().filter(p -> { return !blackList.contains(p); }).collect(Collectors.toList());
         state = IOUtils.pickMatch(this);
         if(state.equals(State.MATCH_FOUND)) {
             blackList.add(theChosenP);
+        } else if(state.equals(State.CREATE)) {
+            chosenCategory = IOUtils.pickCategory(restIO.getCategories());
         }
     }
 
@@ -53,8 +59,6 @@ public class Matchable {
 
         }
     }
-
-
 
     @Override
     public String toString() {

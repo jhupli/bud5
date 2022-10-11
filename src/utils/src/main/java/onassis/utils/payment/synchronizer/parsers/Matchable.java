@@ -38,6 +38,8 @@ public class Matchable {
 
     @Getter
     C chosenCategory;
+    @Getter
+    String description;
 
     public void pickMatch(Set<PInfo> blackList) {
         pInfo = getPInfo().stream().filter(p -> { return !blackList.contains(p); }).collect(Collectors.toList());
@@ -46,6 +48,7 @@ public class Matchable {
             blackList.add(theChosenP);
         } else if(state.equals(State.CREATE)) {
             chosenCategory = IOUtils.pickCategory(restIO.getCategories());
+            description = IOUtils.pickDescription(getDescription());
         }
     }
 
@@ -66,6 +69,8 @@ public class Matchable {
                 "\n\tstate=" + state +
                 "\n\treceipt=" + receipt +
                 "\n\tchosenP=" + theChosenP +
+                "\n\tchosenC=" + chosenCategory +
+                "\n\tchosenDescription=" + description +
                 "\npInfos=" + pInfo +
                 "\n\t}";
     }

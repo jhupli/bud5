@@ -51,6 +51,7 @@ public class Parser {
 
     public static final PartialParserMap parsers = new PartialParserMap();
     private RestIO restIO;
+    private OnassisController.Updates<P> updates;
 
 
     @SneakyThrows
@@ -107,7 +108,7 @@ public class Parser {
     }
 
     public void prepare(){
-        OnassisController.Updates<P> updates= new OnassisController.Updates();
+        updates = new OnassisController.Updates();
         List<P> toCreate = new ArrayList<>();
         List<Integer> toLock = new ArrayList<>();
         for(Matchable m : matchables) {
@@ -115,6 +116,7 @@ public class Parser {
                 case CREATE:
                     P pToCreate = m.getReceipt().getP(restIO);
                     pToCreate.setC(m.getChosenCategory().getId().intValue());
+                    pToCreate.setDescr(m.description);
                     toCreate.add(m.getReceipt().getP(restIO));
                     break;
                 case MATCH_FOUND:
@@ -140,6 +142,7 @@ public class Parser {
         return "Parser{" +
                 "matchables=" + matchables +
                 "blackList=" + blackList +
+                "updates=" + updates +
                 '}';
     }
 }

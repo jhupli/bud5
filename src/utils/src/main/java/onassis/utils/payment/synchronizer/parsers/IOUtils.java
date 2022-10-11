@@ -188,6 +188,13 @@ kulmiin?
         return State.MATCH_FOUND;
     }
 
+    static String pickDescription(String defaultDesc) {
+        String answer = ask("Give description or 'x' to accept :", "x", null,null, true);
+        if(!answer.equalsIgnoreCase("x")) {
+            return answer.replaceAll("\n", " ").replaceAll("\t", " ");
+        }
+        return defaultDesc;
+    }
     /*
     public void printC(List<C> categories) {
         System.out.println(AsciiTable.getTable(borderStyles, planets, Arrays.asList(
@@ -211,6 +218,9 @@ kulmiin?
     } */
 
     private static String ask(String question, String possibleSingleAnswers, Integer start, Integer end) {
+        return ask(question, possibleSingleAnswers, start, end, false);
+    }
+    private static String ask(String question, String possibleSingleAnswers, Integer start, Integer end, boolean allowFreeAnswer) {
         while(true) {
             System.out.print(question +
                     (null != possibleSingleAnswers ?  "[" + possibleSingleAnswers + "]" : "") +
@@ -243,6 +253,9 @@ kulmiin?
             }
 
             if(null != possibleSingleAnswers && choice.length() == 1 && possibleSingleAnswers.contains(choice)) {
+                return choice;
+            }
+            if(allowFreeAnswer && choice.length() > 1) {
                 return choice;
             }
         }

@@ -51,6 +51,7 @@ public class RestIO {
         pw = IOUtils.login();
         String catUrl = "http://" + host + "/cat/list";
         String accUrl = "http://" + host + "/acc/list";
+        IOUtils.printOut("Loggin in ...");
         try {
             String responseJson =
                     given().auth().basic(user, pw).when().get(catUrl).asString();
@@ -67,8 +68,9 @@ public class RestIO {
             if(null == accountId) {
                 throw new RuntimeException("Account "+account+ " does not exist.");
             }
+            IOUtils.printOut(" Done.\n");
         }catch (Exception e) {
-            IOUtils.printOut("Login failed.");
+            IOUtils.printOut(" Failed.\n");
         }
         return categories != null;
     }
@@ -80,7 +82,7 @@ public class RestIO {
                     given().auth().basic(user, pw).when().get(url).asString();
             return groupId;
         }catch (Exception e) {
-            IOUtils.printOut("Unable to create new group id.");
+            IOUtils.printOut("Unable to create new group id.\n");
             throw new RuntimeException(e);
         }
     }

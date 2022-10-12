@@ -117,6 +117,15 @@ public class OnassisController {
         public void setModified(List<T> modified) {
             this.modified = modified;
         }
+
+        @Override
+        public String toString() {
+            return "Updates{" +
+                    "created=" + created +
+                    ", deleted=" + deleted +
+                    ", modified=" + modified +
+                    '}';
+        }
     }
 
     @RequestMapping("/version")
@@ -251,7 +260,7 @@ public class OnassisController {
     void generate() throws SQLException, ParseException {
         utilService.generateRandomData();
     }
-    
+
     public static boolean debugMode = false;
 
 }

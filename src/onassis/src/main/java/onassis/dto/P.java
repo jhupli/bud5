@@ -4,6 +4,22 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class P {
+	@Override
+	public String toString() {
+		return "\nP{" +
+				"id=" + id +
+				", dc=" + dc +
+				", d=" + d +
+				", i=" + i +
+				", c=" + c +
+				", a=" + a +
+				", s=" + s +
+				", g='" + g + '\'' +
+				", descr='" + descr + '\'' +
+				", l=" + l +
+				'}';
+	}
+
 	public Long id;
 	public Date dc;
 	public Date d;
@@ -14,11 +30,11 @@ public class P {
 	public String g;
 	public String descr;
 	public Boolean l;
-	
+
 	public P() {
 		super();
 	}
-	
+
 	public P(Long id, Date dc, Date d, BigDecimal i, Integer c, Integer a, Boolean s, String g, String descr, Boolean l) {
 		super();
 		this.id = id;
@@ -69,7 +85,7 @@ public class P {
 	public void setA(Integer a) {
 		this.a = a;
 	}
-	
+
 	public Boolean getS() {
 		return s;
 	}

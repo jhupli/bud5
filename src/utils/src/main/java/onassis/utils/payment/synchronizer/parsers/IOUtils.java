@@ -110,21 +110,21 @@ kulmiin?
         i = 0;
         System.out.println(AsciiTable.getTable(TABLE_ASCII_NO_DATA_SEPARATORS, pInfoList, Arrays.asList(
                 (new Column()).minWidth(5).maxWidth(5).headerAlign(HorizontalAlign.CENTER)
-                        .dataAlign(HorizontalAlign.LEFT)
+                        .dataAlign(HorizontalAlign.CENTER)
                         .header("#").with((p) -> { return i != pInfoList.size() - 1 ? "" + (i+1) : CREATE_KEY; }),
                 (new Column()).minWidth(12).maxWidth(12).headerAlign(HorizontalAlign.CENTER)
                         .dataAlign(HorizontalAlign.LEFT)
                         .header("Date").with((p) -> { return new SimpleDateFormat("dd.MM.yyyy").format(p.getD());}),
                 (new Column()).minWidth(15).maxWidth(15, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
                         .dataAlign(HorizontalAlign.CENTER)
-                        .header("Category").with((p) -> { return i++ != pInfoList.size() - 1 ? p.getC_descr() : "<not set yet>"; }),
+                        .header("Category").with((p) -> { return i++ != pInfoList.size() - 1 ? p.getC_descr() : "-"; }),
                 (new Column()).minWidth(LINELENGTH - 5 -12 - 15).maxWidth(LINELENGTH - 5 -12 - 15, OverflowBehaviour.ELLIPSIS_RIGHT).headerAlign(HorizontalAlign.CENTER)
                         .dataAlign(HorizontalAlign.CENTER)
                         .header("Description").with((p) -> { return "" + p.getDescr(); })
         )));
     }
     public static boolean askYesNo() {
-        return ask("Starting update. Continue ?", "yYnN",null, null).equalsIgnoreCase("Y");
+        return ask("Ready to update. Continue ?", "yYnN",null, null).equalsIgnoreCase("Y");
     }
 
     private static int i;
@@ -165,15 +165,15 @@ kulmiin?
     };
 
     public static void dump(String baseFileName, Parser model) throws IOException {
-        printOut("Dumping model " + baseFileName + ".dump...");
+        printOut("Dumping model " + baseFileName + ".dump ..");
         BufferedWriter writer = new BufferedWriter(new FileWriter(baseFileName + ".dump"));
         writer.write(model.toString());
         writer.close();
-        printOut("Done.");
+        printOut(" Done.\n");
     }
 
-    public static State pickMatch(Matchable m) {
-        showLines(m.getReceipt().getLines().stream().map(l -> {return l.getLine(); }).collect(Collectors.toList()), "Receipt");
+    public static State pickMatch(Matchable m, int i) {
+        showLines(m.getReceipt().getLines().stream().map(l -> {return l.getLine(); }).collect(Collectors.toList()), ""+i+":"+" Receipt " + m.getReceipt().getAmount());
         showP(m.getPInfo());
         String answer =  ask("Pick a Payment #, c to create new, s to skip ", "sc", 1, m.getPInfo().size());
         if(answer.equalsIgnoreCase("s")) {
@@ -262,12 +262,12 @@ kulmiin?
     }
 
     public static void printOut(String str) {
-        System.out.println(str);
+        System.out.print(str);
     }
     public static String login() {
         return ask("Onassis password", null, null, null);
     }
     public static void farewell() {
-        System.out.println("Exiting... Goodbye.");
+        printOut("Exiting ... Goodbye.\n");
     }
 }

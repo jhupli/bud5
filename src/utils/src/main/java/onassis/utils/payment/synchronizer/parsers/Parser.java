@@ -52,6 +52,7 @@ public class Parser {
     public static final PartialParserMap parsers = new PartialParserMap();
     private RestIO restIO;
     private OnassisController.Updates<P> updates;
+    private List<Integer> toLock = new ArrayList<>();
 
 
     @SneakyThrows
@@ -92,32 +93,30 @@ public class Parser {
     private Set<PInfo> blackList = new HashSet<>(); //of p-ids
     public void collect(String str) {
 
-        if (parsers.get(Target.BEGIN).match(str)) {
-            if(getLastMatchable().getState().equals(ALL_ATTRS_FOUND)) {
-                getLastMatchable().pickMatch(blackList);
-            }
-            List<String> lines = getLastMatchable().getReceipt().getLines()
-                    .stream()
-                    .map( line -> { return line.getLine(); } )
-                    .collect(Collectors.toList());
-
+        if (null == str || parsers.get(Target.BEGIN).match(str)) {
             m = new Matchable(restIO);
             matchables.add(m);
+            IOUtils.printOut(".");
         }
-        m.collect(str);
+        if(null != str) {
+            m.collect(str);
+        }
     }
 
     public void prepare(){
         updates = new OnassisController.Updates();
         List<P> toCreate = new ArrayList<>();
-        List<Integer> toLock = new ArrayList<>();
+        updates.setCreated(toCreate);
         for(Matchable m : matchables) {
+            if(m.getState().equals(ALL_ATTRS_FOUND)) {
+                m.pickMatch(blackList);
+            }
             switch(m.getState()) {
                 case CREATE:
                     P pToCreate = m.getReceipt().getP(restIO);
                     pToCreate.setC(m.getChosenCategory().getId().intValue());
-                    pToCreate.setDescr(m.description);
-                    toCreate.add(m.getReceipt().getP(restIO));
+                    pToCreate.setDescr(m.getDescription());
+                    toCreate.add(pToCreate);
                     break;
                 case MATCH_FOUND:
                     toLock.add(m.theChosenP.getId());
@@ -125,9 +124,9 @@ public class Parser {
                 default:
             }
         }
-        IOUtils.printOut("Fetching new goupid ...");
+        IOUtils.printOut("Fetching new groupid ...");
         String gId = restIO.newGroupId();
-        IOUtils.printOut("Done. Newly created will have group-id : '" + gId + "'");
+        IOUtils.printOut(" Done.\nNewly created will have group-id : '" + gId + "'");
         toCreate.stream().forEach(p -> {p.setG(gId);});
     }
 
@@ -141,8 +140,8 @@ public class Parser {
     public String toString() {
         return "Parser{" +
                 "matchables=" + matchables +
-                "blackList=" + blackList +
-                "updates=" + updates +
+                ",\nblackList=" + blackList +
+                ",\nupdates=" + updates +
                 '}';
     }
 }

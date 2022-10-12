@@ -5,14 +5,26 @@ import java.math.BigDecimal;
 public class C {
 	public Long id;
 	public BigDecimal i;
+
+	@Override
+	public String toString() {
+		return "C{" +
+				"id=" + id +
+				", i=" + i +
+				", descr='" + descr + '\'' +
+				", active=" + active +
+				", color='" + color + '\'' +
+				'}';
+	}
+
 	public String descr;
 	public Boolean active;
 	public String color;
-	
+
 	public C() {
 		super();
 	}
-	
+
 	public C(Long id, BigDecimal i, String descr, Boolean active, String color) {
 		super();
 		this.id = id;

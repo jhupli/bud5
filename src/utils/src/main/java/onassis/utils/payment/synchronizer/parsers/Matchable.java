@@ -42,11 +42,13 @@ public class Matchable {
     String description;
 
     private static int ix = 1;
-    public void pickMatch(Set<PInfo> blackList) {
-        pInfo = getPInfo().stream().filter(p -> { return !blackList.contains(p); }).collect(Collectors.toList());
-        state = IOUtils.pickMatch(this, ix);
+    public void pickMatch(Set<Integer> blackList) {
+        pInfo = getPInfo().stream().filter(p -> {
+            return p.getId() == null || !(blackList.contains(p.getId()));
+        }).collect(Collectors.toList());
+        state = IOUtils.pickMatch(this, ix++);
         if(state.equals(State.MATCH_FOUND)) {
-            blackList.add(theChosenP);
+            blackList.add(theChosenP.getId());
         } else if(state.equals(State.CREATE)) {
             chosenCategory = IOUtils.pickCategory(restIO.getCategories());
             description = IOUtils.pickDescription(receipt.getDescription());

@@ -77,7 +77,9 @@ public class Parser {
         getRuntime().addShutdownHook(shutdownThread);
 
         restIO = new RestIO(bank);
-        restIO.login();
+        if( !restIO.login() ) {
+            throw new RuntimeException("Login failed.");
+        }
     }
 
     Matchable m = new Matchable(restIO);
@@ -90,7 +92,7 @@ public class Parser {
         return matchables.get(matchables.size() - 1);
     }
 
-    private Set<PInfo> blackList = new HashSet<>(); //of p-ids
+    private Set<Integer> blackList = new HashSet<>(); //of p-ids
     public void collect(String str) {
 
         if (null == str || parsers.get(Target.BEGIN).match(str)) {

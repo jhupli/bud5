@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import onassis.dto.A;
 import onassis.dto.C;
-import onassis.dto.P;
 import onassis.dto.PInfo;
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,7 +28,7 @@ public class RestIO {
     private Integer accountId = null;
     private String pw;
     private List<C> categories = null;
-    private List<A> accounts  = null;
+    private List<A> accounts = null;
 
     @SneakyThrows
     public RestIO(String bankName) {
@@ -42,7 +41,7 @@ public class RestIO {
         host = props.getProperty("host");
         account = props.getProperty("account");
 
-        if(StringUtils.isEmpty(user) || StringUtils.isEmpty(host) || StringUtils.isEmpty(account)) {
+        if (StringUtils.isEmpty(user) || StringUtils.isEmpty(host) || StringUtils.isEmpty(account)) {
             throw new RuntimeException("account, user or host missing.");
         }
     }
@@ -52,26 +51,32 @@ public class RestIO {
         String catUrl = "http://" + host + "/cat/list";
         String accUrl = "http://" + host + "/acc/list";
         IOUtils.printOut("Loggin in ...");
+
         try {
             String responseJson =
                     given().auth().basic(user, pw).when().get(catUrl).asString();
             categories = (new Gson()).fromJson(responseJson, new TypeToken<List<C>>() {
             }.getType());
+        } catch (Exception e) {
+            IOUtils.printOut(" Failed. Category not found.\n");
+            System.exit(3);
+        }
 
-            responseJson =
+        try {
+            String responseJson =
                     given().auth().basic(user, pw).when().get(accUrl).asString();
             accounts = (new Gson()).fromJson(responseJson, new TypeToken<List<A>>() {
             }.getType());
 
-            accountId = accounts.stream().filter(a -> {return account.equals(a.descr);} ).findFirst().get().getId().intValue();
-
-            if(null == accountId) {
-                throw new RuntimeException("Account "+account+ " does not exist.");
-            }
-            IOUtils.printOut(" Done.\n");
-        }catch (Exception e) {
-            IOUtils.printOut(" Failed.\n");
+            accountId = accounts.stream().filter(a -> {
+                return account.equals(a.descr);
+            }).findFirst().get().getId().intValue();
+        } catch (Exception e) {
+            IOUtils.printOut(" Failed. Account not found.\n");
+            System.exit(2);
         }
+
+        IOUtils.printOut(" Done.\n");
         return categories != null;
     }
 
@@ -81,17 +86,18 @@ public class RestIO {
             String groupId =
                     given().auth().basic(user, pw).when().get(url).asString();
             return groupId;
-        }catch (Exception e) {
+        } catch (Exception e) {
             IOUtils.printOut("Unable to create new group id.\n");
             throw new RuntimeException(e);
         }
     }
 
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    void lock(PInfo p)  {
+
+    void lock(PInfo p) {
         String dateStr = dateFormat.format(p.getDc());
         String url = String.format("http://%s/lock?id=%s&l=true&d=%s", this.host, p.getId(), dateStr);
-        ((Response)RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
+        ((Response) RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
     }
 
     List<PInfo> getPCandidates(Receipt receipt) {

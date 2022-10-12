@@ -20,7 +20,7 @@ public class Main {
 
         IOUtils.StatementReader statements = new IOUtils.StatementReader(args[1]);
         String line = null;
-        IOUtils.printOut("Collecting .. ");
+        IOUtils.printOut("Collecting ..");
         do {
             line = statements.getLine();
             parser.collect(line);

@@ -260,7 +260,9 @@ kulmiin?
             }
         }
     }
-
+    public static String indent() {
+        return "\n" + StringUtils.repeat(' ', Thread.currentThread().getStackTrace().length - 5);
+    }
     public static void printOut(String str) {
         System.out.print(str);
     }

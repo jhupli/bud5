@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import onassis.dto.C;
 import onassis.dto.PInfo;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -67,13 +68,15 @@ public class Matchable {
 
     @Override
     public String toString() {
-        return "\n\tMatchable{" +
-                "\n\tstate=" + state +
-                "\n\treceipt=" + receipt +
-                "\n\tchosenP=" + theChosenP +
-                "\n\tchosenC=" + chosenCategory +
-                "\n\tchosenDescription=" + description +
-                "\n\tInfos=" + pInfo +
-                "\n\t}";
+        String indent = IOUtils.indent();
+
+        return  indent + "Matchable { " +
+                indent + "state=" + state +
+                indent + "receipt=" + receipt +
+                indent + "chosenP=" + theChosenP +
+                indent + "chosenC=" + chosenCategory +
+                indent + "chosenDescription=" + description +
+                indent + "pInfos=" + pInfo +
+                indent +  "} Matchable";
     }
 }

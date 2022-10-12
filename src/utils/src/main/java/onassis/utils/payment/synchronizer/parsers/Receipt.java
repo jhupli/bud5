@@ -5,6 +5,7 @@ import lombok.Setter;
 import onassis.dto.C;
 import onassis.dto.P;
 import onassis.dto.PInfo;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -24,11 +25,12 @@ public class Receipt {
 
     @Override
     public String toString() {
-        return "\n\t\tReceipt{" +
-                "\n\t\tcollectedValues=" + collectedValues +
-                "\n\t\turl=" + url +
-                "\n\t\tlines=" + lines +
-                "\n\t\t}";
+        String indent = IOUtils.indent();
+        return  indent + "Receipt {" +
+                indent + "collectedValues=" + collectedValues +
+                indent + "url=" + url +
+                indent + "lines=" + lines +
+                indent + "} Receipt";
     }
 
     Map<Target, String> collectedValues = new HashMap<>();

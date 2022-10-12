@@ -23,12 +23,13 @@ public class Line {
 
         @Override
         public String toString() {
-            return "\n\t\t\t\tMeta{" +
-                    "\n\t\t\t\ttarget=" + target +
-                    "\n\t\t\t\tregexp='" + regexp + '\'' +
-                    "\n\t\t\t\tregexp_index=" + regexp_index +
-                    "\n\t\t\t\tvalue='" + value + '\'' +
-                    "\n\t\t\t\t}";
+            String indent = IOUtils.indent();
+            return indent + "Meta {" +
+                    indent + "target=" + target +
+                    indent + "regexp=" + regexp +
+                    indent + "regexp_index=" + regexp_index +
+                    indent + "value='" + value + '\'' +
+                    indent + "}";
         }
     }
 
@@ -58,9 +59,10 @@ public class Line {
 
     @Override
     public String toString() {
-        return "\n\t\t\tLine{" +
-                "\n\t\t\tline='" + line + "\'," +
-                "\n\t\t\tmeta=" + meta +
-                '}';
+        String indent = IOUtils.indent();
+        return  indent + "Line {" +
+                indent +  "line=" + line +
+                indent + "meta=" + meta +
+                indent +"} Line";
     }
 }

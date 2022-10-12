@@ -6,6 +6,7 @@ import onassis.dto.P;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -107,6 +108,8 @@ public class Parser {
         }
     }
 
+    final private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
     public void prepare() {
         updates = new OnassisController.Updates() {
             @Override
@@ -139,7 +142,7 @@ public class Parser {
             }
         }
         IOUtils.printOut("Fetching new groupid ...");
-        String gId = "Matcher_" + restIO.newGroupId() + "_" + (new Date()).getTime();
+        String gId = "Matcher_" +  dateFormat.format(new Date()) + "_" + restIO.newGroupId() ;
         IOUtils.printOut(" Done.\nNewly created will have group-id : '" + gId + "'\n");
         toCreate.stream().forEach(p -> {
             p.setG(gId);

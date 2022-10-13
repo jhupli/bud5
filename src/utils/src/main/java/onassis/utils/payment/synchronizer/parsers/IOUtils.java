@@ -42,8 +42,6 @@ public class IOUtils {
         return debugmode;
     }*/
 
-
-
     public static class StatementReader{
         Scanner scan;
 
@@ -60,9 +58,39 @@ public class IOUtils {
         }
     }
 
+    public static class StatementWriter{
+        String statementFileName = null;
+        @SneakyThrows
+        public StatementWriter(String statementFileName) {
+            this.statementFileName = statementFileName;
+        }
+
+        @SneakyThrows
+        void writeLog(Matchable m) {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(statementFileName + ".onassis"));
+            String linePrefix = "";
+            switch(m.getState()) {
+                case CREATE:
+                    linePrefix = "*>*";
+                    break;
+                case MATCH_FOUND:
+                    linePrefix = "***";
+                    break;
+                default:
+                    linePrefix = "";
+            }
+
+            for(Line l : m.getReceipt().getLines()) {
+                writer.write(linePrefix + l.getLine() + "\n");
+                }
+            writer.close();
+        }
+    }
 
 
-   // https://www.google.com/search?q=ascii+%E2%95%9F&rlz=1C1GCEU_deDE842DE842&oq=ascii+%E2%95%9F&aqs=chrome..69i57j0i22i30l9.2786j0j7&sourceid=chrome&ie=UTF-8#imgrc=Bw5m0affChzNHM
+
+
+    // https://www.google.com/search?q=ascii+%E2%95%9F&rlz=1C1GCEU_deDE842DE842&oq=ascii+%E2%95%9F&aqs=chrome..69i57j0i22i30l9.2786j0j7&sourceid=chrome&ie=UTF-8#imgrc=Bw5m0affChzNHM
 
     /*
     Character[] borderStyles = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123".chars().mapToObj(c -> (char)c).toArray(Character[]::new);

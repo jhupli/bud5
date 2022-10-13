@@ -150,9 +150,15 @@ public class Parser {
     }
 
     public void update(String baseFileName) {
+        IOUtils.StatementWriter writer = new IOUtils.StatementWriter(baseFileName);
         if (!IOUtils.askYesNo()) {
+            for(Matchable m : matchables) {
+                //TODO tähän tulee rest-kuttut
+                writer.writeLog(m);
+            }
             return;
         }
+
     }
 
     @Override

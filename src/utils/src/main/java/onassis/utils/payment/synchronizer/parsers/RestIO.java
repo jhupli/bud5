@@ -6,14 +6,18 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import onassis.OnassisController;
 import onassis.dto.A;
 import onassis.dto.C;
+import onassis.dto.P;
 import onassis.dto.PInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,6 +34,15 @@ public class RestIO {
     private List<C> categories = null;
     private List<A> accounts = null;
 
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static Date now = null;
+    private static String dateStr = null;
+
+    public static void setNow() {
+        now = new Date();
+        dateStr = dateFormat.format(now);
+    }
+
     @SneakyThrows
     public RestIO(String bankName) {
         String fileName = String.format("regexps/%s.properties", bankName);
@@ -43,6 +56,32 @@ public class RestIO {
 
         if (StringUtils.isEmpty(user) || StringUtils.isEmpty(host) || StringUtils.isEmpty(account)) {
             throw new RuntimeException("account, user or host missing.");
+        }
+    }
+
+
+    void lock(int pId) {
+        String url = String.format("http://%s/lock?id=%s&l=true&d=%s", host, pId, dateStr);
+        try {
+            String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).when().get(url, new Object[0])).asString();
+            IOUtils.printOut("Locked: " + pId+"\n" );
+        } catch (Exception e) {
+            IOUtils.printOut("Failed to lock: " + pId + "\n");
+        }
+    }
+
+    void create(P p) {
+        OnassisController.Updates u = new OnassisController.Updates();
+        List<P> pList = new ArrayList<>();
+        pList.add(p);
+        u.setCreated(pList);
+
+        String url = String.format("http://%s/payments/update", host);
+        try {
+            String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).when().post(url, pList)).asString();
+            IOUtils.printOut("Created: " + p + "\n");
+        } catch (Exception e) {
+            IOUtils.printOut("Failed to create: " + p + "\n");
         }
     }
 
@@ -92,7 +131,6 @@ public class RestIO {
         }
     }
 
-    static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     void lock(PInfo p) {
         String dateStr = dateFormat.format(p.getDc());

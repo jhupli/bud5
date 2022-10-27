@@ -73,6 +73,7 @@ public class RestIO {
     void create(P p) {
         OnassisController.Updates u = new OnassisController.Updates();
         List<P> pList = new ArrayList<>();
+        p.setD(now);
         pList.add(p);
         u.setCreated(pList);
 

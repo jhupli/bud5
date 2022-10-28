@@ -61,25 +61,40 @@ public class RestIO {
 
 
     void lock(int pId) {
-        String url = String.format("http://%s/lock?id=%s&l=true&d=%s", host, pId, dateStr);
+        P p = new P();
+        List<P> pList = new ArrayList<>();
+        OnassisController.Updates updateBean = new OnassisController.Updates();
+
+        p.setD(now);
+        pList.add(p);
+
+        updateBean.setModified(pList);
+
+        String updateString = String.format("http://%s/payments/update", host);
+        String lockurl = String.format("http://%s/lock?id=%s&l=true&d=%s", host, pId, dateStr);
+        String updateResponse = null, lockResponse = null;
         try {
-            String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).when().get(url, new Object[0])).asString();
+            updateResponse = ((Response) RestAssured.given().auth().basic(user, pw).when().post(lockurl, updateBean)).asString();
+            lockResponse = ((Response) RestAssured.given().auth().basic(user, pw).when().get(lockurl, new Object[0])).asString();
             IOUtils.printOut("Locked: " + pId+"\n" );
         } catch (Exception e) {
             IOUtils.printOut("Failed to lock: " + pId + "\n");
+            IOUtils.printOut( null == lockResponse ? updateResponse : lockResponse + "\n");
         }
     }
 
     void create(P p) {
         OnassisController.Updates u = new OnassisController.Updates();
         List<P> pList = new ArrayList<>();
+
         p.setD(now);
         pList.add(p);
+
         u.setCreated(pList);
 
         String url = String.format("http://%s/payments/update", host);
         try {
-            String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).when().post(url, pList)).asString();
+            String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).when().post(url, u)).asString();
             IOUtils.printOut("Created: " + p + "\n");
         } catch (Exception e) {
             IOUtils.printOut("Failed to create: " + p + "\n");

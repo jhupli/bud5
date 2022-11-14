@@ -87,7 +87,7 @@ public class    PaymentService extends ServicesBase {
 
     public void create(List<P> payments) {
         String insertSQL =
-                "INSERT INTO P(dc, d, i, c, a, s, g, descr, l) VALUES(:dc, :d, :i, :c, :a, :s, :g, :descr, false)";
+                "INSERT INTO P(dc, d, i, c, a, s, g, descr, l) VALUES(:dc, :d, :i, :c, :a, :s, :g, :descr, :l)";
         for(P p : payments) {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("dc", p.dc)
@@ -95,6 +95,7 @@ public class    PaymentService extends ServicesBase {
                     .addValue("i", p.i)
                     .addValue("c", p.c)
                     .addValue("a", p.a)
+                    .addValue("l", p.l == null ? false : true)
                     .addValue("s", p.s)
                     .addValue("g", p.g)
                     .addValue("descr", p.descr);

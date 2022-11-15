@@ -52,11 +52,27 @@
         <dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
+          <version>10.14.2.0</version>
+          <scope>runtime</scope>
 		</dependency>
-		
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>10.14.2.0</version>
+        </dependency>
+        <!--
+        uusimmat:
+        flyway-core:9.8.1
+        derby:10.14.2.0
+
+        ne vanhat:
+        flyway-core:3.2.1
+        derby:10.12.1.1
+-->
 		<dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>3.2.1</version>
         </dependency>
         
         <dependency>

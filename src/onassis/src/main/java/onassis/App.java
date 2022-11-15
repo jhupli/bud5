@@ -1,5 +1,6 @@
 package onassis;
 
+import java.awt.datatransfer.FlavorEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +11,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//import org.flywaydb.core.Flyway;
+//import org.flywaydb.core.api.output.RepairResult;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.zeroturnaround.zip.ZipUtil;
@@ -32,6 +35,14 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException {
+        System.out.println("NOTE: flywas is disabled.");
+
+        //System.out.println("repairing...");
+        //Flyway flyway = Flyway.configure().dataSource("jdbc:derby:BudDB.v5;create=true", "sa", null).load();
+        //RepairResult repair  = flyway.repair();
+        //System.out.println("res=" + repair.toString());
+
+
         Thread shutdownThread = new Thread() {
             @Override
             public void run() {
@@ -40,6 +51,8 @@ public class App {
         };
 
         getRuntime().addShutdownHook(shutdownThread);
+
+
 
         String pattern = "dd_MMMM_yyyy_hh_mm_ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);

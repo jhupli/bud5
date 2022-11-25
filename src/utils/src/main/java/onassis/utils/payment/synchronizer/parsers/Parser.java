@@ -153,12 +153,16 @@ public class Parser {
         IOUtils.StatementWriter writer = new IOUtils.StatementWriter(baseFileName);
         if (!IOUtils.askYesNo()) {
             for(Matchable m : matchables) {
-                //TODO tähän tulee rest-kuttut
-                writer.writeLog(m);
+                try {
+                    //TODO tähän tulee rest-kutsut
+                    writer.writeLog(m);
+                } catch (Exception e) {
+                    IOUtils.printOut("ERROR: something went wrong updating: \n"+m+"\n");
+                    throw new RuntimeException(e);
+                }
             }
             return;
         }
-
     }
 
     @Override

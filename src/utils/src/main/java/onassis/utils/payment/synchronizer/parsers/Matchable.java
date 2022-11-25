@@ -16,6 +16,7 @@ public class Matchable {
         ATTRS_NOT_FOUND,
         ALL_ATTRS_FOUND,
         SKIP,
+        BREAK,
         MATCH_FOUND,
         CREATE,
         ERROR,
@@ -43,11 +44,20 @@ public class Matchable {
     String description;
 
     private static int ix = 1;
+    private static boolean breaked = false;
+
     public void pickMatch(Set<Integer> blackList) {
         pInfo = getPInfo().stream().filter(p -> {
             return p.getId() == null || !(blackList.contains(p.getId()));
         }).collect(Collectors.toList());
+        if(breaked) {
+            state = State.BREAK;
+            return;
+        }
         state = IOUtils.pickMatch(this, ix++);
+        if(state.equals(State.BREAK)){
+            breaked = true;
+        }
         if(state.equals(State.MATCH_FOUND)) {
             blackList.add(theChosenP.getId());
         } else if(state.equals(State.CREATE)) {

@@ -44,10 +44,11 @@ public class IOUtils {
 
     public static class StatementReader{
         Scanner scan;
-
         @SneakyThrows
         public StatementReader(String statementFileName) {
             scan = new Scanner(new File(statementFileName));
+            // check that there is not already logfile
+            StatementWriter.isLogReadOnly(statementFileName);
         }
 
         String getLine() {
@@ -63,27 +64,43 @@ public class IOUtils {
         @SneakyThrows
         public StatementWriter(String statementFileName) {
             this.statementFileName = statementFileName;
+
         }
 
-        @SneakyThrows
-        void writeLog(Matchable m) {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(statementFileName + ".onassis"));
-            String linePrefix = "";
-            switch(m.getState()) {
-                case CREATE:
-                    linePrefix = "*>*";
-                    break;
-                case MATCH_FOUND:
-                    linePrefix = "***";
-                    break;
-                default:
-                    linePrefix = "";
+        //@SneakyThrows
+        public static void isLogReadOnly(String basefileName) {
+            File f = new File(basefileName + ".onassis");
+            if(f.exists()) {
+                printOut("ERROR: there is already .onassis - file!\n");
+                printOut("Use the latest .onassis - file as input.\nkakkk");
+                System.exit(3);
             }
+        }
+        void lockLog() {
+            File f = new File(statementFileName + ".onassis");
+            if(!f.setReadOnly()) {
+                printOut("WARN: could not set .onassis -file readOnly.");
+            }
+        }
 
-            for(Line l : m.getReceipt().getLines()) {
-                writer.write(linePrefix + l.getLine() + "\n");
+        void writeLog(Matchable m) throws  Exception{
+                BufferedWriter writer = new BufferedWriter(new FileWriter(statementFileName + ".onassis", true));
+                String linePrefix = "";
+                switch (m.getState()) {
+                    case CREATE:
+                        linePrefix = "*>*";
+                        break;
+                    case MATCH_FOUND:
+                        linePrefix = "***";
+                        break;
+                    default:
+                        linePrefix = "";
                 }
-            writer.close();
+
+                for (Line l : m.getReceipt().getLines()) {
+                    writer.write(linePrefix + l.getLine() + "\n");
+                }
+                writer.close();
         }
     }
 
@@ -203,11 +220,15 @@ kulmiin?
     public static State pickMatch(Matchable m, int i) {
         showLines(m.getReceipt().getLines().stream().map(l -> {return l.getLine(); }).collect(Collectors.toList()), ""+i+":"+" Receipt " + m.getReceipt().getAmount());
         showP(m.getPInfo());
-        String answer =  ask("Pick a Payment #, c to create new, s to skip ", "sc", 1, m.getPInfo().size());
+        String answer =  ask("Pick a Payment #, c to create new, s to skip, b tobreak ", "scb", 1, m.getPInfo().size());
         if(answer.equalsIgnoreCase("s")) {
             return State.SKIP;
         }
-
+        if(answer.equalsIgnoreCase("b")) {
+            showLines(Arrays.asList("NOTE IMPORTANT: If running another round, use latest <previous input-file>.onassis as input!"),
+                    "*****IMPORTANT NOTE******");
+            return State.BREAK;
+        }
         if(answer.equals(CREATE_KEY)) {
             return State.CREATE;
         } else {

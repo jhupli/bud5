@@ -31,7 +31,7 @@ public class Main {
         parser.prepare();
         IOUtils.dump(args[1], parser);
         IOUtils.printOut("Prepare done. \n");
-
+        IOUtils.printOut("Preparing " + size + " receipt(s) :\n");
         parser.update(args[1]);
 
 

@@ -203,7 +203,9 @@ public class DBTestUtils {
                 .addValue("d", d)
                 .addValue("i", i)
                 .addValue("c", c)
-                .addValue("a", a);
+                .addValue("a", a)
+                .addValue("l",true);
+
         
         sql = "insert into p( dc, d, i, c, a) values(:dc, :d, :i, :c, :a)";
         jdbcTemplate.update( sql, namedParameters );

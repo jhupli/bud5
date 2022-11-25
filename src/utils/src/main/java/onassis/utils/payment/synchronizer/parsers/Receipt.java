@@ -44,8 +44,7 @@ public class Receipt {
                 collectedValues.containsKey(Target.MONTH) &&
                 collectedValues.containsKey(Target.YEAR) &&
                 collectedValues.containsKey(Target.WHOLE) &&
-                collectedValues.containsKey(Target.DECIMAL) &&
-                collectedValues.containsKey(Target.DESCR);
+                collectedValues.containsKey(Target.DECIMAL);
     }
 
     public PInfo getPseudoP(RestIO restIO) {

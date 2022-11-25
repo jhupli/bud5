@@ -167,7 +167,7 @@ public class Parser {
         return  indent + "Parser {" +
                 indent + "matchables=" + matchables +
                 indent + "blackList=" + blackList +
-                indent +  "toLock=" + toLock +
+                indent + "toLock=" + toLock +
                 indent + "updates=" + updates +
                 indent + "} Parser";
     }

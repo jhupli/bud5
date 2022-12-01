@@ -3,6 +3,7 @@ package onassis.utils.payment.synchronizer.parsers;
 import lombok.Getter;
 import lombok.Setter;
 import onassis.dto.C;
+import onassis.dto.P;
 import onassis.dto.PInfo;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,20 +29,20 @@ public class Matchable {
     private List<PInfo> pInfo;
     @Getter
     private Receipt receipt = new Receipt();
+
     @Getter
     @Setter
     public PInfo theChosenP = null;
+
+    @Getter
+    @Setter
+    public P PtoCreate = null;
 
     private final RestIO restIO;
 
     public Matchable(RestIO restIO) {
         this.restIO = restIO;
     }
-
-    @Getter
-    C chosenCategory;
-    @Getter
-    String description;
 
     private static int ix = 1;
     private static boolean breaked = false;
@@ -61,8 +62,8 @@ public class Matchable {
         if(state.equals(State.MATCH_FOUND)) {
             blackList.add(theChosenP.getId());
         } else if(state.equals(State.CREATE)) {
-            chosenCategory = IOUtils.pickCategory(restIO.getCategories());
-            description = IOUtils.pickDescription(receipt.getDescription());
+            receipt.chosenCategory = IOUtils.pickCategory(restIO.getCategories()).getId();
+            receipt.description = IOUtils.pickDescription(receipt.getDescription());
         }
     }
 
@@ -72,7 +73,7 @@ public class Matchable {
         if(receipt.hasItAll()) {
             state = State.ALL_ATTRS_FOUND;
             pInfo = restIO.getPCandidates(receipt);
-            pInfo.add(receipt.getPseudoP(restIO));
+            pInfo.add(receipt.getPseudoP());
         }
     }
 
@@ -83,9 +84,7 @@ public class Matchable {
         return  indent + "Matchable { " +
                 indent + "state=" + state +
                 indent + "receipt=" + receipt +
-                indent + "chosenP=" + theChosenP +
-                indent + "chosenC=" + chosenCategory +
-                indent + "chosenDescription=" + description +
+                indent + "theChosenP=" + theChosenP +
                 indent + "pInfos=" + pInfo +
                 indent +  "} Matchable";
     }

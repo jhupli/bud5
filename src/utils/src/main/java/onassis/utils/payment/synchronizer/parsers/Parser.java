@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import static java.lang.Runtime.getRuntime;
 import static onassis.utils.payment.synchronizer.parsers.Matchable.State.ALL_ATTRS_FOUND;
+import static onassis.utils.payment.synchronizer.parsers.Matchable.State.CREATE;
 
 
 public class Parser {
@@ -52,8 +53,8 @@ public class Parser {
 
     public static final PartialParserMap parsers = new PartialParserMap();
     private RestIO restIO;
-    private OnassisController.Updates<P> updates;
-    private List<Integer> toLock = new ArrayList<>();
+    //private OnassisController.Updates<P> updates;
+    //private List<Integer> toLock = new ArrayList<>();
 
 
     @SneakyThrows
@@ -111,56 +112,38 @@ public class Parser {
     final private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     public void prepare() {
-        updates = new OnassisController.Updates() {
-            @Override
-            public String toString() {
-                String indent = IOUtils.indent();
-                return  indent + "OnassisController.Updates {" +
-                        indent + "created=" + getCreated() +
-                        indent + "modified=" + getModified() +
-                        indent + "deleted=" + getDeleted() +
-                        indent + "} OnassisController.Updates";
-            };
-       };
-        List<P> toCreate = new ArrayList<>();
-        updates.setCreated(toCreate);
+
         for (Matchable m : matchables) {
             if (m.getState().equals(ALL_ATTRS_FOUND)) {
                 m.pickMatch(blackList);
-            }
-            switch (m.getState()) {
-                case CREATE:
-                    P pToCreate = m.getReceipt().getP(restIO);
-                    pToCreate.setC(m.getChosenCategory().getId().intValue());
-                    pToCreate.setDescr(m.getDescription());
-                    toCreate.add(pToCreate);
-                    break;
-                case MATCH_FOUND:
-                    toLock.add(m.theChosenP.getId());
-                    break;
-                default:
             }
         }
         IOUtils.printOut("Fetching new groupid ...");
         String gId = "Matcher_" +  dateFormat.format(new Date()) + "_" + restIO.newGroupId() ;
         IOUtils.printOut(" Done.\nNewly created will have group-id : '" + gId + "'\n");
-        toCreate.stream().forEach(p -> {
-            p.setG(gId);
-        });
     }
 
     public void update(String baseFileName) {
         IOUtils.StatementWriter writer = new IOUtils.StatementWriter(baseFileName);
-        if (!IOUtils.askYesNo()) {
+        if (IOUtils.askYesNo()) {
+            IOUtils.printOut("Updating Onassis: ");
             for(Matchable m : matchables) {
+
                 try {
-                    //TODO tähän tulee rest-kutsut
+                    switch(m.getState())  {
+                        case CREATE :       restIO.create(m.getReceipt().getP(restIO));
+                                            IOUtils.printOut("c ");
+                                            break;
+                        case MATCH_FOUND:   restIO.lock(m.theChosenP.getId());
+                                            IOUtils.printOut("l ");
+                    }
                     writer.writeLog(m);
                 } catch (Exception e) {
                     IOUtils.printOut("ERROR: something went wrong updating: \n"+m+"\n");
                     throw new RuntimeException(e);
                 }
             }
+            IOUtils.printOut("Done.\n");
             return;
         }
     }
@@ -171,8 +154,6 @@ public class Parser {
         return  indent + "Parser {" +
                 indent + "matchables=" + matchables +
                 indent + "blackList=" + blackList +
-                indent + "toLock=" + toLock +
-                indent + "updates=" + updates +
                 indent + "} Parser";
     }
 }

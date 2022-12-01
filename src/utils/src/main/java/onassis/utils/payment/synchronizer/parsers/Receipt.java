@@ -23,6 +23,14 @@ public class Receipt {
     @Setter
     public String url = "";
 
+    @Getter
+    @Setter
+    Long chosenCategory;
+
+    @Getter
+    @Setter
+    String description;
+
     @Override
     public String toString() {
         String indent = IOUtils.indent();
@@ -30,6 +38,8 @@ public class Receipt {
                 indent + "collectedValues=" + collectedValues +
                 indent + "url=" + url +
                 indent + "lines=" + lines +
+                indent + "chosenC=" + chosenCategory +
+                indent + "chosenDescription=" + description +
                 indent + "} Receipt";
     }
 
@@ -47,11 +57,11 @@ public class Receipt {
                 collectedValues.containsKey(Target.DECIMAL);
     }
 
-    public PInfo getPseudoP(RestIO restIO) {
+    public PInfo getPseudoP() {
         if(!hasItAll()) {
             return null;
         }
-        return new PInfo(null, getDate(), getDate(), getAmount(), null, restIO.getAccount(), getDescription());
+        return new PInfo(null, getDate(), getDate(), getAmount(), null, RestIO.getAccount(), getDescription());
     //PInfo(Integer id, Date dc, Date d,       BigDecimal i, String c_descr, String a_descr, String descr) {
     }
 
@@ -59,7 +69,7 @@ public class Receipt {
         if(!hasItAll()) {
             return null;
         }
-        return new P(null, getDate(), getDate(), getAmount(), null, restIO.getAccountId(), true, "TODO", getDescription(), true);
+        return new P(null, getDate(), getDate(), getAmount(), Integer.parseInt("" + chosenCategory) , RestIO.getAccountId(), true, "TODO", description, true);
     }
 
     public void collect(String str) {

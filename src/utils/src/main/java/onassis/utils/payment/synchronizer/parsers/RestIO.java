@@ -73,9 +73,13 @@ public class RestIO {
         try {
             IOUtils.printOut("Locking ... ");
             IOUtils.printOut("\n" + lockUrl);
-            //lockResponse = ((Response) RestAssured.given().auth().basic(user, pw).when().get(lockUrl, new Object[0])).asString();
+            lockResponse = ((Response) RestAssured.given().auth().basic(user, pw).when().get(lockUrl, new Object[0])).asString();
+            if(lockResponse.length()>0) {
+                throw new RuntimeException(lockResponse);
+            }
             IOUtils.printOut("Locked: " + pId+"\n" );
         } catch (Exception e) {
+
             IOUtils.printOut("Failed to lock: " + pId + "\n");
         }
         IOUtils.printOut( lockResponse + "\n");
@@ -84,24 +88,27 @@ public class RestIO {
     void create(P p) {
         OnassisController.Updates u = new OnassisController.Updates();
         List<P> pList = new ArrayList<>();
-
         p.setD(now);
+        p.setG(Parser.gId);
         pList.add(p);
-
         u.setCreated(pList);
-        String responseJson = null;
-        String createUrl = String.format("http://%s/payments/update", host);
+        u.setModified(new ArrayList());
+        u.setDeleted(new ArrayList<>());
         try {
-            IOUtils.printOut("Creating ... ");
-            IOUtils.printOut("\n" + createUrl);
-            //responseJson = ((Response) RestAssured.given().auth().basic(user, pw).when().post(createUrl, u)).asString();
-            IOUtils.printOut("Created: " + p.toString() + "\n");
+            update(u);
         } catch (Exception e) {
             IOUtils.printOut("Failed to create: " + p.toString() + "\n");
+            throw e;
         }
-        IOUtils.printOut( responseJson + "\n");
     }
 
+    private void update(OnassisController.Updates upd) {
+        String createUrl = String.format("http://%s/payments/update", host);
+        String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).contentType("application/json").body(upd).when().post(createUrl)).asString();
+        if(responseJson.length()>0) {
+            throw new RuntimeException(responseJson);
+        }
+    }
     boolean login() {
         pw = IOUtils.login();
         String catUrl = "http://" + host + "/cat/list";

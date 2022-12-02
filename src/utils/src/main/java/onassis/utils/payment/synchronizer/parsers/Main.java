@@ -32,7 +32,12 @@ public class Main {
         IOUtils.dump(args[1], parser);
         IOUtils.printOut("Prepare done. \n");
         IOUtils.printOut("Preparing " + size + " receipt(s) :\n");
-        parser.update(args[1]);
+        if (IOUtils.askYesNo()) {
+            IOUtils.printOut("Updating Onassis: ");
+            RestIO.setNow();
+            parser.update(args[1]);
+            IOUtils.printOut("Done.\n");
+        }
 
 
 

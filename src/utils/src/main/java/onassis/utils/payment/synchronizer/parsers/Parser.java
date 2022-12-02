@@ -51,6 +51,7 @@ public class Parser {
         }
     }
 
+    public static String gId;
     public static final PartialParserMap parsers = new PartialParserMap();
     private RestIO restIO;
     //private OnassisController.Updates<P> updates;
@@ -119,33 +120,32 @@ public class Parser {
             }
         }
         IOUtils.printOut("Fetching new groupid ...");
-        String gId = "Matcher_" +  dateFormat.format(new Date()) + "_" + restIO.newGroupId() ;
+        gId = "_" +  restIO.newGroupId() + "_"  + dateFormat.format(new Date());
         IOUtils.printOut(" Done.\nNewly created will have group-id : '" + gId + "'\n");
     }
 
     public void update(String baseFileName) {
         IOUtils.StatementWriter writer = new IOUtils.StatementWriter(baseFileName);
-        if (IOUtils.askYesNo()) {
-            IOUtils.printOut("Updating Onassis: ");
-            for(Matchable m : matchables) {
 
-                try {
-                    switch(m.getState())  {
-                        case CREATE :       restIO.create(m.getReceipt().getP(restIO));
-                                            IOUtils.printOut("c ");
-                                            break;
-                        case MATCH_FOUND:   restIO.lock(m.theChosenP.getId());
-                                            IOUtils.printOut("l ");
-                    }
-                    writer.writeLog(m);
-                } catch (Exception e) {
-                    IOUtils.printOut("ERROR: something went wrong updating: \n"+m+"\n");
-                    throw new RuntimeException(e);
+        for(Matchable m : matchables) {
+
+            try {
+                switch(m.getState())  {
+                    case CREATE :       restIO.create(m.getReceipt().getP(restIO));
+                                        IOUtils.printOut("c ");
+                                        break;
+                    case MATCH_FOUND:   restIO.lock(m.theChosenP.getId());
+                                        IOUtils.printOut("l ");
                 }
+                writer.writeLog(m);
+            } catch (Exception e) {
+                IOUtils.printOut("ERROR: something went wrong updating: \n"+m+"\n");
+                throw new RuntimeException(e);
             }
-            IOUtils.printOut("Done.\n");
-            return;
         }
+
+        return;
+
     }
 
     @Override

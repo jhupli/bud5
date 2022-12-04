@@ -29,7 +29,7 @@ public class RestIO {
     @Getter
     private static String account;
     @Getter
-    private static Integer accountId = null;
+    private Integer accountId = null;
     private String pw;
     private List<C> categories = null;
     private List<A> accounts = null;
@@ -40,11 +40,7 @@ public class RestIO {
 
     public static void setNow() {
         now = new Date();
-        nowStr = dateFormat.format(now);
-    }
-
-    public static Date getNow() {
-        return now;
+        dateStr = dateFormat.format(now);
     }
 
     public static String getNowString() {
@@ -68,47 +64,46 @@ public class RestIO {
 
 
     void lock(int pId) {
-        String lockUrl = String.format("http://%s/lock?id=%s&l=true&d=%s", host, pId, nowStr);
+        P p = new P();
+        List<P> pList = new ArrayList<>();
+        OnassisController.Updates updateBean = new OnassisController.Updates();
+
+        p.setD(now);
+        pList.add(p);
+
+        updateBean.setModified(pList);
+
+        String updateString = String.format("http://%s/payments/update", host);
+        String lockurl = String.format("http://%s/lock?id=%s&l=true&d=%s", host, pId, dateStr);
         String updateResponse = null, lockResponse = null;
         try {
-            IOUtils.printOut("Locking ... ");
-            IOUtils.printOut("\n" + lockUrl);
-            lockResponse = ((Response) RestAssured.given().auth().basic(user, pw).when().get(lockUrl, new Object[0])).asString();
-            if(lockResponse.length()>0) {
-                throw new RuntimeException(lockResponse);
-            }
+            updateResponse = ((Response) RestAssured.given().auth().basic(user, pw).when().post(lockurl, updateBean)).asString();
+            lockResponse = ((Response) RestAssured.given().auth().basic(user, pw).when().get(lockurl, new Object[0])).asString();
             IOUtils.printOut("Locked: " + pId+"\n" );
         } catch (Exception e) {
-
             IOUtils.printOut("Failed to lock: " + pId + "\n");
+            IOUtils.printOut( null == lockResponse ? updateResponse : lockResponse + "\n");
         }
-        IOUtils.printOut( lockResponse + "\n");
     }
 
     void create(P p) {
         OnassisController.Updates u = new OnassisController.Updates();
         List<P> pList = new ArrayList<>();
+
         p.setD(now);
-        p.setG(Parser.gId);
         pList.add(p);
+
         u.setCreated(pList);
-        u.setModified(new ArrayList());
-        u.setDeleted(new ArrayList<>());
+
+        String url = String.format("http://%s/payments/update", host);
         try {
-            update(u);
+            String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).when().post(url, u)).asString();
+            IOUtils.printOut("Created: " + p + "\n");
         } catch (Exception e) {
-            IOUtils.printOut("Failed to create: " + p.toString() + "\n");
-            throw e;
+            IOUtils.printOut("Failed to create: " + p + "\n");
         }
     }
 
-    private void update(OnassisController.Updates upd) {
-        String createUrl = String.format("http://%s/payments/update", host);
-        String responseJson = ((Response) RestAssured.given().auth().basic(user, pw).contentType("application/json").body(upd).when().post(createUrl)).asString();
-        if(responseJson.length()>0) {
-            throw new RuntimeException(responseJson);
-        }
-    }
     boolean login() {
         pw = IOUtils.login();
         String catUrl = "http://" + host + "/cat/list";
@@ -153,6 +148,13 @@ public class RestIO {
             IOUtils.printOut("Unable to create new group id.\n");
             throw new RuntimeException(e);
         }
+    }
+
+
+    void lock(PInfo p) {
+        String dateStr = dateFormat.format(p.getDc());
+        String url = String.format("http://%s/lock?id=%s&l=true&d=%s", this.host, p.getId(), dateStr);
+        ((Response) RestAssured.given().auth().basic(this.user, this.pw).when().get(url, new Object[0])).asString();
     }
 
     List<PInfo> getPCandidates(Receipt receipt) {

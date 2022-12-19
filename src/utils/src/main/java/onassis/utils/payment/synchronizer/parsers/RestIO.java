@@ -121,6 +121,7 @@ public class RestIO {
             categories = (new Gson()).fromJson(responseJson, new TypeToken<List<C>>() {
             }.getType());
         } catch (Exception e) {
+            System.out.println(e);
             IOUtils.printOut(" Failed. Category not found.\n");
             System.exit(3);
         }

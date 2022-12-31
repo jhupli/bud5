@@ -7,7 +7,7 @@
     <version>6.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Spring Boot Blank Project (from https://github.com/making/spring-boot-blank)</name>
+    <name>Onassis server</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -37,13 +37,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
        </dependency>
-       
+
        <dependency>
    		<groupId>org.springframework</groupId>
    		<artifactId>spring-aspects</artifactId>
    		<version>3.2.0.RELEASE</version>
 		</dependency>
-        <!--  
+        <!--
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -74,7 +74,7 @@
             <artifactId>flyway-core</artifactId>
             <version>3.2.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -92,8 +92,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
-        
+
+
         <dependency>
             <groupId>com.jayway.restassured</groupId>
             <artifactId>rest-assured</artifactId>

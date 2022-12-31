@@ -1,17 +1,12 @@
 package onassis.utils.payment.synchronizer.parsers;
 
 import lombok.SneakyThrows;
-import onassis.utils.paymentlocker.PaymentLocker;
-
-import java.io.File;
-import java.util.Scanner;
-
 public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
-        if (args.length < 2 || args.length > 3) {
-            System.err.println("Usage: java -jar OnassisUtils.jar <bank-name> <file of account-statement> [TEST|SIMULATE]");
+        if (args.length != 2) {
+            System.err.println("Usage: java -jar OnassisUtils.jar <bank-name> <file of account-statement>");
             System.exit(2);
         }
 

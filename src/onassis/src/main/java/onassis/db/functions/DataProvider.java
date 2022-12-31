@@ -1,24 +1,16 @@
 package onassis.db.functions;
 
-import java.awt.Color;
+import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.stereotype.Component;
 
 @Component
 public class DataProvider {

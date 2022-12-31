@@ -1,16 +1,11 @@
 package onassis.db.functions;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Calendar;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-
-import org.springframework.stereotype.Component;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.Calendar;
 
 @Component
 public class Balance {

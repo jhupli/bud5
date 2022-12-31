@@ -1,5 +1,14 @@
 package onassis.services;
 
+import com.opencsv.CSVWriter;
+import com.opencsv.ResultSetHelperService;
+import onassis.dto.H;
+import onassis.dto.LogEntry;
+import onassis.dto.mappers.MapH;
+import org.springframework.jdbc.core.RowMapperResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -14,17 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import com.opencsv.CSVWriter;
-import com.opencsv.ResultSetHelperService;
-
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.stereotype.Component;
-
-import onassis.dto.H;
-import onassis.dto.LogEntry;
-import onassis.dto.mappers.MapH;
 
 @Component
 public class HistoryLogService extends ServicesBase {

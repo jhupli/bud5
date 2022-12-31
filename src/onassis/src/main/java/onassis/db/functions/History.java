@@ -1,15 +1,14 @@
 package onassis.db.functions;
 
+import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
-
-import javax.sql.DataSource;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class History {

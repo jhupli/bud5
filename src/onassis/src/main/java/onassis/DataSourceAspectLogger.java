@@ -1,7 +1,7 @@
 package onassis;
 
 //import org.apache.tomcat.jdbc.pool.DataSource;
-import javax.sql.DataSource;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
 
 @Profile("dev")
 @Aspect

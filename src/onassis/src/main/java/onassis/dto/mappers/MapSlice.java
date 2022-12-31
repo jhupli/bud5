@@ -1,11 +1,10 @@
 package onassis.dto.mappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import onassis.dto.Slice;
 import org.springframework.jdbc.core.RowMapper;
 
-import onassis.dto.Slice;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MapSlice implements RowMapper<Slice> {
 	@Override

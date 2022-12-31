@@ -1,22 +1,17 @@
 package onassis.services;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.*;
-
+import onassis.db.functions.Balance;
 import onassis.dto.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import onassis.db.functions.Balance;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.*;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.*;
 
 @Component
 public class ChartService extends ServicesBase {

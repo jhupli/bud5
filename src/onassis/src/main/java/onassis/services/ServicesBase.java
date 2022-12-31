@@ -13,17 +13,15 @@
 
 package onassis.services;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-
-import javax.sql.DataSource;
-
+import onassis.db.functions.DBTestUtilsDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import onassis.db.functions.DBTestUtilsDB;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 
 abstract public class ServicesBase {
     @Autowired

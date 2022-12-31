@@ -1,21 +1,13 @@
 package onassis.services;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
+import onassis.db.functions.DataProvider;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import onassis.db.functions.Balance;
-import onassis.db.functions.DataProvider;
-import onassis.db.functions.History;
-import onassis.dto.A;
-import onassis.dto.mappers.MapA;
+import javax.annotation.PostConstruct;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.UUID;
 
 @Component
 public class UtilService extends ServicesBase {

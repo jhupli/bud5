@@ -1,23 +1,21 @@
 package onassis.services;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.stereotype.Component;
-
 import onassis.db.functions.Balance;
 import onassis.db.functions.CbTriggers;
 import onassis.db.functions.History;
 import onassis.db.functions.Triggers;
 import onassis.dto.A;
 import onassis.dto.mappers.MapA;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.RowMapperResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.List;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)

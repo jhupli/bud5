@@ -1,11 +1,10 @@
 package onassis.dto.mappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import onassis.dto.H;
 import org.springframework.jdbc.core.RowMapper;
 
-import onassis.dto.H;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MapH implements RowMapper<H> {
 

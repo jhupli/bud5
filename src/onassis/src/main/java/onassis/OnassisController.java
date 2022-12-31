@@ -1,34 +1,27 @@
 package onassis;
 
+import onassis.db.functions.Balance;
+import onassis.db.functions.CbTriggers;
+import onassis.db.functions.History;
+import onassis.db.functions.Triggers;
+import onassis.dto.*;
+import onassis.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-
-import onassis.dto.*;
-import onassis.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import onassis.db.functions.Balance;
-import onassis.db.functions.CbTriggers;
-import onassis.db.functions.History;
-import onassis.db.functions.Triggers;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //@CrossOrigin(origins = "http://localhost:3000") //<-development only
 @CrossOrigin

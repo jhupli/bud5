@@ -1,6 +1,9 @@
 package onassis;
 
-import java.awt.datatransfer.FlavorEvent;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.zeroturnaround.zip.ZipUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,12 +13,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-//import org.flywaydb.core.Flyway;
-//import org.flywaydb.core.api.output.RepairResult;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.zeroturnaround.zip.ZipUtil;
 
 import static java.lang.Runtime.getRuntime;
 

@@ -1,11 +1,8 @@
 package onassis.dto.mappers;
 
-import onassis.dto.H;
 import onassis.dto.PInfo;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

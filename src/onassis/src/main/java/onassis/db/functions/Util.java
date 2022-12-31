@@ -1,8 +1,8 @@
 package onassis.db.functions;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.SQLException;
 
 public class Util {
 

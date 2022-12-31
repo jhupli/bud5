@@ -1,19 +1,14 @@
 package onassis.services;
 
-import onassis.dto.P;
 import onassis.dto.PInfo;
-import onassis.dto.mappers.MapP;
 import onassis.dto.mappers.MapPInfo;
-import onassis.dto.mappers.MapPb;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class PInfoService extends ServicesBase {

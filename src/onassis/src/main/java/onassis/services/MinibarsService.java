@@ -1,13 +1,12 @@
 package onassis.services;
 
-import java.util.List;
-
+import onassis.dto.B;
+import onassis.dto.mappers.MapB;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import onassis.dto.B;
-import onassis.dto.mappers.MapB;
+import java.util.List;
 
 @Component
 public class MinibarsService extends ServicesBase {

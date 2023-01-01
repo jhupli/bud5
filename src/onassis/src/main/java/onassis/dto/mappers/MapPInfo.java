@@ -17,7 +17,8 @@ public class MapPInfo implements RowMapper<PInfo> {
                 rs.getBigDecimal("i"),
 				rs.getString("c_descr"),
 				rs.getString("a_descr"),
-				rs.getString("descr")
+				rs.getString("descr"),
+				rs.getBoolean( "l")
 				);
 	}
 }

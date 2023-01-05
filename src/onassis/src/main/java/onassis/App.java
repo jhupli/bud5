@@ -32,8 +32,6 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("NOTE: flywas is disabled.");
-
         //System.out.println("repairing...");
         //Flyway flyway = Flyway.configure().dataSource("jdbc:derby:BudDB.v5;create=true", "sa", null).load();
         //RepairResult repair  = flyway.repair();

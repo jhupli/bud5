@@ -14,18 +14,19 @@ import java.util.List;
 public class PInfoService extends ServicesBase {
 
     MapPInfo rmPInfo = new MapPInfo();
-    public List<PInfo> unlockedUntil(String d, BigDecimal i) { //todo account mukaan
+    public List<PInfo> unlockedUntil(String d, BigDecimal i, int a) {
         LocalDate dd = LocalDate.parse(d);
         LocalDate end = dd.plusDays(10L);
         LocalDate start = end.minusDays(30L);
         final String query = "SELECT p.id, p.d, p.dc, p.i, p.descr as descr, c.descr as c_descr, a.descr as a_descr, p.l " +
                 " FROM P,C,A " +
-                " WHERE p.dc >=:start and p.dc <=:end and c.id=p.c and p.i=:i and a.id=p.a" +
+                " WHERE p.dc >=:start and p.dc <=:end and c.id=p.c and p.i=:i and a.id=p.a and a=:a" +
                 " ORDER BY p.d ASC ";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("start", start.format(sqldf))
                 .addValue("end", end.format(sqldf))
-                .addValue("i", i);
+                .addValue("i", i)
+                .addValue("a", a);
         return jdbcTemplate.query(query, namedParameters, new RowMapperResultSetExtractor<PInfo>(rmPInfo));
     }
 

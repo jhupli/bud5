@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class    PaymentService extends ServicesBase {
+public class  PaymentService extends ServicesBase {
 
     MapP rmP = new MapP();
     MapPb rmPb = new MapPb();
@@ -42,6 +42,23 @@ public class    PaymentService extends ServicesBase {
                 .addValue("d1", day1.format(sqldf))
                 .addValue("d2", day2.format(sqldf))
                 .addValue("a", a);
+        return jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<P>(rmPb));
+    }
+
+    public List<P> range(String d1, String d2) {
+        LocalDate day1 = LocalDate.parse(d1);
+        LocalDate day2 = LocalDate.parse(d2);
+
+        final String paymetsQuery =
+                        "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE  d BETWEEN :d1 and :d2 " +
+                        " UNION " +
+                        "SELECT id, dc, d, i, a, c, l, s, g, descr, 0 as b FROM P WHERE dc BETWEEN :d1 and :d2 " +
+                        " ORDER BY dc ASC";
+
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("d1", day1.format(sqldf))
+                .addValue("d2", day2.format(sqldf));
+
         return jdbcTemplate.query(paymetsQuery, namedParameters, new RowMapperResultSetExtractor<P>(rmPb));
     }
 

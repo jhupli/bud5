@@ -176,7 +176,7 @@ public class OnassisController {
     };
 
     @RequestMapping("payments")
-    List<List<? extends Object>> payments(@RequestParam String e, @RequestParam(required = false) String d, @RequestParam(required = false) String a, @RequestParam(required = false) String c, @RequestParam(required = false) String g, @RequestParam(required = false) String d1, @RequestParam(required = false) String d2, @RequestParam(required = false, value = "ids[]") Set<Integer> ids) throws SQLException, ParseException {
+    List<List<? extends Object>> payments(@RequestParam String e, @RequestParam(required = false) String r, @RequestParam(required = false) String d, @RequestParam(required = false) String a, @RequestParam(required = false) String c, @RequestParam(required = false) String g, @RequestParam(required = false) String d1, @RequestParam(required = false) String d2, @RequestParam(required = false, value = "ids[]") Set<Integer> ids) throws SQLException, ParseException {
 
         List<P> paymentsList = null;
         List<B> balancesList = null;
@@ -191,6 +191,10 @@ public class OnassisController {
 
         if (e.equals("a") && null != a && null != d1 && null != d2) {
             paymentsList = paymentService.account(a, d1, d2);
+        }
+
+        if (e.equals("r") && null != d1 && null != d2) {
+            paymentsList = paymentService.range(d1, d2);
         }
 
         if (e.equals("c") && null != c && null != d1 && null != d2) {

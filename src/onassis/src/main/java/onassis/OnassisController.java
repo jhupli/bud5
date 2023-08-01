@@ -185,7 +185,6 @@ public class OnassisController {
             paymentsList = paymentService.list(ids);
         }
 
-
         if (e.equals("d") && null != d) {
             paymentsList = paymentService.day(d);
         }
